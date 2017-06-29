@@ -9,24 +9,16 @@
 import UIKit
 
 class ResultViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
-    private var m_arrData = [[String:String]]()
-    private var m_strTitle = ""
-    private var m_strImage = ""
-    private var m_strMemo = ""
     @IBOutlet weak var m_ivTopImage: UIImageView!
     @IBOutlet weak var m_lbTopTitle: UILabel!
     @IBOutlet weak var m_tvData: UITableView!
     @IBOutlet weak var m_vBottomView: UIView!
     @IBOutlet weak var m_btnBackToFeature: UIButton!
     @IBOutlet weak var m_btnBackToHome: UIButton!
+    private var data:ConfirmResultStruct? = nil
     
     func setData(_ data:ConfirmResultStruct) {
-        m_strTitle = data.title
-        m_strImage = data.image
-        m_strMemo = data.memo
-        if data.list != nil {
-            m_arrData = data.list!
-        }
+        self.data = data
     }
     
     // MARK: - StoryBoard Touch Event
@@ -44,12 +36,13 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
         navigationItem.leftBarButtonItem = nil
         self.navigationItem.setHidesBackButton(true, animated:true);
         
-        m_ivTopImage.image = UIImage(named: m_strImage)
-        m_lbTopTitle.text = m_strTitle
+        m_ivTopImage.image = UIImage(named: (data?.image)!)
+        m_lbTopTitle.text = data?.title
 
         m_tvData.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
         m_tvData.allowsSelection = false
         m_tvData.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        m_btnBackToFeature.setTitle(data?.resultBtnName, for: .normal)
         
         setShadowView(m_vBottomView)
     }
@@ -60,38 +53,38 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let height = ResultCell.GetStringHeightByWidthAndFontSize(m_arrData[indexPath.row]["Value"]!, m_tvData.frame.size.width)
+        let height = ResultCell.GetStringHeightByWidthAndFontSize((data?.list?[indexPath.row]["Value"]!)!, m_tvData.frame.size.width)
         return height
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if m_strMemo.isEmpty {
+        if (data?.memo)!.isEmpty {
             return 0
         }
         else {
-            return MemoView.GetStringHeightByWidthAndFontSize(m_strMemo, m_tvData.frame.width)
+            return MemoView.GetStringHeightByWidthAndFontSize((data?.memo)!, m_tvData.frame.width)
         }
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if m_strMemo.isEmpty {
+        if (data?.memo)!.isEmpty {
             return nil
         }
         else {
             let footer = getUIByID(.UIID_MemoView) as! MemoView
-            footer.set(m_strMemo)
+            footer.set((data?.memo)!)
             return footer
         }
     }
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return m_arrData.count;
+        return (data?.list?.count)!;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
-        cell.set(m_arrData[indexPath.row]["Key"]!, m_arrData[indexPath.row]["Value"]!)
+        cell.set((data?.list?[indexPath.row]["Key"]!)!, (data?.list?[indexPath.row]["Value"]!)!)
         return cell
     }
 }

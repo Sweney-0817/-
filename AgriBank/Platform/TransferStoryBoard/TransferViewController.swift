@@ -177,7 +177,8 @@ class TransferViewController: BaseViewController, UITextFieldDelegate, DropDownV
     }
     
     @IBAction func clickSendBtn(_ sender: Any) {
-        var data = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: "請確認本次交易資訊", memo: "", list: [[String:String]](), leftButtonName: "")
+//        var data = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: "請確認本次交易資訊", memo: "", list: [[String:String]](), confirmBtnName: "確認送出", resultBtnName: "繼續交易")
+        var data = ConfirmResultStruct(ImageName.CowCheck.rawValue, "請確認本次交易資訊", [[String:String]](), nil, "確認送出", "繼續交易")
         data.list!.append(["Key": "轉出帳號", "Value":"12345678901234"])
         data.list!.append(["Key": "銀行代碼", "Value":"008"])
         data.list!.append(["Key": "轉入帳號", "Value":"12345678901235"])

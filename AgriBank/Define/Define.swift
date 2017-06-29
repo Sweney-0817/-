@@ -124,9 +124,18 @@ struct FeatureStruct {
 struct ConfirmResultStruct {
     var image:String
     var title:String
-    var memo:String
     var list:[[String:String]]? = nil
-    var leftButtonName:String
+    var memo:String
+    var confirmBtnName:String
+    var resultBtnName:String
+    init(_ image:String, _ title:String, _ list:[[String:String]]?, _ memo:String? = nil, _ confirmBtnName:String? = nil, _ resultBtnName:String? = nil) {
+        self.image = image
+        self.title = title
+        self.list = list
+        self.memo = memo ?? ""
+        self.confirmBtnName = confirmBtnName ?? ""
+        self.resultBtnName = resultBtnName ?? ""
+    }
 }
 
 // MARK: - UIID

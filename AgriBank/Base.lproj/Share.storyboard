@@ -49,7 +49,7 @@
                                     <constraint firstItem="Te6-hH-OlE" firstAttribute="top" secondItem="MlX-Kj-KEa" secondAttribute="bottom" constant="5" id="o2p-jj-mjx"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QYj-az-PhD">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QYj-az-PhD">
                                 <rect key="frame" x="0.0" y="225" width="375" height="382"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -65,7 +65,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="QYu-ow-CqD"/>
                                         </constraints>
-                                        <state key="normal" title="繼續交易" backgroundImage="ButtonOBox">
+                                        <state key="normal" backgroundImage="ButtonOBox">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -120,7 +120,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KUL-rg-oMZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2068" y="-8"/>
+            <point key="canvasLocation" x="2182" y="-9"/>
         </scene>
         <!--Confirm View Controller-->
         <scene sceneID="Ri7-8n-ea5">
@@ -181,7 +181,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="qWV-Uy-2Wr"/>
                                                 </constraints>
-                                                <state key="normal" title="確認變更" backgroundImage="ButtonOBox">
+                                                <state key="normal" backgroundImage="ButtonOBox">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
