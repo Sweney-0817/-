@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LoginView" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z4q-5Q-8wY">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ctq-ku-OMi">
+                    <rect key="frame" x="17" y="68.5" width="341" height="530"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V4V-ak-80a">
+                            <rect key="frame" x="15" y="15" width="24" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="H0N-ni-mnF"/>
+                                <constraint firstAttribute="width" constant="24" id="iNr-AQ-HIJ"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="Close"/>
+                            <connections>
+                                <action selector="clickCloseBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="JfV-ZT-xMg"/>
+                            </connections>
+                        </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Orange" translatesAutoresizingMaskIntoConstraints="NO" id="1pS-MV-8lP">
+                            <rect key="frame" x="123.5" y="65" width="94" height="100"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="100" id="WC6-9J-735"/>
+                                <constraint firstAttribute="width" constant="94" id="tSG-0Z-hXc"/>
+                            </constraints>
+                        </imageView>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="9Iu-uw-4Wn" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="15" y="195" width="256" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="CRg-EQ-at5"/>
+                            </constraints>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="iN0-l3-epB" id="rZ8-li-vPU"/>
+                            </connections>
+                        </textField>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropDown" translatesAutoresizingMaskIntoConstraints="NO" id="u6L-Ck-AMf">
+                            <rect key="frame" x="236" y="207" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="YbY-Vm-qk9"/>
+                                <constraint firstAttribute="width" constant="20" id="k2U-Kq-CFs"/>
+                            </constraints>
+                        </imageView>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="身分證字號" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="0LC-lY-FRG" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="15" y="249" width="256" height="44"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="iN0-l3-epB" id="NXP-m5-H1g"/>
+                            </connections>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="otZ-hw-mHX">
+                            <rect key="frame" x="279" y="259" width="24" height="24"/>
+                            <state key="normal" backgroundImage="Unlocker"/>
+                            <connections>
+                                <action selector="clickLockBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="sZv-SV-NOt"/>
+                            </connections>
+                        </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropDown" translatesAutoresizingMaskIntoConstraints="NO" id="lYI-ew-UL7">
+                            <rect key="frame" x="236" y="261" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="24m-dg-0El"/>
+                                <constraint firstAttribute="width" constant="20" id="mpm-XC-Cqb"/>
+                            </constraints>
+                        </imageView>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="使用者代碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="OI6-jV-582" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="15" y="303" width="311" height="44"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="iN0-l3-epB" id="A1e-cb-1p2"/>
+                            </connections>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="XbQ-Sb-po2" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="15" y="357" width="311" height="44"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="iN0-l3-epB" id="mZF-3f-uQm"/>
+                            </connections>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="dBz-Be-iO9" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="15" y="411" width="133.5" height="44"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="iN0-l3-epB" id="cGc-Zd-C7D"/>
+                            </connections>
+                        </textField>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D9y-L7-obY">
+                            <rect key="frame" x="158.5" y="411" width="133.5" height="44"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EMv-h1-fF7">
+                            <rect key="frame" x="302" y="421" width="24" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="elJ-Zf-3Lw"/>
+                                <constraint firstAttribute="width" constant="24" id="uOJ-eb-XCq"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="Refresh"/>
+                            <connections>
+                                <action selector="clickRefreshBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="gOf-zY-kks"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NaA-w9-Z9a">
+                            <rect key="frame" x="15" y="465" width="311" height="44"/>
+                            <state key="normal" title="登入" backgroundImage="ButtonOBox"/>
+                            <connections>
+                                <action selector="clickLoginBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="uGm-S5-MzY"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="dBz-Be-iO9" firstAttribute="height" secondItem="XbQ-Sb-po2" secondAttribute="height" id="0Z9-cS-dVV"/>
+                        <constraint firstItem="NaA-w9-Z9a" firstAttribute="top" secondItem="dBz-Be-iO9" secondAttribute="bottom" constant="10" id="226-W2-bdC"/>
+                        <constraint firstItem="D9y-L7-obY" firstAttribute="height" secondItem="dBz-Be-iO9" secondAttribute="height" id="5No-zP-mrp"/>
+                        <constraint firstItem="lYI-ew-UL7" firstAttribute="trailing" secondItem="0LC-lY-FRG" secondAttribute="trailing" constant="-15" id="5We-DA-jbD"/>
+                        <constraint firstItem="9Iu-uw-4Wn" firstAttribute="leading" secondItem="Ctq-ku-OMi" secondAttribute="leading" constant="15" id="5oa-93-2cg"/>
+                        <constraint firstItem="0LC-lY-FRG" firstAttribute="height" secondItem="9Iu-uw-4Wn" secondAttribute="height" id="9Cq-69-z2S"/>
+                        <constraint firstItem="0LC-lY-FRG" firstAttribute="leading" secondItem="9Iu-uw-4Wn" secondAttribute="leading" id="9xG-Dz-uuN"/>
+                        <constraint firstItem="D9y-L7-obY" firstAttribute="width" secondItem="dBz-Be-iO9" secondAttribute="width" id="AIt-QC-tGp"/>
+                        <constraint firstItem="OI6-jV-582" firstAttribute="height" secondItem="0LC-lY-FRG" secondAttribute="height" id="B5b-23-RHz"/>
+                        <constraint firstItem="XbQ-Sb-po2" firstAttribute="top" secondItem="OI6-jV-582" secondAttribute="bottom" constant="10" id="BAj-Wh-siA"/>
+                        <constraint firstItem="NaA-w9-Z9a" firstAttribute="width" secondItem="XbQ-Sb-po2" secondAttribute="width" id="EcQ-so-8Pd"/>
+                        <constraint firstItem="u6L-Ck-AMf" firstAttribute="trailing" secondItem="9Iu-uw-4Wn" secondAttribute="trailing" constant="-15" id="FTf-x5-v3E"/>
+                        <constraint firstItem="u6L-Ck-AMf" firstAttribute="centerY" secondItem="9Iu-uw-4Wn" secondAttribute="centerY" id="In7-l2-H3G"/>
+                        <constraint firstAttribute="trailing" secondItem="9Iu-uw-4Wn" secondAttribute="trailing" constant="70" id="IsW-sx-dKk"/>
+                        <constraint firstItem="NaA-w9-Z9a" firstAttribute="height" secondItem="XbQ-Sb-po2" secondAttribute="height" id="Kk9-cz-yxg"/>
+                        <constraint firstItem="1pS-MV-8lP" firstAttribute="top" secondItem="Ctq-ku-OMi" secondAttribute="top" constant="65" id="NBB-yP-ZIx"/>
+                        <constraint firstAttribute="trailing" secondItem="OI6-jV-582" secondAttribute="trailing" constant="15" id="QmB-hV-GdY"/>
+                        <constraint firstItem="lYI-ew-UL7" firstAttribute="centerY" secondItem="0LC-lY-FRG" secondAttribute="centerY" id="SMu-MR-05g"/>
+                        <constraint firstItem="EMv-h1-fF7" firstAttribute="centerY" secondItem="D9y-L7-obY" secondAttribute="centerY" id="SR4-KF-F2p"/>
+                        <constraint firstItem="EMv-h1-fF7" firstAttribute="trailing" secondItem="XbQ-Sb-po2" secondAttribute="trailing" id="T0P-Ob-9D2"/>
+                        <constraint firstItem="D9y-L7-obY" firstAttribute="leading" secondItem="dBz-Be-iO9" secondAttribute="trailing" constant="10" id="TWe-lM-8b3"/>
+                        <constraint firstItem="OI6-jV-582" firstAttribute="top" secondItem="0LC-lY-FRG" secondAttribute="bottom" constant="10" id="U6e-no-jgq"/>
+                        <constraint firstItem="XbQ-Sb-po2" firstAttribute="width" secondItem="OI6-jV-582" secondAttribute="width" id="Uva-PH-6v7"/>
+                        <constraint firstItem="OI6-jV-582" firstAttribute="leading" secondItem="0LC-lY-FRG" secondAttribute="leading" id="WPb-xN-SOP"/>
+                        <constraint firstItem="EMv-h1-fF7" firstAttribute="leading" secondItem="D9y-L7-obY" secondAttribute="trailing" constant="10" id="WSZ-va-78G"/>
+                        <constraint firstItem="V4V-ak-80a" firstAttribute="top" secondItem="Ctq-ku-OMi" secondAttribute="top" constant="15" id="Wya-zh-Upl"/>
+                        <constraint firstItem="0LC-lY-FRG" firstAttribute="top" secondItem="9Iu-uw-4Wn" secondAttribute="bottom" constant="10" id="aaZ-1F-U7N"/>
+                        <constraint firstItem="NaA-w9-Z9a" firstAttribute="leading" secondItem="XbQ-Sb-po2" secondAttribute="leading" id="c7d-cF-0dK"/>
+                        <constraint firstItem="XbQ-Sb-po2" firstAttribute="leading" secondItem="OI6-jV-582" secondAttribute="leading" id="dVZ-os-W7N"/>
+                        <constraint firstItem="0LC-lY-FRG" firstAttribute="width" secondItem="9Iu-uw-4Wn" secondAttribute="width" id="giH-68-FBI"/>
+                        <constraint firstItem="V4V-ak-80a" firstAttribute="leading" secondItem="Ctq-ku-OMi" secondAttribute="leading" constant="15" id="hi6-1N-ayD"/>
+                        <constraint firstItem="otZ-hw-mHX" firstAttribute="leading" secondItem="0LC-lY-FRG" secondAttribute="trailing" constant="8" id="iPG-h5-7HP"/>
+                        <constraint firstItem="1pS-MV-8lP" firstAttribute="centerX" secondItem="Ctq-ku-OMi" secondAttribute="centerX" id="kuh-vH-uzm"/>
+                        <constraint firstItem="otZ-hw-mHX" firstAttribute="centerY" secondItem="0LC-lY-FRG" secondAttribute="centerY" id="lW1-Qh-qL8"/>
+                        <constraint firstAttribute="bottom" secondItem="NaA-w9-Z9a" secondAttribute="bottom" constant="21" id="nVY-NJ-ymG"/>
+                        <constraint firstItem="XbQ-Sb-po2" firstAttribute="height" secondItem="OI6-jV-582" secondAttribute="height" id="rhd-ed-olV"/>
+                        <constraint firstItem="dBz-Be-iO9" firstAttribute="top" secondItem="XbQ-Sb-po2" secondAttribute="bottom" constant="10" id="sQO-3b-lYT"/>
+                        <constraint firstItem="D9y-L7-obY" firstAttribute="centerY" secondItem="dBz-Be-iO9" secondAttribute="centerY" id="uS8-Lk-tBJ"/>
+                        <constraint firstItem="9Iu-uw-4Wn" firstAttribute="top" secondItem="1pS-MV-8lP" secondAttribute="bottom" constant="30" id="ugG-Vm-X9K"/>
+                        <constraint firstItem="dBz-Be-iO9" firstAttribute="leading" secondItem="XbQ-Sb-po2" secondAttribute="leading" id="wIx-3S-hfm"/>
+                        <constraint firstItem="u6L-Ck-AMf" firstAttribute="top" secondItem="9Iu-uw-4Wn" secondAttribute="bottom" constant="-32" id="zJs-MR-bgd"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Ctq-ku-OMi" firstAttribute="trailing" secondItem="z4q-5Q-8wY" secondAttribute="trailing" constant="-17" id="3i1-8M-Jjc"/>
+                <constraint firstItem="Ctq-ku-OMi" firstAttribute="leading" secondItem="z4q-5Q-8wY" secondAttribute="leading" constant="17" id="BSE-uT-PnW"/>
+                <constraint firstAttribute="trailing" secondItem="z4q-5Q-8wY" secondAttribute="trailing" id="Jhr-oP-kmd"/>
+                <constraint firstAttribute="bottom" secondItem="z4q-5Q-8wY" secondAttribute="bottom" id="Xgq-t8-i5J"/>
+                <constraint firstItem="z4q-5Q-8wY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Ysu-qj-Qia"/>
+                <constraint firstItem="Ctq-ku-OMi" firstAttribute="centerX" secondItem="z4q-5Q-8wY" secondAttribute="centerX" id="ggw-Bn-bak"/>
+                <constraint firstItem="z4q-5Q-8wY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pma-TI-URV"/>
+                <constraint firstItem="Ctq-ku-OMi" firstAttribute="centerY" secondItem="z4q-5Q-8wY" secondAttribute="centerY" id="wNw-4t-YFR"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <connections>
+                <outlet property="accountTextfield" destination="0LC-lY-FRG" id="8h9-gL-2Lw"/>
+                <outlet property="contentView" destination="Ctq-ku-OMi" id="OEE-LJ-bUV"/>
+                <outlet property="idTextfield" destination="OI6-jV-582" id="Wac-gL-aJR"/>
+                <outlet property="locationTextfield" destination="9Iu-uw-4Wn" id="hmQ-fF-Sdt"/>
+                <outlet property="passwordTextfield" destination="XbQ-Sb-po2" id="MdE-pp-Tn8"/>
+            </connections>
+            <point key="canvasLocation" x="33.5" y="53.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ButtonOBox" width="24" height="48"/>
+        <image name="Close" width="24" height="24"/>
+        <image name="DropDown" width="20" height="20"/>
+        <image name="Orange" width="94" height="100"/>
+        <image name="Refresh" width="24" height="24"/>
+        <image name="Textfield" width="311" height="44"/>
+        <image name="Unlocker" width="24" height="24"/>
+    </resources>
+</document>

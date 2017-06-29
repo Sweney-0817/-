@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BannerView" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sOn-OB-ZeI">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9uv-8Q-ot3">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NuY-2L-oRf">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
+                            <connections>
+                                <action selector="clickBannerBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="BPM-vT-nup"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="NuY-2L-oRf" firstAttribute="width" secondItem="9uv-8Q-ot3" secondAttribute="width" id="1jn-Aj-Xja"/>
+                        <constraint firstItem="9uv-8Q-ot3" firstAttribute="leading" secondItem="sOn-OB-ZeI" secondAttribute="leading" id="DbX-SJ-fZa"/>
+                        <constraint firstItem="NuY-2L-oRf" firstAttribute="leading" secondItem="sOn-OB-ZeI" secondAttribute="leading" id="HBx-3a-omZ"/>
+                        <constraint firstItem="NuY-2L-oRf" firstAttribute="height" secondItem="9uv-8Q-ot3" secondAttribute="height" id="HQ4-Qi-Clb"/>
+                        <constraint firstItem="9uv-8Q-ot3" firstAttribute="width" secondItem="sOn-OB-ZeI" secondAttribute="width" id="MSy-SQ-z6p"/>
+                        <constraint firstItem="9uv-8Q-ot3" firstAttribute="top" secondItem="sOn-OB-ZeI" secondAttribute="top" id="XIS-Gz-TiE"/>
+                        <constraint firstItem="9uv-8Q-ot3" firstAttribute="height" secondItem="sOn-OB-ZeI" secondAttribute="height" id="XRY-P8-mm9"/>
+                        <constraint firstAttribute="bottom" secondItem="9uv-8Q-ot3" secondAttribute="bottom" id="p9U-OU-J2y"/>
+                        <constraint firstAttribute="trailing" secondItem="9uv-8Q-ot3" secondAttribute="trailing" id="u0x-AP-EaR"/>
+                        <constraint firstItem="NuY-2L-oRf" firstAttribute="top" secondItem="sOn-OB-ZeI" secondAttribute="top" id="u7W-Y1-b2G"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="iN0-l3-epB" id="kg4-re-cYk"/>
+                    </connections>
+                </scrollView>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="1" translatesAutoresizingMaskIntoConstraints="NO" id="kw9-0a-jyv">
+                    <rect key="frame" x="168" y="113" width="39" height="37"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="39" id="Wy6-WO-Mvw"/>
+                        <constraint firstAttribute="height" constant="37" id="X3F-Z1-Rbz"/>
+                    </constraints>
+                    <color key="pageIndicatorTintColor" red="0.81560534240000004" green="0.81574302909999996" blue="0.815587163" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </pageControl>
+            </subviews>
+            <color key="backgroundColor" red="0.13704816084522198" green="1" blue="0.18829939498218207" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="sOn-OB-ZeI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Skz-qd-gpF"/>
+                <constraint firstItem="sOn-OB-ZeI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cke-cY-VGG"/>
+                <constraint firstItem="sOn-OB-ZeI" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="d3V-eN-KlP"/>
+                <constraint firstItem="kw9-0a-jyv" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="gOK-lv-1BK"/>
+                <constraint firstAttribute="bottom" secondItem="kw9-0a-jyv" secondAttribute="bottom" id="iSr-Vu-Gpu"/>
+                <constraint firstItem="sOn-OB-ZeI" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="jXy-s6-7av"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="contentSizeWidth" destination="MSy-SQ-z6p" id="nO8-i4-MUA"/>
+                <outlet property="contentView" destination="9uv-8Q-ot3" id="Dh7-2P-VDc"/>
+                <outlet property="pageControl" destination="kw9-0a-jyv" id="sY7-2P-mbk"/>
+                <outlet property="scrollView" destination="sOn-OB-ZeI" id="BAR-Fp-6kR"/>
+            </connections>
+            <point key="canvasLocation" x="34.5" y="55"/>
+        </view>
+    </objects>
+</document>

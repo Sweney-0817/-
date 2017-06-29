@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ResultCell" id="ddb-aF-eY1" customClass="ResultCell" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="374" height="60"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ddb-aF-eY1" id="OsE-P8-ocG">
+                <rect key="frame" x="0.0" y="0.0" width="374" height="60"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="備註/交易備註" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXi-5v-Pad">
+                        <rect key="frame" x="15" y="17" width="117" height="24.666666666666664"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="117" id="JdT-NN-6xx"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <color key="textColor" red="0.49803921568627452" green="0.49803921568627452" blue="0.49803921568627452" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dLX-AU-QRY">
+                        <rect key="frame" x="147" y="17" width="212" height="24.666666666666664"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstItem="dLX-AU-QRY" firstAttribute="leading" secondItem="uXi-5v-Pad" secondAttribute="trailing" constant="15" id="4jZ-g0-630"/>
+                    <constraint firstItem="uXi-5v-Pad" firstAttribute="leading" secondItem="OsE-P8-ocG" secondAttribute="leading" constant="15" id="Au1-ee-I8K"/>
+                    <constraint firstItem="uXi-5v-Pad" firstAttribute="top" secondItem="OsE-P8-ocG" secondAttribute="top" constant="17" id="E4Z-ru-u6P"/>
+                    <constraint firstAttribute="bottom" secondItem="uXi-5v-Pad" secondAttribute="bottom" constant="18" id="FbI-0U-YUv"/>
+                    <constraint firstAttribute="bottom" secondItem="dLX-AU-QRY" secondAttribute="bottom" constant="18" id="NOH-gM-cTB"/>
+                    <constraint firstItem="dLX-AU-QRY" firstAttribute="top" secondItem="OsE-P8-ocG" secondAttribute="top" constant="17" id="hKs-UN-ooo"/>
+                    <constraint firstAttribute="trailing" secondItem="dLX-AU-QRY" secondAttribute="trailing" constant="15" id="lwv-NY-Pou"/>
+                    <constraint firstItem="uXi-5v-Pad" firstAttribute="height" secondItem="dLX-AU-QRY" secondAttribute="height" id="wj4-CD-KWV"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="m_lbData" destination="dLX-AU-QRY" id="1Sa-BF-GUf"/>
+                <outlet property="m_lbTitle" destination="uXi-5v-Pad" id="oUZ-Bz-vb1"/>
+            </connections>
+            <point key="canvasLocation" x="-9" y="-198"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ImageConfirmCell" id="9IE-5u-epZ" customClass="ImageConfirmCell" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9IE-5u-epZ" id="cvE-6h-b5e">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="圖形驗證碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ccx-e0-OSg">
+                        <rect key="frame" x="15" y="8.5" width="150.5" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="M2c-pN-WKe"/>
+                        </constraints>
+                        <nil key="textColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <textInputTraits key="textInputTraits"/>
+                        <connections>
+                            <outlet property="delegate" destination="9IE-5u-epZ" id="y22-Xa-C5B"/>
+                        </connections>
+                    </textField>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="e6e-BG-dqa">
+                        <rect key="frame" x="175.5" y="8.5" width="150.5" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="mSi-G8-50V"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q6i-WQ-xS7">
+                        <rect key="frame" x="336" y="18.5" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="QbG-QN-Yi5"/>
+                            <constraint firstAttribute="width" constant="24" id="hMg-Bz-7M0"/>
+                        </constraints>
+                        <state key="normal" image="Refresh"/>
+                        <connections>
+                            <action selector="m_btnRefreshClick:" destination="9IE-5u-epZ" eventType="touchUpInside" id="mED-wo-XC0"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="q6i-WQ-xS7" secondAttribute="trailing" constant="15" id="2LI-13-zVv"/>
+                    <constraint firstItem="ccx-e0-OSg" firstAttribute="centerY" secondItem="cvE-6h-b5e" secondAttribute="centerY" id="2gS-Hn-IAN"/>
+                    <constraint firstItem="ccx-e0-OSg" firstAttribute="width" secondItem="e6e-BG-dqa" secondAttribute="width" id="6Hr-fP-0FY"/>
+                    <constraint firstItem="ccx-e0-OSg" firstAttribute="leading" secondItem="cvE-6h-b5e" secondAttribute="leading" constant="15" id="TaH-zP-UUv"/>
+                    <constraint firstItem="e6e-BG-dqa" firstAttribute="centerY" secondItem="cvE-6h-b5e" secondAttribute="centerY" id="gEb-9n-gay"/>
+                    <constraint firstItem="e6e-BG-dqa" firstAttribute="leading" secondItem="ccx-e0-OSg" secondAttribute="trailing" constant="10" id="mj7-yc-zOu"/>
+                    <constraint firstItem="q6i-WQ-xS7" firstAttribute="leading" secondItem="e6e-BG-dqa" secondAttribute="trailing" constant="10" id="pI9-kR-qhG"/>
+                    <constraint firstItem="q6i-WQ-xS7" firstAttribute="centerY" secondItem="cvE-6h-b5e" secondAttribute="centerY" id="x6R-2v-phV"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="m_btnRefresh" destination="q6i-WQ-xS7" id="cL9-RR-Oct"/>
+                <outlet property="m_ivShow" destination="e6e-BG-dqa" id="wwj-aX-Ioq"/>
+                <outlet property="m_tfInput" destination="ccx-e0-OSg" id="M13-4Z-NPQ"/>
+            </connections>
+            <point key="canvasLocation" x="-117.5" y="12"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Refresh" width="24" height="24"/>
+        <image name="Textfield" width="311" height="44"/>
+    </resources>
+</document>
