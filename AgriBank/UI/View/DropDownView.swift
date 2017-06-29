@@ -9,7 +9,7 @@
 import UIKit
 
 protocol DropDownViewDelegate {
-    func clickDropDownView()
+    func clickDropDownView(_ sender: DropDownView)
 }
 
 class DropDownView: UIView {
@@ -27,7 +27,7 @@ class DropDownView: UIView {
     var delegate:DropDownViewDelegate? = nil
     @IBAction func m_btnClick(_ sender: Any) {
 //        print(m_lbFirstRowTitle.text ?? "DropDownViewClick", m_lbFirstRowContent.text ?? "")
-        delegate?.clickDropDownView()
+        delegate?.clickDropDownView(self)
     }
     
     func getHeight() -> CGFloat {
