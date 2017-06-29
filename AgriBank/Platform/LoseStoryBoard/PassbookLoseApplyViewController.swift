@@ -13,7 +13,7 @@ class PassbookLoseApplyViewController: BaseViewController, DropDownViewDelegate,
     @IBOutlet weak var m_vDropDownView: UIView!
     @IBOutlet weak var m_vImageConfirmView: UIView!
     @IBAction func m_btnSendClick(_ sender: Any) {
-        var data = ConfirmResultStruct(ImageName.CowSuccess.rawValue, "掛失成功", [[String:String]](), nil, nil, "繼續交易")
+        var data = ConfirmResultStruct(ImageName.CowSuccess.rawValue, "掛失成功", [[String:String]](), "您掛失的交易以正確處理完畢，請於3個營業日內來行辦理掛失解除手續，若未來行辦理者，視為永久掛失手續。(來行辦理請攜帶身分證及原存印鑑)", "", "繼續交易")
         data.list!.append(["Key": "交易時間", "Value":"2017/05/05 11:13:53"])
         data.list!.append(["Key": "掛失日期", "Value":"2017/05/05"])
         enterConfirmResultController(false, data, true)
@@ -23,33 +23,44 @@ class PassbookLoseApplyViewController: BaseViewController, DropDownViewDelegate,
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setAllSubView()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        addDropDownView()
-        addImageConfirmView()
-        super.viewDidAppear(animated)
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setAllSubView()
+    }
+    
+    func setAllSubView() {
+        setDropDownView()
+        setImageConfirmView()
     }
 
-    func addDropDownView() {
-        m_DropDownView = getUIByID(.UIID_DropDownView) as? DropDownView
-        m_DropDownView?.delegate = self
-        m_DropDownView?.initValue(m_vDropDownView.frame.width)
-        m_DropDownView?.setOneRow("存摺帳號", "12345678901234")
+    func setDropDownView() {
+        if (m_DropDownView == nil)
+        {
+            m_DropDownView = getUIByID(.UIID_DropDownView) as? DropDownView
+            m_DropDownView?.delegate = self
+            m_DropDownView?.initValue(m_vDropDownView.frame.width)
+            m_DropDownView?.setOneRow("存摺帳號", "12345678901234")
+            m_vDropDownView.addSubview(m_DropDownView!)
+        }
         m_DropDownView?.frame = CGRect(x:0, y:0, width:m_vDropDownView.frame.width, height:(m_DropDownView?.getHeight())!)
-        m_vDropDownView.addSubview(m_DropDownView!)
         m_vDropDownView.layer.borderColor = Gray_Color.cgColor
         m_vDropDownView.layer.borderWidth = 1
     }
     
-    func addImageConfirmView() {
-        m_ImageConfirmView = getUIByID(.UIID_ImageConfirmCell) as? ImageConfirmCell
-        m_ImageConfirmView?.delegate = self
+    func setImageConfirmView() {
+        if (m_ImageConfirmView == nil)
+        {
+            m_ImageConfirmView = getUIByID(.UIID_ImageConfirmCell) as? ImageConfirmCell
+            m_ImageConfirmView?.delegate = self
+            m_vImageConfirmView.addSubview(m_ImageConfirmView!)
+            setShadowView(m_vImageConfirmView)
+        }
         m_ImageConfirmView?.frame = CGRect(x:0, y:0, width:m_vImageConfirmView.frame.width, height:m_vImageConfirmView.frame.height)
-        m_vImageConfirmView.addSubview(m_ImageConfirmView!)
         m_vImageConfirmView.layer.borderColor = Gray_Color.cgColor
         m_vImageConfirmView.layer.borderWidth = 1
-        setShadowView(m_vImageConfirmView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,8 +68,8 @@ class PassbookLoseApplyViewController: BaseViewController, DropDownViewDelegate,
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - UIActionSheetDelegate
-    func clickDropDownView() {
+    // MARK: - DropDownViewDelegate
+    func clickDropDownView(_ sender: DropDownView) {
         let a = ["account 1", "account 2", "account 3"]
         let action = UIActionSheet.init()
         action.delegate = self
@@ -72,14 +83,11 @@ class PassbookLoseApplyViewController: BaseViewController, DropDownViewDelegate,
         action.show(in: self.view)
     }
 
+    // MARK: - UIActionSheetDelegate
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int)
     {
         print("\(buttonIndex)")
-        if (actionSheet.buttonTitle(at: buttonIndex)! == "cancel")
-        {
-            return
-        }
-        else
+        if (actionSheet.buttonTitle(at: buttonIndex)! != "cancel")
         {
             m_DropDownView?.setOneRow(actionSheet.buttonTitle(at: buttonIndex)!, actionSheet.buttonTitle(at: buttonIndex)!)
         }

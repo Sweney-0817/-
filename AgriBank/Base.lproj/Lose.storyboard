@@ -237,7 +237,7 @@
                         <outlet property="m_tfWebBankPassword" destination="eS3-Cg-VAS" id="hdK-ZG-3aQ"/>
                         <outlet property="m_vDropDownView" destination="wtN-bu-bmR" id="7Gh-ES-OCD"/>
                         <outlet property="m_vImageConfirmView" destination="4GA-gh-qQR" id="GcM-v2-XKc"/>
-                        <outlet property="m_vWebBankPassword" destination="7Hh-vE-v9n" id="jr5-oc-eA0"/>
+                        <outlet property="m_vWebBankPasswordView" destination="7Hh-vE-v9n" id="jET-fj-ZlU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8kj-mL-7pD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -267,7 +267,7 @@
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xfX-6x-ikS">
                                                         <rect key="frame" x="18" y="0.0" width="379" height="60"/>
-                                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="60" id="kP1-UX-0Oe"/>
                                                         </constraints>
@@ -358,7 +358,7 @@
                                                         </constraints>
                                                     </imageView>
                                                 </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstItem="XwO-nT-JEp" firstAttribute="top" secondItem="glD-y2-cMu" secondAttribute="bottom" id="0tQ-Vf-PzF"/>
                                                     <constraint firstAttribute="trailing" secondItem="xfX-6x-ikS" secondAttribute="trailing" constant="17" id="4LB-Lr-rd1"/>
@@ -391,7 +391,6 @@
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="JN2-Wa-c8E" firstAttribute="top" secondItem="Flx-ze-LL2" secondAttribute="top" constant="-64" id="Oxn-nC-mci"/>
                                             <constraint firstItem="JN2-Wa-c8E" firstAttribute="leading" secondItem="Flx-ze-LL2" secondAttribute="leading" id="Urf-o2-6xe"/>
@@ -425,7 +424,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="Etg-9c-YRo" secondAttribute="trailing" id="8A6-jU-I1i"/>
                                     <constraint firstAttribute="bottom" secondItem="Etg-9c-YRo" secondAttribute="bottom" id="I0x-oa-tNz"/>
@@ -437,7 +436,6 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="QVj-cg-HqH" firstAttribute="top" secondItem="viB-r0-ahu" secondAttribute="bottom" id="1Lb-5a-iaJ"/>
                             <constraint firstItem="viB-r0-ahu" firstAttribute="top" secondItem="Vtz-5A-WRI" secondAttribute="bottom" id="F6T-7f-0UX"/>
@@ -453,6 +451,7 @@
                         <outlet property="m_tfCheckNumber" destination="Tg3-i0-rAz" id="XCF-M4-xZh"/>
                         <outlet property="m_vCheckAmount" destination="glD-y2-cMu" id="wnr-if-MJI"/>
                         <outlet property="m_vCheckDate" destination="XwO-nT-JEp" id="YoO-NK-QxC"/>
+                        <outlet property="m_vCheckNumber" destination="RTf-ZM-drz" id="zJL-Up-RJr"/>
                         <outlet property="m_vDDAccount" destination="BM6-So-KBb" id="jQn-uD-Vtt"/>
                         <outlet property="m_vDDType" destination="xfX-6x-ikS" id="XdN-mi-lKz"/>
                         <outlet property="m_vFeeAccount" destination="RVC-0G-5ls" id="ijX-SN-QKx"/>
