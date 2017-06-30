@@ -317,6 +317,9 @@
                                                                 <subviews>
                                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="票據號碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tg3-i0-rAz" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                                                         <rect key="frame" x="15" y="8" width="349" height="44"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="44" id="PBn-Xr-Lnu"/>
+                                                                        </constraints>
                                                                         <nil key="textColor"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                                         <textInputTraits key="textInputTraits"/>
@@ -327,11 +330,10 @@
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
-                                                                    <constraint firstItem="Tg3-i0-rAz" firstAttribute="top" secondItem="RTf-ZM-drz" secondAttribute="top" constant="8" id="3kg-9J-0Zh"/>
                                                                     <constraint firstItem="Tg3-i0-rAz" firstAttribute="leading" secondItem="RTf-ZM-drz" secondAttribute="leading" constant="15" id="Jja-81-NNg"/>
                                                                     <constraint firstAttribute="height" constant="60" id="SPc-A8-IsK"/>
-                                                                    <constraint firstAttribute="bottom" secondItem="Tg3-i0-rAz" secondAttribute="bottom" constant="8" id="bTM-1h-qXf"/>
                                                                     <constraint firstAttribute="trailing" secondItem="Tg3-i0-rAz" secondAttribute="trailing" constant="15" id="iB5-yg-sCd"/>
+                                                                    <constraint firstItem="Tg3-i0-rAz" firstAttribute="centerY" secondItem="RTf-ZM-drz" secondAttribute="centerY" id="uNE-r4-u24"/>
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="glD-y2-cMu">
@@ -339,6 +341,9 @@
                                                                 <subviews>
                                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="票面金額" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PQ1-GU-Ljc" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                                                         <rect key="frame" x="15" y="8" width="349" height="44"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="44" id="wL1-ew-0wc"/>
+                                                                        </constraints>
                                                                         <nil key="textColor"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                                         <textInputTraits key="textInputTraits"/>
@@ -350,8 +355,7 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstItem="PQ1-GU-Ljc" firstAttribute="leading" secondItem="glD-y2-cMu" secondAttribute="leading" constant="15" id="5kJ-AU-d8V"/>
-                                                                    <constraint firstItem="PQ1-GU-Ljc" firstAttribute="top" secondItem="glD-y2-cMu" secondAttribute="top" constant="8" id="Sv7-O9-UaB"/>
-                                                                    <constraint firstAttribute="bottom" secondItem="PQ1-GU-Ljc" secondAttribute="bottom" constant="8" id="lvB-t0-Noh"/>
+                                                                    <constraint firstItem="PQ1-GU-Ljc" firstAttribute="centerY" secondItem="glD-y2-cMu" secondAttribute="centerY" id="D55-Yf-WC6"/>
                                                                     <constraint firstAttribute="height" constant="60" id="o19-dJ-Bdc"/>
                                                                     <constraint firstAttribute="trailing" secondItem="PQ1-GU-Ljc" secondAttribute="trailing" constant="15" id="oca-QU-bNN"/>
                                                                 </constraints>

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UIActionSheetDelegate, ImageConfirmCellDelegate {
+class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmCellDelegate {
     @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vDDType: UIView!
     @IBOutlet weak var m_vDDAccount: UIView!
@@ -36,11 +36,11 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
             enterConfirmResultController(false, data, true)
         }
     }
-    var m_DDType: DropDownView? = nil
-    var m_DDAccount: DropDownView? = nil
-    var m_CheckDate: DropDownView? = nil
-    var m_FeeAccount: DropDownView? = nil
-    var m_curDropDownView: DropDownView? = nil
+    var m_DDType: OneRowDropDownView? = nil
+    var m_DDAccount: OneRowDropDownView? = nil
+    var m_CheckDate: OneRowDropDownView? = nil
+    var m_FeeAccount: OneRowDropDownView? = nil
+    var m_curDropDownView: OneRowDropDownView? = nil
     var m_ImageConfirmView: ImageConfirmCell? = nil
     
 
@@ -53,7 +53,6 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        setAllSubView()
     }
 
     func setAllSubView() {
@@ -69,13 +68,12 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
     func setDDTypeView() {
         if (m_DDType == nil)
         {
-            m_DDType = getUIByID(.UIID_DropDownView) as? DropDownView
+            m_DDType = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDType?.delegate = self
-            m_DDType?.initValue(m_vDDType.frame.width)
             m_DDType?.setOneRow("掛失類別", "空白支票掛失")
+            m_DDType?.frame = CGRect(x:0, y:0, width:m_vDDType.frame.width, height:(m_DDType?.getHeight())!)
             m_vDDType.addSubview(m_DDType!)
         }
-        m_DDType?.frame = CGRect(x:0, y:0, width:m_vDDType.frame.width, height:(m_DDType?.getHeight())!)
         m_vDDType.layer.borderColor = Gray_Color.cgColor
         m_vDDType.layer.borderWidth = 1
     }
@@ -83,13 +81,12 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
     func setDDAccountView() {
         if (m_DDAccount == nil)
         {
-            m_DDAccount = getUIByID(.UIID_DropDownView) as? DropDownView
+            m_DDAccount = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDAccount?.delegate = self
-            m_DDAccount?.initValue(m_vDDAccount.frame.width)
             m_DDAccount?.setOneRow("支票帳號", "12345678901234")
+            m_DDAccount?.frame = CGRect(x:0, y:0, width:m_vDDAccount.frame.width, height:(m_DDAccount?.getHeight())!)
             m_vDDAccount.addSubview(m_DDAccount!)
         }
-        m_DDAccount?.frame = CGRect(x:0, y:0, width:m_vDDAccount.frame.width, height:(m_DDAccount?.getHeight())!)
         m_vDDAccount.layer.borderColor = Gray_Color.cgColor
         m_vDDAccount.layer.borderWidth = 1
     }
@@ -107,13 +104,13 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
     func setCheckDateView() {
         if (m_CheckDate == nil)
         {
-            m_CheckDate = getUIByID(.UIID_DropDownView) as? DropDownView
+            m_CheckDate = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_CheckDate?.delegate = self
-            m_CheckDate?.initValue(m_vCheckDate.frame.width)
             m_CheckDate?.setOneRow("發票日", "2017/05/30")
+            m_CheckDate?.frame = CGRect(x:0, y:0, width:m_vCheckDate.frame.width, height:(m_CheckDate?.getHeight())!)
             m_vCheckDate.addSubview(m_CheckDate!)
         }
-        m_CheckDate?.frame = CGRect(x:0, y:0, width:m_vCheckDate.frame.width, height:(m_CheckDate?.getHeight())!)
+        
         m_vCheckDate.layer.borderColor = Gray_Color.cgColor
         m_vCheckDate.layer.borderWidth = 1
     }
@@ -121,13 +118,12 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
     func setFeeAccountView() {
         if (m_FeeAccount == nil)
         {
-            m_FeeAccount = getUIByID(.UIID_DropDownView) as? DropDownView
+            m_FeeAccount = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_FeeAccount?.delegate = self
-            m_FeeAccount?.initValue(m_vFeeAccount.frame.width)
             m_FeeAccount?.setOneRow("手續費轉帳帳號", "12345678901235")
+            m_FeeAccount?.frame = CGRect(x:0, y:0, width:m_vFeeAccount.frame.width, height:(m_FeeAccount?.getHeight())!)
             m_vFeeAccount.addSubview(m_FeeAccount!)
         }
-        m_FeeAccount?.frame = CGRect(x:0, y:0, width:m_vFeeAccount.frame.width, height:(m_FeeAccount?.getHeight())!)
         m_vFeeAccount.layer.borderColor = Gray_Color.cgColor
         m_vFeeAccount.layer.borderWidth = 1
     }
@@ -167,8 +163,8 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - DropDownViewDelegate
-    func clickDropDownView(_ sender: DropDownView) {
+    // MARK: - OneRowDropDownViewDelegate
+    func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         m_curDropDownView = sender
         var a = [String]()
         if (m_curDropDownView == m_DDType) {
@@ -190,7 +186,6 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
             a.append("12345678901236")
             a.append("12345678901237")
         }
-//        let a = ["account 1", "account 2", "account 3"]
         let action = UIActionSheet.init()
         action.delegate = self
         action.title = "select account"
@@ -206,7 +201,7 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
     // MARK: - UIActionSheetDelegate
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int)
     {
-        print("\(buttonIndex)")
+//        print("\(buttonIndex)")
         if (actionSheet.buttonTitle(at: buttonIndex)! != "cancel")
         {
             if (m_curDropDownView == m_DDType) {

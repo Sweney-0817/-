@@ -158,6 +158,9 @@ enum UIID: Int {
     case UIID_ImageConfirmCell        // ImageConfirmCell class in CustomizeCell.swift (圖形驗證碼)
     case UIID_MemoView                // MemoView class
     case UIID_DropDownView            // DropDownView class
+    case UIID_OneRowDropDownView      // OneRowDropDownView class
+    case UIID_TwoRowDropDownView      // TwoRowDropDownView class
+    case UIID_ThreeRowDropDownView    // ThreeRowDropDownView class
     
     func NibName() -> String? {
         switch self {
@@ -189,6 +192,12 @@ enum UIID: Int {
             return "MemoView"
         case .UIID_DropDownView:
             return "DropDownView"
+        case .UIID_OneRowDropDownView:
+            return "OneRowDropDownView"
+        case .UIID_TwoRowDropDownView:
+            return "TwoRowDropDownView"
+        case .UIID_ThreeRowDropDownView:
+            return "ThreeRowDropDownView"
         default:
             return nil
         }

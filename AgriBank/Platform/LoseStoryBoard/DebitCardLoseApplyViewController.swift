@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DebitCardLoseApplyViewController: BaseViewController, DropDownViewDelegate, UITextFieldDelegate, UIActionSheetDelegate, ImageConfirmCellDelegate {
+class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UITextFieldDelegate, UIActionSheetDelegate, ImageConfirmCellDelegate {
     @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vDropDownView: UIView!
     @IBOutlet weak var m_tfWebBankPassword: TextField!
@@ -20,7 +20,7 @@ class DebitCardLoseApplyViewController: BaseViewController, DropDownViewDelegate
         data.list!.append(["Key": "掛失日期", "Value":"2017/05/05"])
         enterConfirmResultController(false, data, true)
     }
-    var m_DropDownView: DropDownView? = nil
+    var m_OneRow: OneRowDropDownView? = nil
     var m_ImageConfirmView: ImageConfirmCell? = nil
 
     override func viewDidLoad() {
@@ -41,15 +41,14 @@ class DebitCardLoseApplyViewController: BaseViewController, DropDownViewDelegate
     }
 
     func setDropDownView() {
-        if (m_DropDownView == nil)
+        if (m_OneRow == nil)
         {
-            m_DropDownView = getUIByID(.UIID_DropDownView) as? DropDownView
-            m_DropDownView?.delegate = self
-            m_DropDownView?.initValue(m_vDropDownView.frame.width)
-            m_DropDownView?.setOneRow("存摺帳號", "12345678901234")
-            m_vDropDownView.addSubview(m_DropDownView!)
+            m_OneRow = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
+            m_OneRow?.delegate = self
+            m_OneRow?.setOneRow("存摺帳號", "12345678901234")
+            m_vDropDownView.addSubview(m_OneRow!)
         }
-        m_DropDownView?.frame = CGRect(x:0, y:0, width:m_vDropDownView.frame.width, height:(m_DropDownView?.getHeight())!)
+        m_OneRow?.frame = CGRect(x:0, y:0, width:m_vDropDownView.frame.width, height:(m_OneRow?.getHeight())!)
         m_vDropDownView.layer.borderColor = Gray_Color.cgColor
         m_vDropDownView.layer.borderWidth = 1
     }
@@ -76,8 +75,8 @@ class DebitCardLoseApplyViewController: BaseViewController, DropDownViewDelegate
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - DropDownViewDelegate
-    func clickDropDownView(_ sender: DropDownView) {
+    // MARK: - OneRowDropDownViewDelegate
+    func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         let a = ["account 1", "account 2", "account 3"]
         let action = UIActionSheet.init()
         action.delegate = self
@@ -90,14 +89,13 @@ class DebitCardLoseApplyViewController: BaseViewController, DropDownViewDelegate
         
         action.show(in: self.view)
     }
-    
+
     // MARK: - UIActionSheetDelegate
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int)
     {
-        print("\(buttonIndex)")
         if (actionSheet.buttonTitle(at: buttonIndex)! != "cancel")
         {
-            m_DropDownView?.setOneRow(actionSheet.buttonTitle(at: buttonIndex)!, actionSheet.buttonTitle(at: buttonIndex)!)
+            m_OneRow?.setOneRow(actionSheet.buttonTitle(at: buttonIndex)!, actionSheet.buttonTitle(at: buttonIndex)!)
         }
     }
     
