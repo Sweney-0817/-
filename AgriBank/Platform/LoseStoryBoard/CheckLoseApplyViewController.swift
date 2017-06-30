@@ -9,6 +9,7 @@
 import UIKit
 
 class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UIActionSheetDelegate, ImageConfirmCellDelegate {
+    @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vDDType: UIView!
     @IBOutlet weak var m_vDDAccount: UIView!
     @IBOutlet weak var m_vCheckNumber: UIView!
@@ -22,6 +23,18 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
     @IBOutlet weak var m_consFeeAccountHeight: NSLayoutConstraint!
     @IBOutlet weak var m_vImageConfirmView: UIView!
     @IBAction func m_btnSendClick(_ sender: Any) {
+        if (m_DDType?.m_lbFirstRowContent.text == "空白支票掛失") {
+            var data = ConfirmResultStruct(ImageName.CowSuccess.rawValue, "掛失成功", [[String:String]](), "您掛失的交易以正確處理完畢，請於3個營業日內來行辦理掛失解除手續，若未來行辦理者，視為永久掛失手續。(來行辦理請攜帶身分證及原存印鑑)", "", "繼續交易")
+            data.list!.append(["Key": "交易時間", "Value":"2017/05/05 11:13:53"])
+            data.list!.append(["Key": "掛失日期", "Value":"2017/05/05"])
+            enterConfirmResultController(false, data, true)
+        }
+        else if (m_DDType?.m_lbFirstRowContent.text == "支票掛失止付") {
+            var data = ConfirmResultStruct(ImageName.CowFailure.rawValue, "掛失失敗", [[String:String]](), nil, "", "繼續交易")
+            data.list!.append(["Key": "交易時間", "Value":"2017/05/05 11:13:53"])
+            data.list!.append(["Key": "掛失日期", "Value":"2017/05/05"])
+            enterConfirmResultController(false, data, true)
+        }
     }
     var m_DDType: DropDownView? = nil
     var m_DDAccount: DropDownView? = nil
@@ -34,6 +47,8 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         setAllSubView()
+        setShadowView(m_vShadowView)
+        hideSomeSubviews()
     }
 
     override func viewWillLayoutSubviews() {
@@ -123,11 +138,28 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
             m_ImageConfirmView = getUIByID(.UIID_ImageConfirmCell) as? ImageConfirmCell
             m_ImageConfirmView?.delegate = self
             m_vImageConfirmView.addSubview(m_ImageConfirmView!)
-            setShadowView(m_vImageConfirmView)
         }
         m_ImageConfirmView?.frame = CGRect(x:0, y:0, width:m_vImageConfirmView.frame.width, height:m_vImageConfirmView.frame.height)
         m_vImageConfirmView.layer.borderColor = Gray_Color.cgColor
         m_vImageConfirmView.layer.borderWidth = 1
+    }
+    
+    func hideSomeSubviews() {
+        m_vCheckAmount.isHidden = true
+        m_vCheckDate.isHidden = true
+        m_vFeeAccount.isHidden = true
+        m_consCheckAmountHeight.constant = 0
+        m_consCheckDateHeight.constant = 0
+        m_consFeeAccountHeight.constant = 0
+    }
+    
+    func showSomeSubviews() {
+        m_vCheckAmount.isHidden = false
+        m_vCheckDate.isHidden = false
+        m_vFeeAccount.isHidden = false
+        m_consCheckAmountHeight.constant = 60
+        m_consCheckDateHeight.constant = 60
+        m_consFeeAccountHeight.constant = 60
     }
 
     override func didReceiveMemoryWarning() {
@@ -139,11 +171,6 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
     func clickDropDownView(_ sender: DropDownView) {
         m_curDropDownView = sender
         var a = [String]()
-//        switch m_curDropDownView {
-//        case m_DDType:
-//            a.append("空白支票掛失")
-//            a.append("支票掛失止付")
-//        }
         if (m_curDropDownView == m_DDType) {
             a.append("空白支票掛失")
             a.append("支票掛失止付")
@@ -182,6 +209,20 @@ class CheckLoseApplyViewController: BaseViewController, DropDownViewDelegate, UI
         print("\(buttonIndex)")
         if (actionSheet.buttonTitle(at: buttonIndex)! != "cancel")
         {
+            if (m_curDropDownView == m_DDType) {
+                if (buttonIndex == 0) {//空白支票掛失
+                    hideSomeSubviews()
+                }
+                else {//支票掛失止付
+                    showSomeSubviews()
+                }
+            }
+            else if (m_curDropDownView == m_DDAccount) {
+            }
+            else if (m_curDropDownView == m_CheckDate) {
+            }
+            else if (m_curDropDownView == m_FeeAccount) {
+            }
             m_curDropDownView?.setOneRow((m_curDropDownView?.m_lbFirstRowTitle.text)!, actionSheet.buttonTitle(at: buttonIndex)!)
         }
         m_curDropDownView = nil

@@ -10,6 +10,7 @@ import UIKit
 
 class PassbookLoseApplyViewController: BaseViewController, DropDownViewDelegate, UIActionSheetDelegate, ImageConfirmCellDelegate
  {
+    @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vDropDownView: UIView!
     @IBOutlet weak var m_vImageConfirmView: UIView!
     @IBAction func m_btnSendClick(_ sender: Any) {
@@ -24,6 +25,7 @@ class PassbookLoseApplyViewController: BaseViewController, DropDownViewDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         setAllSubView()
+        setShadowView(m_vShadowView)
     }
     
     override func viewWillLayoutSubviews() {
@@ -56,7 +58,6 @@ class PassbookLoseApplyViewController: BaseViewController, DropDownViewDelegate,
             m_ImageConfirmView = getUIByID(.UIID_ImageConfirmCell) as? ImageConfirmCell
             m_ImageConfirmView?.delegate = self
             m_vImageConfirmView.addSubview(m_ImageConfirmView!)
-            setShadowView(m_vImageConfirmView)
         }
         m_ImageConfirmView?.frame = CGRect(x:0, y:0, width:m_vImageConfirmView.frame.width, height:m_vImageConfirmView.frame.height)
         m_vImageConfirmView.layer.borderColor = Gray_Color.cgColor
