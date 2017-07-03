@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TransferViewController: BaseViewController, UITextFieldDelegate, ThreeRowDropDownViewDelegate, TwoRowDropDownViewDelegate, OneRowDropDownViewDelegate {
+class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRowDropDownViewDelegate, TwoRowDropDownViewDelegate, OneRowDropDownViewDelegate {
     @IBOutlet weak var topCons: NSLayoutConstraint!
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var middleView: UIView!

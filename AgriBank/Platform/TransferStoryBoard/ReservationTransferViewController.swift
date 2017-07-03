@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ReserveTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRowDropDownViewDelegate, TwoRowDropDownViewDelegate {
+class ReservationTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRowDropDownViewDelegate, TwoRowDropDownViewDelegate {
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var showBankAccountView: UIView!
