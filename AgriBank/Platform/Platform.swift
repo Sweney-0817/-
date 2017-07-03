@@ -105,5 +105,8 @@ class Platform {
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
         informationList[.FeatureID_ReservationTransfer] = feature     // 預約轉帳
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
+        informationList[.FeatureID_ReservationTransferSearchCancel] = feature     // 預約轉帳查詢取消
     }
 }

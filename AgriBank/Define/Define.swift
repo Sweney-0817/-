@@ -27,6 +27,7 @@ enum PlatformFeatureID: Int {
     case FeatureID_Result                   // 結果頁
     case FeatureID_NTTransfer               // 即時轉帳
     case FeatureID_ReservationTransfer      // 預約轉帳
+    case FeatureID_ReservationTransferSearchCancel  // 預約轉帳查詢取消
     
     func StoryBoardID() -> String {
         switch self {
@@ -54,6 +55,8 @@ enum PlatformFeatureID: Int {
             return "FeatureID_CheckLoseApply"
         case .FeatureID_ReservationTransfer:
             return "FeatureID_ReservationTransfer"
+        case .FeatureID_ReservationTransferSearchCancel:
+            return "FeatureID_ReservationTransferSearchCancel"
         default:
             return "";
         }
@@ -67,7 +70,7 @@ enum PlatformFeatureID: Int {
             return "Account"
         case .FeatureID_Confirm, .FeatureID_Result:
             return "Share"
-        case .FeatureID_NTTransfer, .FeatureID_ReservationTransfer:
+        case .FeatureID_NTTransfer, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel:
             return "Transfer"
         case .FeatureID_PassbookLoseApply, .FeatureID_DebitCardLoseApply, .FeatureID_CheckLoseApply:
             return "Lose"
@@ -106,6 +109,8 @@ enum PlatformFeatureID: Int {
             return "即時轉帳"
         case .FeatureID_ReservationTransfer:
             return "預約轉帳"
+        case .FeatureID_ReservationTransferSearchCancel:
+            return "預約轉帳明細查詢/取消"
         default:
             return ""
         }
