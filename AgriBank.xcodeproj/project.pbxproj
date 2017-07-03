@@ -13,8 +13,6 @@
 		6129E6AE1F038DED00C23D67 /* Lose.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6129E6AC1F038DED00C23D67 /* Lose.storyboard */; };
 		6129E6B21F038E7900C23D67 /* DebitCardLoseApplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6129E6B01F038E7900C23D67 /* DebitCardLoseApplyViewController.swift */; };
 		6129E6B31F038E7900C23D67 /* PassbookLoseApplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6129E6B11F038E7900C23D67 /* PassbookLoseApplyViewController.swift */; };
-		6129E6B61F038E9300C23D67 /* DropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6129E6B41F038E9300C23D67 /* DropDownView.swift */; };
-		6129E6B71F038E9300C23D67 /* DropDownView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6129E6B51F038E9300C23D67 /* DropDownView.xib */; };
 		6148D9CF1EDFD10000C02CA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6148D9CE1EDFD10000C02CA3 /* AppDelegate.swift */; };
 		6148D9D61EDFD10000C02CA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6148D9D51EDFD10000C02CA3 /* Assets.xcassets */; };
 		6148D9D91EDFD10000C02CA3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6148D9D71EDFD10000C02CA3 /* LaunchScreen.storyboard */; };
@@ -49,6 +47,12 @@
 		614FB4291EF9039400DDD270 /* MenuExpandCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 614FB4221EF9039400DDD270 /* MenuExpandCell.xib */; };
 		614FB42A1EF9039400DDD270 /* OverviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 614FB4231EF9039400DDD270 /* OverviewCell.xib */; };
 		614FB42B1EF9039400DDD270 /* ResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 614FB4241EF9039400DDD270 /* ResultCell.xib */; };
+		61564A861F09E7D900CB6C4A /* OneRowDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61564A801F09E7D900CB6C4A /* OneRowDropDownView.swift */; };
+		61564A871F09E7D900CB6C4A /* OneRowDropDownView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61564A811F09E7D900CB6C4A /* OneRowDropDownView.xib */; };
+		61564A881F09E7D900CB6C4A /* ThreeRowDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61564A821F09E7D900CB6C4A /* ThreeRowDropDownView.swift */; };
+		61564A891F09E7D900CB6C4A /* ThreeRowDropDownView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61564A831F09E7D900CB6C4A /* ThreeRowDropDownView.xib */; };
+		61564A8A1F09E7D900CB6C4A /* TwoRowDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61564A841F09E7D900CB6C4A /* TwoRowDropDownView.swift */; };
+		61564A8B1F09E7D900CB6C4A /* TwoRowDropDownView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61564A851F09E7D900CB6C4A /* TwoRowDropDownView.xib */; };
 		615B8D731EFCDDA8002B4B53 /* MemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615B8D711EFCDDA8002B4B53 /* MemoView.swift */; };
 		615B8D741EFCDDA8002B4B53 /* MemoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 615B8D721EFCDDA8002B4B53 /* MemoView.xib */; };
 		615B8D771EFCEADE002B4B53 /* Transfer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 615B8D751EFCEADE002B4B53 /* Transfer.storyboard */; };
@@ -61,6 +65,7 @@
 		61C64FCC1EE8FB2000C6766A /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C64FCB1EE8FB2000C6766A /* EditViewController.swift */; };
 		61F019071EF8000B00849E94 /* ExpandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F019061EF8000B00849E94 /* ExpandView.swift */; };
 		61F019091EF8006A00849E94 /* ExpandView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61F019081EF8006A00849E94 /* ExpandView.xib */; };
+		61F275481F05EEC0000CD9B7 /* ReserveTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F275471F05EEC0000CD9B7 /* ReserveTransferViewController.swift */; };
 		61F4F41F1EF22AF8001E3872 /* Account.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61F4F41D1EF22AF8001E3872 /* Account.storyboard */; };
 		61F4F4241EF24467001E3872 /* ChooseTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4F4231EF24467001E3872 /* ChooseTypeView.swift */; };
 		61F4F4281EF27B77001E3872 /* TypeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4F4271EF27B77001E3872 /* TypeSection.swift */; };
@@ -94,8 +99,6 @@
 		6129E6AD1F038DED00C23D67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Lose.storyboard; sourceTree = "<group>"; };
 		6129E6B01F038E7900C23D67 /* DebitCardLoseApplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DebitCardLoseApplyViewController.swift; path = Platform/LoseStoryBoard/DebitCardLoseApplyViewController.swift; sourceTree = "<group>"; };
 		6129E6B11F038E7900C23D67 /* PassbookLoseApplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PassbookLoseApplyViewController.swift; path = Platform/LoseStoryBoard/PassbookLoseApplyViewController.swift; sourceTree = "<group>"; };
-		6129E6B41F038E9300C23D67 /* DropDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownView.swift; path = UI/View/DropDownView.swift; sourceTree = "<group>"; };
-		6129E6B51F038E9300C23D67 /* DropDownView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DropDownView.xib; path = UI/View/DropDownView.xib; sourceTree = "<group>"; };
 		6148D9CB1EDFD10000C02CA3 /* AgriBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgriBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6148D9CE1EDFD10000C02CA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6148D9D51EDFD10000C02CA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -139,6 +142,12 @@
 		614FB4221EF9039400DDD270 /* MenuExpandCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MenuExpandCell.xib; path = UI/View/Cell/MenuExpandCell.xib; sourceTree = "<group>"; };
 		614FB4231EF9039400DDD270 /* OverviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OverviewCell.xib; path = UI/View/Cell/OverviewCell.xib; sourceTree = "<group>"; };
 		614FB4241EF9039400DDD270 /* ResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ResultCell.xib; path = UI/View/Cell/ResultCell.xib; sourceTree = "<group>"; };
+		61564A801F09E7D900CB6C4A /* OneRowDropDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OneRowDropDownView.swift; path = UI/View/OneRowDropDownView.swift; sourceTree = "<group>"; };
+		61564A811F09E7D900CB6C4A /* OneRowDropDownView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OneRowDropDownView.xib; path = UI/View/OneRowDropDownView.xib; sourceTree = "<group>"; };
+		61564A821F09E7D900CB6C4A /* ThreeRowDropDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThreeRowDropDownView.swift; path = UI/View/ThreeRowDropDownView.swift; sourceTree = "<group>"; };
+		61564A831F09E7D900CB6C4A /* ThreeRowDropDownView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ThreeRowDropDownView.xib; path = UI/View/ThreeRowDropDownView.xib; sourceTree = "<group>"; };
+		61564A841F09E7D900CB6C4A /* TwoRowDropDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwoRowDropDownView.swift; path = UI/View/TwoRowDropDownView.swift; sourceTree = "<group>"; };
+		61564A851F09E7D900CB6C4A /* TwoRowDropDownView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TwoRowDropDownView.xib; path = UI/View/TwoRowDropDownView.xib; sourceTree = "<group>"; };
 		615B8D711EFCDDA8002B4B53 /* MemoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemoView.swift; path = UI/View/MemoView.swift; sourceTree = "<group>"; };
 		615B8D721EFCDDA8002B4B53 /* MemoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MemoView.xib; path = UI/View/MemoView.xib; sourceTree = "<group>"; };
 		615B8D761EFCEADE002B4B53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Transfer.storyboard; sourceTree = "<group>"; };
@@ -152,6 +161,7 @@
 		61C64FCB1EE8FB2000C6766A /* EditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditViewController.swift; path = Platform/MainStoryBoard/EditViewController.swift; sourceTree = "<group>"; };
 		61F019061EF8000B00849E94 /* ExpandView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExpandView.swift; path = UI/View/ExpandView.swift; sourceTree = "<group>"; };
 		61F019081EF8006A00849E94 /* ExpandView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ExpandView.xib; path = UI/View/ExpandView.xib; sourceTree = "<group>"; };
+		61F275471F05EEC0000CD9B7 /* ReserveTransferViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReserveTransferViewController.swift; path = Platform/TransferStoryBoard/ReserveTransferViewController.swift; sourceTree = "<group>"; };
 		61F4F41E1EF22AF8001E3872 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Account.storyboard; sourceTree = "<group>"; };
 		61F4F4231EF24467001E3872 /* ChooseTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChooseTypeView.swift; path = UI/View/ChooseTypeView.swift; sourceTree = "<group>"; };
 		61F4F4271EF27B77001E3872 /* TypeSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TypeSection.swift; path = UI/View/TypeSection.swift; sourceTree = "<group>"; };
@@ -362,8 +372,12 @@
 				61F019081EF8006A00849E94 /* ExpandView.xib */,
 				615B8D711EFCDDA8002B4B53 /* MemoView.swift */,
 				615B8D721EFCDDA8002B4B53 /* MemoView.xib */,
-				6129E6B41F038E9300C23D67 /* DropDownView.swift */,
-				6129E6B51F038E9300C23D67 /* DropDownView.xib */,
+				61564A801F09E7D900CB6C4A /* OneRowDropDownView.swift */,
+				61564A811F09E7D900CB6C4A /* OneRowDropDownView.xib */,
+				61564A841F09E7D900CB6C4A /* TwoRowDropDownView.swift */,
+				61564A851F09E7D900CB6C4A /* TwoRowDropDownView.xib */,
+				61564A821F09E7D900CB6C4A /* ThreeRowDropDownView.swift */,
+				61564A831F09E7D900CB6C4A /* ThreeRowDropDownView.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -457,6 +471,7 @@
 			isa = PBXGroup;
 			children = (
 				615B8D7F1EFD0CC2002B4B53 /* TransferViewController.swift */,
+				61F275471F05EEC0000CD9B7 /* ReserveTransferViewController.swift */,
 			);
 			name = TransferStoryBoard;
 			sourceTree = "<group>";
@@ -581,20 +596,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				615B8D771EFCEADE002B4B53 /* Transfer.storyboard in Resources */,
+				61564A8B1F09E7D900CB6C4A /* TwoRowDropDownView.xib in Resources */,
 				6129E6AE1F038DED00C23D67 /* Lose.storyboard in Resources */,
 				614FB42B1EF9039400DDD270 /* ResultCell.xib in Resources */,
 				6148DA281EDFE7A400C02CA3 /* BannerView.xib in Resources */,
+				61564A891F09E7D900CB6C4A /* ThreeRowDropDownView.xib in Resources */,
 				6148D9D91EDFD10000C02CA3 /* LaunchScreen.storyboard in Resources */,
 				614FB4281EF9039400DDD270 /* MenuCell.xib in Resources */,
 				6148DA261EDFE7A400C02CA3 /* AnnounceNews.xib in Resources */,
 				6148D9D61EDFD10000C02CA3 /* Assets.xcassets in Resources */,
 				61F4F41F1EF22AF8001E3872 /* Account.storyboard in Resources */,
-				6129E6B71F038E9300C23D67 /* DropDownView.xib in Resources */,
 				611B8EC91EE966BE003FCFDF /* Main.storyboard in Resources */,
 				6148DA291EDFE7A400C02CA3 /* FeatureWallCellView.xib in Resources */,
 				614FB42A1EF9039400DDD270 /* OverviewCell.xib in Resources */,
 				6173181B1EEFD12100133F7A /* LoginView.xib in Resources */,
 				61F019091EF8006A00849E94 /* ExpandView.xib in Resources */,
+				61564A871F09E7D900CB6C4A /* OneRowDropDownView.xib in Resources */,
 				615B8D741EFCDDA8002B4B53 /* MemoView.xib in Resources */,
 				614FB4131EF9013100DDD270 /* Share.storyboard in Resources */,
 				61F4F42A1EF27B9F001E3872 /* TypeSection.xib in Resources */,
@@ -625,10 +642,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61F275481F05EEC0000CD9B7 /* ReserveTransferViewController.swift in Sources */,
 				6148DA2E1EDFE7B600C02CA3 /* SideMenuViewController.swift in Sources */,
 				615B8D801EFD0CC2002B4B53 /* TransferViewController.swift in Sources */,
 				6129E6B31F038E7900C23D67 /* PassbookLoseApplyViewController.swift in Sources */,
 				6148DA071EDFE6E500C02CA3 /* BasePhotoViewController.swift in Sources */,
+				61564A861F09E7D900CB6C4A /* OneRowDropDownView.swift in Sources */,
 				6148DA171EDFE76D00C02CA3 /* NSData+AESCrypt.m in Sources */,
 				6148DA381EDFE84600C02CA3 /* SecurityUtility.swift in Sources */,
 				617318191EEFCB4B00133F7A /* LoginView.swift in Sources */,
@@ -636,6 +655,7 @@
 				6148DA001EDFE6AC00C02CA3 /* Platform.swift in Sources */,
 				6148D9FF1EDFE6AC00C02CA3 /* AuthorizationManage.swift in Sources */,
 				6148DA2A1EDFE7A400C02CA3 /* FeatureWallView.swift in Sources */,
+				61564A8A1F09E7D900CB6C4A /* TwoRowDropDownView.swift in Sources */,
 				61F4F4281EF27B77001E3872 /* TypeSection.swift in Sources */,
 				615B8D731EFCDDA8002B4B53 /* MemoView.swift in Sources */,
 				6148D9CF1EDFD10000C02CA3 /* AppDelegate.swift in Sources */,
@@ -647,11 +667,11 @@
 				6148DA2B1EDFE7A400C02CA3 /* IntroductionView.swift in Sources */,
 				614FB4251EF9039400DDD270 /* CustomizeCell.swift in Sources */,
 				61F4F42C1EF2A9E3001E3872 /* ActOverviewViewController.swift in Sources */,
-				6129E6B61F038E9300C23D67 /* DropDownView.swift in Sources */,
 				61F4F4301EF2B807001E3872 /* ActDetailViewController.swift in Sources */,
 				6148DA251EDFE7A400C02CA3 /* AnnounceNews.swift in Sources */,
 				6148DA321EDFE7D800C02CA3 /* ConnectionUtility.swift in Sources */,
 				6148DA081EDFE6E500C02CA3 /* BaseViewController.swift in Sources */,
+				61564A881F09E7D900CB6C4A /* ThreeRowDropDownView.swift in Sources */,
 				6129E6B21F038E7900C23D67 /* DebitCardLoseApplyViewController.swift in Sources */,
 				6125ABF21EF5509C00A2A9A3 /* TextField.swift in Sources */,
 				6148DA271EDFE7A400C02CA3 /* BannerView.swift in Sources */,

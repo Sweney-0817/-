@@ -26,6 +26,7 @@ enum PlatformFeatureID: Int {
     case FeatureID_Confirm                  // 確認頁
     case FeatureID_Result                   // 結果頁
     case FeatureID_Transfer                 // 即時轉帳
+    case FeatureID_ReserveTransfer          // 預約轉帳
     
     func StoryBoardID() -> String {
         switch self {
@@ -45,12 +46,14 @@ enum PlatformFeatureID: Int {
             return "FeatureID_Result"
         case .FeatureID_Transfer:
             return "FeatureID_Transfer"
-	case .FeatureID_PassbookLoseApply:
+        case .FeatureID_PassbookLoseApply:
             return "FeatureID_PassbookLoseApply"
         case .FeatureID_DebitCardLoseApply:
             return "FeatureID_DebitCardLoseApply"
         case .FeatureID_CheckLoseApply:
             return "FeatureID_CheckLoseApply"
+        case .FeatureID_ReserveTransfer:
+            return "FeatureID_ReserveTransfer"
         default:
             return "";
         }
@@ -64,7 +67,7 @@ enum PlatformFeatureID: Int {
             return "Account"
         case .FeatureID_Confirm, .FeatureID_Result:
             return "Share"
-        case .FeatureID_Transfer:
+        case .FeatureID_Transfer, .FeatureID_ReserveTransfer:
             return "Transfer"
         case .FeatureID_PassbookLoseApply, .FeatureID_DebitCardLoseApply, .FeatureID_CheckLoseApply:
             return "Lose"
@@ -101,6 +104,8 @@ enum PlatformFeatureID: Int {
             return "首頁功能捷徑新增/編輯"
         case .FeatureID_Transfer:
             return "即時轉帳"
+        case .FeatureID_ReserveTransfer:
+            return "預約轉帳"
         default:
             return ""
         }
@@ -157,7 +162,6 @@ enum UIID: Int {
     case UIID_ResultCell              // ResultCell class in CustomizeCell.swift
     case UIID_ImageConfirmCell        // ImageConfirmCell class in CustomizeCell.swift (圖形驗證碼)
     case UIID_MemoView                // MemoView class
-    case UIID_DropDownView            // DropDownView class
     case UIID_OneRowDropDownView      // OneRowDropDownView class
     case UIID_TwoRowDropDownView      // TwoRowDropDownView class
     case UIID_ThreeRowDropDownView    // ThreeRowDropDownView class
@@ -190,8 +194,6 @@ enum UIID: Int {
             return "ImageConfirmCell"
         case .UIID_MemoView:
             return "MemoView"
-        case .UIID_DropDownView:
-            return "DropDownView"
         case .UIID_OneRowDropDownView:
             return "OneRowDropDownView"
         case .UIID_TwoRowDropDownView:

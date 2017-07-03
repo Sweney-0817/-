@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TransferViewController: BaseViewController, UITextFieldDelegate, DropDownViewDelegate {
+class TransferViewController: BaseViewController, UITextFieldDelegate, ThreeRowDropDownViewDelegate, TwoRowDropDownViewDelegate, OneRowDropDownViewDelegate {
     @IBOutlet weak var topCons: NSLayoutConstraint!
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var middleView: UIView!
@@ -18,19 +18,21 @@ class TransferViewController: BaseViewController, UITextFieldDelegate, DropDownV
     @IBOutlet weak var chooseActTypeView: UIView!
     @IBOutlet weak var chooseActTypeHeight: NSLayoutConstraint!
     @IBOutlet weak var enterAccountView: UIView!
+    @IBOutlet weak var showBankView: UIView!
     @IBOutlet weak var enterAccountHeight: NSLayoutConstraint!
     @IBOutlet weak var gapHeight: NSLayoutConstraint!
     @IBOutlet weak var predesignatedBtn: UIButton!
     @IBOutlet weak var nonPredesignatedBtn: UIButton!
+    @IBOutlet weak var bottomView: UIView!
     private var isPredesignated = true     // 是否為約定轉帳
     private var isCustomizeAct = true      // 是否為自訂帳號
     private var sShowBankAccountHeight:CGFloat = 0
     private var sChooseActTypeHeight:CGFloat = 0
     private var sEnterAccountHeight:CGFloat = 0
     private var sGapHeight:CGFloat = 0
-    private var topDropView:DropDownView? = nil
-    private var showBankAccountDropView:DropDownView? = nil
-    private var enterAccountDorpView:DropDownView? = nil
+    private var topDropView:ThreeRowDropDownView? = nil
+    private var showBankAccountDropView:TwoRowDropDownView? = nil
+    private var showBankDorpView:OneRowDropDownView? = nil
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -65,7 +67,7 @@ class TransferViewController: BaseViewController, UITextFieldDelegate, DropDownV
             }
         }
         
-        topDropView = getUIByID(.UIID_DropDownView) as? DropDownView
+        topDropView = getUIByID(.UIID_ThreeRowDropDownView) as? ThreeRowDropDownView
         topDropView?.setThreeRow("轉出帳號", "", "幣別", "", "餘額", "")
         topDropView?.frame = topView.frame
         topDropView?.frame.origin = .zero
@@ -73,22 +75,24 @@ class TransferViewController: BaseViewController, UITextFieldDelegate, DropDownV
         setShadowView(topView)
         topView.layer.borderWidth = Layer_BorderWidth
         topView.layer.borderColor = Gray_Color.cgColor
-        
-        showBankAccountDropView = getUIByID(.UIID_DropDownView) as? DropDownView
+
+        showBankAccountDropView = getUIByID(.UIID_TwoRowDropDownView) as? TwoRowDropDownView
         showBankAccountDropView?.setTwoRow("銀行代碼", "", "轉入帳號", "")
         showBankAccountDropView?.frame = showBankAccountView.frame
         showBankAccountDropView?.frame.origin = .zero
         showBankAccountView.addSubview(showBankAccountDropView!)
         
-        enterAccountDorpView = getUIByID(.UIID_DropDownView) as? DropDownView
-        enterAccountDorpView?.setOneRow("銀行代碼", "")
-        enterAccountDorpView?.frame.origin = .zero
-        enterAccountDorpView?.frame.size.width = enterAccountView.frame.size.width
-        enterAccountView.addSubview(enterAccountDorpView!)
+        showBankDorpView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
+        showBankDorpView?.setOneRow("銀行代碼", "")
+        showBankDorpView?.frame = showBankView.frame
+        showBankDorpView?.frame.origin = .zero
+        showBankView.addSubview(showBankDorpView!)
         
         setShadowView(middleView)
         middleView.layer.borderWidth = Layer_BorderWidth
         middleView.layer.borderColor = Gray_Color.cgColor
+        
+        setShadowView(bottomView)
         
         AddObserverToKeyBoard()
     }
@@ -100,10 +104,6 @@ class TransferViewController: BaseViewController, UITextFieldDelegate, DropDownV
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
     }
     
     // MARK: - private 
@@ -177,7 +177,6 @@ class TransferViewController: BaseViewController, UITextFieldDelegate, DropDownV
     }
     
     @IBAction func clickSendBtn(_ sender: Any) {
-//        var data = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: "請確認本次交易資訊", memo: "", list: [[String:String]](), confirmBtnName: "確認送出", resultBtnName: "繼續交易")
         var data = ConfirmResultStruct(ImageName.CowCheck.rawValue, "請確認本次交易資訊", [[String:String]](), nil, "確認送出", "繼續交易")
         data.list!.append(["Key": "轉出帳號", "Value":"12345678901234"])
         data.list!.append(["Key": "銀行代碼", "Value":"008"])
@@ -198,8 +197,18 @@ class TransferViewController: BaseViewController, UITextFieldDelegate, DropDownV
         return true
     }
     
-    // MARK: - DropDownViewDelegate
-    func clickDropDownView(_ sender: DropDownView) {
+    // MARK - ThreeRowDropDownViewDelegate
+    func clickThreeRowDropDownView(_ sender: ThreeRowDropDownView) {
+        
+    }
+    
+    // MARK - TwoRowDropDownViewDelegate
+    func clickTwoRowDropDownView(_ sender: TwoRowDropDownView) {
+        
+    }
+    
+    // MARK - OneRowDropDownViewDelegate
+    func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         
     }
 }

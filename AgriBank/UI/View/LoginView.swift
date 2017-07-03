@@ -33,7 +33,7 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     }
     
     func isNeedRise() -> Bool {
-        if currentTextField == locationTextfield && currentTextField == accountTextfield {
+        if currentTextField == locationTextfield || currentTextField == accountTextfield {
             return false
         }
         
