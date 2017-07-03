@@ -60,7 +60,7 @@ class AuthorizationManage {
             }
             
         case .Edit_Type:
-            list = [.FeatureID_AccountOverView,.FeatureID_AccountDetailView, .FeatureID_Transfer, .FeatureID_LoseApply, .FeatureID_ReserveTransfer]
+            list = [.FeatureID_AccountOverView,.FeatureID_AccountDetailView, .FeatureID_NTTransfer, .FeatureID_LoseApply, .FeatureID_ReservationTransfer]
             
         case .Menu_Type:
             list = [PlatformFeatureID]()

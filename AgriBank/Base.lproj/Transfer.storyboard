@@ -14,7 +14,7 @@
         <!--Transfer View Controller-->
         <scene sceneID="9jq-Gm-qUy">
             <objects>
-                <viewController storyboardIdentifier="FeatureID_Transfer" id="LZA-QF-vsM" customClass="TransferViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FeatureID_NTTransfer" id="LZA-QF-vsM" customClass="NTTransferViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Anl-hE-Z2Y"/>
                         <viewControllerLayoutGuide type="bottom" id="59Y-SZ-JsF"/>
@@ -342,10 +342,10 @@
             </objects>
             <point key="canvasLocation" x="-323.4375" y="175.35211267605635"/>
         </scene>
-        <!--Reserve Transfer View Controller-->
+        <!--Reservation Transfer View Controller-->
         <scene sceneID="ezF-Kv-Vc2">
             <objects>
-                <viewController storyboardIdentifier="FeatureID_ReserveTransfer" id="u1E-Wn-Cny" customClass="ReserveTransferViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FeatureID_ReservationTransfer" id="u1E-Wn-Cny" customClass="ReservationTransferViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kH8-bA-i8S"/>
                         <viewControllerLayoutGuide type="bottom" id="xhq-1D-7LT"/>

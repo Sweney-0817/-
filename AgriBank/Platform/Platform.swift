@@ -101,9 +101,9 @@ class Platform {
         informationList[.FeatureID_Result] = feature                 // 結果
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
-        informationList[.FeatureID_Transfer] = feature               // 即時轉帳
+        informationList[.FeatureID_NTTransfer] = feature              // 即時轉帳
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
-        informationList[.FeatureID_ReserveTransfer] = feature        // 預約轉帳
+        informationList[.FeatureID_ReservationTransfer] = feature     // 預約轉帳
     }
 }

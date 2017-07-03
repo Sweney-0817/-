@@ -25,8 +25,8 @@ enum PlatformFeatureID: Int {
     case FeatureID_Edit                     // 新增/編輯
     case FeatureID_Confirm                  // 確認頁
     case FeatureID_Result                   // 結果頁
-    case FeatureID_Transfer                 // 即時轉帳
-    case FeatureID_ReserveTransfer          // 預約轉帳
+    case FeatureID_NTTransfer               // 即時轉帳
+    case FeatureID_ReservationTransfer      // 預約轉帳
     
     func StoryBoardID() -> String {
         switch self {
@@ -44,16 +44,16 @@ enum PlatformFeatureID: Int {
             return "FeatureID_Confirm"
         case .FeatureID_Result:
             return "FeatureID_Result"
-        case .FeatureID_Transfer:
-            return "FeatureID_Transfer"
+        case .FeatureID_NTTransfer:
+            return "FeatureID_NTTransfer"
         case .FeatureID_PassbookLoseApply:
             return "FeatureID_PassbookLoseApply"
         case .FeatureID_DebitCardLoseApply:
             return "FeatureID_DebitCardLoseApply"
         case .FeatureID_CheckLoseApply:
             return "FeatureID_CheckLoseApply"
-        case .FeatureID_ReserveTransfer:
-            return "FeatureID_ReserveTransfer"
+        case .FeatureID_ReservationTransfer:
+            return "FeatureID_ReservationTransfer"
         default:
             return "";
         }
@@ -67,7 +67,7 @@ enum PlatformFeatureID: Int {
             return "Account"
         case .FeatureID_Confirm, .FeatureID_Result:
             return "Share"
-        case .FeatureID_Transfer, .FeatureID_ReserveTransfer:
+        case .FeatureID_NTTransfer, .FeatureID_ReservationTransfer:
             return "Transfer"
         case .FeatureID_PassbookLoseApply, .FeatureID_DebitCardLoseApply, .FeatureID_CheckLoseApply:
             return "Lose"
@@ -102,9 +102,9 @@ enum PlatformFeatureID: Int {
             return "支票掛失"
         case .FeatureID_Edit:
             return "首頁功能捷徑新增/編輯"
-        case .FeatureID_Transfer:
+        case .FeatureID_NTTransfer:
             return "即時轉帳"
-        case .FeatureID_ReserveTransfer:
+        case .FeatureID_ReservationTransfer:
             return "預約轉帳"
         default:
             return ""
