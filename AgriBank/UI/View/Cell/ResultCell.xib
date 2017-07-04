@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,11 +15,11 @@
             <rect key="frame" x="0.0" y="0.0" width="374" height="60"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ddb-aF-eY1" id="OsE-P8-ocG">
-                <rect key="frame" x="0.0" y="0.0" width="374" height="60"/>
+                <rect key="frame" x="0.0" y="0.0" width="374" height="59.666666666666664"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="備註/交易備註" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXi-5v-Pad">
-                        <rect key="frame" x="15" y="17" width="117" height="24.666666666666664"/>
+                        <rect key="frame" x="15" y="17" width="117" height="24"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="117" id="JdT-NN-6xx"/>
@@ -29,12 +29,19 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註備註/交易備註" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dLX-AU-QRY">
-                        <rect key="frame" x="147" y="17" width="212" height="24.666666666666664"/>
+                        <rect key="frame" x="147" y="17" width="212" height="24"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CSd-8Q-7LA">
+                        <rect key="frame" x="0.0" y="58" width="374" height="1"/>
+                        <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="TZB-OF-KLP"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
@@ -43,9 +50,12 @@
                     <constraint firstItem="uXi-5v-Pad" firstAttribute="top" secondItem="OsE-P8-ocG" secondAttribute="top" constant="17" id="E4Z-ru-u6P"/>
                     <constraint firstAttribute="bottom" secondItem="uXi-5v-Pad" secondAttribute="bottom" constant="18" id="FbI-0U-YUv"/>
                     <constraint firstAttribute="bottom" secondItem="dLX-AU-QRY" secondAttribute="bottom" constant="18" id="NOH-gM-cTB"/>
+                    <constraint firstItem="CSd-8Q-7LA" firstAttribute="leading" secondItem="OsE-P8-ocG" secondAttribute="leading" id="RJ8-fF-E3I"/>
                     <constraint firstItem="dLX-AU-QRY" firstAttribute="top" secondItem="OsE-P8-ocG" secondAttribute="top" constant="17" id="hKs-UN-ooo"/>
+                    <constraint firstAttribute="trailing" secondItem="CSd-8Q-7LA" secondAttribute="trailing" id="ioB-ah-c7p"/>
                     <constraint firstAttribute="trailing" secondItem="dLX-AU-QRY" secondAttribute="trailing" constant="15" id="lwv-NY-Pou"/>
                     <constraint firstItem="uXi-5v-Pad" firstAttribute="height" secondItem="dLX-AU-QRY" secondAttribute="height" id="wj4-CD-KWV"/>
+                    <constraint firstAttribute="bottom" secondItem="CSd-8Q-7LA" secondAttribute="bottom" id="zAJ-D2-PsT"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

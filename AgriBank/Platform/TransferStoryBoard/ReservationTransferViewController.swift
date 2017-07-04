@@ -17,6 +17,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     private var topDropView:ThreeRowDropDownView? = nil
     private var showBankAccountDropView:TwoRowDropDownView? = nil
     
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -90,13 +91,5 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var data = ConfirmResultStruct(ImageName.CowCheck.rawValue, "請確認本次交易資訊", [[String:String]](), nil, "確認送出", "繼續交易")
-        data.list!.append(["Key": "轉出帳號", "Value":"12345678901234"])
-        data.list!.append(["Key": "銀行代碼", "Value":"008"])
-        data.list!.append(["Key": "轉入帳號", "Value":"12345678901235"])
-        data.list!.append(["Key": "轉帳金額", "Value":"9,999,999.00"])
-        data.list!.append(["Key": "備註/交易備註", "Value":"備註"])
-        data.list!.append(["Key": "受款人E-mail", "Value":"1234@gmail.com"])
-        enterConfirmResultController(true, data, true)
     }
 }

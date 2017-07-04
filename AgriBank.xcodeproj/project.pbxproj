@@ -47,6 +47,7 @@
 		614FB4291EF9039400DDD270 /* MenuExpandCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 614FB4221EF9039400DDD270 /* MenuExpandCell.xib */; };
 		614FB42A1EF9039400DDD270 /* OverviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 614FB4231EF9039400DDD270 /* OverviewCell.xib */; };
 		614FB42B1EF9039400DDD270 /* ResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 614FB4241EF9039400DDD270 /* ResultCell.xib */; };
+		615006A71F0B6E3700269891 /* ReservationTransferDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615006A61F0B6E3700269891 /* ReservationTransferDetailViewController.swift */; };
 		61564A861F09E7D900CB6C4A /* OneRowDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61564A801F09E7D900CB6C4A /* OneRowDropDownView.swift */; };
 		61564A871F09E7D900CB6C4A /* OneRowDropDownView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61564A811F09E7D900CB6C4A /* OneRowDropDownView.xib */; };
 		61564A881F09E7D900CB6C4A /* ThreeRowDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61564A821F09E7D900CB6C4A /* ThreeRowDropDownView.swift */; };
@@ -147,6 +148,7 @@
 		614FB4221EF9039400DDD270 /* MenuExpandCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MenuExpandCell.xib; path = UI/View/Cell/MenuExpandCell.xib; sourceTree = "<group>"; };
 		614FB4231EF9039400DDD270 /* OverviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OverviewCell.xib; path = UI/View/Cell/OverviewCell.xib; sourceTree = "<group>"; };
 		614FB4241EF9039400DDD270 /* ResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ResultCell.xib; path = UI/View/Cell/ResultCell.xib; sourceTree = "<group>"; };
+		615006A61F0B6E3700269891 /* ReservationTransferDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReservationTransferDetailViewController.swift; path = Platform/TransferStoryBoard/ReservationTransferDetailViewController.swift; sourceTree = "<group>"; };
 		61564A801F09E7D900CB6C4A /* OneRowDropDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OneRowDropDownView.swift; path = UI/View/OneRowDropDownView.swift; sourceTree = "<group>"; };
 		61564A811F09E7D900CB6C4A /* OneRowDropDownView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OneRowDropDownView.xib; path = UI/View/OneRowDropDownView.xib; sourceTree = "<group>"; };
 		61564A821F09E7D900CB6C4A /* ThreeRowDropDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThreeRowDropDownView.swift; path = UI/View/ThreeRowDropDownView.swift; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 				615B8D7F1EFD0CC2002B4B53 /* NTTransferViewController.swift */,
 				61F275471F05EEC0000CD9B7 /* ReservationTransferViewController.swift */,
 				61564A8C1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift */,
+				615006A61F0B6E3700269891 /* ReservationTransferDetailViewController.swift */,
 			);
 			name = TransferStoryBoard;
 			sourceTree = "<group>";
@@ -692,6 +695,7 @@
 				61F4F4241EF24467001E3872 /* ChooseTypeView.swift in Sources */,
 				6148DA2B1EDFE7A400C02CA3 /* IntroductionView.swift in Sources */,
 				614FB4251EF9039400DDD270 /* CustomizeCell.swift in Sources */,
+				615006A71F0B6E3700269891 /* ReservationTransferDetailViewController.swift in Sources */,
 				61F4F42C1EF2A9E3001E3872 /* ActOverviewViewController.swift in Sources */,
 				61F4F4301EF2B807001E3872 /* ActDetailViewController.swift in Sources */,
 				6148DA251EDFE7A400C02CA3 /* AnnounceNews.swift in Sources */,

@@ -8,6 +8,8 @@
 
 import UIKit
 
+let ReservationTransferSearchCancel_Segue = "GoReservationDetail"
+
 class ReservationTransferSearchCancelViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var specificDateBtn: UIButton!
     @IBOutlet weak var fixedDateBtn: UIButton!
@@ -17,6 +19,20 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     private var chooseAccountDorpView:OneRowDropDownView? = nil
     private var loginIntervalDropView:OneRowDropDownView? = nil
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let detail = segue.destination as! ReservationTransferDetailViewController
+        var list = [[String:String]]()
+        list.append(["Key": "登入日期", "Value":"2017/01/03"])
+        list.append(["Key": "預約轉帳日", "Value":"2017/02/01"])
+        list.append(["Key": "銀行代碼", "Value":"008"])
+        list.append(["Key": "轉入帳號", "Value":"1234567890"])
+        list.append(["Key": "金額", "Value":"9999999999"])
+        list.append(["Key": "交易備記", "Value":"-"])
+        list.append(["Key": "處理結果", "Value":"-"])
+        detail.setList(list)
+    }
+    
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -81,13 +97,6 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var data = ConfirmResultStruct(ImageName.CowCheck.rawValue, "請確認本次交易資訊", [[String:String]](), nil, "確認取消", "繼續交易")
-        data.list!.append(["Key": "轉出帳號", "Value":"12345678901234"])
-        data.list!.append(["Key": "銀行代碼", "Value":"008"])
-        data.list!.append(["Key": "轉入帳號", "Value":"12345678901235"])
-        data.list!.append(["Key": "轉帳金額", "Value":"9,999,999.00"])
-        data.list!.append(["Key": "備註/交易備註", "Value":"備註"])
-        data.list!.append(["Key": "受款人E-mail", "Value":"1234@gmail.com"])
-        enterConfirmResultController(true, data, true)
+        performSegue(withIdentifier: ReservationTransferSearchCancel_Segue, sender: nil)
     }
 }

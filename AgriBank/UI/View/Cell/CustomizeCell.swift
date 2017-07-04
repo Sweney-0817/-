@@ -214,6 +214,7 @@ class ImageConfirmCell: UITableViewCell, UITextFieldDelegate {
     @IBOutlet weak var m_tfInput: UITextField!
     @IBOutlet weak var m_ivShow: UIImageView!
     @IBOutlet weak var m_btnRefresh: UIButton!
+    @IBOutlet weak var m_vSeparator: UIView!
     var delegate:ImageConfirmCellDelegate? = nil
     @IBAction func m_btnRefreshClick(_ sender: Any) {
         delegate?.clickRefreshBtn()

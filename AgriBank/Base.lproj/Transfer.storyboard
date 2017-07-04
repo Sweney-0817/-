@@ -690,11 +690,77 @@
                         <outlet property="loginIntervalView" destination="kc3-b0-cg3" id="glv-ra-cdI"/>
                         <outlet property="specificDateBtn" destination="UIx-m1-3uP" id="B4B-YA-Wqx"/>
                         <outlet property="tableView" destination="zVD-Kq-N2f" id="0i2-lC-rtT"/>
+                        <segue destination="oWy-6a-Y4z" kind="show" identifier="GoReservationDetail" id="vTO-xc-XI2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v7D-Fh-Er7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1278.75" y="73.943661971830991"/>
+        </scene>
+        <!--Reservation Transfer Detail View Controller-->
+        <scene sceneID="oHE-fC-puu">
+            <objects>
+                <viewController id="oWy-6a-Y4z" customClass="ReservationTransferDetailViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="oNg-Zu-g8A"/>
+                        <viewControllerLayoutGuide type="bottom" id="vVq-m7-uBn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yPf-sL-BMA">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4zv-WK-er2">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="oWy-6a-Y4z" id="RHc-ZN-dgm"/>
+                                    <outlet property="delegate" destination="oWy-6a-Y4z" id="M5G-OI-vUO"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CKC-qt-pr4">
+                                <rect key="frame" x="0.0" y="508" width="320" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dgZ-6f-mhk">
+                                        <rect key="frame" x="15" y="8" width="290" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="Wlr-T1-Efz"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="取消此預約" backgroundImage="ButtonOBox">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clickCancelBtn:" destination="oWy-6a-Y4z" eventType="touchUpInside" id="Nxh-bv-HE5"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="9fs-oU-IIB"/>
+                                    <constraint firstAttribute="trailing" secondItem="dgZ-6f-mhk" secondAttribute="trailing" constant="15" id="HJE-4o-Hao"/>
+                                    <constraint firstItem="dgZ-6f-mhk" firstAttribute="leading" secondItem="CKC-qt-pr4" secondAttribute="leading" constant="15" id="fGV-h9-TpE"/>
+                                    <constraint firstItem="dgZ-6f-mhk" firstAttribute="centerY" secondItem="CKC-qt-pr4" secondAttribute="centerY" id="o1F-Im-JDS"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="vVq-m7-uBn" firstAttribute="top" secondItem="CKC-qt-pr4" secondAttribute="bottom" id="0mK-Y6-7rS"/>
+                            <constraint firstAttribute="trailing" secondItem="4zv-WK-er2" secondAttribute="trailing" id="4Rq-t0-v2q"/>
+                            <constraint firstItem="CKC-qt-pr4" firstAttribute="leading" secondItem="yPf-sL-BMA" secondAttribute="leading" id="5d2-1Z-nSU"/>
+                            <constraint firstAttribute="trailing" secondItem="CKC-qt-pr4" secondAttribute="trailing" id="Tik-fR-2Rh"/>
+                            <constraint firstItem="4zv-WK-er2" firstAttribute="top" secondItem="yPf-sL-BMA" secondAttribute="top" id="h8i-Qo-F98"/>
+                            <constraint firstItem="CKC-qt-pr4" firstAttribute="top" secondItem="4zv-WK-er2" secondAttribute="bottom" id="hV2-RW-KW5"/>
+                            <constraint firstItem="4zv-WK-er2" firstAttribute="leading" secondItem="yPf-sL-BMA" secondAttribute="leading" id="mge-Be-YOK"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="4zv-WK-er2" id="75F-Hs-KCx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nY5-r4-hIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2025" y="73.943661971830991"/>
         </scene>
     </scenes>
     <resources>

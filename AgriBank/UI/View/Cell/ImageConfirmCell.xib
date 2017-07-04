@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -47,13 +48,23 @@
                             <action selector="m_btnRefreshClick:" destination="9IE-5u-epZ" eventType="touchUpInside" id="mED-wo-XC0"/>
                         </connections>
                     </button>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dza-tB-TJX">
+                        <rect key="frame" x="0.0" y="58.5" width="367" height="1"/>
+                        <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="LDp-g4-tAx"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="q6i-WQ-xS7" secondAttribute="trailing" constant="15" id="2LI-13-zVv"/>
                     <constraint firstItem="ccx-e0-OSg" firstAttribute="centerY" secondItem="cvE-6h-b5e" secondAttribute="centerY" id="2gS-Hn-IAN"/>
                     <constraint firstItem="ccx-e0-OSg" firstAttribute="width" secondItem="e6e-BG-dqa" secondAttribute="width" id="6Hr-fP-0FY"/>
+                    <constraint firstAttribute="bottom" secondItem="dza-tB-TJX" secondAttribute="bottom" id="OHu-N1-RN9"/>
                     <constraint firstItem="ccx-e0-OSg" firstAttribute="leading" secondItem="cvE-6h-b5e" secondAttribute="leading" constant="15" id="TaH-zP-UUv"/>
+                    <constraint firstItem="dza-tB-TJX" firstAttribute="leading" secondItem="cvE-6h-b5e" secondAttribute="leading" id="bS1-N7-VIS"/>
                     <constraint firstItem="e6e-BG-dqa" firstAttribute="centerY" secondItem="cvE-6h-b5e" secondAttribute="centerY" id="gEb-9n-gay"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="dza-tB-TJX" secondAttribute="trailing" id="gvB-4F-9tp"/>
                     <constraint firstItem="e6e-BG-dqa" firstAttribute="leading" secondItem="ccx-e0-OSg" secondAttribute="trailing" constant="10" id="mj7-yc-zOu"/>
                     <constraint firstItem="q6i-WQ-xS7" firstAttribute="leading" secondItem="e6e-BG-dqa" secondAttribute="trailing" constant="10" id="pI9-kR-qhG"/>
                     <constraint firstItem="q6i-WQ-xS7" firstAttribute="centerY" secondItem="cvE-6h-b5e" secondAttribute="centerY" id="x6R-2v-phV"/>
@@ -63,6 +74,7 @@
                 <outlet property="m_btnRefresh" destination="q6i-WQ-xS7" id="cL9-RR-Oct"/>
                 <outlet property="m_ivShow" destination="e6e-BG-dqa" id="wwj-aX-Ioq"/>
                 <outlet property="m_tfInput" destination="ccx-e0-OSg" id="M13-4Z-NPQ"/>
+                <outlet property="m_vSeparator" destination="dza-tB-TJX" id="s66-e2-GZp"/>
             </connections>
             <point key="canvasLocation" x="-117.5" y="12"/>
         </tableViewCell>

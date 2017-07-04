@@ -17,6 +17,7 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var m_btnBackToHome: UIButton!
     private var data:ConfirmResultStruct? = nil
     
+    // MARK: - Public
     func setData(_ data:ConfirmResultStruct) {
         self.data = data
     }

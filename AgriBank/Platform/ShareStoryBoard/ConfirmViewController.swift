@@ -9,7 +9,7 @@
 import UIKit
 
 let ConfirmView_ImageConfirm_Cell_Height:CGFloat = 60
-
+let Confirm_Segue = "GoResult"
 class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, ImageConfirmCellDelegate {
     @IBOutlet weak var m_ivTopImage: UIImageView!
     @IBOutlet weak var m_lbTopTitle: UILabel!
@@ -18,6 +18,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var m_btnConfirm: UIButton!
     private var data:ConfirmResultStruct? = nil
     
+    // MARK: - Public
     func setData(_ data:ConfirmResultStruct) {
         self.data = data
     }
@@ -90,6 +91,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         if (indexPath.row == (data?.list?.count)!) {
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ImageConfirmCell.NibName()!, for: indexPath) as! ImageConfirmCell
             cell.delegate = self
+            cell.m_vSeparator.isHidden = false
 //            cell.set(m_arrData[indexPath.row]["Key"]!, m_arrData[indexPath.row]["Value"]!)
             return cell
         }
@@ -105,5 +107,10 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     }
     
     func changeInputTextfield(_ input: String) {
+    }
+    
+    // MARK: - StoryBoard Touch Event
+    @IBAction func clickCheckBtn(_ sender: Any) {
+        performSegue(withIdentifier: Confirm_Segue, sender: nil)
     }
 }
