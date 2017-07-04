@@ -29,11 +29,6 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
         setShadowView(m_vShadowView)
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        setAllSubView()
-    }
-    
     func setAllSubView() {
         setDropDownView()
         setWebBankPasswordView()

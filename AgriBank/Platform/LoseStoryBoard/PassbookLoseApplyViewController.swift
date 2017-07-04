@@ -28,11 +28,6 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
         setShadowView(m_vShadowView)
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        setAllSubView()
-    }
-    
     func setAllSubView() {
         setDropDownView()
         setImageConfirmView()

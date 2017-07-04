@@ -74,6 +74,10 @@
 		61F4F42C1EF2A9E3001E3872 /* ActOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4F42B1EF2A9E3001E3872 /* ActOverviewViewController.swift */; };
 		61F4F42E1EF2ADAD001E3872 /* ShowDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4F42D1EF2ADAD001E3872 /* ShowDetailViewController.swift */; };
 		61F4F4301EF2B807001E3872 /* ActDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4F42F1EF2B807001E3872 /* ActDetailViewController.swift */; };
+		BEB38A6A1F0A27EE006094AC /* BillPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB38A681F0A27EE006094AC /* BillPaymentViewController.swift */; };
+		BEB38A6B1F0A27EE006094AC /* TaxPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB38A691F0A27EE006094AC /* TaxPaymentViewController.swift */; };
+		BEB38A6E1F0A2800006094AC /* Payment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEB38A6C1F0A2800006094AC /* Payment.storyboard */; };
+		BEB38A701F0B72FB006094AC /* DeviceCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB38A6F1F0B72FB006094AC /* DeviceCheckViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -171,6 +175,10 @@
 		61F4F42B1EF2A9E3001E3872 /* ActOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActOverviewViewController.swift; path = Platform/AccountStoryBoard/ActOverviewViewController.swift; sourceTree = "<group>"; };
 		61F4F42D1EF2ADAD001E3872 /* ShowDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShowDetailViewController.swift; path = Platform/AccountStoryBoard/ShowDetailViewController.swift; sourceTree = "<group>"; };
 		61F4F42F1EF2B807001E3872 /* ActDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActDetailViewController.swift; path = Platform/AccountStoryBoard/ActDetailViewController.swift; sourceTree = "<group>"; };
+		BEB38A681F0A27EE006094AC /* BillPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BillPaymentViewController.swift; sourceTree = "<group>"; };
+		BEB38A691F0A27EE006094AC /* TaxPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxPaymentViewController.swift; sourceTree = "<group>"; };
+		BEB38A6D1F0A2800006094AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Payment.storyboard; sourceTree = "<group>"; };
+		BEB38A6F1F0B72FB006094AC /* DeviceCheckViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCheckViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -268,6 +276,7 @@
 		6148D9FC1EDFE62B00C02CA3 /* Platform */ = {
 			isa = PBXGroup;
 			children = (
+				BEB38A671F0A27EE006094AC /* PaymentStoryBoard */,
 				6129E6AF1F038DF500C23D67 /* LoseStoryBoard */,
 				615B8D781EFCF27B002B4B53 /* TransferStoryBoard */,
 				614FB4141EF9017E00DDD270 /* ShareStoryBoard */,
@@ -429,6 +438,7 @@
 		6148DA3B1EDFE89100C02CA3 /* StoryBoard */ = {
 			isa = PBXGroup;
 			children = (
+				BEB38A6C1F0A2800006094AC /* Payment.storyboard */,
 				611B8EC71EE966BE003FCFDF /* Main.storyboard */,
 				614FB4111EF9013100DDD270 /* Share.storyboard */,
 				61F4F41D1EF22AF8001E3872 /* Account.storyboard */,
@@ -487,6 +497,17 @@
 				61F4F42D1EF2ADAD001E3872 /* ShowDetailViewController.swift */,
 			);
 			name = AccountStoryBoard;
+			sourceTree = "<group>";
+		};
+		BEB38A671F0A27EE006094AC /* PaymentStoryBoard */ = {
+			isa = PBXGroup;
+			children = (
+				BEB38A681F0A27EE006094AC /* BillPaymentViewController.swift */,
+				BEB38A691F0A27EE006094AC /* TaxPaymentViewController.swift */,
+				BEB38A6F1F0B72FB006094AC /* DeviceCheckViewController.swift */,
+			);
+			name = PaymentStoryBoard;
+			path = Platform/PaymentStoryBoard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -613,6 +634,7 @@
 				6148DA291EDFE7A400C02CA3 /* FeatureWallCellView.xib in Resources */,
 				614FB42A1EF9039400DDD270 /* OverviewCell.xib in Resources */,
 				6173181B1EEFD12100133F7A /* LoginView.xib in Resources */,
+				BEB38A6E1F0A2800006094AC /* Payment.storyboard in Resources */,
 				61F019091EF8006A00849E94 /* ExpandView.xib in Resources */,
 				61564A871F09E7D900CB6C4A /* OneRowDropDownView.xib in Resources */,
 				615B8D741EFCDDA8002B4B53 /* MemoView.xib in Resources */,
@@ -656,6 +678,7 @@
 				617318191EEFCB4B00133F7A /* LoginView.swift in Sources */,
 				615B8D7D1EFD0CA5002B4B53 /* ConfirmViewController.swift in Sources */,
 				6148DA001EDFE6AC00C02CA3 /* Platform.swift in Sources */,
+				BEB38A701F0B72FB006094AC /* DeviceCheckViewController.swift in Sources */,
 				6148D9FF1EDFE6AC00C02CA3 /* AuthorizationManage.swift in Sources */,
 				6148DA2A1EDFE7A400C02CA3 /* FeatureWallView.swift in Sources */,
 				61564A8A1F09E7D900CB6C4A /* TwoRowDropDownView.swift in Sources */,
@@ -677,6 +700,7 @@
 				61564A881F09E7D900CB6C4A /* ThreeRowDropDownView.swift in Sources */,
 				6129E6B21F038E7900C23D67 /* DebitCardLoseApplyViewController.swift in Sources */,
 				6125ABF21EF5509C00A2A9A3 /* TextField.swift in Sources */,
+				BEB38A6A1F0A27EE006094AC /* BillPaymentViewController.swift in Sources */,
 				6148DA271EDFE7A400C02CA3 /* BannerView.swift in Sources */,
 				617318171EEFC89300133F7A /* VPImageCropperViewController.m in Sources */,
 				6148DA351EDFE7E900C02CA3 /* DetermineUtility.swift in Sources */,
@@ -685,6 +709,7 @@
 				61F4F42E1EF2ADAD001E3872 /* ShowDetailViewController.swift in Sources */,
 				61C64FCC1EE8FB2000C6766A /* EditViewController.swift in Sources */,
 				6109C02F1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift in Sources */,
+				BEB38A6B1F0A27EE006094AC /* TaxPaymentViewController.swift in Sources */,
 				6148DA0B1EDFE6F800C02CA3 /* Define.swift in Sources */,
 				615B8D7E1EFD0CA5002B4B53 /* ResultViewController.swift in Sources */,
 			);
@@ -768,6 +793,14 @@
 				61F4F41E1EF22AF8001E3872 /* Base */,
 			);
 			name = Account.storyboard;
+			sourceTree = "<group>";
+		};
+		BEB38A6C1F0A2800006094AC /* Payment.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BEB38A6D1F0A2800006094AC /* Base */,
+			);
+			name = Payment.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

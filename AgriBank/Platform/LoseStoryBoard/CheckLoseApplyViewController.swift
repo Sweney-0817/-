@@ -51,10 +51,6 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         hideSomeSubviews()
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
-
     func setAllSubView() {
         setDDTypeView()
         setDDAccountView()

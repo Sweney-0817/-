@@ -91,7 +91,7 @@ class Platform {
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_LoseApply)
         informationList[.FeatureID_CheckLoseApply] = feature         // 支票掛失
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_LoseApply)
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
         informationList[.FeatureID_Edit] = feature                   // 新增/編輯
         
         feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil)
@@ -108,5 +108,14 @@ class Platform {
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
         informationList[.FeatureID_ReservationTransferSearchCancel] = feature     // 預約轉帳查詢取消
+
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_TaxPayment, .FeatureID_BillPayment], belong: nil)
+        informationList[.FeatureID_Payment] = feature              // 繳款
+
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_Payment)
+        informationList[.FeatureID_TaxPayment] = feature              // 繳稅
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_Payment)
+        informationList[.FeatureID_BillPayment] = feature     // 繳費
     }
 }

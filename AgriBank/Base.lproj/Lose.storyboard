@@ -483,10 +483,10 @@
                             </view>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="QVj-cg-HqH" firstAttribute="top" secondItem="viB-r0-ahu" secondAttribute="bottom" id="1Lb-5a-iaJ"/>
-                            <constraint firstItem="viB-r0-ahu" firstAttribute="top" secondItem="Vtz-5A-WRI" secondAttribute="bottom" id="F6T-7f-0UX"/>
+                            <constraint firstItem="viB-r0-ahu" firstAttribute="top" secondItem="Vtz-5A-WRI" secondAttribute="bottom" id="B0z-13-Mg0"/>
                             <constraint firstItem="viB-r0-ahu" firstAttribute="leading" secondItem="9ZG-Sp-5rG" secondAttribute="leading" id="Fxl-E8-W5w"/>
                             <constraint firstAttribute="trailing" secondItem="viB-r0-ahu" secondAttribute="trailing" id="dOz-Av-7hw"/>
+                            <constraint firstItem="QVj-cg-HqH" firstAttribute="top" secondItem="viB-r0-ahu" secondAttribute="bottom" id="rYI-Yl-iYq"/>
                         </constraints>
                     </view>
                     <connections>
