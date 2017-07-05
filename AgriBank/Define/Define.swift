@@ -31,6 +31,7 @@ enum PlatformFeatureID: Int {
     case FeatureID_Payment                  // 繳款
     case FeatureID_TaxPayment               // 繳稅
     case FeatureID_BillPayment              // 繳費
+    case FeatureID_DepositCombinedToDeposit // 綜存轉定存
     
     func StoryBoardID() -> String {
         switch self {
@@ -64,6 +65,8 @@ enum PlatformFeatureID: Int {
             return "FeatureID_TaxPayment"
         case .FeatureID_BillPayment:
             return "FeatureID_BillPayment"
+        case .FeatureID_DepositCombinedToDeposit:
+            return "FeatureID_DepositCombinedToDeposit"
         default:
             return "";
         }
@@ -77,7 +80,7 @@ enum PlatformFeatureID: Int {
             return "Account"
         case .FeatureID_Confirm, .FeatureID_Result:
             return "Share"
-        case .FeatureID_NTTransfer, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel:
+        case .FeatureID_NTTransfer, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel, .FeatureID_DepositCombinedToDeposit:
             return "Transfer"
         case .FeatureID_PassbookLoseApply, .FeatureID_DebitCardLoseApply, .FeatureID_CheckLoseApply:
             return "Lose"
@@ -126,6 +129,8 @@ enum PlatformFeatureID: Int {
             return "繳稅"
         case .FeatureID_BillPayment:
             return "繳費"
+        case .FeatureID_DepositCombinedToDeposit:
+            return "綜存轉定存"
         default:
             return ""
         }
@@ -250,7 +255,7 @@ enum DownloadType: Int {
 
 // MARK: - 圖片名稱
 enum ImageName: String {
-    case BackBarItem, BackHome, ButtonOBox, Close, CowCheck, CowFailure, CowSuccess, DropDown, DropUp, EntryRight, HintDownArrow, Locker, Login, Orange, Refresh, RightBarItem, Textfield, Unlocker
+    case BackBarItem, BackHome, ButtonOBox, Close, CowCheck, CowFailure, CowSuccess, DropDown, DropUp, EntryRight, HintDownArrow, Locker, Login, Orange, Refresh, RightBarItem, RadioOn, RadioOff, Textfield, Unlocker
 }
 
 // MARK: - 顏色定義

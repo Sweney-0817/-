@@ -101,21 +101,24 @@ class Platform {
         informationList[.FeatureID_Result] = feature                 // 結果
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
-        informationList[.FeatureID_NTTransfer] = feature              // 即時轉帳
+        informationList[.FeatureID_NTTransfer] = feature             // 即時轉帳
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
-        informationList[.FeatureID_ReservationTransfer] = feature     // 預約轉帳
+        informationList[.FeatureID_ReservationTransfer] = feature    // 預約轉帳
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
         informationList[.FeatureID_ReservationTransferSearchCancel] = feature     // 預約轉帳查詢取消
 
         feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_TaxPayment, .FeatureID_BillPayment], belong: nil)
-        informationList[.FeatureID_Payment] = feature              // 繳款
+        informationList[.FeatureID_Payment] = feature                // 繳款
 
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_Payment)
-        informationList[.FeatureID_TaxPayment] = feature              // 繳稅
+        informationList[.FeatureID_TaxPayment] = feature             // 繳稅
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_Payment)
-        informationList[.FeatureID_BillPayment] = feature     // 繳費
+        informationList[.FeatureID_BillPayment] = feature            // 繳費
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
+        informationList[.FeatureID_DepositCombinedToDeposit] = feature            // 綜存轉定存
     }
 }

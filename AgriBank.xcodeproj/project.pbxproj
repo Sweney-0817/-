@@ -48,6 +48,7 @@
 		614FB42A1EF9039400DDD270 /* OverviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 614FB4231EF9039400DDD270 /* OverviewCell.xib */; };
 		614FB42B1EF9039400DDD270 /* ResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 614FB4241EF9039400DDD270 /* ResultCell.xib */; };
 		615006A71F0B6E3700269891 /* ReservationTransferDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615006A61F0B6E3700269891 /* ReservationTransferDetailViewController.swift */; };
+		615006A91F0B9CD800269891 /* DepositCombinedToDepositViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615006A81F0B9CD800269891 /* DepositCombinedToDepositViewController.swift */; };
 		61564A861F09E7D900CB6C4A /* OneRowDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61564A801F09E7D900CB6C4A /* OneRowDropDownView.swift */; };
 		61564A871F09E7D900CB6C4A /* OneRowDropDownView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61564A811F09E7D900CB6C4A /* OneRowDropDownView.xib */; };
 		61564A881F09E7D900CB6C4A /* ThreeRowDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61564A821F09E7D900CB6C4A /* ThreeRowDropDownView.swift */; };
@@ -149,6 +150,7 @@
 		614FB4231EF9039400DDD270 /* OverviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OverviewCell.xib; path = UI/View/Cell/OverviewCell.xib; sourceTree = "<group>"; };
 		614FB4241EF9039400DDD270 /* ResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ResultCell.xib; path = UI/View/Cell/ResultCell.xib; sourceTree = "<group>"; };
 		615006A61F0B6E3700269891 /* ReservationTransferDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReservationTransferDetailViewController.swift; path = Platform/TransferStoryBoard/ReservationTransferDetailViewController.swift; sourceTree = "<group>"; };
+		615006A81F0B9CD800269891 /* DepositCombinedToDepositViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DepositCombinedToDepositViewController.swift; path = Platform/TransferStoryBoard/DepositCombinedToDepositViewController.swift; sourceTree = "<group>"; };
 		61564A801F09E7D900CB6C4A /* OneRowDropDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OneRowDropDownView.swift; path = UI/View/OneRowDropDownView.swift; sourceTree = "<group>"; };
 		61564A811F09E7D900CB6C4A /* OneRowDropDownView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OneRowDropDownView.xib; path = UI/View/OneRowDropDownView.xib; sourceTree = "<group>"; };
 		61564A821F09E7D900CB6C4A /* ThreeRowDropDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThreeRowDropDownView.swift; path = UI/View/ThreeRowDropDownView.swift; sourceTree = "<group>"; };
@@ -488,6 +490,7 @@
 				61F275471F05EEC0000CD9B7 /* ReservationTransferViewController.swift */,
 				61564A8C1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift */,
 				615006A61F0B6E3700269891 /* ReservationTransferDetailViewController.swift */,
+				615006A81F0B9CD800269891 /* DepositCombinedToDepositViewController.swift */,
 			);
 			name = TransferStoryBoard;
 			sourceTree = "<group>";
@@ -680,6 +683,7 @@
 				6148DA381EDFE84600C02CA3 /* SecurityUtility.swift in Sources */,
 				617318191EEFCB4B00133F7A /* LoginView.swift in Sources */,
 				615B8D7D1EFD0CA5002B4B53 /* ConfirmViewController.swift in Sources */,
+				615006A91F0B9CD800269891 /* DepositCombinedToDepositViewController.swift in Sources */,
 				6148DA001EDFE6AC00C02CA3 /* Platform.swift in Sources */,
 				BEB38A701F0B72FB006094AC /* DeviceCheckViewController.swift in Sources */,
 				6148D9FF1EDFE6AC00C02CA3 /* AuthorizationManage.swift in Sources */,
