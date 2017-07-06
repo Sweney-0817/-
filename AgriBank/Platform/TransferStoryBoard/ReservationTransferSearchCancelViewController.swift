@@ -19,6 +19,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     private var chooseAccountDorpView:OneRowDropDownView? = nil
     private var loginIntervalDropView:OneRowDropDownView? = nil
     
+    // MARK: - Public
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let detail = segue.destination as! ReservationTransferDetailViewController
         var list = [[String:String]]()

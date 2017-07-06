@@ -1,17 +1,20 @@
 //
-//  ReservationTransferDetailViewController.swift
+//  DepositCombinedDetailViewController.swift
 //  AgriBank
 //
-//  Created by TongYoungRu on 2017/7/4.
+//  Created by TongYoungRu on 2017/7/6.
 //  Copyright © 2017年 Systex. All rights reserved.
 //
 
 import UIKit
 
-let ReservationTransferDetailTitle = "預約轉帳明細"
-class ReservationTransferDetailViewController: BaseViewController, UITableViewDataSource {
-    private var list:[[String:String]]? = nil
+let DepositCombinedDetailTitle = "綜存戶存單明細"
+let DepositCombinedDetailMemo_startX:CGFloat = 15
+let DepositCombinedDetailMemo_startY:CGFloat = 20
+
+class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
+    private var list:[[String:String]]? = nil
     
     // MARK: - Public
     func setList(_ list:[[String:String]]) {
@@ -50,9 +53,21 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
         return 1
     }
     
+    // MARK: - UITableViewDelegate
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView.init(frame:  CGRect(origin: .zero, size: CGSize(width: tableView.frame.width, height: tableView.sectionFooterHeight)))
+        let label = UILabel(frame: CGRect(origin: CGPoint(x: DepositCombinedDetailMemo_startX, y: DepositCombinedDetailMemo_startY), size: CGSize(width: view.frame.width-DepositCombinedDetailMemo_startX*2, height: view.frame.height-DepositCombinedDetailMemo_startY)))
+        label.text = "本交易受理時間 : 為各營業單位之營業時間 (8:30 - 15:30)"
+        label.numberOfLines = 0
+        label.textColor = Memo_Color
+        label.font = Default_Font
+        view.addSubview(label)
+        return view
+    }
+
     // MARK: - StoryBoard Touch Event
-    @IBAction func clickCancelBtn(_ sender: Any) {
-        var data = ConfirmResultStruct(ImageName.CowCheck.rawValue, "請確認本次交易資訊", [[String:String]](), nil, "確認取消", "繼續交易")
+    @IBAction func clickTerminationBtn(_ sender: Any) {
+        var data = ConfirmResultStruct(ImageName.CowCheck.rawValue, "請確認本次交易資訊", [[String:String]](), nil, "確認解約", "繼續交易")
         data.list!.append(["Key": "轉出帳號", "Value":"12345678901234"])
         data.list!.append(["Key": "預約轉帳日", "Value":"固定每月30日"])
         data.list!.append(["Key": "銀行代碼", "Value":"008"])

@@ -102,10 +102,6 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
-    
     // MARK: - private 
     private func SetBtnColor(_ isPredesignated:Bool) {
         self.isPredesignated = isPredesignated

@@ -340,7 +340,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cL1-av-Y55" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-323.4375" y="175.35211267605635"/>
+            <point key="canvasLocation" x="-303" y="115"/>
         </scene>
         <!--Reservation Transfer View Controller-->
         <scene sceneID="ezF-Kv-Vc2">
@@ -572,7 +572,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXa-Dn-UAO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="495" y="74"/>
+            <point key="canvasLocation" x="481" y="73"/>
         </scene>
         <!--Reservation Transfer Search Cancel View Controller-->
         <scene sceneID="Zbp-xx-T3i">
@@ -1080,7 +1080,7 @@
                                             <constraint firstItem="y9D-M9-OD5" firstAttribute="leading" secondItem="PKq-ik-6CQ" secondAttribute="trailing" constant="10" id="zvS-Ae-6yC"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本交易受理時間 : 為各營業單位之營業時間 (8:30 - 15:30)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D16-se-wtW">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本交易受理時間 : 為各營業單位之營業時間 (8:30 - 15:30)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D16-se-wtW">
                                         <rect key="frame" x="16" y="596" width="343" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="wCu-rp-q1a"/>
@@ -1163,6 +1163,129 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DL9-Vz-cwu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2790" y="99"/>
+        </scene>
+        <!--Deposit Combined To Deposit Search View Controller-->
+        <scene sceneID="7se-Rt-MbL">
+            <objects>
+                <viewController storyboardIdentifier="FeatureID_DepositCombinedToDepositSearch" id="3bp-IT-M1x" customClass="DepositCombinedToDepositSearchViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Bfo-kW-lKT"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZLb-gE-jM5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ZqU-lV-hJ6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1DT-EW-Mv2">
+                                <rect key="frame" x="0.0" y="119" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.74509803921568629" green="0.74509803921568629" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="Ayl-WP-JB6"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GeO-uS-5SW">
+                                <rect key="frame" x="0.0" y="120" width="375" height="547"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="3bp-IT-M1x" id="Am1-Dd-El8"/>
+                                    <outlet property="delegate" destination="3bp-IT-M1x" id="3E9-kk-2OU"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4MU-cA-hgS">
+                                <rect key="frame" x="0.0" y="20" width="375" height="100"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="AGH-ks-VkX"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="GeO-uS-5SW" firstAttribute="leading" secondItem="ZqU-lV-hJ6" secondAttribute="leading" id="27f-o8-wye"/>
+                            <constraint firstItem="4MU-cA-hgS" firstAttribute="top" secondItem="Bfo-kW-lKT" secondAttribute="bottom" id="4dK-Pd-Vdy"/>
+                            <constraint firstAttribute="trailing" secondItem="1DT-EW-Mv2" secondAttribute="trailing" id="Bow-fj-880"/>
+                            <constraint firstItem="4MU-cA-hgS" firstAttribute="leading" secondItem="ZqU-lV-hJ6" secondAttribute="leading" id="Jgw-P3-uoC"/>
+                            <constraint firstItem="ZLb-gE-jM5" firstAttribute="top" secondItem="GeO-uS-5SW" secondAttribute="bottom" id="LXz-SK-xiV"/>
+                            <constraint firstItem="1DT-EW-Mv2" firstAttribute="leading" secondItem="ZqU-lV-hJ6" secondAttribute="leading" id="UA9-3r-xMS"/>
+                            <constraint firstAttribute="trailing" secondItem="GeO-uS-5SW" secondAttribute="trailing" id="W4f-BZ-VfX"/>
+                            <constraint firstItem="GeO-uS-5SW" firstAttribute="top" secondItem="1DT-EW-Mv2" secondAttribute="bottom" id="mSZ-UI-zko"/>
+                            <constraint firstItem="1DT-EW-Mv2" firstAttribute="top" secondItem="4MU-cA-hgS" secondAttribute="bottom" constant="-1" id="pGD-Z1-AqI"/>
+                            <constraint firstAttribute="trailing" secondItem="4MU-cA-hgS" secondAttribute="trailing" id="qvf-IA-ZN1"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="GeO-uS-5SW" id="fWH-tT-GMb"/>
+                        <outlet property="topView" destination="4MU-cA-hgS" id="OrQ-jL-vbF"/>
+                        <segue destination="b4z-4H-q9M" kind="show" identifier="GoDepositDetail" id="F5h-CB-vMY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Na-ow-9wN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3551" y="73"/>
+        </scene>
+        <!--Deposit Combined Detail View Controller-->
+        <scene sceneID="82G-bH-qE1">
+            <objects>
+                <viewController id="b4z-4H-q9M" customClass="DepositCombinedDetailViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zR9-f0-0gZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="VuF-30-WfG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Pek-Y5-PbV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="70" translatesAutoresizingMaskIntoConstraints="NO" id="Tao-Oh-SGa">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="607"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="b4z-4H-q9M" id="fcc-TA-e22"/>
+                                    <outlet property="delegate" destination="b4z-4H-q9M" id="naV-yg-dcq"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pcC-Pn-Pc7">
+                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vuY-a1-jb5">
+                                        <rect key="frame" x="15" y="8" width="345" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="QKF-gE-NdW"/>
+                                        </constraints>
+                                        <state key="normal" title="中途解約" backgroundImage="ButtonOBox">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clickTerminationBtn:" destination="b4z-4H-q9M" eventType="touchUpInside" id="MBx-a2-shg"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="vuY-a1-jb5" secondAttribute="trailing" constant="15" id="0Nt-Uq-D5e"/>
+                                    <constraint firstItem="vuY-a1-jb5" firstAttribute="leading" secondItem="pcC-Pn-Pc7" secondAttribute="leading" constant="15" id="MbT-Eq-D7a"/>
+                                    <constraint firstAttribute="height" constant="60" id="WMa-Fo-l9a"/>
+                                    <constraint firstItem="vuY-a1-jb5" firstAttribute="centerY" secondItem="pcC-Pn-Pc7" secondAttribute="centerY" id="bKQ-0T-7ar"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="pcC-Pn-Pc7" secondAttribute="trailing" id="58J-nh-uIV"/>
+                            <constraint firstItem="pcC-Pn-Pc7" firstAttribute="leading" secondItem="Pek-Y5-PbV" secondAttribute="leading" id="7Vw-UR-85f"/>
+                            <constraint firstAttribute="trailing" secondItem="Tao-Oh-SGa" secondAttribute="trailing" id="JVV-W1-G0C"/>
+                            <constraint firstItem="Tao-Oh-SGa" firstAttribute="leading" secondItem="Pek-Y5-PbV" secondAttribute="leading" id="MVg-vJ-Ym5"/>
+                            <constraint firstItem="VuF-30-WfG" firstAttribute="top" secondItem="pcC-Pn-Pc7" secondAttribute="bottom" id="Tsi-XM-taE"/>
+                            <constraint firstItem="pcC-Pn-Pc7" firstAttribute="top" secondItem="Tao-Oh-SGa" secondAttribute="bottom" id="WNt-eO-gDP"/>
+                            <constraint firstItem="Tao-Oh-SGa" firstAttribute="top" secondItem="Pek-Y5-PbV" secondAttribute="top" id="Z69-Cv-LqD"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="Tao-Oh-SGa" id="r9d-QG-Fvz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t1l-st-jag" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4316" y="72"/>
         </scene>
     </scenes>
     <resources>

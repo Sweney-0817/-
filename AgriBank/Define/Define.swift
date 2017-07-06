@@ -32,6 +32,7 @@ enum PlatformFeatureID: Int {
     case FeatureID_TaxPayment               // 繳稅
     case FeatureID_BillPayment              // 繳費
     case FeatureID_DepositCombinedToDeposit // 綜存轉定存
+    case FeatureID_DepositCombinedToDepositSearch   // 綜存戶轉存明細查詢/解約
     
     func StoryBoardID() -> String {
         switch self {
@@ -67,6 +68,8 @@ enum PlatformFeatureID: Int {
             return "FeatureID_BillPayment"
         case .FeatureID_DepositCombinedToDeposit:
             return "FeatureID_DepositCombinedToDeposit"
+        case .FeatureID_DepositCombinedToDepositSearch:
+            return "FeatureID_DepositCombinedToDepositSearch"
         default:
             return "";
         }
@@ -80,7 +83,7 @@ enum PlatformFeatureID: Int {
             return "Account"
         case .FeatureID_Confirm, .FeatureID_Result:
             return "Share"
-        case .FeatureID_NTTransfer, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel, .FeatureID_DepositCombinedToDeposit:
+        case .FeatureID_NTTransfer, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel, .FeatureID_DepositCombinedToDeposit, .FeatureID_DepositCombinedToDepositSearch:
             return "Transfer"
         case .FeatureID_PassbookLoseApply, .FeatureID_DebitCardLoseApply, .FeatureID_CheckLoseApply:
             return "Lose"
@@ -131,6 +134,8 @@ enum PlatformFeatureID: Int {
             return "繳費"
         case .FeatureID_DepositCombinedToDeposit:
             return "綜存轉定存"
+        case .FeatureID_DepositCombinedToDepositSearch:
+            return "綜存戶轉存明細查詢/解約"
         default:
             return ""
         }
@@ -264,6 +269,7 @@ let Shadow_Opacity = Float(0.5)
 let Shadow_Color = UIColor(red: 219/255, green: 217/255, blue: 217/255, alpha: 1)
 let Orange_Color = UIColor(red: 246/255, green: 113/255, blue: 16/255, alpha: 1)
 let Gray_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
+let Memo_Color = UIColor(red: 130/255, green: 179/255, blue: 66/255, alpha: 1)
 let Cell_Title_Color = UIColor(red: 127/255, green: 127/255, blue: 127/255, alpha: 1)
 let Cell_Detail_Color = UIColor.black
 let Default_Font = UIFont.systemFont(ofSize: CGFloat(18))
