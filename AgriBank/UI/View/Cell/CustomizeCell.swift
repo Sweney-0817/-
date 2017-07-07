@@ -225,3 +225,26 @@ class NTRationCell: UITableViewCell {
     }
     
 }
+
+class LoanPrincipalInterestCell: UITableViewCell {
+    let patBtn_Color = UIColor(red: 130/255, green: 179/255, blue: 66/255, alpha: 1)
+    @IBOutlet weak var calculatePeriodLabel: UILabel!
+    @IBOutlet weak var principalInterestLabel: UILabel!
+    @IBOutlet weak var breachContractLabel: UILabel!
+    
+    @IBOutlet weak var delayInterestLabel: UILabel!
+    @IBOutlet weak var payBtn: UIButton!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        payBtn.layer.cornerRadius = Layer_BorderRadius
+        payBtn.layer.borderWidth = Layer_BorderWidth
+        payBtn.layer.borderColor = patBtn_Color.cgColor
+        
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        // Configure the view for the selected state
+    }
+}

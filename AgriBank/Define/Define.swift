@@ -221,6 +221,7 @@ enum UIID: Int {
     case UIID_TwoRowDropDownView      // TwoRowDropDownView class
     case UIID_ThreeRowDropDownView    // ThreeRowDropDownView class
     case UIID_NTRationCell            // NTRationCell for新台幣利率
+    case UIID_LoanPrincipalInterestCell // LoanPrincipalInterestCell class in CustomizeCell.swift
     
     func NibName() -> String? {
         switch self {
@@ -258,6 +259,8 @@ enum UIID: Int {
             return "ThreeRowDropDownView"
         case .UIID_NTRationCell:
             return "NTRationCell"
+        case .UIID_LoanPrincipalInterestCell:
+            return "LoanPrincipalInterestCell"
         default:
             return nil
         }
@@ -276,7 +279,7 @@ enum AuthorizationType: Int {
     case User_Type          // 使用者自訂
     case Edit_Type          // 新增/編輯
     case Menu_Type          // 側邊選單
-    case FeatureWall_Type   // 廣告牆
+    case FeatureWall_Type   // 功能牆
 }
 
 // MARK: - Connection Utility

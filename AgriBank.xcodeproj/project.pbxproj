@@ -68,6 +68,8 @@
 		61DB5C381F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DB5C371F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift */; };
 		61DB5C3A1F0E0D85006622EC /* DepositCombinedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DB5C391F0E0D85006622EC /* DepositCombinedDetailViewController.swift */; };
 		61E374A01F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E3749F1F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift */; };
+		61E374A21F0F597E0044EE3A /* LoanPrincipalInterestCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61E374A11F0F597E0044EE3A /* LoanPrincipalInterestCell.xib */; };
+		61E374A41F0F6DF80044EE3A /* LoanPrincipalInterestDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E374A31F0F6DF80044EE3A /* LoanPrincipalInterestDetailViewController.swift */; };
 		61F019071EF8000B00849E94 /* ExpandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F019061EF8000B00849E94 /* ExpandView.swift */; };
 		61F019091EF8006A00849E94 /* ExpandView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61F019081EF8006A00849E94 /* ExpandView.xib */; };
 		61F275481F05EEC0000CD9B7 /* ReservationTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F275471F05EEC0000CD9B7 /* ReservationTransferViewController.swift */; };
@@ -180,6 +182,8 @@
 		61DB5C371F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DepositCombinedToDepositSearchViewController.swift; path = Platform/TransferStoryBoard/DepositCombinedToDepositSearchViewController.swift; sourceTree = "<group>"; };
 		61DB5C391F0E0D85006622EC /* DepositCombinedDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DepositCombinedDetailViewController.swift; path = Platform/TransferStoryBoard/DepositCombinedDetailViewController.swift; sourceTree = "<group>"; };
 		61E3749F1F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoanPrincipalInterestViewController.swift; path = Platform/TransferStoryBoard/LoanPrincipalInterestViewController.swift; sourceTree = "<group>"; };
+		61E374A11F0F597E0044EE3A /* LoanPrincipalInterestCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoanPrincipalInterestCell.xib; path = UI/View/Cell/LoanPrincipalInterestCell.xib; sourceTree = "<group>"; };
+		61E374A31F0F6DF80044EE3A /* LoanPrincipalInterestDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoanPrincipalInterestDetailViewController.swift; path = Platform/TransferStoryBoard/LoanPrincipalInterestDetailViewController.swift; sourceTree = "<group>"; };
 		61F019061EF8000B00849E94 /* ExpandView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExpandView.swift; path = UI/View/ExpandView.swift; sourceTree = "<group>"; };
 		61F019081EF8006A00849E94 /* ExpandView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ExpandView.xib; path = UI/View/ExpandView.xib; sourceTree = "<group>"; };
 		61F275471F05EEC0000CD9B7 /* ReservationTransferViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReservationTransferViewController.swift; path = Platform/TransferStoryBoard/ReservationTransferViewController.swift; sourceTree = "<group>"; };
@@ -501,6 +505,7 @@
 				614FB4231EF9039400DDD270 /* OverviewCell.xib */,
 				614FB4241EF9039400DDD270 /* ResultCell.xib */,
 				BE7675381F0CD09C00E1A461 /* NTRationCell.xib */,
+				61E374A11F0F597E0044EE3A /* LoanPrincipalInterestCell.xib */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -516,6 +521,7 @@
 				61DB5C371F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift */,
 				61DB5C391F0E0D85006622EC /* DepositCombinedDetailViewController.swift */,
 				61E3749F1F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift */,
+				61E374A31F0F6DF80044EE3A /* LoanPrincipalInterestDetailViewController.swift */,
 			);
 			name = TransferStoryBoard;
 			sourceTree = "<group>";
@@ -668,6 +674,7 @@
 				61564A891F09E7D900CB6C4A /* ThreeRowDropDownView.xib in Resources */,
 				6148D9D91EDFD10000C02CA3 /* LaunchScreen.storyboard in Resources */,
 				614FB4281EF9039400DDD270 /* MenuCell.xib in Resources */,
+				61E374A21F0F597E0044EE3A /* LoanPrincipalInterestCell.xib in Resources */,
 				BE7675391F0CD09C00E1A461 /* NTRationCell.xib in Resources */,
 				6148DA261EDFE7A400C02CA3 /* AnnounceNews.xib in Resources */,
 				6148D9D61EDFD10000C02CA3 /* Assets.xcassets in Resources */,
@@ -753,6 +760,7 @@
 				6125ABF21EF5509C00A2A9A3 /* TextField.swift in Sources */,
 				BEB38A6A1F0A27EE006094AC /* BillPaymentViewController.swift in Sources */,
 				6148DA271EDFE7A400C02CA3 /* BannerView.swift in Sources */,
+				61E374A41F0F6DF80044EE3A /* LoanPrincipalInterestDetailViewController.swift in Sources */,
 				617318171EEFC89300133F7A /* VPImageCropperViewController.m in Sources */,
 				6148DA351EDFE7E900C02CA3 /* DetermineUtility.swift in Sources */,
 				61F019071EF8000B00849E94 /* ExpandView.swift in Sources */,
