@@ -128,13 +128,16 @@ class Platform {
         informationList[.FeatureID_NTRation] = feature                // 新臺幣利率
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation)
-        informationList[.FeatureID_ExchangeRate] = feature             // 牌告匯率
+        informationList[.FeatureID_ExchangeRate] = feature            // 牌告匯率
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation)
         informationList[.FeatureID_RegularSavingCalculation] = feature // 定期儲蓄試算
 
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
-        informationList[.FeatureID_DepositCombinedToDepositSearch] = feature // 綜存戶轉存明細查詢/解約
+        informationList[.FeatureID_DepositCombinedToDepositSearch] = feature       // 綜存戶轉存明細查詢/解約
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
+        informationList[.FeatureID_LoanPrincipalInterest] = feature    // 繳交放款本息
 
     }
 }

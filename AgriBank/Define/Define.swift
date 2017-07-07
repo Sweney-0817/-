@@ -37,6 +37,7 @@ enum PlatformFeatureID: Int {
     case FeatureID_NTRation                 // 新臺幣利率
     case FeatureID_ExchangeRate             // 牌告匯率
     case FeatureID_RegularSavingCalculation // 定期儲蓄試算
+    case FeatureID_LoanPrincipalInterest    // 繳交放款本息
     
     func StoryBoardID() -> String {
         switch self {
@@ -80,6 +81,8 @@ enum PlatformFeatureID: Int {
             return "FeatureID_ExchangeRate"
         case .FeatureID_RegularSavingCalculation:
             return "FeatureID_RegularSavingCalculation"
+        case .FeatureID_LoanPrincipalInterest:
+            return "FeatureID_LoanPrincipalInterest"
         default:
             return "";
         }
@@ -93,7 +96,7 @@ enum PlatformFeatureID: Int {
             return "Account"
         case .FeatureID_Confirm, .FeatureID_Result:
             return "Share"
-        case .FeatureID_NTTransfer, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel, .FeatureID_DepositCombinedToDeposit, .FeatureID_DepositCombinedToDepositSearch:
+        case .FeatureID_NTTransfer, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel, .FeatureID_DepositCombinedToDeposit, .FeatureID_DepositCombinedToDepositSearch, .FeatureID_LoanPrincipalInterest:
             return "Transfer"
         case .FeatureID_PassbookLoseApply, .FeatureID_DebitCardLoseApply, .FeatureID_CheckLoseApply:
             return "Lose"
@@ -156,6 +159,8 @@ enum PlatformFeatureID: Int {
             return "牌告匯率"
         case .FeatureID_RegularSavingCalculation:
             return "定期儲蓄試算"
+        case .FeatureID_LoanPrincipalInterest:
+            return "繳交放款本息"
         default:
             return ""
         }

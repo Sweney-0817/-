@@ -74,8 +74,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate {
             login?.frame = view.frame
             login?.setInitialList( ["桃園市":["全國農會1"], "台北市":["全國農會4","全國農會5"], "新北市":["全國農會7","全國農會8","全國農會9"]], "台北市" )
         }
-        
-        view.addSubview(login!)
+        UIApplication.shared.keyWindow?.addSubview(login!)
     }
     
     // MARK: - FeatureWallViewDelegate

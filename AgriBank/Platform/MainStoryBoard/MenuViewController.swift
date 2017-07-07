@@ -63,6 +63,9 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
                     if info.contentList != nil {
                         (cell as! MenuCell).directionImage.image = UIImage(named: ImageName.DropDown.rawValue)
                     }
+                    else {
+                        (cell as! MenuCell).directionImage.image = nil
+                    }
                 }
             }
         }

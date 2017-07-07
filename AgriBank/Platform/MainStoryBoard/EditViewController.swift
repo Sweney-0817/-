@@ -77,10 +77,16 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         if let info = getFeatureInfoByID(showList[indexPath.row]) {
             switch info.type {
             case .Head_Next_Type:
-                cell.entryImage.backgroundColor = .clear
                 cell.entryImage.image = UIImage(named: ImageName.EntryRight.rawValue)
                 cell.countLabel.text = "已選取(\(getCountByID(showList[indexPath.row])))"
+                cell.entryImage.layer.cornerRadius = 0
+                cell.entryImage.layer.masksToBounds = false
+                cell.entryImage.layer.borderColor = nil
+                cell.entryImage.layer.borderWidth = 0
+                cell.entryImage.backgroundColor = .clear
             case .Select_Type:
+                cell.entryImage.image = nil
+                cell.countLabel.text = ""
                 cell.entryImage.layer.cornerRadius = (cell.entryImage?.frame.width)!/2
                 cell.entryImage.layer.masksToBounds = true
                 cell.entryImage.layer.borderColor = Cell_SelectType_Color.cgColor
