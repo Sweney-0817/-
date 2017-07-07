@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmCellDelegate {
+class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate {
     @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vDDType: UIView!
     @IBOutlet weak var m_vDDAccount: UIView!
@@ -41,7 +41,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     var m_CheckDate: OneRowDropDownView? = nil
     var m_FeeAccount: OneRowDropDownView? = nil
     var m_curDropDownView: OneRowDropDownView? = nil
-    var m_ImageConfirmView: ImageConfirmCell? = nil
+    var m_ImageConfirmView: ImageConfirmView? = nil
     
 
     override func viewDidLoad() {
@@ -127,7 +127,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     func setImageConfirmView() {
         if (m_ImageConfirmView == nil)
         {
-            m_ImageConfirmView = getUIByID(.UIID_ImageConfirmCell) as? ImageConfirmCell
+            m_ImageConfirmView = getUIByID(.UIID_ImageConfirmView) as? ImageConfirmView
             m_ImageConfirmView?.delegate = self
             m_vImageConfirmView.addSubview(m_ImageConfirmView!)
         }

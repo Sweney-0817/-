@@ -120,5 +120,21 @@ class Platform {
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
         informationList[.FeatureID_DepositCombinedToDeposit] = feature            // 綜存轉定存
+
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation], belong: nil)
+        informationList[.FeatureID_FinancialInformation] = feature    // 理財資訊
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation)
+        informationList[.FeatureID_NTRation] = feature                // 新臺幣利率
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation)
+        informationList[.FeatureID_ExchangeRate] = feature             // 牌告匯率
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation)
+        informationList[.FeatureID_RegularSavingCalculation] = feature // 定期儲蓄試算
+
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
+        informationList[.FeatureID_DepositCombinedToDepositSearch] = feature // 綜存戶轉存明細查詢/解約
+
     }
 }

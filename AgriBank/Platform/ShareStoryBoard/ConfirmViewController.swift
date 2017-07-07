@@ -10,7 +10,7 @@ import UIKit
 
 let ConfirmView_ImageConfirm_Cell_Height:CGFloat = 60
 let Confirm_Segue = "GoResult"
-class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, ImageConfirmCellDelegate {
+class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, ImageConfirmViewDelegate {
     @IBOutlet weak var m_ivTopImage: UIImageView!
     @IBOutlet weak var m_lbTopTitle: UILabel!
     @IBOutlet weak var m_tvData: UITableView!
@@ -38,7 +38,8 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         m_lbTopTitle.text = data?.title
         
         m_tvData.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
-        m_tvData.register(UINib(nibName: UIID.UIID_ImageConfirmCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ImageConfirmCell.NibName()!)
+//        m_tvData.register(UINib(nibName: UIID.UIID_ImageConfirmView.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ImageConfirmView.NibName()!)
+        m_tvData.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: SystemCell_Identify)
         m_tvData.allowsSelection = false
         m_tvData.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
         
@@ -89,9 +90,12 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (indexPath.row == (data?.list?.count)!) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ImageConfirmCell.NibName()!, for: indexPath) as! ImageConfirmCell
-            cell.delegate = self
-            cell.m_vSeparator.isHidden = false
+            let cell = tableView.dequeueReusableCell(withIdentifier: SystemCell_Identify, for: indexPath)
+            let view = getUIByID(.UIID_ImageConfirmView) as? ImageConfirmView
+            view?.delegate = self
+            view?.m_vSeparator.isHidden = false
+            view?.frame = CGRect(x:0, y:0, width:cell.contentView.frame.width, height:cell.contentView.frame.height)
+            cell.contentView.addSubview(view!)
 //            cell.set(m_arrData[indexPath.row]["Key"]!, m_arrData[indexPath.row]["Value"]!)
             return cell
         }

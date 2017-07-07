@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ImageConfirmView" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="圖形驗證碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B6D-AY-Ncn">
+                    <rect key="frame" x="15" y="8" width="150.5" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="TE3-nT-ScU"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="Z5M-mu-EQY"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="iN0-l3-epB" id="PPO-Xu-3Au"/>
+                    </connections>
+                </textField>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="8qk-ZR-nJc">
+                    <rect key="frame" x="175.5" y="8" width="150.5" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="YfG-UL-YGx"/>
+                        <constraint firstAttribute="height" constant="44" id="iJx-W0-evO"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gJj-jo-eTJ">
+                    <rect key="frame" x="336" y="18" width="24" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="Idx-pJ-y5Z"/>
+                        <constraint firstAttribute="width" constant="24" id="Nb8-rg-qnQ"/>
+                    </constraints>
+                    <state key="normal" image="Refresh"/>
+                    <connections>
+                        <action selector="m_btnRefreshClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="TEl-TY-b9i"/>
+                    </connections>
+                </button>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Phe-s0-1x7">
+                    <rect key="frame" x="0.0" y="59" width="375" height="1"/>
+                    <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="Ttl-Rs-jbt"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="ghu-4n-xoR"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Phe-s0-1x7" secondAttribute="bottom" id="DK1-us-vnw"/>
+                <constraint firstItem="8qk-ZR-nJc" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Fp0-eT-hMc"/>
+                <constraint firstItem="gJj-jo-eTJ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="GVS-8d-5zL"/>
+                <constraint firstItem="B6D-AY-Ncn" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="LNT-dF-693"/>
+                <constraint firstItem="Phe-s0-1x7" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="UbH-76-Iui"/>
+                <constraint firstAttribute="trailing" secondItem="Phe-s0-1x7" secondAttribute="trailing" id="VHM-nC-OZf"/>
+                <constraint firstItem="gJj-jo-eTJ" firstAttribute="leading" secondItem="8qk-ZR-nJc" secondAttribute="trailing" constant="10" id="rmd-4B-mEV"/>
+                <constraint firstItem="8qk-ZR-nJc" firstAttribute="leading" secondItem="B6D-AY-Ncn" secondAttribute="trailing" constant="10" id="utV-82-5Vu"/>
+                <constraint firstItem="B6D-AY-Ncn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="x8A-9T-bMK"/>
+                <constraint firstItem="8qk-ZR-nJc" firstAttribute="width" secondItem="B6D-AY-Ncn" secondAttribute="width" id="yTk-vt-axz"/>
+                <constraint firstAttribute="trailing" secondItem="gJj-jo-eTJ" secondAttribute="trailing" constant="15" id="z3R-Nl-x3J"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="m_btnRefresh" destination="gJj-jo-eTJ" id="ZYB-uE-10c"/>
+                <outlet property="m_ivShow" destination="8qk-ZR-nJc" id="CtA-wb-p5x"/>
+                <outlet property="m_tfInput" destination="B6D-AY-Ncn" id="Kci-Ig-CCT"/>
+                <outlet property="m_vSeparator" destination="Phe-s0-1x7" id="82x-xY-tKz"/>
+            </connections>
+            <point key="canvasLocation" x="45.5" y="54"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Refresh" width="24" height="24"/>
+        <image name="Textfield" width="311" height="44"/>
+    </resources>
+</document>

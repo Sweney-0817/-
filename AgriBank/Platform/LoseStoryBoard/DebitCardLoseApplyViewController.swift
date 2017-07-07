@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UITextFieldDelegate, UIActionSheetDelegate, ImageConfirmCellDelegate {
+class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UITextFieldDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate {
     @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vDropDownView: UIView!
     @IBOutlet weak var m_tfWebBankPassword: TextField!
@@ -21,7 +21,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
         enterConfirmResultController(false, data, true)
     }
     var m_OneRow: OneRowDropDownView? = nil
-    var m_ImageConfirmView: ImageConfirmCell? = nil
+    var m_ImageConfirmView: ImageConfirmView? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +56,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     func setImageConfirmView() {
         if (m_ImageConfirmView == nil)
         {
-            m_ImageConfirmView = getUIByID(.UIID_ImageConfirmCell) as? ImageConfirmCell
+            m_ImageConfirmView = getUIByID(.UIID_ImageConfirmView) as? ImageConfirmView
             m_ImageConfirmView?.delegate = self
             m_vImageConfirmView.addSubview(m_ImageConfirmView!)
         }

@@ -33,6 +33,10 @@ enum PlatformFeatureID: Int {
     case FeatureID_BillPayment              // 繳費
     case FeatureID_DepositCombinedToDeposit // 綜存轉定存
     case FeatureID_DepositCombinedToDepositSearch   // 綜存戶轉存明細查詢/解約
+    case FeatureID_FinancialInformation     // 理財資訊
+    case FeatureID_NTRation                 // 新臺幣利率
+    case FeatureID_ExchangeRate             // 牌告匯率
+    case FeatureID_RegularSavingCalculation // 定期儲蓄試算
     
     func StoryBoardID() -> String {
         switch self {
@@ -70,6 +74,12 @@ enum PlatformFeatureID: Int {
             return "FeatureID_DepositCombinedToDeposit"
         case .FeatureID_DepositCombinedToDepositSearch:
             return "FeatureID_DepositCombinedToDepositSearch"
+        case .FeatureID_NTRation:
+            return "FeatureID_NTRation"
+        case .FeatureID_ExchangeRate:
+            return "FeatureID_ExchangeRate"
+        case .FeatureID_RegularSavingCalculation:
+            return "FeatureID_RegularSavingCalculation"
         default:
             return "";
         }
@@ -89,6 +99,8 @@ enum PlatformFeatureID: Int {
             return "Lose"
         case .FeatureID_TaxPayment, .FeatureID_BillPayment:
             return "Payment"
+        case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation:
+            return "FinancialInformation"
         default:
             return "";
         }
@@ -136,6 +148,14 @@ enum PlatformFeatureID: Int {
             return "綜存轉定存"
         case .FeatureID_DepositCombinedToDepositSearch:
             return "綜存戶轉存明細查詢/解約"
+        case .FeatureID_FinancialInformation:
+            return "理財資訊"
+        case .FeatureID_NTRation:
+            return "新臺幣利率"
+        case .FeatureID_ExchangeRate:
+            return "牌告匯率"
+        case .FeatureID_RegularSavingCalculation:
+            return "定期儲蓄試算"
         default:
             return ""
         }
@@ -190,11 +210,12 @@ enum UIID: Int {
     case UIID_TypeSection             // TypeSection class in TypeSection.swift
     case UIID_ExpandView              // ExpandView class in ExpandView.swift
     case UIID_ResultCell              // ResultCell class in CustomizeCell.swift
-    case UIID_ImageConfirmCell        // ImageConfirmCell class in CustomizeCell.swift (圖形驗證碼)
+    case UIID_ImageConfirmView        // ImageConfirmView class in CustomizeCell.swift (圖形驗證碼)
     case UIID_MemoView                // MemoView class
     case UIID_OneRowDropDownView      // OneRowDropDownView class
     case UIID_TwoRowDropDownView      // TwoRowDropDownView class
     case UIID_ThreeRowDropDownView    // ThreeRowDropDownView class
+    case UIID_NTRationCell            // NTRationCell for新台幣利率
     
     func NibName() -> String? {
         switch self {
@@ -220,8 +241,8 @@ enum UIID: Int {
             return "ExpandView"
         case .UIID_ResultCell:
             return "ResultCell"
-        case .UIID_ImageConfirmCell:
-            return "ImageConfirmCell"
+        case .UIID_ImageConfirmView:
+            return "ImageConfirmView"
         case .UIID_MemoView:
             return "MemoView"
         case .UIID_OneRowDropDownView:
@@ -230,6 +251,8 @@ enum UIID: Int {
             return "TwoRowDropDownView"
         case .UIID_ThreeRowDropDownView:
             return "ThreeRowDropDownView"
+        case .UIID_NTRationCell:
+            return "NTRationCell"
         default:
             return nil
         }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="NTRationCell" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4E-oI-6ZV">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="定期儲蓄存款2年" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dks-Jg-c30">
+                            <rect key="frame" x="15" y="19.5" width="139" height="21"/>
+                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="139" id="RRn-hM-WMr"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.10010 %" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SAp-r9-bf9">
+                            <rect key="frame" x="161" y="19.5" width="82" height="21"/>
+                            <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.10010 %" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9g-mN-hRC">
+                            <rect key="frame" x="278" y="19" width="82" height="21"/>
+                            <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNx-C0-GUC">
+                            <rect key="frame" x="0.0" y="59" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.74509803921568629" green="0.74509803921568629" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="9CL-eJ-aUg"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="j9g-mN-hRC" secondAttribute="trailing" constant="15" id="1c6-gt-yc6"/>
+                        <constraint firstItem="j9g-mN-hRC" firstAttribute="centerY" secondItem="c4E-oI-6ZV" secondAttribute="centerY" id="2wh-iy-oAA"/>
+                        <constraint firstAttribute="trailing" secondItem="yNx-C0-GUC" secondAttribute="trailing" id="3HF-i3-wUv"/>
+                        <constraint firstItem="SAp-r9-bf9" firstAttribute="centerY" secondItem="c4E-oI-6ZV" secondAttribute="centerY" id="428-5o-iiR"/>
+                        <constraint firstItem="yNx-C0-GUC" firstAttribute="leading" secondItem="c4E-oI-6ZV" secondAttribute="leading" id="5yK-mG-itu"/>
+                        <constraint firstItem="SAp-r9-bf9" firstAttribute="leading" secondItem="dks-Jg-c30" secondAttribute="trailing" constant="7" id="DHa-2J-nic"/>
+                        <constraint firstItem="j9g-mN-hRC" firstAttribute="trailing" secondItem="SAp-r9-bf9" secondAttribute="trailing" constant="117" id="PVj-mQ-QMK"/>
+                        <constraint firstAttribute="bottom" secondItem="yNx-C0-GUC" secondAttribute="bottom" id="U9a-Tm-q7s"/>
+                        <constraint firstItem="dks-Jg-c30" firstAttribute="centerY" secondItem="c4E-oI-6ZV" secondAttribute="centerY" id="hDl-dW-a6V"/>
+                        <constraint firstItem="dks-Jg-c30" firstAttribute="leading" secondItem="c4E-oI-6ZV" secondAttribute="leading" constant="15" id="t3M-TA-Yvh"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="c4E-oI-6ZV" secondAttribute="bottom" id="Ka0-05-mqG"/>
+                <constraint firstItem="c4E-oI-6ZV" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="R5w-9k-Vkf"/>
+                <constraint firstAttribute="trailing" secondItem="c4E-oI-6ZV" secondAttribute="trailing" id="d6D-IU-O4N"/>
+                <constraint firstItem="c4E-oI-6ZV" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="l0j-8a-u69"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="m_lbData1" destination="SAp-r9-bf9" id="sbw-cZ-FI0"/>
+                <outlet property="m_lbData2" destination="j9g-mN-hRC" id="h9Y-SX-C6V"/>
+                <outlet property="m_lbTitle" destination="dks-Jg-c30" id="dhN-GB-cBV"/>
+            </connections>
+        </view>
+    </objects>
+</document>

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmCellDelegate
+class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate
  {
     @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vDropDownView: UIView!
@@ -20,7 +20,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
         enterConfirmResultController(false, data, true)
     }
     var m_OneRow: OneRowDropDownView? = nil
-    var m_ImageConfirmView: ImageConfirmCell? = nil
+    var m_ImageConfirmView: ImageConfirmView? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +49,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
     func setImageConfirmView() {
         if (m_ImageConfirmView == nil)
         {
-            m_ImageConfirmView = getUIByID(.UIID_ImageConfirmCell) as? ImageConfirmCell
+            m_ImageConfirmView = getUIByID(.UIID_ImageConfirmView) as? ImageConfirmView
             m_ImageConfirmView?.delegate = self
             m_vImageConfirmView.addSubview(m_ImageConfirmView!)
         }

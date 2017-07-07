@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Ration View Controller-->
+        <scene sceneID="Hg1-Qn-tWX">
+            <objects>
+                <viewController storyboardIdentifier="FeatureID_NTRation" id="1rR-wx-RV1" customClass="NTRationViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xvb-4o-k9T"/>
+                        <viewControllerLayoutGuide type="bottom" id="z1z-i8-axO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="f5v-sm-10d">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ks-83-g28">
+                                <rect key="frame" x="0.0" y="138" width="375" height="40"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="類別" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FmQ-xa-YUg">
+                                        <rect key="frame" x="15" y="9.5" width="37" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="固定利率" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z6H-t7-QZv">
+                                        <rect key="frame" x="169.5" y="9.5" width="73.5" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="機動利率" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2f-NX-EA6">
+                                        <rect key="frame" x="286" y="9" width="73.5" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="4Bs-G0-6HO"/>
+                                    <constraint firstItem="s2f-NX-EA6" firstAttribute="trailing" secondItem="z6H-t7-QZv" secondAttribute="trailing" constant="117" id="6dt-IH-CBn"/>
+                                    <constraint firstAttribute="trailing" secondItem="s2f-NX-EA6" secondAttribute="trailing" constant="15" id="BJQ-2R-9u0"/>
+                                    <constraint firstItem="s2f-NX-EA6" firstAttribute="centerY" secondItem="5ks-83-g28" secondAttribute="centerY" id="Fu0-Qp-H9t"/>
+                                    <constraint firstItem="FmQ-xa-YUg" firstAttribute="leading" secondItem="5ks-83-g28" secondAttribute="leading" constant="15" id="JIO-Hs-bD1"/>
+                                    <constraint firstItem="FmQ-xa-YUg" firstAttribute="centerY" secondItem="5ks-83-g28" secondAttribute="centerY" id="qCr-8G-M6c"/>
+                                    <constraint firstItem="z6H-t7-QZv" firstAttribute="centerY" secondItem="5ks-83-g28" secondAttribute="centerY" id="tE8-cm-zXf"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Cs-73-lSz" customClass="ChooseTypeView" customModule="AgriBank" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="79" width="375" height="60"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="I9s-Xx-m9l"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pda-0U-gEi">
+                                <rect key="frame" x="0.0" y="20" width="375" height="60"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="UZb-KR-bYP"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7sN-10-cIg">
+                                <rect key="frame" x="0.0" y="178" width="375" height="2"/>
+                                <color key="backgroundColor" red="0.49803921568627452" green="0.49803921568627452" blue="0.49803921568627452" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="mVf-FR-7Es"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jEE-li-1DY">
+                                <rect key="frame" x="0.0" y="180" width="375" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="1rR-wx-RV1" id="mRJ-6z-PnK"/>
+                                    <outlet property="delegate" destination="1rR-wx-RV1" id="kNE-NR-S6t"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="3Cs-73-lSz" firstAttribute="leading" secondItem="f5v-sm-10d" secondAttribute="leading" id="1mb-5w-qKc"/>
+                            <constraint firstAttribute="trailing" secondItem="3Cs-73-lSz" secondAttribute="trailing" id="4nS-TO-bxV"/>
+                            <constraint firstItem="7sN-10-cIg" firstAttribute="top" secondItem="5ks-83-g28" secondAttribute="bottom" id="6hF-3A-1oK"/>
+                            <constraint firstAttribute="trailing" secondItem="5ks-83-g28" secondAttribute="trailing" id="B31-Qt-UDp"/>
+                            <constraint firstAttribute="trailing" secondItem="pda-0U-gEi" secondAttribute="trailing" id="IuQ-Oy-Bs0"/>
+                            <constraint firstAttribute="trailing" secondItem="7sN-10-cIg" secondAttribute="trailing" id="KBl-nc-vnw"/>
+                            <constraint firstItem="z1z-i8-axO" firstAttribute="top" secondItem="jEE-li-1DY" secondAttribute="bottom" id="Tpj-Dd-7ZL"/>
+                            <constraint firstItem="7sN-10-cIg" firstAttribute="leading" secondItem="f5v-sm-10d" secondAttribute="leading" id="WQN-Tf-B2I"/>
+                            <constraint firstItem="jEE-li-1DY" firstAttribute="top" secondItem="7sN-10-cIg" secondAttribute="bottom" id="YLd-nD-rHt"/>
+                            <constraint firstItem="3Cs-73-lSz" firstAttribute="top" secondItem="pda-0U-gEi" secondAttribute="bottom" constant="-1" id="bQ1-5H-IIQ"/>
+                            <constraint firstItem="pda-0U-gEi" firstAttribute="top" secondItem="xvb-4o-k9T" secondAttribute="bottom" id="epa-N0-kFl"/>
+                            <constraint firstItem="5ks-83-g28" firstAttribute="top" secondItem="3Cs-73-lSz" secondAttribute="bottom" constant="-1" id="mJA-tX-RCN"/>
+                            <constraint firstItem="pda-0U-gEi" firstAttribute="leading" secondItem="f5v-sm-10d" secondAttribute="leading" id="psI-dg-ck4"/>
+                            <constraint firstItem="5ks-83-g28" firstAttribute="leading" secondItem="f5v-sm-10d" secondAttribute="leading" id="tJe-c3-L76"/>
+                            <constraint firstItem="jEE-li-1DY" firstAttribute="leading" secondItem="f5v-sm-10d" secondAttribute="leading" id="uEj-PL-CAu"/>
+                            <constraint firstAttribute="trailing" secondItem="jEE-li-1DY" secondAttribute="trailing" id="vZT-6q-Gqo"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="m_lbData1Title" destination="z6H-t7-QZv" id="1od-dZ-6dv"/>
+                        <outlet property="m_lbData2Title" destination="s2f-NX-EA6" id="d3u-ot-L4F"/>
+                        <outlet property="m_tvData" destination="jEE-li-1DY" id="hoN-aL-6jr"/>
+                        <outlet property="m_vChooseTypeView" destination="3Cs-73-lSz" id="D5m-59-qf2"/>
+                        <outlet property="m_vPlace" destination="pda-0U-gEi" id="orT-8F-Ldf"/>
+                        <outlet property="m_vTitle" destination="5ks-83-g28" id="i5I-8H-lXT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wY3-us-JWs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-327" y="145"/>
+        </scene>
+        <!--Exchange Rate View Controller-->
+        <scene sceneID="JlZ-QP-1oV">
+            <objects>
+                <viewController storyboardIdentifier="FeatureID_ExchangeRate" id="lzu-A4-t0w" customClass="ExchangeRateViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NPb-Bg-aHH"/>
+                        <viewControllerLayoutGuide type="bottom" id="OKT-Ba-VqR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6u9-kL-A5d">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MZv-mW-0hx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="302" y="144"/>
+        </scene>
+        <!--Regular Saving Calculation View Controller-->
+        <scene sceneID="x8x-fr-Dt4">
+            <objects>
+                <viewController storyboardIdentifier="FeatureID_RegularSavingCalculation" id="cGG-RL-A9L" customClass="RegularSavingCalculationViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cYm-8L-xP6"/>
+                        <viewControllerLayoutGuide type="bottom" id="cD3-XN-njt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="g6D-yD-eA8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oM8-bN-8qE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="935" y="143"/>
+        </scene>
+    </scenes>
+</document>
