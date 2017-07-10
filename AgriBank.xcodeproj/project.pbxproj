@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6109C02F1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6109C02E1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift */; };
+		6117CF3D1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6117CF3C1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift */; };
 		611B8EC91EE966BE003FCFDF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 611B8EC71EE966BE003FCFDF /* Main.storyboard */; };
 		6125ABF21EF5509C00A2A9A3 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6125ABF11EF5509C00A2A9A3 /* TextField.swift */; };
 		6129E6AE1F038DED00C23D67 /* Lose.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6129E6AC1F038DED00C23D67 /* Lose.storyboard */; };
@@ -112,6 +113,7 @@
 
 /* Begin PBXFileReference section */
 		6109C02E1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheckLoseApplyViewController.swift; path = Platform/LoseStoryBoard/CheckLoseApplyViewController.swift; sourceTree = "<group>"; };
+		6117CF3C1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PayLoanPrincipalInterestViewController.swift; path = Platform/TransferStoryBoard/PayLoanPrincipalInterestViewController.swift; sourceTree = "<group>"; };
 		611B8EC81EE966BE003FCFDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6125ABF11EF5509C00A2A9A3 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextField.swift; path = UI/Component/TextField.swift; sourceTree = "<group>"; };
 		6129E6AD1F038DED00C23D67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Lose.storyboard; sourceTree = "<group>"; };
@@ -522,6 +524,7 @@
 				61DB5C391F0E0D85006622EC /* DepositCombinedDetailViewController.swift */,
 				61E3749F1F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift */,
 				61E374A31F0F6DF80044EE3A /* LoanPrincipalInterestDetailViewController.swift */,
+				6117CF3C1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift */,
 			);
 			name = TransferStoryBoard;
 			sourceTree = "<group>";
@@ -727,6 +730,7 @@
 				61DB5C381F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift in Sources */,
 				6148DA171EDFE76D00C02CA3 /* NSData+AESCrypt.m in Sources */,
 				6148DA381EDFE84600C02CA3 /* SecurityUtility.swift in Sources */,
+				6117CF3D1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift in Sources */,
 				61DB5C3A1F0E0D85006622EC /* DepositCombinedDetailViewController.swift in Sources */,
 				617318191EEFCB4B00133F7A /* LoginView.swift in Sources */,
 				615B8D7D1EFD0CA5002B4B53 /* ConfirmViewController.swift in Sources */,

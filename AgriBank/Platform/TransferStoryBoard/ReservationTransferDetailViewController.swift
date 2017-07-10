@@ -9,6 +9,7 @@
 import UIKit
 
 let ReservationTransferDetailTitle = "預約轉帳明細"
+
 class ReservationTransferDetailViewController: BaseViewController, UITableViewDataSource {
     private var list:[[String:String]]? = nil
     @IBOutlet weak var tableView: UITableView!
