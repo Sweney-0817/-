@@ -33,6 +33,8 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
         topDropView?.frame = topView.frame
         topDropView?.frame.origin = .zero
         topView.addSubview(topDropView!)
+        topView.layer.borderWidth = Layer_BorderWidth
+        topView.layer.borderColor = Gray_Color.cgColor
         setShadowView(topView)
         
         middleView.layer.borderWidth = Layer_BorderWidth
