@@ -21,7 +21,7 @@ struct NTRationStruct {
 }
 
 
-class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ChooseTypeDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, ChooseTypeDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var m_vPlace: UIView!
     @IBOutlet weak var m_vChooseTypeView: ChooseTypeView!
     @IBOutlet weak var m_vTitle: UIView!
@@ -150,27 +150,8 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, UI
     }
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
-//        let b = m_tfPicker.becomeFirstResponder()
         textFieldShouldBeginEditing(m_tfPicker)
         m_tfPicker.becomeFirstResponder()
-        return
-        var a = [String]()
-        a.append("001")
-        a.append("002")
-        a.append("003")
-        a.append("004")
-        a.append("005")
-        let action = UIActionSheet.init()
-        action.delegate = self
-        action.title = "select"
-        for s in a  {
-            action.addButton(withTitle: s)
-        }
-        action.addButton(withTitle: "cancel")
-        action.cancelButtonIndex = a.count
-        action.tag = 1000
-        
-        action.show(in: self.view)
     }
     // MARK: - UIActionSheetDelegate
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int)
@@ -282,7 +263,6 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, UI
             let city = [String](a!.keys)[0]
             return a![city]?[row]
         }
-        return title
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
