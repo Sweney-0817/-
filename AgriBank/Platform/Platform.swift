@@ -139,5 +139,19 @@ class Platform {
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
         informationList[.FeatureID_LoanPrincipalInterest] = feature    // 繳交放款本息
 
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage], belong: nil)
+        informationList[.FeatureID_CustomerService] = feature    // 客戶服務
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService)
+        informationList[.FeatureID_Promotion] = feature                // 農漁會優惠產品
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService)
+        informationList[.FeatureID_News] = feature            // 最新消息
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService)
+        informationList[.FeatureID_ServiceBase] = feature // 服務據點
+
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService)
+        informationList[.FeatureID_PersonalMessage] = feature // 個人訊息
     }
 }

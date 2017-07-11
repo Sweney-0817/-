@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ServiceBaseCell" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="宜蘭縣農會" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="18q-lV-USn">
+                    <rect key="frame" x="15" y="12" width="242.5" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="25" id="cGO-Bo-hcr"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="800公尺外" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rnR-Bp-LHJ">
+                    <rect key="frame" x="257" y="12" width="78.5" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="新北市板橋區縣民大道一段291號新北市板橋區縣民大道一段291號" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hx3-if-qQN">
+                    <rect key="frame" x="15" y="42" width="321" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EntryRight" translatesAutoresizingMaskIntoConstraints="NO" id="iDq-NC-CVD">
+                    <rect key="frame" x="340" y="40" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="0iY-ek-6Pz"/>
+                        <constraint firstAttribute="height" constant="20" id="FlZ-zs-bjP"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CkI-wq-oiT">
+                    <rect key="frame" x="0.0" y="99" width="375" height="1"/>
+                    <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="54B-Mq-RAd"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="rnR-Bp-LHJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="8zE-zH-Rl9"/>
+                <constraint firstItem="rnR-Bp-LHJ" firstAttribute="leading" secondItem="18q-lV-USn" secondAttribute="trailing" id="96P-gh-YUC"/>
+                <constraint firstAttribute="trailing" secondItem="CkI-wq-oiT" secondAttribute="trailing" id="DJ6-kC-8sM"/>
+                <constraint firstItem="18q-lV-USn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="Fs7-W9-rjx"/>
+                <constraint firstItem="Hx3-if-qQN" firstAttribute="top" secondItem="18q-lV-USn" secondAttribute="bottom" constant="5" id="LEn-Zo-ROZ"/>
+                <constraint firstItem="iDq-NC-CVD" firstAttribute="leading" secondItem="Hx3-if-qQN" secondAttribute="trailing" constant="4" id="PSm-39-Rss"/>
+                <constraint firstAttribute="trailing" secondItem="iDq-NC-CVD" secondAttribute="trailing" constant="15" id="RJ6-tM-usK"/>
+                <constraint firstItem="18q-lV-USn" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="Ziq-qT-vOD"/>
+                <constraint firstItem="iDq-NC-CVD" firstAttribute="leading" secondItem="rnR-Bp-LHJ" secondAttribute="trailing" constant="4" id="cse-tR-LGW"/>
+                <constraint firstItem="iDq-NC-CVD" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="l0W-Fm-6gh"/>
+                <constraint firstAttribute="bottom" secondItem="CkI-wq-oiT" secondAttribute="bottom" id="qgL-Wc-Ubd"/>
+                <constraint firstItem="Hx3-if-qQN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="wqK-gv-bpX"/>
+                <constraint firstItem="CkI-wq-oiT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="zsj-Bq-wlr"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="m_lbAddress" destination="Hx3-if-qQN" id="pcf-i5-XJe"/>
+                <outlet property="m_lbDistance" destination="rnR-Bp-LHJ" id="ZdU-iI-UaY"/>
+                <outlet property="m_lbTitle" destination="18q-lV-USn" id="FHe-wZ-K6U"/>
+            </connections>
+            <point key="canvasLocation" x="82.5" y="54"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="EntryRight" width="20" height="20"/>
+    </resources>
+</document>

@@ -223,7 +223,6 @@ class NTRationCell: UITableViewCell {
         m_lbData1.text = data1
         m_lbData2.text = data2
     }
-    
 }
 
 class LoanPrincipalInterestCell: UITableViewCell {
@@ -246,5 +245,65 @@ class LoanPrincipalInterestCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
+    }
+}
+
+class PromotionCell: UITableViewCell {
+    @IBOutlet weak var m_lbTitle: UILabel!
+    @IBOutlet weak var m_lbDate: UILabel!
+    @IBOutlet weak var m_lbPlace: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        // Configure the view for the selected state
+    }
+    func setData(_ title:String, _ date:String, _ place:String) {
+        m_lbTitle.text = title
+        m_lbDate.text = date
+        m_lbPlace.text = place
+    }
+}
+
+class NewsCell: UITableViewCell {
+    @IBOutlet weak var m_lbTitle: UILabel!
+    @IBOutlet weak var m_lbDateTitle: UILabel!
+    @IBOutlet weak var m_lbDate: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        // Configure the view for the selected state
+    }
+    func setData(_ title:String, _ dateTitle:String, _ date:String) {
+        m_lbTitle.text = title
+        m_lbDateTitle.text = dateTitle
+        m_lbDate.text = date
+    }
+}
+
+class ServiceBaseCell: UITableViewCell {
+    @IBOutlet weak var m_lbTitle: UILabel!
+    @IBOutlet weak var m_lbAddress: UILabel!
+    @IBOutlet weak var m_lbDistance: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        // Configure the view for the selected state
+    }
+    func setData(_ title:String, _ address:String, _ distance:String) {
+        m_lbTitle.text = title
+        m_lbAddress.text = address
+        m_lbDistance.text = distance
     }
 }

@@ -38,7 +38,11 @@ enum PlatformFeatureID: Int {
     case FeatureID_ExchangeRate             // 牌告匯率
     case FeatureID_RegularSavingCalculation // 定期儲蓄試算
     case FeatureID_LoanPrincipalInterest    // 繳交放款本息
-    
+    case FeatureID_CustomerService          // 客戶服務
+    case FeatureID_Promotion                // 農漁會優惠產品
+    case FeatureID_News                     // 最新消息
+    case FeatureID_ServiceBase              // 服務據點
+    case FeatureID_PersonalMessage          // 個人訊息
     func StoryBoardID() -> String {
         switch self {
         case .FeatureID_Home:
@@ -83,6 +87,14 @@ enum PlatformFeatureID: Int {
             return "FeatureID_RegularSavingCalculation"
         case .FeatureID_LoanPrincipalInterest:
             return "FeatureID_LoanPrincipalInterest"
+        case .FeatureID_Promotion:
+            return "FeatureID_Promotion"
+        case .FeatureID_News:
+            return "FeatureID_News"
+        case .FeatureID_ServiceBase:
+            return "FeatureID_ServiceBase"
+        case .FeatureID_PersonalMessage:
+            return "FeatureID_PersonalMessage"
         default:
             return "";
         }
@@ -104,6 +116,8 @@ enum PlatformFeatureID: Int {
             return "Payment"
         case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation:
             return "FinancialInformation"
+        case .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage:
+            return "CustomerService"
         default:
             return "";
         }
@@ -161,6 +175,16 @@ enum PlatformFeatureID: Int {
             return "定期儲蓄試算"
         case .FeatureID_LoanPrincipalInterest:
             return "繳交放款本息"
+        case .FeatureID_CustomerService:
+            return "客戶服務"
+        case .FeatureID_Promotion:
+            return "農漁會優惠產品"
+        case .FeatureID_News:
+            return "最新消息"
+        case .FeatureID_ServiceBase:
+            return "服務據點"
+        case .FeatureID_PersonalMessage:
+            return "個人訊息"
         default:
             return ""
         }
@@ -222,6 +246,9 @@ enum UIID: Int {
     case UIID_ThreeRowDropDownView    // ThreeRowDropDownView class
     case UIID_NTRationCell            // NTRationCell for新台幣利率
     case UIID_LoanPrincipalInterestCell // LoanPrincipalInterestCell class in CustomizeCell.swift
+    case UIID_PromotionCell             // PromotionCell for農漁會優惠產品
+    case UIID_NewsCell                  // NewsCell for最新消息、個人訊息
+    case UIID_ServiceBaseCell           // ServiceBaseCell for服務據點
     
     func NibName() -> String? {
         switch self {
@@ -261,6 +288,12 @@ enum UIID: Int {
             return "NTRationCell"
         case .UIID_LoanPrincipalInterestCell:
             return "LoanPrincipalInterestCell"
+        case .UIID_PromotionCell:
+            return "PromotionCell"
+        case .UIID_NewsCell:
+            return "NewsCell"
+        case .UIID_ServiceBaseCell:
+            return "ServiceBaseCell"
         default:
             return nil
         }
