@@ -94,13 +94,13 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             let endLabel = UILabel.init(frame: CGRect.init(x: 30, y: 335, width: 320, height: 30))
             endLabel.text = "截止日"
             endLabel.font = Cell_Font_Size
-            endLabel.backgroundColor = Orange_Color
+            endLabel.backgroundColor = Green_Color
             endLabel.textAlignment = .center
             endLabel.textColor = .white
             view.addSubview(endLabel)
             
             let button = UIButton.init(frame: CGRect.init(x: 30, y: 590, width: 320, height: 40))
-            button.setBackgroundImage(UIImage.init(named: ImageName.ButtonOBox.rawValue), for: .normal)
+            button.setBackgroundImage(UIImage.init(named: ImageName.ButtonLarge.rawValue), for: .normal)
             button.tintColor = .white
             button.setTitle("確定", for: .normal)
             view.addSubview(button)

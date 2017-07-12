@@ -48,7 +48,7 @@ class ChooseTypeView: UIView {
                 button.titleLabel?.font = ChooseType_Font_Size
                 if index == currentIndex {
                     button.setTitleColor(.white, for: .normal)
-                    button.backgroundColor = Orange_Color
+                    button.backgroundColor = Green_Color
                 }
                 else {
                     button.setTitleColor(.black, for: .normal)
@@ -74,7 +74,7 @@ class ChooseTypeView: UIView {
         
         let button = sender as! UIButton
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = Orange_Color
+        button.backgroundColor = Green_Color
         currentIndex = button.tag
         
         delegate?.clickChooseTypeBtn((button.titleLabel?.text)!)

@@ -358,14 +358,14 @@ enum DownloadType: Int {
 
 // MARK: - 圖片名稱
 enum ImageName: String {
-    case BackBarItem, BackHome, ButtonOBox, Close, CowCheck, CowFailure, CowSuccess, DropDown, DropUp, EntryRight, HintDownArrow, Locker, Login, Orange, Refresh, RightBarItem, RadioOn, RadioOff, Textfield, Unlocker
+    case BackBarItem, BackHome, ButtonLarge, ButtonSmall, ButtonMedium, Close, CowCheck, CowFailure, CowSuccess, DropDown, DropUp, EntryRight, HintDownArrow, Locker, Login, Vegetable, Refresh, RightBarItem, RadioOn, RadioOff, Textfield, Unlocker
 }
 
 // MARK: - 顏色定義
 let Shadow_Radious = CGFloat(20)
 let Shadow_Opacity = Float(0.5)
 let Shadow_Color = UIColor(red: 219/255, green: 217/255, blue: 217/255, alpha: 1)
-let Orange_Color = UIColor(red: 246/255, green: 113/255, blue: 16/255, alpha: 1)
+let Green_Color = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha: 1)
 let Gray_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
 let Memo_Color = UIColor(red: 130/255, green: 179/255, blue: 66/255, alpha: 1)
 let Cell_Title_Color = UIColor(red: 127/255, green: 127/255, blue: 127/255, alpha: 1)

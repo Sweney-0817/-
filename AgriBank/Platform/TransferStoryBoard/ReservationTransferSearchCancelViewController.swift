@@ -61,14 +61,14 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     // MARK: - StoryBoard Touch Event
     @IBAction func clickSpecificDateBtn(_ sender: Any) {
         specificDateBtn.setTitleColor(.white, for: .normal)
-        specificDateBtn.backgroundColor = Orange_Color
+        specificDateBtn.backgroundColor = Green_Color
         fixedDateBtn.setTitleColor(.black, for: .normal)
         fixedDateBtn.backgroundColor = .white
     }
     
     @IBAction func ClickFixedDateBtn(_ sender: Any) {
         fixedDateBtn.setTitleColor(.white, for: .normal)
-        fixedDateBtn.backgroundColor = Orange_Color
+        fixedDateBtn.backgroundColor = Green_Color
         specificDateBtn.setTitleColor(.black, for: .normal)
         specificDateBtn.backgroundColor = .white
     }

@@ -75,7 +75,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="QYu-ow-CqD"/>
                                         </constraints>
-                                        <state key="normal" backgroundImage="ButtonOBox">
+                                        <state key="normal" backgroundImage="ButtonMedium">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -84,7 +84,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q42-EJ-b8s">
                                         <rect key="frame" x="200" y="8" width="160" height="44"/>
-                                        <state key="normal" title="返回首頁" backgroundImage="ButtonOBox">
+                                        <state key="normal" title="返回首頁" backgroundImage="ButtonMedium">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -201,7 +201,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="qWV-Uy-2Wr"/>
                                                 </constraints>
-                                                <state key="normal" backgroundImage="ButtonOBox">
+                                                <state key="normal" backgroundImage="ButtonLarge">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -256,7 +256,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ButtonOBox" width="24" height="48"/>
+        <image name="ButtonLarge" width="346" height="44"/>
+        <image name="ButtonMedium" width="160" height="44"/>
         <image name="CowCheck" width="140" height="140"/>
         <image name="CowSuccess" width="140" height="140"/>
     </resources>

@@ -1,4 +1,4 @@
-//
+    //
 //  ViewController.swift
 //  BankPublicVersion
 //
@@ -15,6 +15,8 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate {
     @IBOutlet weak var accountBalanceLabel: UILabel!
     @IBOutlet weak var featureWall: FeatureWallView!
     @IBOutlet weak var loginBtn: UIButton!
+    @IBOutlet weak var logoImageView: UIImageView!
+    
     private var login:LoginView? = nil
     
     // MARK: - Life cycle
@@ -22,7 +24,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.leftBarButtonItem = nil
-        
+        statusView?.removeFromSuperview()
         loginBtn.layer.cornerRadius = loginBtn.frame.width/2
         loginBtn.layer.masksToBounds = true
         
@@ -49,6 +51,12 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = false
     }
     
     // MARK: - pubilc 
@@ -74,7 +82,11 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate {
             login?.frame = view.frame
             login?.setInitialList( ["桃園市":["全國農會1"], "台北市":["全國農會4","全國農會5"], "新北市":["全國農會7","全國農會8","全國農會9"]], "台北市" )
         }
-        UIApplication.shared.keyWindow?.addSubview(login!)
+        view.addSubview(login!)
+    }
+    
+    @IBAction func clickRightBarButton(_ sender: Any) {
+        clickShowSideMenu()
     }
     
     // MARK: - FeatureWallViewDelegate

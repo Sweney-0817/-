@@ -33,7 +33,7 @@
                                 <action selector="clickCloseBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="JfV-ZT-xMg"/>
                             </connections>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Orange" translatesAutoresizingMaskIntoConstraints="NO" id="1pS-MV-8lP">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Vegetable" translatesAutoresizingMaskIntoConstraints="NO" id="1pS-MV-8lP">
                             <rect key="frame" x="123.5" y="65" width="94" height="100"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="100" id="WC6-9J-735"/>
@@ -125,7 +125,7 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NaA-w9-Z9a">
                             <rect key="frame" x="15" y="465" width="311" height="44"/>
-                            <state key="normal" title="登入" backgroundImage="ButtonOBox"/>
+                            <state key="normal" title="登入" backgroundImage="ButtonLarge"/>
                             <connections>
                                 <action selector="clickLoginBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="uGm-S5-MzY"/>
                             </connections>
@@ -202,12 +202,12 @@
         </view>
     </objects>
     <resources>
-        <image name="ButtonOBox" width="24" height="48"/>
+        <image name="ButtonLarge" width="346" height="44"/>
         <image name="Close" width="24" height="24"/>
         <image name="DropDown" width="20" height="20"/>
-        <image name="Orange" width="94" height="100"/>
         <image name="Refresh" width="24" height="24"/>
         <image name="Textfield" width="311" height="44"/>
         <image name="Unlocker" width="24" height="24"/>
+        <image name="Vegetable" width="94" height="100"/>
     </resources>
 </document>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -410,7 +410,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="QM0-lE-yBr"/>
                                         </constraints>
-                                        <state key="normal" title="顯示地圖" backgroundImage="ButtonOBox">
+                                        <state key="normal" title="顯示地圖" backgroundImage="ButtonMedium">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -419,7 +419,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B3Y-fo-Bb0">
                                         <rect key="frame" x="200" y="8" width="160" height="44"/>
-                                        <state key="normal" title="撥打電話" backgroundImage="ButtonOBox">
+                                        <state key="normal" title="撥打電話" backgroundImage="ButtonMedium">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -461,7 +461,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ButtonOBox" width="24" height="48"/>
+        <image name="ButtonMedium" width="160" height="44"/>
         <image name="EntryRight" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>

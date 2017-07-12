@@ -7,7 +7,6 @@
 //
 
 import UIKit
-let Cell_SelectType_Color = UIColor(red: 246/255, green: 113/255, blue: 16/255, alpha: 1)
 
 class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
     @IBOutlet weak var tableBottomCons: NSLayoutConstraint!
@@ -89,11 +88,11 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
                 cell.countLabel.text = ""
                 cell.entryImage.layer.cornerRadius = (cell.entryImage?.frame.width)!/2
                 cell.entryImage.layer.masksToBounds = true
-                cell.entryImage.layer.borderColor = Cell_SelectType_Color.cgColor
+                cell.entryImage.layer.borderColor = Green_Color.cgColor
                 cell.entryImage.layer.borderWidth = 1
                 if let i = addList.index(of: showList[indexPath.row]) {
                     cell.orderLabel.text = String(i+1)
-                    cell.entryImage.backgroundColor = Cell_SelectType_Color
+                    cell.entryImage.backgroundColor = Green_Color
                 }
                 else {
                     cell.orderLabel.text = ""

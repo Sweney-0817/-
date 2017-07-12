@@ -18,11 +18,12 @@ let URL_DOMAIN = ""
 #endif
 let REQUEST_URL = "\(URL_PROTOCOL)://\(URL_DOMAIN)"
 let BarItem_Height_Weight = 30
-let NavigationBarColor = UIColor(colorLiteralRed: 100/255, green: 146/255, blue: 40/255, alpha: 1)
+let NavigationBarColor = UIColor(colorLiteralRed: 46/255, green: 134/255, blue: 201/255, alpha: 1)
 
 class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     var request:ConnectionUtility? = nil
     var needShowBackBarItem:Bool = true
+    var statusView:UIView? = nil
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -48,6 +49,9 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
         }
         
         navigationController?.navigationBar.barTintColor = NavigationBarColor
+        statusView = UIView(frame: UIApplication.shared.statusBarFrame)
+        statusView?.backgroundColor = .white
+        UIApplication.shared.keyWindow?.addSubview(statusView!)
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,6 +63,11 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.topItem?.title = getFeatureName(getCurrentFeatureID())
         navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.white]
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        statusView?.removeFromSuperview()
     }
     
     deinit {

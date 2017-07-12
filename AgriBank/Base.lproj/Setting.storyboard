@@ -238,7 +238,7 @@
                                             <constraint firstAttribute="height" constant="44" id="Jeg-2g-mxW"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <state key="normal" title="變更" backgroundImage="ButtonGBox">
+                                        <state key="normal" title="變更" backgroundImage="ButtonLarge">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -341,7 +341,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rhh-uv-tVI">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
-                                        <state key="normal" title="變更" backgroundImage="ButtonGBox">
+                                        <state key="normal" title="變更" backgroundImage="ButtonLarge">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -824,7 +824,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09A-Tl-vuX">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
-                                        <state key="normal" title="返回首頁" backgroundImage="ButtonGBox">
+                                        <state key="normal" title="返回首頁" backgroundImage="ButtonLarge">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -922,7 +922,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z5L-tD-5IO">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
-                                        <state key="normal" title="確定" backgroundImage="ButtonGBox">
+                                        <state key="normal" title="確定" backgroundImage="ButtonLarge">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -962,10 +962,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ButtonGBox" width="346" height="44"/>
+        <image name="ButtonLarge" width="346" height="44"/>
         <image name="CowSuccess" width="140" height="140"/>
         <image name="EntryRight" width="20" height="20"/>
-        <image name="Login" width="90" height="90"/>
+        <image name="Login" width="60" height="60"/>
         <image name="Textfield" width="311" height="44"/>
     </resources>
 </document>

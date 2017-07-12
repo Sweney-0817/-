@@ -40,7 +40,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         // Do any additional setup after loading the view.
         accountTypeSegCon.layer.borderWidth = Layer_BorderWidth
         accountTypeSegCon.layer.cornerRadius = Layer_BorderRadius
-        accountTypeSegCon.layer.borderColor = Orange_Color.cgColor
+        accountTypeSegCon.layer.borderColor = Green_Color.cgColor
         accountTypeSegCon.setTitleTextAttributes([NSFontAttributeName:Default_Font], for: .normal)
         
         sShowBankAccountHeight = showBankAccountHeight.constant
@@ -106,13 +106,13 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     private func SetBtnColor(_ isPredesignated:Bool) {
         self.isPredesignated = isPredesignated
         if isPredesignated {
-            predesignatedBtn.backgroundColor = Orange_Color
+            predesignatedBtn.backgroundColor = Green_Color
             predesignatedBtn.setTitleColor(.white, for: .normal)
             nonPredesignatedBtn.backgroundColor = .white
             nonPredesignatedBtn.setTitleColor(.black, for: .normal)
         }
         else {
-            nonPredesignatedBtn.backgroundColor = Orange_Color
+            nonPredesignatedBtn.backgroundColor = Green_Color
             nonPredesignatedBtn.setTitleColor(.white, for: .normal)
             predesignatedBtn.backgroundColor = .white
             predesignatedBtn.setTitleColor(.black, for: .normal)
