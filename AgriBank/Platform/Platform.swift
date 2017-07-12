@@ -18,13 +18,15 @@ class Platform {
         var controller:UIViewController? = nil
         let defaultController = UIViewController()
         
-        switch FeatureID {
-    
-        default:
-            controller = UIStoryboard(name: FeatureID.StoryBoardName(), bundle: nil).instantiateViewController(withIdentifier: FeatureID.StoryBoardID())
-        }
+        controller = UIStoryboard(name: FeatureID.StoryBoardName(), bundle: nil).instantiateViewController(withIdentifier: FeatureID.StoryBoardID())
         
-        if FeatureID != .FeatureID_Confirm && FeatureID != .FeatureID_Result {
+        switch FeatureID {
+        case .FeatureID_Confirm, .FeatureID_Result: break
+        case .FeatureID_UserPwdChange:
+            (controller as! UserChangeIDPwdViewController).SetIsChangePassword()
+            (controller as! BaseViewController).needShowBackBarItem = false
+            currentFeatureID = FeatureID
+        default:
             (controller as! BaseViewController).needShowBackBarItem = false
             currentFeatureID = FeatureID
         }
@@ -62,19 +64,7 @@ class Platform {
         informationList[.FeatureID_Home] = feature  // 首頁
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
-        informationList[.FeatureID_AccountOverView] = feature   // 帳戶總覽
-        
-//        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
-//        informationList[.FeatureID_DemandDepositActDetail] = feature // 活期存款帳戶明細
-//        
-//        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
-//        informationList[.FeatureID_CheckDepositActDetail] = feature  // 支票存款帳戶明細
-//        
-//        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
-//        informationList[.FeatureID_TimeDepositActDetail] = feature   // 定期存款帳戶明細
-//        
-//        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
-//        informationList[.FeatureID_LoansActDetail] = feature         // 放款帳戶明細
+        informationList[.FeatureID_AccountOverView] = feature        // 帳戶總覽
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
         informationList[.FeatureID_AccountDetailView] = feature      // 帳戶往來明細
@@ -131,7 +121,7 @@ class Platform {
         informationList[.FeatureID_ExchangeRate] = feature            // 牌告匯率
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation)
-        informationList[.FeatureID_RegularSavingCalculation] = feature // 定期儲蓄試算
+        informationList[.FeatureID_RegularSavingCalculation] = feature// 定期儲蓄試算
 
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
         informationList[.FeatureID_DepositCombinedToDepositSearch] = feature       // 綜存戶轉存明細查詢/解約
@@ -140,18 +130,39 @@ class Platform {
         informationList[.FeatureID_LoanPrincipalInterest] = feature    // 繳交放款本息
 
         feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage], belong: nil)
-        informationList[.FeatureID_CustomerService] = feature    // 客戶服務
+        informationList[.FeatureID_CustomerService] = feature         // 客戶服務
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService)
-        informationList[.FeatureID_Promotion] = feature                // 農漁會優惠產品
+        informationList[.FeatureID_Promotion] = feature               // 農漁會優惠產品
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService)
-        informationList[.FeatureID_News] = feature            // 最新消息
+        informationList[.FeatureID_News] = feature                    // 最新消息
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService)
-        informationList[.FeatureID_ServiceBase] = feature // 服務據點
+        informationList[.FeatureID_ServiceBase] = feature             // 服務據點
 
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService)
-        informationList[.FeatureID_PersonalMessage] = feature // 個人訊息
+        informationList[.FeatureID_PersonalMessage] = feature         // 個人訊息
+        
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_BasicInfoChange, .FeatureID_UserNameChange, .FeatureID_UserPwdChange, .FeatureID_MessageSwitch, .FeatureID_SetAvatar, .FeatureID_DeviceBinding], belong: nil)
+        informationList[.FeatureID_PersopnalSetting] = feature        // 個人設定
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting)
+        informationList[.FeatureID_BasicInfoChange] = feature         // 基本資料變更
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting)
+        informationList[.FeatureID_UserNameChange] = feature          // 使用者代號變更
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting)
+        informationList[.FeatureID_UserPwdChange] = feature           // 使用者密碼變更
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting)
+        informationList[.FeatureID_MessageSwitch] = feature           // 個人訊息開關
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting)
+        informationList[.FeatureID_SetAvatar] = feature               // 登入頭像設定
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting)
+        informationList[.FeatureID_DeviceBinding] = feature           // 設備綁定
     }
 }

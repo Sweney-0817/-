@@ -43,6 +43,14 @@ enum PlatformFeatureID: Int {
     case FeatureID_News                     // 最新消息
     case FeatureID_ServiceBase              // 服務據點
     case FeatureID_PersonalMessage          // 個人訊息
+    case FeatureID_PersopnalSetting         // 個人設定
+    case FeatureID_BasicInfoChange          // 基本資料變更
+    case FeatureID_UserNameChange           // 使用者代號變更
+    case FeatureID_UserPwdChange            // 使用者密碼變更
+    case FeatureID_MessageSwitch            // 個人訊息開關
+    case FeatureID_SetAvatar                // 登入頭像設定
+    case FeatureID_DeviceBinding            // 設備綁定
+    
     func StoryBoardID() -> String {
         switch self {
         case .FeatureID_Home:
@@ -95,6 +103,16 @@ enum PlatformFeatureID: Int {
             return "FeatureID_ServiceBase"
         case .FeatureID_PersonalMessage:
             return "FeatureID_PersonalMessage"
+        case .FeatureID_BasicInfoChange:
+            return "FeatureID_BasicInfoChange"
+        case .FeatureID_UserNameChange, .FeatureID_UserPwdChange:
+            return "FeatureID_UserChangeIDPwd"
+        case .FeatureID_MessageSwitch:
+            return "FeatureID_MessageSwitch"
+        case .FeatureID_SetAvatar:
+            return "FeatureID_SetAvatar"
+        case .FeatureID_DeviceBinding:
+            return "FeatureID_DeviceBinding"
         default:
             return "";
         }
@@ -118,6 +136,8 @@ enum PlatformFeatureID: Int {
             return "FinancialInformation"
         case .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage:
             return "CustomerService"
+        case .FeatureID_BasicInfoChange, .FeatureID_UserNameChange, .FeatureID_UserPwdChange, .FeatureID_MessageSwitch, .FeatureID_SetAvatar, .FeatureID_DeviceBinding:
+            return "Setting"
         default:
             return "";
         }
@@ -185,6 +205,20 @@ enum PlatformFeatureID: Int {
             return "服務據點"
         case .FeatureID_PersonalMessage:
             return "個人訊息"
+        case .FeatureID_PersopnalSetting:
+            return "個人設定"
+        case .FeatureID_BasicInfoChange:
+            return "基本資料變更"
+        case .FeatureID_UserNameChange:
+            return "使用者代號變更"
+        case .FeatureID_UserPwdChange:
+            return "使用者密碼變更"
+        case .FeatureID_MessageSwitch:
+            return "個人訊息開關"
+        case .FeatureID_SetAvatar:
+            return "登入頭像設定"
+        case .FeatureID_DeviceBinding:
+            return "設備綁定"
         default:
             return ""
         }

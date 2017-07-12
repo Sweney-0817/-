@@ -81,6 +81,14 @@
 		61F4F42C1EF2A9E3001E3872 /* ActOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4F42B1EF2A9E3001E3872 /* ActOverviewViewController.swift */; };
 		61F4F42E1EF2ADAD001E3872 /* ShowDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4F42D1EF2ADAD001E3872 /* ShowDetailViewController.swift */; };
 		61F4F4301EF2B807001E3872 /* ActDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4F42F1EF2B807001E3872 /* ActDetailViewController.swift */; };
+		61FE9D121F15D23400FA32FE /* BasicInfoChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D0B1F15D23400FA32FE /* BasicInfoChangeViewController.swift */; };
+		61FE9D131F15D23400FA32FE /* BasicInfoResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D0C1F15D23400FA32FE /* BasicInfoResultViewController.swift */; };
+		61FE9D141F15D23400FA32FE /* DeviceBindingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D0D1F15D23400FA32FE /* DeviceBindingViewController.swift */; };
+		61FE9D151F15D23400FA32FE /* MessageSwitchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D0E1F15D23400FA32FE /* MessageSwitchViewController.swift */; };
+		61FE9D161F15D23400FA32FE /* SetAvatarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D0F1F15D23400FA32FE /* SetAvatarViewController.swift */; };
+		61FE9D171F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */; };
+		61FE9D181F15D23400FA32FE /* UserChangeIDPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */; };
+		61FE9D1B1F15D24500FA32FE /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61FE9D191F15D24500FA32FE /* Setting.storyboard */; };
 		BE7675301F0CC71400E1A461 /* FinancialInformation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE76752E1F0CC71400E1A461 /* FinancialInformation.storyboard */; };
 		BE7675331F0CCB2B00E1A461 /* NTRationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7675321F0CCB2B00E1A461 /* NTRationViewController.swift */; };
 		BE7675351F0CCBC700E1A461 /* ExchangeRateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7675341F0CCBC700E1A461 /* ExchangeRateViewController.swift */; };
@@ -207,6 +215,14 @@
 		61F4F42B1EF2A9E3001E3872 /* ActOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActOverviewViewController.swift; path = Platform/AccountStoryBoard/ActOverviewViewController.swift; sourceTree = "<group>"; };
 		61F4F42D1EF2ADAD001E3872 /* ShowDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShowDetailViewController.swift; path = Platform/AccountStoryBoard/ShowDetailViewController.swift; sourceTree = "<group>"; };
 		61F4F42F1EF2B807001E3872 /* ActDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActDetailViewController.swift; path = Platform/AccountStoryBoard/ActDetailViewController.swift; sourceTree = "<group>"; };
+		61FE9D0B1F15D23400FA32FE /* BasicInfoChangeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BasicInfoChangeViewController.swift; path = Platform/SettingStoryBoard/BasicInfoChangeViewController.swift; sourceTree = "<group>"; };
+		61FE9D0C1F15D23400FA32FE /* BasicInfoResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BasicInfoResultViewController.swift; path = Platform/SettingStoryBoard/BasicInfoResultViewController.swift; sourceTree = "<group>"; };
+		61FE9D0D1F15D23400FA32FE /* DeviceBindingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceBindingViewController.swift; path = Platform/SettingStoryBoard/DeviceBindingViewController.swift; sourceTree = "<group>"; };
+		61FE9D0E1F15D23400FA32FE /* MessageSwitchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageSwitchViewController.swift; path = Platform/SettingStoryBoard/MessageSwitchViewController.swift; sourceTree = "<group>"; };
+		61FE9D0F1F15D23400FA32FE /* SetAvatarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SetAvatarViewController.swift; path = Platform/SettingStoryBoard/SetAvatarViewController.swift; sourceTree = "<group>"; };
+		61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdResultViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdResultViewController.swift; sourceTree = "<group>"; };
+		61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdViewController.swift; sourceTree = "<group>"; };
+		61FE9D1A1F15D24500FA32FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Setting.storyboard; sourceTree = "<group>"; };
 		BE76752F1F0CC71400E1A461 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FinancialInformation.storyboard; sourceTree = "<group>"; };
 		BE7675321F0CCB2B00E1A461 /* NTRationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NTRationViewController.swift; path = Platform/FinancialInformationStoryBoard/NTRationViewController.swift; sourceTree = "<group>"; };
 		BE7675341F0CCBC700E1A461 /* ExchangeRateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExchangeRateViewController.swift; path = Platform/FinancialInformationStoryBoard/ExchangeRateViewController.swift; sourceTree = "<group>"; };
@@ -326,6 +342,7 @@
 		6148D9FC1EDFE62B00C02CA3 /* Platform */ = {
 			isa = PBXGroup;
 			children = (
+				61FE9D0A1F15D21E00FA32FE /* SettingStoryBoard */,
 				BE86EE901F135504003C7A36 /* CustomerServiceStoryBoard */,
 				BE7675311F0CCAD800E1A461 /* FinancialInformationStoryBoard */,
 				BEB38A671F0A27EE006094AC /* PaymentStoryBoard */,
@@ -501,6 +518,7 @@
 				6129E6AC1F038DED00C23D67 /* Lose.storyboard */,
 				BE76752E1F0CC71400E1A461 /* FinancialInformation.storyboard */,
 				BE86EE8D1F135292003C7A36 /* CustomerService.storyboard */,
+				61FE9D191F15D24500FA32FE /* Setting.storyboard */,
 			);
 			name = StoryBoard;
 			sourceTree = "<group>";
@@ -564,6 +582,20 @@
 				61F4F42D1EF2ADAD001E3872 /* ShowDetailViewController.swift */,
 			);
 			name = AccountStoryBoard;
+			sourceTree = "<group>";
+		};
+		61FE9D0A1F15D21E00FA32FE /* SettingStoryBoard */ = {
+			isa = PBXGroup;
+			children = (
+				61FE9D0B1F15D23400FA32FE /* BasicInfoChangeViewController.swift */,
+				61FE9D0C1F15D23400FA32FE /* BasicInfoResultViewController.swift */,
+				61FE9D0D1F15D23400FA32FE /* DeviceBindingViewController.swift */,
+				61FE9D0E1F15D23400FA32FE /* MessageSwitchViewController.swift */,
+				61FE9D0F1F15D23400FA32FE /* SetAvatarViewController.swift */,
+				61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */,
+				61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */,
+			);
+			name = SettingStoryBoard;
 			sourceTree = "<group>";
 		};
 		BE7675311F0CCAD800E1A461 /* FinancialInformationStoryBoard */ = {
@@ -717,6 +749,7 @@
 				BE86EE8F1F135292003C7A36 /* CustomerService.storyboard in Resources */,
 				6148DA281EDFE7A400C02CA3 /* BannerView.xib in Resources */,
 				61564A891F09E7D900CB6C4A /* ThreeRowDropDownView.xib in Resources */,
+				61FE9D1B1F15D24500FA32FE /* Setting.storyboard in Resources */,
 				6148D9D91EDFD10000C02CA3 /* LaunchScreen.storyboard in Resources */,
 				614FB4281EF9039400DDD270 /* MenuCell.xib in Resources */,
 				61E374A21F0F597E0044EE3A /* LoanPrincipalInterestCell.xib in Resources */,
@@ -765,14 +798,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61FE9D141F15D23400FA32FE /* DeviceBindingViewController.swift in Sources */,
 				61F275481F05EEC0000CD9B7 /* ReservationTransferViewController.swift in Sources */,
+				61FE9D161F15D23400FA32FE /* SetAvatarViewController.swift in Sources */,
 				6148DA2E1EDFE7B600C02CA3 /* SideMenuViewController.swift in Sources */,
 				615B8D801EFD0CC2002B4B53 /* NTTransferViewController.swift in Sources */,
 				BE76753B1F0E3D1A00E1A461 /* ImageConfirmView.swift in Sources */,
 				6129E6B31F038E7900C23D67 /* PassbookLoseApplyViewController.swift in Sources */,
+				61FE9D151F15D23400FA32FE /* MessageSwitchViewController.swift in Sources */,
 				6148DA071EDFE6E500C02CA3 /* BasePhotoViewController.swift in Sources */,
+				61FE9D171F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift in Sources */,
 				BE86EE9E1F136024003C7A36 /* ServiceBaseDetailViewController.swift in Sources */,
 				BE86EE921F135570003C7A36 /* PromotionViewController.swift in Sources */,
+				61FE9D131F15D23400FA32FE /* BasicInfoResultViewController.swift in Sources */,
 				61564A861F09E7D900CB6C4A /* OneRowDropDownView.swift in Sources */,
 				61DB5C381F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift in Sources */,
 				6148DA171EDFE76D00C02CA3 /* NSData+AESCrypt.m in Sources */,
@@ -794,6 +832,7 @@
 				BE7675351F0CCBC700E1A461 /* ExchangeRateViewController.swift in Sources */,
 				6148D9CF1EDFD10000C02CA3 /* AppDelegate.swift in Sources */,
 				6148DA421EE1428B00C02CA3 /* MenuViewController.swift in Sources */,
+				61FE9D181F15D23400FA32FE /* UserChangeIDPwdViewController.swift in Sources */,
 				6148DA401EE0072000C02CA3 /* UIPlatform.swift in Sources */,
 				6148DA181EDFE76D00C02CA3 /* NSString+AESCrypt.m in Sources */,
 				6148DA031EDFE6C700C02CA3 /* HomeViewController.swift in Sources */,
@@ -822,6 +861,7 @@
 				61E374A01F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift in Sources */,
 				61F4F42E1EF2ADAD001E3872 /* ShowDetailViewController.swift in Sources */,
 				61C64FCC1EE8FB2000C6766A /* EditViewController.swift in Sources */,
+				61FE9D121F15D23400FA32FE /* BasicInfoChangeViewController.swift in Sources */,
 				BE86EE961F1355B5003C7A36 /* ServiceBaseViewController.swift in Sources */,
 				BE86EE981F1355CD003C7A36 /* PersonalMessageViewController.swift in Sources */,
 				6109C02F1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift in Sources */,
@@ -909,6 +949,14 @@
 				61F4F41E1EF22AF8001E3872 /* Base */,
 			);
 			name = Account.storyboard;
+			sourceTree = "<group>";
+		};
+		61FE9D191F15D24500FA32FE /* Setting.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				61FE9D1A1F15D24500FA32FE /* Base */,
+			);
+			name = Setting.storyboard;
 			sourceTree = "<group>";
 		};
 		BE76752E1F0CC71400E1A461 /* FinancialInformation.storyboard */ = {

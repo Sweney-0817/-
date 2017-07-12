@@ -26,7 +26,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let resultController = segue.destination as! ResultViewController
-        let data = ConfirmResultStruct.init(ImageName.CowCheck.rawValue, "交易成功", self.data?.list, nil, nil, "繼續交易")
+        let data = ConfirmResultStruct(ImageName.CowCheck.rawValue, "交易成功", self.data?.list, nil, nil, "繼續交易")
         resultController.setData(data)
     }
     
