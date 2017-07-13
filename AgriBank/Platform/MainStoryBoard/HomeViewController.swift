@@ -24,7 +24,6 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.leftBarButtonItem = nil
-        statusView?.removeFromSuperview()
         loginBtn.layer.cornerRadius = loginBtn.frame.width/2
         loginBtn.layer.masksToBounds = true
         
@@ -52,11 +51,17 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate {
         super.viewWillAppear(animated)
         featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
         navigationController?.navigationBar.isHidden = true
+        if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
+            statusView.isHidden = true
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
+        if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
+            statusView.isHidden = false
+        }
     }
     
     // MARK: - pubilc 

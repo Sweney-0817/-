@@ -11,6 +11,11 @@ import UIKit
 class AuthorizationManage {
     static let manage = AuthorizationManage()
     private let featureList:[PlatformFeatureID:Bool]? = nil
+    private var loginToken:String? = nil
+    
+    func SetLoginToken(_ token:String?) {
+        loginToken = token
+    }
     
     func IsOpen(_ ID:PlatformFeatureID) -> Bool {
         if let bIS = featureList?[ID] {
@@ -29,7 +34,13 @@ class AuthorizationManage {
         case .Fixd_Type:
             list = [.FeatureID_Edit]
             
-        case .Default_Type: break;
+        case .Default_Type:
+            if loginToken == nil {
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase, .FeatureID_News]
+            }
+            else {
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase]
+            }
             
         case .User_Type:
             if let IDString = SecurityUtility.utility.readFileByKey(SetKey: File_IDList_Key, setDecryptKey: AES_Key) {
@@ -62,13 +73,13 @@ class AuthorizationManage {
         case .Edit_Type:
             list = [.FeatureID_AccountOverView,.FeatureID_AccountDetailView, .FeatureID_NTTransfer, .FeatureID_LoseApply, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel, .FeatureID_Payment, .FeatureID_DepositCombinedToDeposit, .FeatureID_DepositCombinedToDepositSearch, .FeatureID_FinancialInformation, .FeatureID_LoanPrincipalInterest, .FeatureID_CustomerService, .FeatureID_PersopnalSetting]
             
+            
         case .Menu_Type:
-            list = [PlatformFeatureID]()
-            if let editList = GetPlatformList(.Edit_Type) {
-                list?.append(contentsOf: editList)
+            if loginToken == nil {
+                list = [.FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_DeviceBinding]
             }
-            if let fixdList = GetPlatformList(.Fixd_Type) {
-                list?.append(contentsOf: fixdList)
+            else {
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding]
             }
         }
         
