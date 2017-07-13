@@ -20,10 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame:UIScreen.main.bounds)
         window?.rootViewController = Platform.plat.getUIByID(.UIID_SideMenu) as? UIViewController
         window?.makeKeyAndVisible()
-        let statusView = UIView(frame: UIApplication.shared.statusBarFrame)
-        statusView.backgroundColor = .white
-        statusView.tag = ViewTag.View_Status.rawValue
-        window?.addSubview(statusView)
         return true
     }
 

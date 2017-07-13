@@ -12,25 +12,32 @@ import Foundation
 enum PlatformFeatureID: Int {
     case FeatureID_Home                     // 首頁
     case FeatureID_AccountOverView          // 帳戶總覽
+    case FeatureID_DemandDepositActDetail   // 活期存款帳戶明細
+    case FeatureID_CheckDepositActDetail    // 支票存款帳戶明細
+    case FeatureID_TimeDepositActDetail     // 定期存款帳戶明細
+    case FeatureID_LoansActDetail           // 放款帳戶明細
     case FeatureID_AccountDetailView        // 帳戶往來明細
-    case FeatureID_NTAccountTransfer        // 台幣帳戶交易
-    case FeatureID_NTTransfer               // 即時轉帳
-    case FeatureID_ReservationTransfer      // 預約轉帳
-    case FeatureID_ReservationTransferSearchCancel  // 預約轉帳查詢取消
-    case FeatureID_DepositCombinedToDeposit // 綜存戶轉定存
-    case FeatureID_DepositCombinedToDepositSearch   // 綜存戶轉存明細查詢/解約
-    case FeatureID_LoanPrincipalInterest    // 繳交放款本息
     case FeatureID_LoseApply                // 掛失申請
     case FeatureID_PassbookLoseApply        // 存摺掛失
     case FeatureID_DebitCardLoseApply       // 金融卡掛失
     case FeatureID_CheckLoseApply           // 支票掛失
+    case FeatureID_Menu                     // 側邊選單
+    case FeatureID_Edit                     // 新增/編輯
+    case FeatureID_Confirm                  // 確認頁
+    case FeatureID_Result                   // 結果頁
+    case FeatureID_NTTransfer               // 即時轉帳
+    case FeatureID_ReservationTransfer      // 預約轉帳
+    case FeatureID_ReservationTransferSearchCancel  // 預約轉帳查詢取消
     case FeatureID_Payment                  // 繳款
     case FeatureID_TaxPayment               // 繳稅
     case FeatureID_BillPayment              // 繳費
+    case FeatureID_DepositCombinedToDeposit // 綜存轉定存
+    case FeatureID_DepositCombinedToDepositSearch   // 綜存戶轉存明細查詢/解約
     case FeatureID_FinancialInformation     // 理財資訊
     case FeatureID_NTRation                 // 新臺幣利率
     case FeatureID_ExchangeRate             // 牌告匯率
     case FeatureID_RegularSavingCalculation // 定期儲蓄試算
+    case FeatureID_LoanPrincipalInterest    // 繳交放款本息
     case FeatureID_CustomerService          // 客戶服務
     case FeatureID_Promotion                // 農漁會優惠產品
     case FeatureID_News                     // 最新消息
@@ -43,10 +50,6 @@ enum PlatformFeatureID: Int {
     case FeatureID_MessageSwitch            // 個人訊息開關
     case FeatureID_SetAvatar                // 登入頭像設定
     case FeatureID_DeviceBinding            // 設備綁定
-    case FeatureID_Menu                     // 側邊選單
-    case FeatureID_Edit                     // 新增/編輯
-    case FeatureID_Confirm                  // 確認頁
-    case FeatureID_Result                   // 結果頁
     
     func StoryBoardID() -> String {
         switch self {
@@ -146,6 +149,14 @@ enum PlatformFeatureID: Int {
             return ""
         case .FeatureID_AccountOverView:
             return "帳戶總覽"
+        case .FeatureID_DemandDepositActDetail:
+            return "活期存款帳戶明細"
+        case .FeatureID_CheckDepositActDetail:
+            return "支票存款帳戶明細"
+        case .FeatureID_TimeDepositActDetail:
+            return "定期存款帳戶明細"
+        case .FeatureID_LoansActDetail:
+            return "放款帳戶明細"
         case .FeatureID_AccountDetailView:
             return "帳戶往來明細"
         case .FeatureID_LoseApply:
@@ -216,7 +227,9 @@ enum PlatformFeatureID: Int {
 
 enum FeatureType: Int {  // 新增編輯 Cell Type
     case Head_Next_Type
+    case Title_Type
     case Select_Type
+    case Next_Type
     case None_Type
 }
 
@@ -321,10 +334,9 @@ enum UIID: Int {
     }
 }
 
-// MARK: - All View Tag
-enum ViewTag: Int {
-    case ActionSheet_Photo = 99 // 頭像設定
-    case View_Status            // 狀態欄
+// MARK: - ActionSheet Tag
+enum ActionSheetTag: Int {
+    case Photo              //相片
 }
 
 // MARK: - AuthorizationManager

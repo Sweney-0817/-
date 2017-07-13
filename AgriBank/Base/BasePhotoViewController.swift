@@ -45,7 +45,7 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
     func clickPersonalImage(_ cancelTitle:String ,_ otherTitle:[PhotoActionSheetTitle]) {
         let actSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: cancelTitle, destructiveButtonTitle: nil)
         otherTitle.forEach{ title in actSheet.addButton(withTitle: title.simpleDescription()) }
-        actSheet.tag = ViewTag.ActionSheet_Photo.rawValue
+        actSheet.tag = ActionSheetTag.Photo.rawValue
         actSheet.show(in: view)
     }
     
@@ -97,7 +97,7 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
     
     // MARK: - UIActionSheetDelegate
     public func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
-        if actionSheet.tag == ViewTag.ActionSheet_Photo.rawValue {
+        if actionSheet.tag == ActionSheetTag.Photo.rawValue {
             if buttonIndex != actionSheet.cancelButtonIndex {
                 let imgVc = UIImagePickerController()
                 imgVc.delegate = self

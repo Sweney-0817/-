@@ -21,12 +21,12 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GIQ-hX-gNY">
-                    <rect key="frame" x="15" y="15" width="70" height="45"/>
+                    <rect key="frame" x="10" y="10" width="80" height="64"/>
                     <color key="backgroundColor" red="1" green="0.52652948850000003" blue="0.22844109770000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="kG0-kE-LMP">
-                    <rect key="frame" x="5" y="65" width="90" height="35"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <rect key="frame" x="5" y="79" width="90" height="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -34,16 +34,16 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="rmb-8S-pn8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Ae8-RT-04v"/>
-                <constraint firstAttribute="trailing" secondItem="GIQ-hX-gNY" secondAttribute="trailing" constant="15" id="Ayb-FY-tGR"/>
-                <constraint firstItem="GIQ-hX-gNY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="BrG-7X-FHK"/>
+                <constraint firstAttribute="trailing" secondItem="GIQ-hX-gNY" secondAttribute="trailing" constant="10" id="Ayb-FY-tGR"/>
+                <constraint firstItem="GIQ-hX-gNY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="BrG-7X-FHK"/>
                 <constraint firstAttribute="bottom" secondItem="rmb-8S-pn8" secondAttribute="bottom" id="FmU-HT-tJV"/>
                 <constraint firstItem="GIQ-hX-gNY" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Gn8-Ok-8nW"/>
                 <constraint firstAttribute="trailing" secondItem="kG0-kE-LMP" secondAttribute="trailing" constant="5" id="LuD-8L-ptO"/>
-                <constraint firstItem="GIQ-hX-gNY" firstAttribute="width" secondItem="kG0-kE-LMP" secondAttribute="height" multiplier="2:1" id="Qt9-Gq-cT2"/>
-                <constraint firstAttribute="bottom" secondItem="kG0-kE-LMP" secondAttribute="bottom" id="f1m-li-A2m"/>
+                <constraint firstItem="GIQ-hX-gNY" firstAttribute="width" secondItem="kG0-kE-LMP" secondAttribute="height" multiplier="5:1" id="Qt9-Gq-cT2"/>
+                <constraint firstAttribute="bottom" secondItem="kG0-kE-LMP" secondAttribute="bottom" constant="5" id="f1m-li-A2m"/>
                 <constraint firstItem="kG0-kE-LMP" firstAttribute="top" secondItem="GIQ-hX-gNY" secondAttribute="bottom" constant="5" id="gaz-SS-ogE"/>
                 <constraint firstAttribute="trailing" secondItem="rmb-8S-pn8" secondAttribute="trailing" id="gdS-DF-3nE"/>
-                <constraint firstItem="GIQ-hX-gNY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="lVP-MJ-6OI"/>
+                <constraint firstItem="GIQ-hX-gNY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="lVP-MJ-6OI"/>
                 <constraint firstItem="kG0-kE-LMP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="mx0-IJ-meO"/>
                 <constraint firstItem="rmb-8S-pn8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="u2C-jd-AtH"/>
             </constraints>
