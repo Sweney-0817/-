@@ -28,9 +28,11 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
         scrollview.frame = frame
         scrollview.frame.size.height = frame.size.height - FeatureWall_PageControl_BottomDistance/2
         scrollview.frame.origin = .zero
+        addSubview(scrollview)
         pageCon.frame.origin.y = frame.size.height - FeatureWall_PageControl_BottomDistance
         pageCon.frame.origin.x = frame.size.width/2 - pageCon.frame.size.width/2
         setFeatureWall(vertical, horizontal)
+        addSubview(pageCon)
     }
     
     // MARK: - public
@@ -43,13 +45,12 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
         scrollview.isPagingEnabled = true
         scrollview.delegate = self
         scrollview.showsHorizontalScrollIndicator = false
-        addSubview(scrollview)
+        
         pageCon.numberOfPages = list.count%(vertical*horizontal) == 0 ? list.count/(vertical*horizontal) : list.count/(vertical*horizontal)+1
         pageCon.frame.size = pageCon.size(forNumberOfPages: pageCon.numberOfPages)
         pageCon.currentPageIndicatorTintColor = FeatureWall_PageControl_currentPageColor
         pageCon.pageIndicatorTintColor = FeatureWall_PageControl_PageColor
         pageCon.hidesForSinglePage = true
-        addSubview(pageCon)
     }
     
     func setContentList(_ list: [PlatformFeatureID] ) {
@@ -69,7 +70,7 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
             for current in 0...featureIDList.count-1 {
                 let position = getXYPositionByIndex(current, vertical, horizontal)
                 let wallCell = Platform.plat.getUIByID(.UIID_FeatureWallCell, self) as! FeatureWallCellView
-                wallCell.frame = CGRect(x: CGFloat(position.x)*width + CGFloat(position.page)*scrollview.frame.width, y: CGFloat(position.y)*height, width: width, height: height)
+                wallCell.frame = CGRect(x: CGFloat(position.x)*width + CGFloat(position.page)*scrollview.frame.size.width, y: CGFloat(position.y)*height, width: width, height: height)
                 wallCell.imageView.image = UIImage(named: String(featureIDList[current].rawValue))
                 wallCell.titleLabel.text = Platform.plat.getFeatureNameByID(featureIDList[current])
                 wallCell.button.addTarget(self, action: #selector(clickFeatureBtn(_:)), for: .touchUpInside)

@@ -8,11 +8,21 @@
 
 import UIKit
 
-
 let Login_PickView_Height:CGFloat = 250
 let Login_ToolBar_tintColor = UIColor(red: 92/255, green: 216/255, blue: 255/255, alpha: 1)
 let Login_DoneButton_Title = "Done"
 let Login_CancelButton_Title = "Cancel"
+let Login_Account_Length = 10
+let Login_ID_Length = 16
+let Login_Password_Length = 10
+
+struct LoginStrcture {
+    
+}
+
+protocol LoginDelegate {
+    func clickLoginBtn()
+}
 
 class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate{
     @IBOutlet weak var locationTextfield: UITextField!
@@ -72,12 +82,20 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
         textField.inputView = pickerView
     }
     
+    func InputIsCorrect() -> Bool {
+        return true
+    }
+    
     // MARK: - Xib Touch Event
     @IBAction func clickCloseBtn(_ sender: Any) {
         removeFromSuperview()
     }
     
     @IBAction func clickLoginBtn(_ sender: Any) {
+        if InputIsCorrect() {
+            AuthorizationManage.manage.SetLoginToken("qazwsx")
+            removeFromSuperview()
+        }
     }
     
     @IBAction func clickLockBtn(_ sender: Any) {
@@ -129,11 +147,37 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
             addPickerView(textField)
             return true
         }
-        else if textField == accountTextfield {
-            return false
-        }
         else {
             return true
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        if !DetermineUtility.utility.checkStringContainIllegalCharacter( newString ) {
+            return false
+        }
+        
+        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        var maxLength = 0
+        switch textField {
+        case accountTextfield:
+            maxLength = Login_Account_Length
+            
+        case idTextfield:
+            maxLength = Login_ID_Length
+            
+        case passwordTextfield:
+            maxLength = Login_Password_Length
+        
+        default: break
+        }
+        
+        if newLength <= maxLength {
+            return true
+        }
+        else {
+            return false
         }
     }
     

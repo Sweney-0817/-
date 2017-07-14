@@ -86,6 +86,7 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="hUx-sD-TGu" secondAttribute="bottom" id="7PK-fy-q6Z"/>
                                     <constraint firstItem="AMg-Sk-J65" firstAttribute="centerX" secondItem="22X-cP-5eQ" secondAttribute="centerX" id="Ct4-aB-DGg"/>
+                                    <constraint firstItem="AMg-Sk-J65" firstAttribute="top" secondItem="22X-cP-5eQ" secondAttribute="top" constant="30" id="GtE-re-6xe"/>
                                     <constraint firstAttribute="trailing" secondItem="hUx-sD-TGu" secondAttribute="trailing" id="JWE-ju-fod"/>
                                     <constraint firstItem="TQT-fb-AgI" firstAttribute="top" secondItem="AMg-Sk-J65" secondAttribute="bottom" constant="10" id="Mhi-rw-3UA"/>
                                     <constraint firstAttribute="trailing" secondItem="cDy-dN-nl1" secondAttribute="trailing" id="PY7-hb-xvB"/>
@@ -129,12 +130,12 @@
                             <constraint firstItem="bo1-rE-Ghf" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="CAb-zv-JHr"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vga-Qj-CIm" secondAttribute="bottom" id="CMt-rj-iAY"/>
                             <constraint firstItem="22X-cP-5eQ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="FUB-Ni-sva"/>
-                            <constraint firstItem="OEo-ZT-CoH" firstAttribute="bottom" secondItem="Ptf-ia-GhD" secondAttribute="bottom" constant="30" id="GFT-Xl-ZF8"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Ptf-ia-GhD" secondAttribute="leading" id="KhX-vz-6g1"/>
                             <constraint firstAttribute="trailing" secondItem="bo1-rE-Ghf" secondAttribute="trailing" id="L6y-K6-V9I"/>
                             <constraint firstItem="22X-cP-5eQ" firstAttribute="top" secondItem="Ptf-ia-GhD" secondAttribute="bottom" constant="10" id="R97-xE-BWN"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Ptf-ia-GhD" secondAttribute="trailing" id="T24-wH-Nhy"/>
                             <constraint firstItem="JDV-py-Ofg" firstAttribute="height" secondItem="bo1-rE-Ghf" secondAttribute="height" id="Ugh-UM-StG"/>
+                            <constraint firstItem="OEo-ZT-CoH" firstAttribute="top" secondItem="Ptf-ia-GhD" secondAttribute="bottom" constant="-30.5" id="Uiz-zE-edH"/>
                             <constraint firstItem="vga-Qj-CIm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WOx-X5-cGv"/>
                             <constraint firstItem="Ptf-ia-GhD" firstAttribute="top" secondItem="bo1-rE-Ghf" secondAttribute="bottom" constant="10" id="ZMd-RT-zVd"/>
                             <constraint firstItem="bo1-rE-Ghf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="bS1-dV-xZq"/>
@@ -146,7 +147,6 @@
                             <constraint firstItem="MfV-fU-wHy" firstAttribute="centerY" secondItem="bo1-rE-Ghf" secondAttribute="centerY" id="q2H-pF-2I9"/>
                             <constraint firstItem="OEo-ZT-CoH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ws3-H2-XKH"/>
                             <constraint firstItem="JDV-py-Ofg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="15" id="yBX-sU-7gu"/>
-                            <constraint firstItem="AMg-Sk-J65" firstAttribute="top" secondItem="OEo-ZT-CoH" secondAttribute="bottom" constant="10" id="zDz-rm-xWl"/>
                         </constraints>
                     </view>
                     <connections>

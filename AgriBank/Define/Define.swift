@@ -13,7 +13,7 @@ enum PlatformFeatureID: Int {
     case FeatureID_Home                     // 首頁
     case FeatureID_AccountOverView          // 帳戶總覽
     case FeatureID_AccountDetailView        // 帳戶往來明細
-    case FeatureID_NTAccountTransfer        // 台幣帳戶交易
+    case FeatureID_NTAccountTransfer        // 臺幣帳戶交易
     case FeatureID_NTTransfer               // 即時轉帳
     case FeatureID_ReservationTransfer      // 預約轉帳
     case FeatureID_ReservationTransferSearchCancel  // 預約轉帳查詢取消
@@ -157,7 +157,7 @@ enum PlatformFeatureID: Int {
         case .FeatureID_CheckLoseApply:
             return "支票掛失"
         case .FeatureID_Edit:
-            return "首頁功能捷徑新增/編輯"
+            return "新增"
         case .FeatureID_NTTransfer:
             return "即時轉帳"
         case .FeatureID_ReservationTransfer:
@@ -208,6 +208,8 @@ enum PlatformFeatureID: Int {
             return "登入頭像設定"
         case .FeatureID_DeviceBinding:
             return "設備綁定"
+        case .FeatureID_NTAccountTransfer:
+            return "臺幣帳戶交易"
         default:
             return ""
         }
@@ -265,7 +267,7 @@ enum UIID: Int {
     case UIID_OneRowDropDownView      // OneRowDropDownView class
     case UIID_TwoRowDropDownView      // TwoRowDropDownView class
     case UIID_ThreeRowDropDownView    // ThreeRowDropDownView class
-    case UIID_NTRationCell            // NTRationCell for新台幣利率
+    case UIID_NTRationCell            // NTRationCell for新臺幣利率
     case UIID_LoanPrincipalInterestCell // LoanPrincipalInterestCell class in CustomizeCell.swift
     case UIID_PromotionCell             // PromotionCell for農漁會優惠產品
     case UIID_NewsCell                  // NewsCell for最新消息、個人訊息

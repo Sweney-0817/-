@@ -67,16 +67,21 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate {
     // MARK: - pubilc 
     override func enterFeatureByID(_ ID:PlatformFeatureID, _ animated:Bool) {
         super.enterFeatureByID(ID, animated)
-        if ID != .FeatureID_Home {
-            let controller = getControllerByID(ID)
-            switch ID {
-            case .FeatureID_Edit:
-                (controller as! EditViewController).setInitial(true, setShowList: AuthorizationManage.manage.GetPlatformList(.Edit_Type)!, setAddList: AuthorizationManage.manage.GetPlatformList(.User_Type) ?? [PlatformFeatureID]())
-                
-            default:
-                break
+        if AuthorizationManage.manage.CanEnterFeature(ID) {
+            if ID != .FeatureID_Home {
+                let controller = getControllerByID(ID)
+                switch ID {
+                case .FeatureID_Edit:
+                    (controller as! EditViewController).setInitial(true, setShowList: AuthorizationManage.manage.GetPlatformList(.Edit_Type)!, setAddList: AuthorizationManage.manage.GetPlatformList(.User_Type) ?? [PlatformFeatureID]())
+                    
+                default:
+                    break
+                }
+                navigationController?.pushViewController(controller, animated: animated)
             }
-            navigationController?.pushViewController(controller, animated: animated)
+        }
+        else {
+            clickLoginBtn(loginBtn)
         }
     }
 
@@ -85,7 +90,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate {
         if login == nil {
             login = getUIByID(.UIID_Login) as? LoginView
             login?.frame = view.frame
-            login?.setInitialList( ["桃園市":["全國農會1"], "台北市":["全國農會4","全國農會5"], "新北市":["全國農會7","全國農會8","全國農會9"]], "台北市" )
+            login?.setInitialList( [ "桃園市":["全國農會1"], "台北市":["全國農會4","全國農會5"], "新北市":["全國農會7","全國農會8","全國農會9"] ], "台北市" )
         }
         view.addSubview(login!)
     }

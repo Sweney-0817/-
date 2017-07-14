@@ -8,11 +8,14 @@
 
 import UIKit
 
+let EditView_Title = "首頁功能捷徑新增/編輯"
+
 class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
     @IBOutlet weak var tableBottomCons: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     private var showList = [PlatformFeatureID]()
     private var firstPage = false
+    private var navigationBarTitle:String? = nil
     var addList = [PlatformFeatureID]()
     
     // MARK: Life cycle
@@ -38,11 +41,17 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.topItem?.title = firstPage ? EditView_Title : navigationBarTitle
+    }
+    
     // MARK: - Public
-    func setInitial(_ isFirst:Bool, setShowList show:[PlatformFeatureID], setAddList add:[PlatformFeatureID]) {
+    func setInitial(_ isFirst:Bool, setShowList show:[PlatformFeatureID], setAddList add:[PlatformFeatureID], SetTitle title:String? = nil) {
         firstPage = isFirst
         showList.append(contentsOf: show)
         addList.append(contentsOf: add)
+        navigationBarTitle = title
     }
     
     // MARK: - private
@@ -112,7 +121,7 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
             switch info.type {
             case .Head_Next_Type:
                 let controller = getControllerByID(.FeatureID_Edit) as! EditViewController
-                controller.setInitial(false, setShowList: info.contentList!, setAddList: addList)
+                controller.setInitial(false, setShowList: info.contentList!, setAddList: addList, SetTitle: getFeatureName(showList[indexPath.row]))
                 navigationController?.pushViewController(controller, animated: true)
             case .Select_Type:
                 if let i = addList.index(of: showList[indexPath.row]) {

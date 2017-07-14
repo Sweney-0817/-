@@ -17,6 +17,17 @@ class AuthorizationManage {
         loginToken = token
     }
     
+    func CanEnterFeature(_ ID:PlatformFeatureID) -> Bool {
+        var canEnter = false
+        switch ID {
+        case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation, .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_Home, .FeatureID_Edit:
+            canEnter = true
+        default:
+            canEnter = loginToken != nil ? true : false
+        }
+        return canEnter
+    }
+    
     func IsOpen(_ ID:PlatformFeatureID) -> Bool {
         if let bIS = featureList?[ID] {
             return bIS
@@ -35,11 +46,13 @@ class AuthorizationManage {
             list = [.FeatureID_Edit]
             
         case .Default_Type:
-            if loginToken == nil {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase, .FeatureID_News]
-            }
-            else {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase]
+            if SecurityUtility.utility.readFileByKey(SetKey: File_IDList_Key, setDecryptKey: AES_Key) == nil {
+                if loginToken == nil {
+                    list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase, .FeatureID_News]
+                }
+                else {
+                    list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase]
+                }
             }
             
         case .User_Type:
@@ -71,7 +84,7 @@ class AuthorizationManage {
             }
             
         case .Edit_Type:
-            list = [.FeatureID_AccountOverView,.FeatureID_AccountDetailView, .FeatureID_NTTransfer, .FeatureID_LoseApply, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel, .FeatureID_Payment, .FeatureID_DepositCombinedToDeposit, .FeatureID_DepositCombinedToDepositSearch, .FeatureID_FinancialInformation, .FeatureID_LoanPrincipalInterest, .FeatureID_CustomerService, .FeatureID_PersopnalSetting]
+            list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding]
             
             
         case .Menu_Type:
