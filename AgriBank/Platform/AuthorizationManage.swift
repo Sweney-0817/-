@@ -47,7 +47,7 @@ class AuthorizationManage {
             
         case .Default_Type:
             if SecurityUtility.utility.readFileByKey(SetKey: File_IDList_Key, setDecryptKey: AES_Key) == nil {
-                if loginToken == nil {
+                if loginToken != nil {
                     list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase, .FeatureID_News]
                 }
                 else {

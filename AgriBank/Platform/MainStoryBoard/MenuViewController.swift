@@ -21,12 +21,20 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if let list = AuthorizationManage.manage.GetPlatformList(.Menu_Type) {
-            featureList = list
-        }
+//        if let list = AuthorizationManage.manage.GetPlatformList(.Menu_Type) {
+//            featureList = list
+//        }
         tableView.register(UINib(nibName: UIID.UIID_MenuCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuCell.NibName()!)
         tableView.register(UINib(nibName: UIID.UIID_MenuExpandCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuExpandCell.NibName()!)
         setShadowView(topView)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let list = AuthorizationManage.manage.GetPlatformList(.Menu_Type) {
+            featureList = list
+        }
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {

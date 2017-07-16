@@ -40,6 +40,7 @@ enum PlatformFeatureID: Int {
     case FeatureID_BasicInfoChange          // 基本資料變更
     case FeatureID_UserNameChange           // 使用者代號變更
     case FeatureID_UserPwdChange            // 使用者密碼變更
+    case FeatureID_FirstLoginChange         // 首次登入變更
     case FeatureID_MessageSwitch            // 個人訊息開關
     case FeatureID_SetAvatar                // 登入頭像設定
     case FeatureID_DeviceBinding            // 設備綁定
@@ -104,6 +105,8 @@ enum PlatformFeatureID: Int {
             return "FeatureID_BasicInfoChange"
         case .FeatureID_UserNameChange, .FeatureID_UserPwdChange:
             return "FeatureID_UserChangeIDPwd"
+        case .FeatureID_FirstLoginChange:
+            return "FeatureID_FirstLoginChange"
         case .FeatureID_MessageSwitch:
             return "FeatureID_MessageSwitch"
         case .FeatureID_SetAvatar:
@@ -133,7 +136,7 @@ enum PlatformFeatureID: Int {
             return "FinancialInformation"
         case .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage:
             return "CustomerService"
-        case .FeatureID_BasicInfoChange, .FeatureID_UserNameChange, .FeatureID_UserPwdChange, .FeatureID_MessageSwitch, .FeatureID_SetAvatar, .FeatureID_DeviceBinding:
+        case .FeatureID_BasicInfoChange, .FeatureID_UserNameChange, .FeatureID_UserPwdChange, .FeatureID_MessageSwitch, .FeatureID_SetAvatar, .FeatureID_DeviceBinding, .FeatureID_FirstLoginChange:
             return "Setting"
         default:
             return "";
@@ -210,6 +213,8 @@ enum PlatformFeatureID: Int {
             return "設備綁定"
         case .FeatureID_NTAccountTransfer:
             return "臺幣帳戶交易"
+        case .FeatureID_FirstLoginChange:
+            return "重新設定使用者代號與密碼"
         default:
             return ""
         }
@@ -325,8 +330,9 @@ enum UIID: Int {
 
 // MARK: - All View Tag
 enum ViewTag: Int {
-    case ActionSheet_Photo = 99 // 頭像設定
-    case View_Status            // 狀態欄
+    case ActionSheet_Photo = 99             // 頭像設定
+    case View_Status                        // 狀態欄
+    case View_DoubleDatePickerBackground    // 起始日picker
 }
 
 // MARK: - AuthorizationManager

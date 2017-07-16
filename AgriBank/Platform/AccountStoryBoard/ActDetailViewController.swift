@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate, OverviewCellDelegate {
+class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var chooseTypeView: ChooseTypeView!    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var transDayView: UIView!
@@ -42,7 +42,6 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_OverviewCell.NibName()!, for: indexPath) as! OverviewCell
-        cell.AddExpnadBtn(self)
         cell.title1Label.text = cellTitleList[0]
         cell.title2Label.text = cellTitleList[1]
         cell.title3Label.text = cellTitleList[2]
@@ -62,48 +61,43 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         if btn.title(for: .normal) == "自訂" {
             let background = UIView.init(frame: view.frame)
             background.backgroundColor = Gray_Color
-            background.alpha = 0.7
+            background.tag = ViewTag.View_DoubleDatePickerBackground.rawValue
             view.addSubview(background)
             
-            let start = UIDatePicker.init(frame: CGRect.init(x: 30, y: 100, width: 320, height: 200))
+            let start = UIDatePicker.init(frame: CGRect.init(x: 30, y: 130, width: 320, height: 200))
             start.datePickerMode = .date
             start.locale = Locale(identifier: "zh_CN")
             start.backgroundColor = .white
-//            start.layer.borderColor = UIColor.black.cgColor
-//            start.layer.borderWidth = 1
-//            start.layer.cornerRadius = 5
-            view.addSubview(start)
+            background.addSubview(start)
             
-            let startLabel = UILabel.init(frame: CGRect.init(x: 30, y: 70, width: 320, height: 30))
+            let startLabel = UILabel.init(frame: CGRect.init(x: 30, y: 100, width: 320, height: 30))
             startLabel.text = "起始日"
             startLabel.font = Cell_Font_Size
-            startLabel.backgroundColor = .white
+            startLabel.backgroundColor = Green_Color
             startLabel.textAlignment = .center
             startLabel.textColor = .white
-            view.addSubview(startLabel)
+            background.addSubview(startLabel)
             
-            let end = UIDatePicker.init(frame: CGRect.init(x: 30, y: 365, width: 320, height: 200))
+            let end = UIDatePicker.init(frame: CGRect.init(x: 30, y: 380, width: 320, height: 200))
             end.backgroundColor = .white
             end.datePickerMode = .date
             end.locale = Locale(identifier: "zh_CN")
-//            end.layer.borderColor = UIColor.black.cgColor
-//            end.layer.borderWidth = 1
-//            end.layer.cornerRadius = 5
-            view.addSubview(end)
+            background.addSubview(end)
             
-            let endLabel = UILabel.init(frame: CGRect.init(x: 30, y: 335, width: 320, height: 30))
+            let endLabel = UILabel.init(frame: CGRect.init(x: 30, y: 350, width: 320, height: 30))
             endLabel.text = "截止日"
             endLabel.font = Cell_Font_Size
             endLabel.backgroundColor = Green_Color
             endLabel.textAlignment = .center
             endLabel.textColor = .white
-            view.addSubview(endLabel)
+            background.addSubview(endLabel)
             
             let button = UIButton.init(frame: CGRect.init(x: 30, y: 590, width: 320, height: 40))
             button.setBackgroundImage(UIImage.init(named: ImageName.ButtonLarge.rawValue), for: .normal)
             button.tintColor = .white
             button.setTitle("確定", for: .normal)
-            view.addSubview(button)
+            button.addTarget(self, action: #selector(clickDetermineBtn(_:)), for: .touchUpInside)
+            background.addSubview(button)
         }
     }
     
@@ -112,12 +106,10 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         performSegue(withIdentifier: ShowDetail_Segue_Identify, sender: nil)
     }
     
-    // MARK: - OverviewCellDelegate
-    func clickTransBtn() {
-        
-    }
-    
-    func clickDetailBtn() {
-        enterFeatureByID(.FeatureID_AccountDetailView, false)
+    // MARK: - Selector
+    func clickDetermineBtn(_ sender:Any) {
+        if let datePickerView = view.viewWithTag(ViewTag.View_DoubleDatePickerBackground.rawValue) {
+            datePickerView.removeFromSuperview()
+        }
     }
 }

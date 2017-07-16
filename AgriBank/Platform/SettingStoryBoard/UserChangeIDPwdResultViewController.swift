@@ -28,7 +28,6 @@ class UserChangeIDPwdResultViewController: BaseViewController {
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickConfirmBtn(_ sender: Any) {
+        enterFeatureByID(.FeatureID_Home, true)
     }
- 
-
 }

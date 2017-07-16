@@ -35,11 +35,13 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     private var currnetCity:String? = nil
     private var isLocker = false
     private var currentTextField:UITextField? = nil
+    private var delegate:LoginDelegate? = nil
     
     // MARK: - pubic
-    func setInitialList(_ list:[String:[String]],_ city:String) {
+    func setInitialList(_ list:[String:[String]], _ city:String, _ delegate:LoginDelegate) {
         self.list = list
         currnetCity = city
+        self.delegate = delegate
     }
     
     func isNeedRise() -> Bool {
@@ -94,6 +96,7 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     @IBAction func clickLoginBtn(_ sender: Any) {
         if InputIsCorrect() {
             AuthorizationManage.manage.SetLoginToken("qazwsx")
+            delegate?.clickLoginBtn()
             removeFromSuperview()
         }
     }

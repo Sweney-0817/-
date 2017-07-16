@@ -156,6 +156,9 @@ class Platform {
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting)
         informationList[.FeatureID_SetAvatar] = feature              // 登入頭像設定
         
+        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil)
+        informationList[.FeatureID_FirstLoginChange] = feature       // 首次登入基本資料變更
+        
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil)
         informationList[.FeatureID_DeviceBinding] = feature          // 設備綁定
         

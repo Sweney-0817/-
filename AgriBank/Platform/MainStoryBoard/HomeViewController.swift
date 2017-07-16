@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: BaseViewController, FeatureWallViewDelegate {
+class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDelegate {
     @IBOutlet weak var newsView: UIView!
     @IBOutlet weak var bannerView: UIView!
     @IBOutlet weak var loginStatusLabel: UILabel!
@@ -90,7 +90,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate {
         if login == nil {
             login = getUIByID(.UIID_Login) as? LoginView
             login?.frame = view.frame
-            login?.setInitialList( [ "桃園市":["全國農會1"], "台北市":["全國農會4","全國農會5"], "新北市":["全國農會7","全國農會8","全國農會9"] ], "台北市" )
+            login?.setInitialList( ["桃園市":["全國農會1"], "台北市":["全國農會4","全國農會5"], "新北市":["全國農會7","全國農會8","全國農會9"]], "台北市", self )
         }
         view.addSubview(login!)
     }
@@ -111,6 +111,11 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate {
                 super.keyboardWillShow(notification)
             }
         }
+    }
+    
+    // MARK: - LoginDelegate
+    func clickLoginBtn() {
+        featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
     }
 }
 

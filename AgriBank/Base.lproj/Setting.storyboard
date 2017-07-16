@@ -710,15 +710,39 @@
                                     <constraint firstAttribute="height" constant="1" id="VrY-3V-DM6"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zh9-y8-HMf">
+                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5DK-yk-ufH">
+                                        <rect key="frame" x="15" y="8" width="345" height="44"/>
+                                        <state key="normal" title="綁定" backgroundImage="ButtonLarge">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clickBindingBtn:" destination="kDh-Ul-Jft" eventType="touchUpInside" id="qE5-kb-5Ou"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="5DK-yk-ufH" secondAttribute="bottom" constant="8" id="Dgd-2y-Ntz"/>
+                                    <constraint firstItem="5DK-yk-ufH" firstAttribute="top" secondItem="Zh9-y8-HMf" secondAttribute="top" constant="8" id="GXS-vZ-mAr"/>
+                                    <constraint firstAttribute="height" constant="60" id="guQ-aX-LyC"/>
+                                    <constraint firstItem="5DK-yk-ufH" firstAttribute="leading" secondItem="Zh9-y8-HMf" secondAttribute="leading" constant="15" id="sXF-Ju-5RD"/>
+                                    <constraint firstAttribute="trailing" secondItem="5DK-yk-ufH" secondAttribute="trailing" constant="15" id="xQH-KZ-QiA"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="yPn-bI-OY5" firstAttribute="top" secondItem="Zh9-y8-HMf" secondAttribute="bottom" id="5NP-cB-uGp"/>
                             <constraint firstAttribute="trailing" secondItem="37T-x2-qM2" secondAttribute="trailing" id="5QW-T6-gYw"/>
                             <constraint firstItem="cD1-pC-uzA" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" id="6Pu-oj-1Ab"/>
                             <constraint firstItem="37T-x2-qM2" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" id="A6M-Hr-Xnv"/>
                             <constraint firstItem="cD1-pC-uzA" firstAttribute="top" secondItem="nKt-yB-iBo" secondAttribute="bottom" constant="8" id="AIB-oc-aKH"/>
                             <constraint firstAttribute="trailing" secondItem="nKt-yB-iBo" secondAttribute="trailing" constant="15" id="Bvh-10-yBX"/>
                             <constraint firstItem="hy4-Rm-oaQ" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" id="FCK-pL-hZQ"/>
+                            <constraint firstAttribute="trailing" secondItem="Zh9-y8-HMf" secondAttribute="trailing" id="FM9-wu-O7x"/>
                             <constraint firstItem="o3j-RB-zgF" firstAttribute="top" secondItem="GBF-Nq-HcX" secondAttribute="bottom" constant="8" id="FOd-yc-vGn"/>
                             <constraint firstItem="cD1-pC-uzA" firstAttribute="top" secondItem="37T-x2-qM2" secondAttribute="bottom" constant="60" id="HD7-Bh-jxd"/>
                             <constraint firstItem="jLJ-tI-Y2k" firstAttribute="top" secondItem="cD1-pC-uzA" secondAttribute="bottom" constant="8" id="IEv-P8-GeH"/>
@@ -726,6 +750,7 @@
                             <constraint firstItem="HzY-c6-96g" firstAttribute="top" secondItem="o3j-RB-zgF" secondAttribute="bottom" constant="60" id="Qnt-2s-FaL"/>
                             <constraint firstAttribute="trailing" secondItem="HzY-c6-96g" secondAttribute="trailing" id="Qv0-9P-Xfg"/>
                             <constraint firstItem="GBF-Nq-HcX" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" constant="15" id="Rc5-pA-JlM"/>
+                            <constraint firstItem="Zh9-y8-HMf" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" id="SrV-Dh-Ko3"/>
                             <constraint firstItem="hy4-Rm-oaQ" firstAttribute="top" secondItem="Jnu-Ig-YPU" secondAttribute="bottom" id="U3t-vP-0dm"/>
                             <constraint firstItem="6Vc-yC-edR" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" constant="15" id="Vlf-Tf-aeJ"/>
                             <constraint firstAttribute="trailing" secondItem="o3j-RB-zgF" secondAttribute="trailing" id="WMG-2p-ymZ"/>
@@ -750,16 +775,214 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomVIew" destination="Zh9-y8-HMf" id="xFn-rt-ZtO"/>
                         <outlet property="checkCodeTextfield" destination="6Vc-yC-edR" id="JBS-1t-qjH"/>
                         <outlet property="identifyTextfield" destination="nKt-yB-iBo" id="Xti-30-zO6"/>
                         <outlet property="passwordTextfield" destination="GBF-Nq-HcX" id="GWX-sa-0zX"/>
                         <outlet property="topView" destination="hy4-Rm-oaQ" id="oHE-oT-68s"/>
                         <outlet property="userCodeTextfield" destination="jLJ-tI-Y2k" id="YHa-4F-tZH"/>
+                        <segue destination="fNw-Sc-TOs" kind="show" identifier="GoDeviceBindingResult" id="t9D-LU-j1P"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lvd-i6-ObL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3087" y="-143"/>
+            <point key="canvasLocation" x="-1260" y="512.29385307346331"/>
+        </scene>
+        <!--User First ChangeID Pwd View Controller-->
+        <scene sceneID="5Wk-Se-gNg">
+            <objects>
+                <viewController storyboardIdentifier="FeatureID_FirstLoginChange" id="iYs-6J-J52" customClass="UserFirstChangeIDPwdViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pSf-Xd-IFE"/>
+                        <viewControllerLayoutGuide type="bottom" id="eTe-Ki-zsE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Hio-CF-waG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="原使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="KjG-LL-v4V" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                                <rect key="frame" x="15" y="28" width="345" height="44"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="iYs-6J-J52" id="iKk-5u-08P"/>
+                                </connections>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fAn-gP-JFn">
+                                <rect key="frame" x="0.0" y="80" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="5IV-3N-ITn"/>
+                                </constraints>
+                            </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="新使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="QQX-AY-obC" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                                <rect key="frame" x="15" y="89" width="345" height="44"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="iYs-6J-J52" id="qtg-Gz-H6w"/>
+                                </connections>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fg1-ys-Lia">
+                                <rect key="frame" x="0.0" y="141" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="nfr-3Q-NMt"/>
+                                </constraints>
+                            </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="再次輸入新使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="cFp-8l-jxD" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                                <rect key="frame" x="15" y="150" width="345" height="44"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="iYs-6J-J52" id="uWC-3e-6pn"/>
+                                </connections>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Zd-hz-DQX">
+                                <rect key="frame" x="0.0" y="202" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="E38-aE-C9S"/>
+                                </constraints>
+                            </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="原使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="s7b-HY-Ime" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                                <rect key="frame" x="15" y="211" width="345" height="44"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="iYs-6J-J52" id="V6r-Es-u4A"/>
+                                </connections>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xXs-RC-J2g">
+                                <rect key="frame" x="0.0" y="263" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="q1r-7z-RIN"/>
+                                </constraints>
+                            </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="新使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="t4m-mt-3dc" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                                <rect key="frame" x="15" y="272" width="345" height="44"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="iYs-6J-J52" id="zUg-N5-2qs"/>
+                                </connections>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WXP-o8-0wb">
+                                <rect key="frame" x="0.0" y="324" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="XvB-OW-KoX"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b54-WO-cdm">
+                                <rect key="frame" x="0.0" y="385" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="XkI-kc-nX9"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YBG-4d-b3Q">
+                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZ5-5c-WXd">
+                                        <rect key="frame" x="15" y="8" width="345" height="44"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="確定" backgroundImage="ButtonLarge">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clickCheckBtn:" destination="iYs-6J-J52" eventType="touchUpInside" id="zXk-jo-kiE"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="dZ5-5c-WXd" secondAttribute="bottom" constant="8" id="9EC-GK-48e"/>
+                                    <constraint firstItem="dZ5-5c-WXd" firstAttribute="leading" secondItem="YBG-4d-b3Q" secondAttribute="leading" constant="15" id="HEW-Cf-tO2"/>
+                                    <constraint firstAttribute="height" constant="60" id="Xxf-SR-nLH"/>
+                                    <constraint firstItem="dZ5-5c-WXd" firstAttribute="top" secondItem="YBG-4d-b3Q" secondAttribute="top" constant="8" id="n5i-pe-qjC"/>
+                                    <constraint firstAttribute="trailing" secondItem="dZ5-5c-WXd" secondAttribute="trailing" constant="15" id="uTE-HO-NST"/>
+                                </constraints>
+                            </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="再次輸入新使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="tg3-Xz-s37" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                                <rect key="frame" x="15" y="333" width="345" height="44"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="iYs-6J-J52" id="fdv-0p-kza"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="xXs-RC-J2g" secondAttribute="trailing" id="1k1-oK-2hL"/>
+                            <constraint firstItem="eTe-Ki-zsE" firstAttribute="top" secondItem="YBG-4d-b3Q" secondAttribute="bottom" id="1mR-ig-iWu"/>
+                            <constraint firstItem="QQX-AY-obC" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" constant="15" id="2bk-qi-g0m"/>
+                            <constraint firstItem="xXs-RC-J2g" firstAttribute="top" secondItem="s7b-HY-Ime" secondAttribute="bottom" constant="8" id="2yy-j4-g41"/>
+                            <constraint firstItem="QQX-AY-obC" firstAttribute="top" secondItem="fAn-gP-JFn" secondAttribute="bottom" constant="8" id="39B-TE-mUi"/>
+                            <constraint firstItem="b54-WO-cdm" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" id="9V6-IK-I53"/>
+                            <constraint firstAttribute="trailing" secondItem="cFp-8l-jxD" secondAttribute="trailing" constant="15" id="9cR-JH-xBI"/>
+                            <constraint firstAttribute="trailing" secondItem="s7b-HY-Ime" secondAttribute="trailing" constant="15" id="9tp-jO-zvt"/>
+                            <constraint firstAttribute="trailing" secondItem="QQX-AY-obC" secondAttribute="trailing" constant="15" id="Bkm-a3-eJi"/>
+                            <constraint firstItem="t4m-mt-3dc" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" constant="15" id="DY8-18-Wf8"/>
+                            <constraint firstItem="s7b-HY-Ime" firstAttribute="top" secondItem="9Zd-hz-DQX" secondAttribute="bottom" constant="8" id="Hcp-UR-n8d"/>
+                            <constraint firstItem="xXs-RC-J2g" firstAttribute="top" secondItem="9Zd-hz-DQX" secondAttribute="bottom" constant="60" id="LIe-Uu-j1s"/>
+                            <constraint firstAttribute="trailing" secondItem="YBG-4d-b3Q" secondAttribute="trailing" id="OLS-v3-fy7"/>
+                            <constraint firstItem="cFp-8l-jxD" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" constant="15" id="Ody-8L-xNB"/>
+                            <constraint firstItem="WXP-o8-0wb" firstAttribute="top" secondItem="t4m-mt-3dc" secondAttribute="bottom" constant="8" id="OyH-uU-tZS"/>
+                            <constraint firstItem="9Zd-hz-DQX" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" id="Qbv-En-kJB"/>
+                            <constraint firstItem="WXP-o8-0wb" firstAttribute="top" secondItem="xXs-RC-J2g" secondAttribute="bottom" constant="60" id="Rhp-SE-bnM"/>
+                            <constraint firstItem="t4m-mt-3dc" firstAttribute="top" secondItem="xXs-RC-J2g" secondAttribute="bottom" constant="8" id="Ryq-Ye-vqh"/>
+                            <constraint firstItem="tg3-Xz-s37" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" constant="15" id="Tfg-cE-opp"/>
+                            <constraint firstItem="xXs-RC-J2g" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" id="W43-Q5-HyJ"/>
+                            <constraint firstAttribute="trailing" secondItem="WXP-o8-0wb" secondAttribute="trailing" id="WaH-Rc-8Hf"/>
+                            <constraint firstAttribute="trailing" secondItem="9Zd-hz-DQX" secondAttribute="trailing" id="YnC-11-drv"/>
+                            <constraint firstItem="WXP-o8-0wb" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" id="aP8-2o-uDD"/>
+                            <constraint firstItem="fAn-gP-JFn" firstAttribute="top" secondItem="KjG-LL-v4V" secondAttribute="bottom" constant="8" id="aRt-W3-i3K"/>
+                            <constraint firstAttribute="trailing" secondItem="b54-WO-cdm" secondAttribute="trailing" id="bby-k9-BM4"/>
+                            <constraint firstItem="fAn-gP-JFn" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" id="dYr-Ux-js4"/>
+                            <constraint firstAttribute="trailing" secondItem="KjG-LL-v4V" secondAttribute="trailing" constant="15" id="eDJ-9x-nvA"/>
+                            <constraint firstAttribute="trailing" secondItem="tg3-Xz-s37" secondAttribute="trailing" constant="15" id="eO6-GW-wBF"/>
+                            <constraint firstItem="fg1-ys-Lia" firstAttribute="top" secondItem="fAn-gP-JFn" secondAttribute="bottom" constant="60" id="fqi-Yc-UaL"/>
+                            <constraint firstItem="fAn-gP-JFn" firstAttribute="top" secondItem="pSf-Xd-IFE" secondAttribute="bottom" constant="60" id="gCs-OR-3aU"/>
+                            <constraint firstItem="KjG-LL-v4V" firstAttribute="top" secondItem="pSf-Xd-IFE" secondAttribute="bottom" constant="8" id="hS6-YL-9e0"/>
+                            <constraint firstItem="b54-WO-cdm" firstAttribute="top" secondItem="WXP-o8-0wb" secondAttribute="bottom" constant="60" id="ikE-Vm-kDZ"/>
+                            <constraint firstItem="fg1-ys-Lia" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" id="k4e-Xf-uIf"/>
+                            <constraint firstItem="cFp-8l-jxD" firstAttribute="top" secondItem="fg1-ys-Lia" secondAttribute="bottom" constant="8" id="n0o-b6-jQT"/>
+                            <constraint firstItem="9Zd-hz-DQX" firstAttribute="top" secondItem="fg1-ys-Lia" secondAttribute="bottom" constant="60" id="oEh-wb-BLx"/>
+                            <constraint firstItem="9Zd-hz-DQX" firstAttribute="top" secondItem="cFp-8l-jxD" secondAttribute="bottom" constant="8" id="oe5-0e-Eo4"/>
+                            <constraint firstItem="s7b-HY-Ime" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" constant="15" id="p7E-SB-UZq"/>
+                            <constraint firstItem="b54-WO-cdm" firstAttribute="top" secondItem="tg3-Xz-s37" secondAttribute="bottom" constant="8" id="qH0-Hq-IHw"/>
+                            <constraint firstAttribute="trailing" secondItem="fg1-ys-Lia" secondAttribute="trailing" id="qdN-G4-gL4"/>
+                            <constraint firstItem="KjG-LL-v4V" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" constant="15" id="ug9-q6-BVM"/>
+                            <constraint firstItem="tg3-Xz-s37" firstAttribute="top" secondItem="WXP-o8-0wb" secondAttribute="bottom" constant="8" id="vcf-Em-su4"/>
+                            <constraint firstAttribute="trailing" secondItem="t4m-mt-3dc" secondAttribute="trailing" constant="15" id="ve5-mM-Yva"/>
+                            <constraint firstItem="fg1-ys-Lia" firstAttribute="top" secondItem="QQX-AY-obC" secondAttribute="bottom" constant="8" id="vlo-xn-u5M"/>
+                            <constraint firstAttribute="trailing" secondItem="fAn-gP-JFn" secondAttribute="trailing" id="xsY-NO-qJe"/>
+                            <constraint firstItem="YBG-4d-b3Q" firstAttribute="leading" secondItem="Hio-CF-waG" secondAttribute="leading" id="ydO-gz-yDS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="againIDTextfield" destination="cFp-8l-jxD" id="94f-qG-mk4"/>
+                        <outlet property="againPasswordTextfield" destination="tg3-Xz-s37" id="X9i-lX-0BW"/>
+                        <outlet property="bottomView" destination="YBG-4d-b3Q" id="s8W-Cg-xZB"/>
+                        <outlet property="newIDTextfield" destination="QQX-AY-obC" id="BDG-p2-z6t"/>
+                        <outlet property="newPasswordTextfield" destination="t4m-mt-3dc" id="85U-yO-1cD"/>
+                        <outlet property="sourceIDTextfield" destination="KjG-LL-v4V" id="wfn-Ve-w3j"/>
+                        <outlet property="sourcePasswordTextfield" destination="s7b-HY-Ime" id="7wh-N6-6tY"/>
+                        <segue destination="YAN-UG-VO6" kind="show" identifier="GoFirstChangeResult" id="sQ1-kh-MDu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MFn-J0-gHx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="233" y="514"/>
         </scene>
         <!--Basic Info Result View Controller-->
         <scene sceneID="pcE-PX-qbF">
@@ -968,4 +1191,8 @@
         <image name="Login" width="60" height="60"/>
         <image name="Textfield" width="311" height="44"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="sQ1-kh-MDu"/>
+        <segue reference="t9D-LU-j1P"/>
+    </inferredMetricsTieBreakers>
 </document>
