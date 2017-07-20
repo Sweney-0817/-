@@ -11,7 +11,7 @@ import UIKit
 
 #if DEBUG
 let URL_PROTOCOL = "http"
-let URL_DOMAIN = ""
+let URL_DOMAIN = "52.187.113.27/FFICMAPI/api/Comm"
 #else
 let URL_PROTOCOL = "https"
 let URL_DOMAIN = ""
@@ -67,9 +67,9 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     }
     
     // MARK: - public
-    func postRequest(_ strMethod:String, _ strSessionDescription:String, _ needCertificate:Bool = false, _ dicHttpHead:[AnyHashable:Any]? = nil, _ strURL:String? = nil)  {
+    func postRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:Bool, _ strURL:String? = nil, _ needCertificate:Bool = false)  {
         request = ConnectionUtility()
-        request?.postRequest(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, dicHttpHead, needCertificate)
+        request?.postRequest(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, AuthorizationManage.manage.getHttpHead(loginHttpHead), needCertificate)
     }
     
     func getControllerByID(_ ID:PlatformFeatureID) -> UIViewController {
@@ -126,12 +126,12 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     }
     
     // MARK: - ConnectionUtilityDelegate
-    func didRecvdResponse(_ description:String, _ response: [String:Any]) {
+    func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         
     }
     
     func didFailedWithError(_ error: Error) {
-        let alert = UIAlertView(title: "連線失敗", message: "Error Message:\(error.localizedDescription)", delegate: nil, cancelButtonTitle:"確認")
+        let alert = UIAlertView(title: nil, message: "Error Message:\(error.localizedDescription)", delegate: nil, cancelButtonTitle:"確認")
         alert.show()
     }
     

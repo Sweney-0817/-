@@ -36,7 +36,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     }
 
     // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: [String:Any]) {
+    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         
     }
     

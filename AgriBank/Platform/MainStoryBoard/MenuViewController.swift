@@ -21,9 +21,6 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-//        if let list = AuthorizationManage.manage.GetPlatformList(.Menu_Type) {
-//            featureList = list
-//        }
         tableView.register(UINib(nibName: UIID.UIID_MenuCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuCell.NibName()!)
         tableView.register(UINib(nibName: UIID.UIID_MenuExpandCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuExpandCell.NibName()!)
         setShadowView(topView)
@@ -47,7 +44,9 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
         var count = 1
         if expandList.contains(section) {
             if let info = getFeatureInfoByID(featureList[section]) {
-                count += (info.contentList?.count)!
+                if info.contentList != nil {
+                    count += (info.contentList?.count)!
+                }
             }
         }
         

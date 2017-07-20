@@ -53,7 +53,7 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
         let documentPaths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory,
                                                                 FileManager.SearchPathDomainMask.userDomainMask, true)
         let documnetPath = documentPaths[0] as NSString
-        let directory = SecurityUtility.utility.AES256Encrypt(identify as NSString, key as NSString)
+        let directory = SecurityUtility.utility.AES256Encrypt(identify, key)
         let directoryPath = documnetPath.appendingPathComponent(directory)
         if !FileManager.default.fileExists(atPath: directoryPath) {
             do {
@@ -65,7 +65,7 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
             }
         }
         
-        let imageName = SecurityUtility.utility.AES256Encrypt((account != nil ? account! : identify) as NSString, key as NSString) + BasePhoto_Type
+        let imageName = SecurityUtility.utility.AES256Encrypt((account != nil ? account! : identify), key) + BasePhoto_Type
         let imageCompression = UIImageJPEGRepresentation(image, CompressionValue_Image)
         do  {
             try imageCompression?.write(to: URL(fileURLWithPath: directoryPath).appendingPathComponent(imageName), options: .atomic)
@@ -80,10 +80,10 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
         let documentPaths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory,
                                                                 FileManager.SearchPathDomainMask.userDomainMask, true)
         let documnetPath = documentPaths[0] as NSString
-        let directory = SecurityUtility.utility.AES256Encrypt(identify as NSString, key as NSString)
+        let directory = SecurityUtility.utility.AES256Encrypt(identify, key)
         let directoryPath = documnetPath.appendingPathComponent(directory)
         if FileManager.default.fileExists(atPath: directoryPath) {
-            let imageName = SecurityUtility.utility.AES256Encrypt((account != nil ? account! : identify) as NSString, key as NSString) + BasePhoto_Type
+            let imageName = SecurityUtility.utility.AES256Encrypt((account != nil ? account! : identify), key) + BasePhoto_Type
             do {
                 let imageData = try Data(contentsOf: URL(fileURLWithPath:directoryPath).appendingPathComponent(imageName), options: .mappedIfSafe)
                 image = UIImage(data: imageData)

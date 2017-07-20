@@ -13,16 +13,16 @@ let JailBroken_AppName = "/Applications/Cydia.app"
 class SecurityUtility {
     static let utility = SecurityUtility()
     // MARK: AES加密
-    func AES256Encrypt(_ nsEncrypt:NSString, _ key:NSString) -> String {
-        let encrypt = nsEncrypt.aes256Encrypt(withKey: key as String!)
-        return encrypt as String!
+    func AES256Encrypt(_ nsEncrypt:String, _ key:String) -> String {
+        let encrypt = (nsEncrypt as NSString).aes256Encrypt(withKey: key)
+        return encrypt ?? ""
     }
     
-    func AES256Decrypt(_ nsDecrypt:NSString, _ key:NSString) -> String {
-        let decrypt = nsDecrypt.aes256Decrypt(withKey: key as String!)
-        return decrypt as String!
+    func AES256Decrypt(_ nsDecrypt:String, _ key:String) -> String {
+        let decrypt = (nsDecrypt as NSString).aes256Decrypt(withKey: key)
+        return decrypt ?? ""
     }
-    
+
     // MARK: - 模擬器判斷
     func isSimulator() -> Bool {
         var isSimulator = false
@@ -49,7 +49,7 @@ class SecurityUtility {
     func readFileByKey( SetKey key:String, setDecryptKey enKey:String? = nil ) -> Any? {
         if enKey != nil {
             if let data = UserDefaults.standard.object(forKey: key) {
-                return AES256Decrypt(data as! NSString, enKey! as NSString)
+                return AES256Decrypt(data as! String, enKey!)
             }
             return nil
         }
@@ -60,7 +60,7 @@ class SecurityUtility {
     
     func writeFileByKey(_ value:Any?, SetKey key:String, setEncryptKey enKey:String? = nil ) {
         if enKey != nil {
-            UserDefaults.standard.set(AES256Encrypt(value as! NSString, enKey! as NSString), forKey: key)
+            UserDefaults.standard.set(AES256Encrypt(value as! String, enKey!), forKey: key)
         }
         else {
             UserDefaults.standard.set(value, forKey: key)

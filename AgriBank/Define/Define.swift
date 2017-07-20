@@ -142,83 +142,6 @@ enum PlatformFeatureID: Int {
             return "";
         }
     }
-    
-    func Name() -> String {
-        switch self {
-        case .FeatureID_Home:
-            return ""
-        case .FeatureID_AccountOverView:
-            return "帳戶總覽"
-        case .FeatureID_AccountDetailView:
-            return "帳戶往來明細"
-        case .FeatureID_LoseApply:
-            return "掛失申請"
-        case .FeatureID_PassbookLoseApply:
-            return "存摺掛失"
-        case .FeatureID_DebitCardLoseApply:
-            return "金融卡掛失"
-        case .FeatureID_CheckLoseApply:
-            return "支票掛失"
-        case .FeatureID_Edit:
-            return "新增"
-        case .FeatureID_NTTransfer:
-            return "即時轉帳"
-        case .FeatureID_ReservationTransfer:
-            return "預約轉帳"
-        case .FeatureID_ReservationTransferSearchCancel:
-            return "預約轉帳明細查詢/取消"
-        case .FeatureID_Payment:
-            return "繳款"
-        case .FeatureID_TaxPayment:
-            return "繳稅"
-        case .FeatureID_BillPayment:
-            return "繳費"
-        case .FeatureID_DepositCombinedToDeposit:
-            return "綜存轉定存"
-        case .FeatureID_DepositCombinedToDepositSearch:
-            return "綜存戶轉存明細查詢/解約"
-        case .FeatureID_FinancialInformation:
-            return "理財資訊"
-        case .FeatureID_NTRation:
-            return "新臺幣利率"
-        case .FeatureID_ExchangeRate:
-            return "牌告匯率"
-        case .FeatureID_RegularSavingCalculation:
-            return "定期儲蓄試算"
-        case .FeatureID_LoanPrincipalInterest:
-            return "繳交放款本息"
-        case .FeatureID_CustomerService:
-            return "客戶服務"
-        case .FeatureID_Promotion:
-            return "農漁會優惠產品"
-        case .FeatureID_News:
-            return "最新消息"
-        case .FeatureID_ServiceBase:
-            return "服務據點"
-        case .FeatureID_PersonalMessage:
-            return "個人訊息"
-        case .FeatureID_PersopnalSetting:
-            return "個人設定"
-        case .FeatureID_BasicInfoChange:
-            return "基本資料變更"
-        case .FeatureID_UserNameChange:
-            return "使用者代號變更"
-        case .FeatureID_UserPwdChange:
-            return "使用者密碼變更"
-        case .FeatureID_MessageSwitch:
-            return "個人訊息開關"
-        case .FeatureID_SetAvatar:
-            return "登入頭像設定"
-        case .FeatureID_DeviceBinding:
-            return "設備綁定"
-        case .FeatureID_NTAccountTransfer:
-            return "臺幣帳戶交易"
-        case .FeatureID_FirstLoginChange:
-            return "重新設定使用者代號與密碼"
-        default:
-            return ""
-        }
-    }
 }
 
 enum FeatureType: Int {  // 新增編輯 Cell Type
@@ -231,6 +154,8 @@ struct FeatureStruct {
     var type:FeatureType
     var contentList:[PlatformFeatureID]? = nil
     var belong:PlatformFeatureID? = nil
+    var name = String()
+    var ID = String()
 }
 
 struct ConfirmResultStruct {
@@ -375,6 +300,7 @@ let SystemCell_Identify = "System_Cell"
 let ShowDetail_Segue_Identify = "ShowDetail"
 let AES_Key = "Systex"
 let File_IDList_Key = "IDlist"
+let File_NoLogin_IDList_key = "NoLoginIDlist"
 
 // MARK: - Cell定義
 let Separator_Height = CGFloat(1)

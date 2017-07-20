@@ -53,11 +53,10 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     }
     
     // MARK: - private
-    private func postRequest(_ strMethod:String, _ strSessionDescription:String, _ needCertificate:Bool = false, _ dicHttpHead:[AnyHashable:Any]? = nil, _ strURL:String? = nil)  {
+    private func postRequest(_ strMethod:String, _ strSessionDescription:String, _ needCertificate:Bool = false,  _ httpBody:Data? = nil, _ dicHttpHead:[String:String]? = nil, _ strURL:String? = nil)  {
         request = ConnectionUtility()
-        request?.postRequest(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, dicHttpHead, needCertificate)
+        request?.postRequest(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, dicHttpHead, needCertificate)
     }
-    
     private func addPickerView(_ textField:UITextField) {
         var frame = self.frame
         frame.origin.y = frame.maxY - Login_PickView_Height
@@ -128,7 +127,7 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     }
     
     // MARK: - ConnectionUtilityDelegate
-    func didRecvdResponse(_ description:String, _ response: [String:Any]) {
+    func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         
     }
     

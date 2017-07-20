@@ -72,7 +72,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
                 let controller = getControllerByID(ID)
                 switch ID {
                 case .FeatureID_Edit:
-                    (controller as! EditViewController).setInitial(true, setShowList: AuthorizationManage.manage.GetPlatformList(.Edit_Type)!, setAddList: AuthorizationManage.manage.GetPlatformList(.User_Type) ?? [PlatformFeatureID]())
+                    (controller as! EditViewController).setInitial(true, setShowList: AuthorizationManage.manage.GetPlatformList(.Edit_Type)!, setAddList: AuthorizationManage.manage.GetPlatformList(.User_Type) ?? AuthorizationManage.manage.GetPlatformList(.Default_Type)!)
                     
                 default:
                     break
@@ -116,6 +116,16 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
     // MARK: - LoginDelegate
     func clickLoginBtn() {
         featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
+    }
+    
+    // MARK: - ConnectionUtilityDelegate
+    override func didRecvdResponse(_ description: String, _ response: NSDictionary) {
+        
+    }
+    
+    override func didFailedWithError(_ error: Error) {
+        let alert = UIAlertView(title: "連線失敗", message: "Error Message:\(error.localizedDescription)", delegate: nil, cancelButtonTitle:"確認")
+        alert.show()
     }
 }
 

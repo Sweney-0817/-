@@ -46,15 +46,15 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
                 xStart += (img?.frame.size.width)!
             }
             if let content = contentList?[Int(pageControl.currentPage)] {
-                postRequest("", String(Int(pageControl.currentPage)), false, nil, content.imageURL)
+                postRequest("", String(Int(pageControl.currentPage)), false, nil, nil, content.imageURL)
             }
             _ = Timer.scheduledTimer(timeInterval: Banner_Repeat_Time, target: self, selector: #selector(pageChanged), userInfo: nil, repeats: true);
         }
     }
 
-    private func postRequest(_ strMethod:String, _ strSessionDescription:String, _ needCertificate:Bool = false, _ dicHttpHead:[AnyHashable:Any]? = nil, _ strURL:String? = nil)  {
-        request = ConnectionUtility(.Image)
-        request?.postRequest(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, dicHttpHead, needCertificate)
+    private func postRequest(_ strMethod:String, _ strSessionDescription:String, _ needCertificate:Bool = false,  _ httpBody:Data? = nil, _ dicHttpHead:[String:String]? = nil, _ strURL:String? = nil)  {
+        request = ConnectionUtility()
+        request?.postRequest(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, dicHttpHead, needCertificate)
     }
     
     @objc private func pageChanged() {
@@ -65,7 +65,7 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
         pageControl.currentPage = page
         if imageList[page] == nil && page < (contentList?.count)! {
             if let content = contentList?[page] {
-                postRequest("", String(page), false, nil, content.imageURL)
+                postRequest("", String(page), false, nil, nil, content.imageURL)
             }
         }
     }
@@ -80,7 +80,7 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
     }
     
     // MARK: - ConnectionUtilityDelegate
-    func didRecvdResponse(_ description:String, _ response: [String:Any]) {
+    func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage
         let imgView = contentView.viewWithTag(pageControl.currentPage+1) as! UIImageView
         imgView.image = responseImage
@@ -97,7 +97,7 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
         pageControl.currentPage = page
         if imageList[page] == nil && page < (contentList?.count)! {
             if let content = contentList?[page] {
-                postRequest("", String(page), false, nil, content.imageURL)
+                postRequest("", String(page), false, nil, nil, content.imageURL)
             }
         }
     }

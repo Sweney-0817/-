@@ -147,10 +147,7 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
     
     // MARK: - StotyBoard Touch Event
     @IBAction func clickConfirmBtn(_ sender: Any) {
-        var IDList = [String]()
-        addList.forEach{ ID in IDList.append(ID.rawValue.description) }
-        let ID = IDList.joined(separator: ",")
-        SecurityUtility.utility.writeFileByKey(ID, SetKey: File_IDList_Key, setEncryptKey: AES_Key)
+        AuthorizationManage.manage.SaveIDListInFile(addList)
         enterFeatureByID(.FeatureID_Home, true)
     }
     
