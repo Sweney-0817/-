@@ -10,44 +10,45 @@ import Foundation
 
 // MARK: 功能ID
 enum PlatformFeatureID: Int {
-    case FeatureID_Home                     // 首頁
-    case FeatureID_AccountOverView          // 帳戶總覽
-    case FeatureID_AccountDetailView        // 帳戶往來明細
-    case FeatureID_NTAccountTransfer        // 臺幣帳戶交易
-    case FeatureID_NTTransfer               // 即時轉帳
-    case FeatureID_ReservationTransfer      // 預約轉帳
-    case FeatureID_ReservationTransferSearchCancel  // 預約轉帳查詢取消
-    case FeatureID_DepositCombinedToDeposit // 綜存戶轉定存
-    case FeatureID_DepositCombinedToDepositSearch   // 綜存戶轉存明細查詢/解約
-    case FeatureID_LoanPrincipalInterest    // 繳交放款本息
-    case FeatureID_LoseApply                // 掛失申請
-    case FeatureID_PassbookLoseApply        // 存摺掛失
-    case FeatureID_DebitCardLoseApply       // 金融卡掛失
-    case FeatureID_CheckLoseApply           // 支票掛失
-    case FeatureID_Payment                  // 繳款
-    case FeatureID_TaxPayment               // 繳稅
-    case FeatureID_BillPayment              // 繳費
-    case FeatureID_FinancialInformation     // 理財資訊
-    case FeatureID_NTRation                 // 新臺幣利率
-    case FeatureID_ExchangeRate             // 牌告匯率
-    case FeatureID_RegularSavingCalculation // 定期儲蓄試算
-    case FeatureID_CustomerService          // 客戶服務
-    case FeatureID_Promotion                // 農漁會優惠產品
-    case FeatureID_News                     // 最新消息
-    case FeatureID_ServiceBase              // 服務據點
-    case FeatureID_PersonalMessage          // 個人訊息
-    case FeatureID_PersopnalSetting         // 個人設定
-    case FeatureID_BasicInfoChange          // 基本資料變更
-    case FeatureID_UserNameChange           // 使用者代號變更
-    case FeatureID_UserPwdChange            // 使用者密碼變更
-    case FeatureID_FirstLoginChange         // 首次登入變更
-    case FeatureID_MessageSwitch            // 個人訊息開關
-    case FeatureID_SetAvatar                // 登入頭像設定
-    case FeatureID_DeviceBinding            // 設備綁定
-    case FeatureID_Menu                     // 側邊選單
-    case FeatureID_Edit                     // 新增/編輯
-    case FeatureID_Confirm                  // 確認頁
-    case FeatureID_Result                   // 結果頁
+    case FeatureID_Home                             // 首頁
+    case FeatureID_Menu                             // 側邊選單
+    case FeatureID_Confirm                          // 確認頁
+    case FeatureID_Result                           // 結果頁
+    case FeatureID_FirstLoginChange                 // 首次登入變更
+    case FeatureID_AccountOverView = 100100         // 帳戶總覽
+    case FeatureID_AccountDetailView = 110100       // 帳戶往來明細
+    case FeatureID_NTAccountTransfer = 120000       // 臺幣帳戶交易
+    case FeatureID_NTTransfer = 120100              // 即時轉帳
+    case FeatureID_ReservationTransfer = 120200     // 預約轉帳
+    case FeatureID_ReservationTransferSearchCancel = 120300 // 預約轉帳查詢取消
+    case FeatureID_DepositCombinedToDeposit = 120400        // 綜存戶轉定存
+    case FeatureID_DepositCombinedToDepositSearch = 120500  // 綜存戶轉存明細查詢/解約
+    case FeatureID_LoanPrincipalInterest = 120600   // 繳交放款本息
+    case FeatureID_LoseApply = 130000               // 掛失申請
+    case FeatureID_PassbookLoseApply = 130100       // 存摺掛失
+    case FeatureID_DebitCardLoseApply = 130200      // 金融卡掛失
+    case FeatureID_CheckLoseApply = 130300          // 支票掛失
+    case FeatureID_Payment = 140000                 // 繳款
+    case FeatureID_TaxPayment = 140100              // 繳稅
+    case FeatureID_BillPayment = 140200             // 繳費
+    case FeatureID_FinancialInformation = 150000    // 理財資訊
+    case FeatureID_NTRation = 150100                // 新臺幣利率
+    case FeatureID_ExchangeRate = 150200            // 牌告匯率
+    case FeatureID_RegularSavingCalculation = 150300// 定期儲蓄試算
+    case FeatureID_CustomerService = 160000         // 客戶服務
+    case FeatureID_Promotion = 160100               // 農漁會優惠產品
+    case FeatureID_News = 160200                    // 最新消息
+    case FeatureID_ServiceBase = 160300             // 服務據點
+    case FeatureID_PersonalMessage = 160400         // 個人訊息
+    case FeatureID_PersopnalSetting = 170000        // 個人設定
+    case FeatureID_BasicInfoChange = 170100         // 基本資料變更
+    case FeatureID_UserNameChange = 170200          // 使用者代號變更
+    case FeatureID_UserPwdChange = 170300           // 使用者密碼變更
+    case FeatureID_MessageSwitch = 170400           // 個人訊息開關
+    case FeatureID_SetAvatar = 170500               // 登入頭像設定
+    case FeatureID_DeviceBinding = 180100           // 設備綁定
+    case FeatureID_Edit = 990300                    // 新增/編輯
+    
     
     func StoryBoardID() -> String {
         switch self {
@@ -155,7 +156,6 @@ struct FeatureStruct {
     var contentList:[PlatformFeatureID]? = nil
     var belong:PlatformFeatureID? = nil
     var name = String()
-    var ID = String()
 }
 
 struct ConfirmResultStruct {

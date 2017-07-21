@@ -65,115 +65,115 @@ class Platform {
     }
     
     init() {
-        var feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "", ID: "")
+        var feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "")
         informationList[.FeatureID_Home] = feature  // 首頁
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil, name: "帳戶總覽", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil, name: "帳戶總覽")
         informationList[.FeatureID_AccountOverView] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil, name: "帳戶往來明細", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil, name: "帳戶往來明細")
         informationList[.FeatureID_AccountDetailView] = feature
         
-        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_NTTransfer, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel, .FeatureID_DepositCombinedToDeposit, .FeatureID_DepositCombinedToDepositSearch, .FeatureID_LoanPrincipalInterest], belong: nil, name: "臺幣帳戶交易", ID: "")
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_NTTransfer, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel, .FeatureID_DepositCombinedToDeposit, .FeatureID_DepositCombinedToDepositSearch, .FeatureID_LoanPrincipalInterest], belong: nil, name: "臺幣帳戶交易")
         informationList[.FeatureID_NTAccountTransfer] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "即時轉帳", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "即時轉帳")
         informationList[.FeatureID_NTTransfer] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "預約轉帳", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "預約轉帳")
         informationList[.FeatureID_ReservationTransfer] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "預約轉帳查詢取消", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "預約轉帳查詢取消")
         informationList[.FeatureID_ReservationTransferSearchCancel] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "綜存轉定存", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "綜存轉定存")
         informationList[.FeatureID_DepositCombinedToDeposit] = feature           
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "綜存戶轉存明細查詢/解約", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "綜存戶轉存明細查詢/解約")
         informationList[.FeatureID_DepositCombinedToDepositSearch] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "繳交放款本息", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "繳交放款本息")
         informationList[.FeatureID_LoanPrincipalInterest] = feature
         
-        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_PassbookLoseApply,.FeatureID_DebitCardLoseApply,.FeatureID_CheckLoseApply], belong: nil, name: "掛失申請", ID: "")
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_PassbookLoseApply,.FeatureID_DebitCardLoseApply,.FeatureID_CheckLoseApply], belong: nil, name: "掛失申請")
         informationList[.FeatureID_LoseApply] = feature             
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_LoseApply, name: "存摺掛失", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_LoseApply, name: "存摺掛失")
         informationList[.FeatureID_PassbookLoseApply] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_LoseApply, name: "金融卡掛失", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_LoseApply, name: "金融卡掛失")
         informationList[.FeatureID_DebitCardLoseApply] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_LoseApply, name: "支票掛失", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_LoseApply, name: "支票掛失")
         informationList[.FeatureID_CheckLoseApply] = feature
         
-        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_TaxPayment, .FeatureID_BillPayment], belong: nil, name: "繳款", ID: "")
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_TaxPayment, .FeatureID_BillPayment], belong: nil, name: "繳款")
         informationList[.FeatureID_Payment] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_Payment, name: "繳稅", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_Payment, name: "繳稅")
         informationList[.FeatureID_TaxPayment] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_Payment, name: "繳費", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_Payment, name: "繳費")
         informationList[.FeatureID_BillPayment] = feature
         
-        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation], belong: nil, name: "理財資訊", ID: "")
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation], belong: nil, name: "理財資訊")
         informationList[.FeatureID_FinancialInformation] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation, name: "新臺幣利率", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation, name: "新臺幣利率")
         informationList[.FeatureID_NTRation] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation, name: "牌告匯率", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation, name: "牌告匯率")
         informationList[.FeatureID_ExchangeRate] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation, name: "定期儲蓄試算", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation, name: "定期儲蓄試算")
         informationList[.FeatureID_RegularSavingCalculation] = feature
         
-        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage], belong: nil, name: "客戶服務", ID: "")
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage], belong: nil, name: "客戶服務")
         informationList[.FeatureID_CustomerService] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "農漁會優惠產品", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "農漁會優惠產品")
         informationList[.FeatureID_Promotion] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "最新消息", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "最新消息")
         informationList[.FeatureID_News] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "服務據點", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "服務據點")
         informationList[.FeatureID_ServiceBase] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "個人訊息", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "個人訊息")
         informationList[.FeatureID_PersonalMessage] = feature
         
-        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_BasicInfoChange, .FeatureID_UserNameChange, .FeatureID_UserPwdChange, .FeatureID_MessageSwitch, .FeatureID_SetAvatar], belong: nil, name: "個人設定", ID: "")
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_BasicInfoChange, .FeatureID_UserNameChange, .FeatureID_UserPwdChange, .FeatureID_MessageSwitch, .FeatureID_SetAvatar], belong: nil, name: "個人設定")
         informationList[.FeatureID_PersopnalSetting] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "基本資料變更", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "基本資料變更")
         informationList[.FeatureID_BasicInfoChange] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "使用者代號變更", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "使用者代號變更")
         informationList[.FeatureID_UserNameChange] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "使用者密碼變更", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "使用者密碼變更")
         informationList[.FeatureID_UserPwdChange] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "個人訊息開關", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "個人訊息開關")
         informationList[.FeatureID_MessageSwitch] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "登入頭像設定", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "登入頭像設定")
         informationList[.FeatureID_SetAvatar] = feature
         
-        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "首次登入基本資料變更", ID: "")
+        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "首次登入基本資料變更")
         informationList[.FeatureID_FirstLoginChange] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil, name: "設備綁定", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil, name: "設備綁定")
         informationList[.FeatureID_DeviceBinding] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil, name: "新增/編輯", ID: "")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil, name: "新增")
         informationList[.FeatureID_Edit] = feature
         
-        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "", ID: "")
+        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "")
         informationList[.FeatureID_Confirm] = feature                // 確認
         
-        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "", ID: "")
+        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "")
         informationList[.FeatureID_Result] = feature                 // 結果
     }
 }

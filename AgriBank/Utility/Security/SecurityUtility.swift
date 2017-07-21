@@ -46,10 +46,10 @@ class SecurityUtility {
     }
     
     // MARK: - 讀檔案 / 寫檔案
-    func readFileByKey( SetKey key:String, setDecryptKey enKey:String? = nil ) -> Any? {
-        if enKey != nil {
+    func readFileByKey(SetKey key:String, setDecryptKey deKey:String? = nil) -> Any? {
+        if deKey != nil {
             if let data = UserDefaults.standard.object(forKey: key) {
-                return AES256Decrypt(data as! String, enKey!)
+                return AES256Decrypt(data as! String, deKey!)
             }
             return nil
         }
@@ -58,7 +58,7 @@ class SecurityUtility {
         }
     }
     
-    func writeFileByKey(_ value:Any?, SetKey key:String, setEncryptKey enKey:String? = nil ) {
+    func writeFileByKey(_ value:Any?, SetKey key:String, setEncryptKey enKey:String? = nil) {
         if enKey != nil {
             UserDefaults.standard.set(AES256Encrypt(value as! String, enKey!), forKey: key)
         }

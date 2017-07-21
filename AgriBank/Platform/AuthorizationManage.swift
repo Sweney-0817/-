@@ -8,6 +8,8 @@
 
 import UIKit
 
+let AuthorizationManage_IDList_Separator = ","
+
 class AuthorizationManage {
     static let manage = AuthorizationManage()
     private let featureList:[PlatformFeatureID:Bool]? = nil
@@ -80,12 +82,12 @@ class AuthorizationManage {
     func SaveIDListInFile(_ addList:[PlatformFeatureID]) {
         var IDList = [String]()
         addList.forEach{ ID in IDList.append(ID.rawValue.description) }
-        let ID = IDList.joined(separator: ",")
+        let ID = IDList.joined(separator: AuthorizationManage_IDList_Separator)
         if loginToken != nil {
-            SecurityUtility.utility.writeFileByKey(ID, SetKey: File_IDList_Key, setEncryptKey: AES_Key)
+            SecurityUtility.utility.writeFileByKey(ID, SetKey: File_IDList_Key)
         }
         else {
-            SecurityUtility.utility.writeFileByKey(ID, SetKey: File_NoLogin_IDList_key, setEncryptKey: AES_Key)
+            SecurityUtility.utility.writeFileByKey(ID, SetKey: File_NoLogin_IDList_key)
         }
     }
     
@@ -97,27 +99,41 @@ class AuthorizationManage {
             
         case .Default_Type:
             if loginToken != nil {
-                if SecurityUtility.utility.readFileByKey(SetKey: File_IDList_Key, setDecryptKey: AES_Key) == nil {
-                    list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase, .FeatureID_News]
-                }
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase, .FeatureID_News]
             }
             else {
-                if SecurityUtility.utility.readFileByKey(SetKey: File_NoLogin_IDList_key, setDecryptKey: AES_Key) == nil {
-                    list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase]
-                }
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase]
             }
             
         case .User_Type:
-            if let IDString = SecurityUtility.utility.readFileByKey(SetKey: File_IDList_Key, setDecryptKey: AES_Key) {
-                if !(IDString as! String).isEmpty {
-                    let IDStringList = (IDString as! String).components(separatedBy: ",")
-                    list = [PlatformFeatureID]()
-                    let editList = GetPlatformList(.Edit_Type)
-                    IDStringList.forEach { ID in
-                        let featureID = PlatformFeatureID(rawValue: Int(ID)!)!
-                        let info = Platform.plat.getFeatureInfoByID(featureID)
-                        if editList?.index(of: featureID) != nil || editList?.index(of: (info?.belong ?? featureID)) != nil {
-                            list?.append( PlatformFeatureID(rawValue: Int(ID)!)! )
+            if loginToken != nil {
+                if let IDString = SecurityUtility.utility.readFileByKey(SetKey: File_IDList_Key) {
+                    if !(IDString as! String).isEmpty {
+                        let IDStringList = (IDString as! String).components(separatedBy: AuthorizationManage_IDList_Separator)
+                        list = [PlatformFeatureID]()
+                        let editList = GetPlatformList(.Edit_Type)
+                        IDStringList.forEach { ID in
+                            let featureID = PlatformFeatureID(rawValue: Int(ID)!)!
+                            let info = Platform.plat.getFeatureInfoByID(featureID)
+                            if editList?.index(of: featureID) != nil || editList?.index(of: (info?.belong ?? featureID)) != nil {
+                                list?.append( PlatformFeatureID(rawValue: Int(ID)!)! )
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                if let IDString = SecurityUtility.utility.readFileByKey(SetKey: File_NoLogin_IDList_key) {
+                    if !(IDString as! String).isEmpty {
+                        let IDStringList = (IDString as! String).components(separatedBy: AuthorizationManage_IDList_Separator)
+                        list = [PlatformFeatureID]()
+                        let editList = GetPlatformList(.Edit_Type)
+                        IDStringList.forEach { ID in
+                            let featureID = PlatformFeatureID(rawValue: Int(ID)!)!
+                            let info = Platform.plat.getFeatureInfoByID(featureID)
+                            if editList?.index(of: featureID) != nil || editList?.index(of: (info?.belong ?? featureID)) != nil {
+                                list?.append( PlatformFeatureID(rawValue: Int(ID)!)! )
+                            }
                         }
                     }
                 }
@@ -125,12 +141,7 @@ class AuthorizationManage {
             
         case .FeatureWall_Type:
             list = [PlatformFeatureID]()
-            if let defaultList = GetPlatformList(.Default_Type) {
-                list?.append(contentsOf: defaultList)
-            }
-            if let userList = GetPlatformList(.User_Type) {
-                list?.append(contentsOf: userList)
-            }
+            list?.append(contentsOf: (GetPlatformList(.User_Type) ?? GetPlatformList(.Default_Type)!))
             if let fixList = GetPlatformList(.Fixd_Type) {
                 list?.append(contentsOf: fixList)
             }

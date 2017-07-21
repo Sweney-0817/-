@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,11 +22,14 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GIQ-hX-gNY">
-                    <rect key="frame" x="10" y="10" width="80" height="57"/>
-                    <color key="backgroundColor" red="1" green="0.52652948850000003" blue="0.22844109770000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="21.5" y="10" width="57" height="57"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="GIQ-hX-gNY" secondAttribute="height" multiplier="1:1" id="UYH-cT-s6X"/>
+                    </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="kG0-kE-LMP">
-                    <rect key="frame" x="10" y="72" width="80" height="28"/>
+                    <rect key="frame" x="21.5" y="72" width="57" height="28"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -33,9 +37,9 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="GIQ-hX-gNY" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="2u9-Zc-bpq"/>
                 <constraint firstItem="kG0-kE-LMP" firstAttribute="trailing" secondItem="GIQ-hX-gNY" secondAttribute="trailing" id="4d5-EK-hG3"/>
                 <constraint firstItem="rmb-8S-pn8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Ae8-RT-04v"/>
-                <constraint firstAttribute="trailing" secondItem="GIQ-hX-gNY" secondAttribute="trailing" constant="10" id="Ayb-FY-tGR"/>
                 <constraint firstItem="GIQ-hX-gNY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="BrG-7X-FHK"/>
                 <constraint firstItem="kG0-kE-LMP" firstAttribute="leading" secondItem="GIQ-hX-gNY" secondAttribute="leading" id="CTS-KT-Frl"/>
                 <constraint firstAttribute="bottom" secondItem="rmb-8S-pn8" secondAttribute="bottom" id="FmU-HT-tJV"/>
@@ -43,7 +47,6 @@
                 <constraint firstAttribute="bottom" secondItem="kG0-kE-LMP" secondAttribute="bottom" id="f1m-li-A2m"/>
                 <constraint firstItem="kG0-kE-LMP" firstAttribute="top" secondItem="GIQ-hX-gNY" secondAttribute="bottom" constant="5" id="gaz-SS-ogE"/>
                 <constraint firstAttribute="trailing" secondItem="rmb-8S-pn8" secondAttribute="trailing" id="gdS-DF-3nE"/>
-                <constraint firstItem="GIQ-hX-gNY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="lVP-MJ-6OI"/>
                 <constraint firstItem="rmb-8S-pn8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="u2C-jd-AtH"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

@@ -54,7 +54,7 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         navigationBarTitle = title
     }
     
-    // MARK: - private
+    // MARK: - Private
     private func getCountByID(_ ID:PlatformFeatureID) -> Int {
         var count = 0
         if let info = getFeatureInfoByID(ID) {

@@ -71,10 +71,12 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
                 let position = getXYPositionByIndex(current, vertical, horizontal)
                 let wallCell = Platform.plat.getUIByID(.UIID_FeatureWallCell, self) as! FeatureWallCellView
                 wallCell.frame = CGRect(x: CGFloat(position.x)*width + CGFloat(position.page)*scrollview.frame.size.width, y: CGFloat(position.y)*height, width: width, height: height)
-                wallCell.imageView.image = UIImage(named: String(featureIDList[current].rawValue))
-                wallCell.titleLabel.text = Platform.plat.getFeatureNameByID(featureIDList[current])
-                wallCell.button.addTarget(self, action: #selector(clickFeatureBtn(_:)), for: .touchUpInside)
-                wallCell.button.tag = featureIDList[current].rawValue
+                if let info = Platform.plat.getFeatureInfoByID(featureIDList[current]) {
+                    wallCell.imageView.image = UIImage(named: String(featureIDList[current].rawValue))
+                    wallCell.titleLabel.text = info.name
+                    wallCell.button.addTarget(self, action: #selector(clickFeatureBtn(_:)), for: .touchUpInside)
+                    wallCell.button.tag = featureIDList[current].rawValue
+                }
                 scrollview.addSubview(wallCell)
             }
         }
