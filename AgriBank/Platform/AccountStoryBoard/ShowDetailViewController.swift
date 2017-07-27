@@ -11,6 +11,14 @@ import UIKit
 class ShowDetailViewController: BaseViewController, UITableViewDataSource {
     private var titleList:[String]? = nil
     private var detailList:[String]? = nil
+    private var barTitle:String? = nil
+    
+    // MARK: - Public
+    func SetInitial(_ title:String, _ titleList:[String]?, _ detailList:[String]?) {
+        barTitle = title
+        self.titleList = titleList
+        self.detailList = detailList
+    }
 
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -23,6 +31,11 @@ class ShowDetailViewController: BaseViewController, UITableViewDataSource {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.topItem?.title = barTitle
     }
     
     // MARK: - UITableViewDataSource

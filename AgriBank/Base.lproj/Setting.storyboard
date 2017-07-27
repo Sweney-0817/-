@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -29,7 +29,7 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="117" id="0q7-hJ-fM8"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -49,7 +49,7 @@
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="新E-mail" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="mav-Xv-VrJ" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                         <rect key="frame" x="15" y="69" width="345" height="44"/>
                                         <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
                                             <outlet property="delegate" destination="MmT-JA-SbO" id="U3f-R7-gfe"/>
@@ -67,7 +67,7 @@
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rVH-uK-CqA">
                                         <rect key="frame" x="147" y="122" width="228" height="60"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -78,7 +78,7 @@
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="新行動電話" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="Jbd-uw-kej" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                         <rect key="frame" x="15" y="191" width="345" height="44"/>
                                         <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
                                             <outlet property="delegate" destination="MmT-JA-SbO" id="jks-9b-9jM"/>
@@ -90,13 +90,13 @@
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="原聯絡電話" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kaG-rH-kd8">
                                         <rect key="frame" x="15" y="244" width="117" height="60"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NtZ-Nv-DEE">
                                         <rect key="frame" x="147" y="244" width="228" height="60"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -107,7 +107,7 @@
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="新聯絡電話" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="gkY-wQ-7Gn" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                         <rect key="frame" x="15" y="313" width="345" height="44"/>
                                         <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
                                             <outlet property="delegate" destination="MmT-JA-SbO" id="2NP-HB-SAp"/>
@@ -119,13 +119,13 @@
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="原聯絡地址" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTh-Uf-Qnm">
                                         <rect key="frame" x="15" y="366" width="117" height="60"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="17"/>
                                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8hY-52-wWX">
                                         <rect key="frame" x="147" y="366" width="228" height="60"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -140,7 +140,7 @@
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="新聯絡地址" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="got-0f-qtV" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                         <rect key="frame" x="15" y="435" width="345" height="44"/>
                                         <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
                                             <outlet property="delegate" destination="MmT-JA-SbO" id="vuX-2H-b0o"/>
@@ -237,7 +237,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="Jeg-2g-mxW"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <state key="normal" title="變更" backgroundImage="ButtonLarge">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -300,7 +300,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="原使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="eoe-yM-Dp1" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="28" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="pv8-gn-tzj" id="Nka-FJ-Pm7"/>
@@ -316,7 +316,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="新使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="hVb-yh-4El" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="89" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="pv8-gn-tzj" id="Y59-3g-z4E"/>
@@ -341,6 +341,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rhh-uv-tVI">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <state key="normal" title="變更" backgroundImage="ButtonLarge">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -361,7 +362,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="再次輸入新使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="KRD-MC-YRh" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="150" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="pv8-gn-tzj" id="ZKB-2o-Eop"/>
@@ -432,7 +433,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="7EB-ym-hZd"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -474,21 +475,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login" translatesAutoresizingMaskIntoConstraints="NO" id="muC-tT-iqF">
-                                <rect key="frame" x="157" y="80" width="60" height="60"/>
+                                <rect key="frame" x="149.5" y="80" width="75" height="75"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="RAg-hl-hbx"/>
-                                    <constraint firstAttribute="width" constant="60" id="T5D-Au-Wxt"/>
+                                    <constraint firstAttribute="height" constant="75" id="RAg-hl-hbx"/>
+                                    <constraint firstAttribute="width" constant="75" id="T5D-Au-Wxt"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wec-JD-2QY">
-                                <rect key="frame" x="0.0" y="200" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="215" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="Z9k-8r-Amc"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="拍攝照片" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P8p-ih-QDi">
-                                <rect key="frame" x="15" y="201" width="125" height="60"/>
+                                <rect key="frame" x="15" y="216" width="125" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="125" id="9JY-7y-5L0"/>
                                 </constraints>
@@ -497,65 +498,68 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EntryRight" translatesAutoresizingMaskIntoConstraints="NO" id="TGz-Uf-eDz">
-                                <rect key="frame" x="340" y="220.5" width="20" height="20"/>
+                                <rect key="frame" x="340" y="235.5" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="pvI-nN-qdi"/>
                                     <constraint firstAttribute="width" constant="20" id="ras-uq-SS0"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wvL-hI-azr">
-                                <rect key="frame" x="0.0" y="201" width="375" height="60"/>
+                                <rect key="frame" x="0.0" y="216" width="375" height="60"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <connections>
                                     <action selector="clickShootBtn:" destination="fyr-39-cy2" eventType="touchUpInside" id="fWk-Ys-LTd"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WcO-dW-tZy">
-                                <rect key="frame" x="0.0" y="261" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="276" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="AIg-68-UMI"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="選擇照片" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1t-mE-tda">
-                                <rect key="frame" x="15" y="262" width="125" height="60"/>
+                                <rect key="frame" x="15" y="277" width="125" height="60"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EntryRight" translatesAutoresizingMaskIntoConstraints="NO" id="Dm6-Eg-GxN">
-                                <rect key="frame" x="340" y="282" width="20" height="20"/>
+                                <rect key="frame" x="340" y="297" width="20" height="20"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8M3-6m-nxs">
-                                <rect key="frame" x="0.0" y="262" width="375" height="60"/>
+                                <rect key="frame" x="0.0" y="277" width="375" height="60"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <connections>
                                     <action selector="clickChooseBtn:" destination="fyr-39-cy2" eventType="touchUpInside" id="f7m-P8-iz8"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Jm-MQ-Ogz">
-                                <rect key="frame" x="0.0" y="322" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="337" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="1Ea-y1-WDO"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="刪除頭像照片" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UfY-Xz-Vbt">
-                                <rect key="frame" x="15" y="323" width="125" height="60"/>
+                                <rect key="frame" x="15" y="338" width="125" height="60"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EntryRight" translatesAutoresizingMaskIntoConstraints="NO" id="Srl-Oy-VFQ">
-                                <rect key="frame" x="340" y="342.5" width="20" height="20"/>
+                                <rect key="frame" x="340" y="357.5" width="20" height="20"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3w9-bD-akD">
-                                <rect key="frame" x="0.0" y="383" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="398" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="QWB-lz-mTD"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MtW-fA-A8J">
-                                <rect key="frame" x="0.0" y="323" width="375" height="60"/>
+                                <rect key="frame" x="0.0" y="338" width="375" height="60"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <connections>
                                     <action selector="clickDeleteBtn:" destination="fyr-39-cy2" eventType="touchUpInside" id="CnY-3h-DN7"/>
                                 </connections>
@@ -649,7 +653,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="身分證字號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="nKt-yB-iBo" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="89" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="kDh-Ul-Jft" id="4XF-JY-oPc"/>
@@ -665,7 +669,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="jLJ-tI-Y2k" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="150" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="kDh-Ul-Jft" id="fyU-jg-vv5"/>
@@ -681,7 +685,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="GBF-Nq-HcX" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="211" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="kDh-Ul-Jft" id="LcJ-2e-Ajv"/>
@@ -697,7 +701,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="綁定驗證碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="6Vc-yC-edR" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="272" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="kDh-Ul-Jft" id="gsv-gl-jid"/>
@@ -715,6 +719,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5DK-yk-ufH">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <state key="normal" title="綁定" backgroundImage="ButtonLarge">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -803,7 +808,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="原使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="KjG-LL-v4V" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="28" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="iYs-6J-J52" id="iKk-5u-08P"/>
@@ -819,7 +824,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="新使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="QQX-AY-obC" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="89" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="iYs-6J-J52" id="qtg-Gz-H6w"/>
@@ -835,7 +840,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="再次輸入新使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="cFp-8l-jxD" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="150" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="iYs-6J-J52" id="uWC-3e-6pn"/>
@@ -851,7 +856,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="原使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="s7b-HY-Ime" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="211" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="iYs-6J-J52" id="V6r-Es-u4A"/>
@@ -867,7 +872,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="新使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="t4m-mt-3dc" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="272" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="iYs-6J-J52" id="zUg-N5-2qs"/>
@@ -892,7 +897,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZ5-5c-WXd">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <state key="normal" title="確定" backgroundImage="ButtonLarge">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -913,7 +918,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="再次輸入新使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="tg3-Xz-s37" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="333" width="345" height="44"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="iYs-6J-J52" id="fdv-0p-kza"/>
@@ -1008,8 +1013,8 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="交易成功" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNx-jA-x8M">
-                                        <rect key="frame" x="153" y="150" width="69.5" height="50"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="152" y="150" width="72.5" height="50"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1047,6 +1052,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09A-Tl-vuX">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <state key="normal" title="返回首頁" backgroundImage="ButtonLarge">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1114,8 +1120,8 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="交易成功" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PGw-zy-ZZA">
-                                        <rect key="frame" x="153" y="150" width="69.5" height="50"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="152" y="150" width="72.5" height="50"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1145,6 +1151,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z5L-tD-5IO">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <state key="normal" title="確定" backgroundImage="ButtonLarge">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1192,7 +1199,7 @@
         <image name="Textfield" width="311" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="sQ1-kh-MDu"/>
         <segue reference="t9D-LU-j1P"/>
+        <segue reference="sQ1-kh-MDu"/>
     </inferredMetricsTieBreakers>
 </document>

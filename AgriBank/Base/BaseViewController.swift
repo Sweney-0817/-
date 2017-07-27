@@ -109,7 +109,7 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     func setShadowView(_ view:UIView) {
         view.layer.shadowRadius = Shadow_Radious
         view.layer.shadowOpacity = Shadow_Opacity
-        view.layer.shadowColor = Shadow_Color.cgColor
+        view.layer.shadowColor = UIColor.black.cgColor
     }
     
     func enterConfirmResultController(_ isConfirm:Bool,_ data:ConfirmResultStruct,_ animated:Bool) {

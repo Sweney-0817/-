@@ -283,7 +283,7 @@ enum ImageName: String {
 }
 
 // MARK: - 顏色定義
-let Shadow_Radious = CGFloat(20)
+let Shadow_Radious = CGFloat(15)
 let Shadow_Opacity = Float(0.5)
 let Shadow_Color = UIColor(red: 219/255, green: 217/255, blue: 217/255, alpha: 1)
 let Green_Color = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha: 1)
@@ -291,13 +291,12 @@ let Gray_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
 let Memo_Color = UIColor(red: 130/255, green: 179/255, blue: 66/255, alpha: 1)
 let Cell_Title_Color = UIColor(red: 127/255, green: 127/255, blue: 127/255, alpha: 1)
 let Cell_Detail_Color = UIColor.black
-let Default_Font = UIFont.systemFont(ofSize: CGFloat(18))
+let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFont.systemFont(ofSize: CGFloat(18))
 let Layer_BorderWidth:CGFloat = 1
 let Layer_BorderRadius:CGFloat = 5
 
 // MARK: - 字串定義
 let SystemCell_Identify = "System_Cell"
-let ShowDetail_Segue_Identify = "ShowDetail"
 let AES_Key = "Systex"
 let File_IDList_Key = "IDlist"
 let File_NoLogin_IDList_key = "NoLoginIDlist"

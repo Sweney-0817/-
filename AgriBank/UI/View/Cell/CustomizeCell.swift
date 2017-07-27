@@ -53,7 +53,7 @@ class EditCell: UITableViewCell {
 
 protocol OverviewCellDelegate {
     func clickTransBtn()
-    func clickDetailBtn()
+    func clickDetailBtn(_ btn:UIButton)
 }
 
 class OverviewCell: UITableViewCell {
@@ -65,8 +65,6 @@ class OverviewCell: UITableViewCell {
     @IBOutlet weak var detail3Label: UILabel!
     @IBOutlet weak var trailingCons: NSLayoutConstraint!
     @IBOutlet weak var leadingCons: NSLayoutConstraint!
-    private var transBtn:UIButton? = nil
-    private var detailBtn:UIButton? = nil
     private var Button_Width:CGFloat = 0
     private var status:CellStatus = .none
     private var sTrailing:CGFloat = 0
@@ -87,7 +85,7 @@ class OverviewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func AddExpnadBtn(_ delegate:OverviewCellDelegate?) {
+    func AddExpnadBtn(_ delegate:OverviewCellDelegate?, _ btnTag:Int) {
         status = .Hide
         trailingCons.constant = sTrailing
         leadingCons.constant = sleading
@@ -104,6 +102,7 @@ class OverviewCell: UITableViewCell {
             expandView?.detailBtn.addTarget(self, action: #selector(clickDetailBtn(_:)), for: .touchUpInside)
             contentView.addSubview(expandView!)
         }
+        expandView?.detailBtn.tag = btnTag
         expandView?.frame = CGRect(x: contentView.frame.maxX, y: 0, width: Button_Width, height: contentView.frame.height-1)
     }
     
@@ -167,7 +166,7 @@ class OverviewCell: UITableViewCell {
     }
     
     func clickDetailBtn(_ sender:Any) {
-        delegate?.clickDetailBtn()
+        delegate?.clickDetailBtn(sender as! UIButton)
     }
 }
 

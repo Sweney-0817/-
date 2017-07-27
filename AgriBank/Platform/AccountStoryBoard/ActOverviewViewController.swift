@@ -10,24 +10,41 @@ import UIKit
 
 let ActOverviewView_SectionAll_Height = CGFloat(48)
 let ActOverviewView_Section_Height = CGFloat(20)
+let ActOverviewView_ShowDetail_Segue = "ShowDetail"
+let ActOverviewView_GoActDetail_Segue = "GoAccountDetail"
 
-class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate, OverviewCellDelegate {
+class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate, OverviewCellDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var chooseTypeView: ChooseTypeView!
     @IBOutlet weak var tableView: UITableView!
     private var actList:[String:[String]]? = nil
     private var typeList:[String]? = nil
     private let cellTitleList = ["帳號","幣別","帳戶餘額"]
     private let categoryList:[String:[String]]? = nil
+    private var typeListIndex:Int = 0
     private var currentType:Int = 0
+    
+    // MARK: - public
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        var barTitle = ""
+        if typeListIndex != 0 {
+            barTitle = typeList?[typeListIndex-1] ?? ""
+        }
+        else {
+            barTitle = typeList?[currentType] ?? ""
+        }
+        let controller = segue.destination as! ShowDetailViewController
+        controller.SetInitial("\(barTitle)往來明細", nil, nil)
+    }
     
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        typeList = ["全部","活期存款","支票存款","定期存款","放款存款"]
-        chooseTypeView.setTypeList(typeList, setDelegate: self)
+        typeList = ["活期存款","支票存款","定期存款","放款存款"]
+        chooseTypeView.setTypeList(["全部","活期存款","支票存款","定期存款","放款存款"], setDelegate: self)
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
-        tableView.reloadData()
+        navigationController?.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,20 +59,26 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     
     // MARK: - ChooseTypeDelegate
     func clickChooseTypeBtn(_ name:String) {
-        currentType = (typeList?.index(of: name))!
-        if currentType == 0 {
-            tableView.sectionHeaderHeight = ActOverviewView_SectionAll_Height
+        if let type = typeList?.index(of: name) {
+            if typeListIndex != type+1 {
+                typeListIndex = type+1
+                tableView.sectionHeaderHeight = ActOverviewView_Section_Height
+                tableView.reloadData()
+            }
         }
         else {
-            tableView.sectionHeaderHeight = ActOverviewView_Section_Height
+            if typeListIndex != 0 {
+                typeListIndex = 0
+                tableView.sectionHeaderHeight = ActOverviewView_SectionAll_Height
+                tableView.reloadData()
+            }
         }
-        tableView.reloadData()
     }
     
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         if typeList != nil {
-            if currentType == 0 {
+            if typeListIndex == 0 {
                 return (typeList?.count)!
             }
             else {
@@ -78,7 +101,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_OverviewCell.NibName()!, for: indexPath) as! OverviewCell
-        cell.AddExpnadBtn(self)
+        cell.AddExpnadBtn(self, (typeListIndex == 0 ? indexPath.section : currentType))
         cell.title1Label.text = cellTitleList[0]
         cell.title2Label.text = cellTitleList[1]
         cell.title3Label.text = cellTitleList[2]
@@ -88,7 +111,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var secView:TypeSection? = nil
-        if currentType == 0 {
+        if typeListIndex == 0 {
             secView = getUIByID(.UIID_TypeSection) as? TypeSection
             secView?.titleLabel.text = typeList?[section]
         }
@@ -96,15 +119,35 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: ShowDetail_Segue_Identify, sender: nil)
+        if typeListIndex == 0 {
+            currentType = indexPath.section
+        }
+        performSegue(withIdentifier: ActOverviewView_ShowDetail_Segue, sender: nil)
     }
     
     // MARK: - OverviewCellDelegate
     func clickTransBtn() {
-        
+        enterFeatureByID(.FeatureID_NTTransfer, false)
     }
     
-    func clickDetailBtn() {
+    func clickDetailBtn(_ btn:UIButton) {
+        if typeListIndex == 0 {
+            currentType = btn.tag
+        }
         enterFeatureByID(.FeatureID_AccountDetailView, false)
+    }
+    
+    // MARK: - UINavigationControllerDelegate
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        if viewController is ActDetailViewController {
+            var barTitle = ""
+            if typeListIndex != 0 {
+                barTitle = typeList?[typeListIndex-1] ?? ""
+            }
+            else {
+                barTitle = typeList?[currentType] ?? ""
+            }
+            (viewController as! ActDetailViewController).SetInitial(barTitle)
+        }
     }
 }

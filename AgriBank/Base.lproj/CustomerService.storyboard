@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -124,7 +124,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="zJO-Zm-GOk"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -217,8 +217,8 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="臺灣最盛大美麗的花節－苗栗，客家桐花祭" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Awk-3i-dLZ">
-                                                <rect key="frame" x="15" y="12" width="321" height="46"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <rect key="frame" x="15" y="12" width="321" height="51"/>
+                                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -226,17 +226,17 @@
                                                 <rect key="frame" x="15" y="68" width="321" height="22"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="推播時間" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sjw-LW-JLQ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="69.5" height="22"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="72.5" height="22"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="22" id="4wn-H4-KlZ"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017/04/27 16:30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ql-XD-7Ma">
-                                                        <rect key="frame" x="79.5" y="0.0" width="241.5" height="22"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <rect key="frame" x="82.5" y="0.0" width="238.5" height="22"/>
+                                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -268,7 +268,7 @@
                                             <constraint firstAttribute="bottom" secondItem="LnY-SK-Ew0" secondAttribute="bottom" constant="10" id="5fk-eC-sgZ"/>
                                             <constraint firstAttribute="trailing" secondItem="Q6A-TY-97G" secondAttribute="trailing" id="7aL-qB-tl0"/>
                                             <constraint firstItem="wiZ-he-oko" firstAttribute="leading" secondItem="Awk-3i-dLZ" secondAttribute="trailing" constant="4" id="Szs-XF-Az5"/>
-                                            <constraint firstItem="LnY-SK-Ew0" firstAttribute="top" secondItem="Awk-3i-dLZ" secondAttribute="bottom" constant="10" id="XWX-pO-YiY"/>
+                                            <constraint firstItem="LnY-SK-Ew0" firstAttribute="top" secondItem="Awk-3i-dLZ" secondAttribute="bottom" constant="5" id="XWX-pO-YiY"/>
                                             <constraint firstAttribute="bottom" secondItem="Q6A-TY-97G" secondAttribute="bottom" id="fLc-wi-Xzz"/>
                                             <constraint firstItem="wiZ-he-oko" firstAttribute="leading" secondItem="LnY-SK-Ew0" secondAttribute="trailing" constant="4" id="iAt-DN-HH8"/>
                                             <constraint firstItem="wiZ-he-oko" firstAttribute="centerY" secondItem="guO-Ie-lcL" secondAttribute="centerY" id="nI4-Cw-9iv"/>

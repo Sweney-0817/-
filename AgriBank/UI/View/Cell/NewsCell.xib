@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -23,8 +23,8 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="臺灣最盛大美麗的花節－苗栗，客家桐花祭" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B1G-kX-fzt">
-                    <rect key="frame" x="15" y="12" width="321" height="46"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <rect key="frame" x="15" y="5" width="321" height="53"/>
+                    <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -32,17 +32,17 @@
                     <rect key="frame" x="15" y="68" width="321" height="22"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="發佈日期：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uy4-rL-gYT">
-                            <rect key="frame" x="0.0" y="0.0" width="87" height="22"/>
+                            <rect key="frame" x="0.0" y="0.0" width="80" height="22"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="ZYY-kX-ADe"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="16"/>
                             <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017/04/27" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AmK-Yx-Bj6">
-                            <rect key="frame" x="97" y="0.0" width="224" height="22"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <rect key="frame" x="90" y="0.0" width="231" height="22"/>
+                            <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="16"/>
                             <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -78,7 +78,7 @@
                 <constraint firstAttribute="bottom" secondItem="gcf-xr-rgg" secondAttribute="bottom" id="jkO-GL-E8B"/>
                 <constraint firstItem="gcf-xr-rgg" firstAttribute="leading" secondItem="5GD-Jm-Ik6" secondAttribute="leading" id="kVy-fW-u22"/>
                 <constraint firstItem="eU3-n3-7Hi" firstAttribute="top" secondItem="B1G-kX-fzt" secondAttribute="bottom" constant="10" id="oiB-Eh-v8T"/>
-                <constraint firstItem="B1G-kX-fzt" firstAttribute="top" secondItem="5GD-Jm-Ik6" secondAttribute="top" constant="12" id="yhn-d2-9wY"/>
+                <constraint firstItem="B1G-kX-fzt" firstAttribute="top" secondItem="5GD-Jm-Ik6" secondAttribute="top" constant="5" id="yhn-d2-9wY"/>
                 <constraint firstItem="32M-bS-vH4" firstAttribute="leading" secondItem="eU3-n3-7Hi" secondAttribute="trailing" constant="4" id="zol-Ft-zZ4"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -87,7 +87,7 @@
                 <outlet property="m_lbDateTitle" destination="uy4-rL-gYT" id="FRh-vq-KI6"/>
                 <outlet property="m_lbTitle" destination="B1G-kX-fzt" id="Zx8-DT-GzR"/>
             </connections>
-            <point key="canvasLocation" x="35.5" y="53.5"/>
+            <point key="canvasLocation" x="35.5" y="53"/>
         </view>
     </objects>
     <resources>

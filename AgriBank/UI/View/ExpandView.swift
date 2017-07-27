@@ -9,15 +9,24 @@
 import UIKit
 
 class ExpandView: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
     @IBOutlet weak var transBtn: UIButton!
     @IBOutlet weak var detailBtn: UIButton!
 
+    // MARK - Public
+    func SetStatus(_ transStaus: Bool, _ detailStatus: Bool) {
+        transBtn.isEnabled = transStaus
+        if !transStaus {
+            transBtn.backgroundColor = Gray_Color
+        }
+        else {
+            transBtn.backgroundColor = .clear
+        }
+        detailBtn.isEnabled = detailStatus
+        if !detailStatus {
+            detailBtn.backgroundColor = Gray_Color
+        }
+        else {
+            detailBtn.backgroundColor = .clear
+        }
+    }
 }

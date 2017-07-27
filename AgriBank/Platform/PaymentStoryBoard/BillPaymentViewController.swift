@@ -43,6 +43,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
         setAllSubView()
         initInputForType("自訂帳號")
         setShadowView(m_vShadowView)
+        m_segAccountType.setTitleTextAttributes([NSFontAttributeName:Default_Font], for: .normal)
         AddObserverToKeyBoard()
     }
     

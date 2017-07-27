@@ -16,7 +16,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
     @IBOutlet weak var featureWall: FeatureWallView!
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var logoImageView: UIImageView!
-    
+    @IBOutlet weak var loginImageView: UIImageView!
     private var login:LoginView? = nil
     
     // MARK: - Life cycle
@@ -24,8 +24,6 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.leftBarButtonItem = nil
-        loginBtn.layer.cornerRadius = loginBtn.frame.width/2
-        loginBtn.layer.masksToBounds = true
         
         let news = getUIByID(.UIID_AnnounceNews) as! AnnounceNews
         news.frame = newsView.frame
@@ -40,6 +38,8 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
         featureWall.setInitial(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!, setVertical: 3, setHorizontal: 2, SetDelegate: self)
         
         AddObserverToKeyBoard()
+        postRequest("COMM0201", "COMM0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01021","Operate":"getList"], false), false)
+//        postRequest("COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","ICIFKEY":"A123456789","ID":"Systexsoftware","PWD":"systex6214","KINBR":"systex6214","varifyId ":"A123456789","CaptchaCode ":"12345", "LoginMode":1,"TYPE":1,"appId": "FFICMBank", "Version": "1.0","appUid": "123456789","uid": "123456789","model": "123456789","systemVersion": "8.3.1","codeName": "X86_64","tradeMark": "Apple"], true, "a25dq"), true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -120,7 +120,19 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description: String, _ response: NSDictionary) {
-        
+        switch description {
+        case "COMM0201":
+            var bannerList = [BannerStructure]()
+            if let data:[String:Any] = response.object(forKey: "Data") as? [String:Any] {
+                if let list:[[String:String]] = data["Result"] as? [[String:String]] {
+                    for banner in list {
+                        bannerList.append(BannerStructure(imageURL: banner["picUrl"]!, link: banner["lnkUrl"]!))
+                    }
+                    (bannerView.subviews.first as! BannerView).SetContentList(bannerList)
+                }
+            }
+        default: break
+        }
     }
     
     override func didFailedWithError(_ error: Error) {

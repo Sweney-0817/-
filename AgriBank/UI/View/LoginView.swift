@@ -10,8 +10,8 @@ import UIKit
 
 let Login_PickView_Height:CGFloat = 250
 let Login_ToolBar_tintColor = UIColor(red: 92/255, green: 216/255, blue: 255/255, alpha: 1)
-let Login_DoneButton_Title = "Done"
-let Login_CancelButton_Title = "Cancel"
+let Login_DoneButton_Title = "確認"
+let Login_CancelButton_Title = "取消"
 let Login_Account_Length = 10
 let Login_ID_Length = 16
 let Login_Password_Length = 10
@@ -24,18 +24,27 @@ protocol LoginDelegate {
     func clickLoginBtn()
 }
 
-class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate{
+class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, ImageConfirmViewDelegate {
     @IBOutlet weak var locationTextfield: UITextField!
     @IBOutlet weak var accountTextfield: UITextField!
     @IBOutlet weak var idTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
     @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var imageConfirmView: UIView!
     private var request:ConnectionUtility? = nil
     private var list:[String:[String]]? = nil
     private var currnetCity:String? = nil
     private var isLocker = false
     private var currentTextField:UITextField? = nil
     private var delegate:LoginDelegate? = nil
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let view = Platform.plat.getUIByID(.UIID_ImageConfirmView) as! ImageConfirmView
+        view.frame = imageConfirmView.frame
+        view.frame.origin = .zero
+        imageConfirmView.addSubview(view)
+    }
     
     // MARK: - pubic
     func setInitialList(_ list:[String:[String]], _ city:String, _ delegate:LoginDelegate) {
@@ -57,6 +66,7 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
         request = ConnectionUtility()
         request?.postRequest(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, dicHttpHead, needCertificate)
     }
+    
     private func addPickerView(_ textField:UITextField) {
         var frame = self.frame
         frame.origin.y = frame.maxY - Login_PickView_Height
@@ -214,5 +224,14 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
             currnetCity = [String](list!.keys)[row]
             pickerView.reloadComponent(1)
         }
+    }
+    
+    // MARK: - ImageConfirmViewDelegate
+    func clickRefreshBtn() {
+        
+    }
+    
+    func changeInputTextfield(_ input: String){
+        
     }
 }

@@ -17,7 +17,7 @@ protocol ConnectionUtilityDelegate {
     func didFailedWithError(_ error: Error) -> Void
 }
 
-class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate {
+class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, URLSessionDownloadDelegate {
     private var delegate:ConnectionUtilityDelegate? = nil
     private var needCertificate:Bool = false
     var downloadType:DownloadType = .Json
@@ -30,21 +30,29 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate {
     func postRequest(_ delegate:ConnectionUtilityDelegate?, _ strURL:String, _ strTag:String, _ httpBody:Data? = nil, _ dicHttpHead:[String:String]? = nil, _ needCertificate:Bool = false) -> Void {
         self.delegate = delegate
         self.needCertificate = needCertificate
-        var request = URLRequest(url:URL(string:strURL)!, cachePolicy:.reloadIgnoringLocalCacheData, timeoutInterval:REQUEST_TIME_OUT)
-        request.httpMethod = "Post"
-        request.httpBody = httpBody
-
-        if dicHttpHead != nil {
-            for (key, value) in dicHttpHead! {
-                request.addValue(value , forHTTPHeaderField: key)
-            }
-        }
 
         let session = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue())
         session.sessionDescription = strTag
         
-        let task = session.dataTask(with: request)
-        task.resume()
+        switch downloadType {
+        case .Json:
+            var request = URLRequest(url:URL(string:strURL)!, cachePolicy:.reloadIgnoringLocalCacheData, timeoutInterval:REQUEST_TIME_OUT)
+            request.httpMethod = "Post"
+            if httpBody != nil {
+                request.httpBody = httpBody
+            }
+            
+            if dicHttpHead != nil {
+                for (key, value) in dicHttpHead! {
+                    request.addValue(value , forHTTPHeaderField: key)
+                }
+            }
+            let task = session.dataTask(with: request)
+            task.resume()
+        case .Image:
+            let task = session.downloadTask(with: URL(string:strURL)!)
+            task.resume()
+        }
     }
     
     // MARK: - URLSessionDataDelegate
@@ -62,8 +70,7 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate {
                 self.delegate?.didFailedWithError(error!)
             }
             else {
-                switch self.downloadType {
-                case .Json:
+                if self.downloadType == .Json {
                     var jsonData = self.responseData as Data
                     if let value = (task.response as! HTTPURLResponse).allHeaderFields[AnyHashable("CID")] {
                         let str = String(data: self.responseData as Data, encoding: .utf8)?.replacingOccurrences(of: "\"", with: "")
@@ -74,20 +81,26 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate {
                             }
                         }
                     }
-                
+                    
                     do {
                         let jsonDic = try JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as! NSDictionary
                         self.delegate?.didRecvdResponse(session.sessionDescription!, jsonDic)
+                        let dic = try JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
+                        print("\(dic)")
                     }
                     catch {
                         self.delegate?.didFailedWithError(error)
                     }
-                    
-                case .Image:
-                    if let image = UIImage(data:self.responseData as Data) {
-                        self.delegate?.didRecvdResponse(session.sessionDescription!, [RESPONSE_IMAGE_KEY:image])
-                    }
                 }
+            }
+        }
+    }
+    
+    // MARK: - URLSessionDownloadTask
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        DispatchQueue.main.async {
+            if let data = try? Data(contentsOf: location), let image = UIImage(data: data) {
+                self.delegate?.didRecvdResponse(session.sessionDescription!, [RESPONSE_IMAGE_KEY:image])
             }
         }
     }

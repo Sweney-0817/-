@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -29,7 +29,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="676"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgz-ti-iQi">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="689"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="688.66666666666663"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xef-5E-aGv">
                                                         <rect key="frame" x="18" y="0.0" width="379" height="366"/>
@@ -57,7 +57,7 @@
                                                                             <constraint firstAttribute="height" constant="44" id="ft2-YA-wHW"/>
                                                                         </constraints>
                                                                         <nil key="textColor"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                                         <textInputTraits key="textInputTraits"/>
                                                                         <connections>
                                                                             <outlet property="delegate" destination="Td5-Oa-8Ne" id="RNf-ar-9ag"/>
@@ -81,7 +81,7 @@
                                                                             <constraint firstAttribute="height" constant="44" id="UQX-kK-XBw"/>
                                                                         </constraints>
                                                                         <nil key="textColor"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                                         <textInputTraits key="textInputTraits"/>
                                                                         <connections>
                                                                             <outlet property="delegate" destination="Td5-Oa-8Ne" id="aIC-K9-gof"/>
@@ -112,7 +112,7 @@
                                                                             <constraint firstAttribute="height" constant="44" id="bg8-9f-iID"/>
                                                                         </constraints>
                                                                         <nil key="textColor"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                                         <textInputTraits key="textInputTraits"/>
                                                                         <connections>
                                                                             <outlet property="delegate" destination="Td5-Oa-8Ne" id="qnM-ly-2ks"/>
@@ -152,14 +152,13 @@
                                                         </constraints>
                                                     </view>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HintDownArrow" translatesAutoresizingMaskIntoConstraints="NO" id="S96-oW-GqL">
-                                                        <rect key="frame" x="0.0" y="376" width="414" height="40"/>
+                                                        <rect key="frame" x="0.0" y="376" width="414" height="39.666666666666686"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="S96-oW-GqL" secondAttribute="height" multiplier="375:36" id="6Q2-rG-bBO"/>
                                                         </constraints>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iy9-82-Si4">
-                                                        <rect key="frame" x="18" y="426" width="379" height="253"/>
-                                                        <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <rect key="frame" x="18" y="425.66666666666663" width="379" height="252.99999999999989"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="253" id="JYc-pp-O7K"/>
                                                         </constraints>
@@ -196,6 +195,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="fSA-JJ-wjE"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                 <state key="normal" title="送出" backgroundImage="ButtonLarge">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -270,7 +270,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="676"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cde-Mv-eP6">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="605"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="604.66666666666663"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f7h-jk-B2E">
                                                         <rect key="frame" x="18" y="0.0" width="379" height="100"/>
@@ -280,13 +280,13 @@
                                                         </constraints>
                                                     </view>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HintDownArrow" translatesAutoresizingMaskIntoConstraints="NO" id="4m7-J5-Hi7">
-                                                        <rect key="frame" x="0.0" y="110" width="414" height="40"/>
+                                                        <rect key="frame" x="0.0" y="109.99999999999999" width="414" height="39.666666666666643"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="4m7-J5-Hi7" secondAttribute="height" multiplier="375:36" id="DNa-IE-z9r"/>
                                                         </constraints>
                                                     </imageView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G4n-gR-xBD">
-                                                        <rect key="frame" x="18" y="160" width="379" height="445"/>
+                                                        <rect key="frame" x="18" y="159.66666666666663" width="379" height="445"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xzX-bY-glB">
                                                                 <rect key="frame" x="0.0" y="0.0" width="379" height="60"/>
@@ -316,14 +316,14 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VkI-2G-dQi">
-                                                                <rect key="frame" x="0.0" y="59" width="379" height="60"/>
+                                                                <rect key="frame" x="0.0" y="59" width="379" height="60.000000000000028"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="60" id="Q4s-Hh-Qns"/>
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q7z-an-Q7G">
-                                                                <rect key="frame" x="0.0" y="118" width="379" height="60"/>
+                                                                <rect key="frame" x="0.0" y="118.00000000000003" width="379" height="60"/>
                                                                 <subviews>
                                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="轉入帳號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="Zgd-Fh-UWF" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                                                         <rect key="frame" x="15" y="8" width="349" height="44"/>
@@ -331,7 +331,7 @@
                                                                             <constraint firstAttribute="height" constant="44" id="Jbr-S7-fg6"/>
                                                                         </constraints>
                                                                         <nil key="textColor"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                                         <textInputTraits key="textInputTraits"/>
                                                                         <connections>
                                                                             <outlet property="delegate" destination="xx0-YH-dF7" id="TCv-BU-ebb"/>
@@ -347,7 +347,7 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xuE-hi-c8f">
-                                                                <rect key="frame" x="0.0" y="177" width="379" height="80"/>
+                                                                <rect key="frame" x="0.0" y="177.00000000000003" width="379" height="79.999999999999972"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="80" id="szg-gg-AKb"/>
@@ -362,7 +362,7 @@
                                                                             <constraint firstAttribute="height" constant="44" id="MST-Q7-GyG"/>
                                                                         </constraints>
                                                                         <nil key="textColor"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                                         <textInputTraits key="textInputTraits"/>
                                                                         <connections>
                                                                             <outlet property="delegate" destination="xx0-YH-dF7" id="26h-af-bug"/>
@@ -378,15 +378,15 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d18-q3-jnO">
-                                                                <rect key="frame" x="0.0" y="326" width="379" height="60"/>
+                                                                <rect key="frame" x="0.0" y="326" width="379" height="59.999999999999943"/>
                                                                 <subviews>
                                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="備註/交易備記" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="dr3-KZ-xUX" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
-                                                                        <rect key="frame" x="15" y="8" width="349" height="44"/>
+                                                                        <rect key="frame" x="15" y="8" width="349" height="43.999999999999943"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="44" id="Vxz-fY-zY4"/>
                                                                         </constraints>
                                                                         <nil key="textColor"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                                         <textInputTraits key="textInputTraits"/>
                                                                         <connections>
                                                                             <outlet property="delegate" destination="xx0-YH-dF7" id="ej4-w4-iR1"/>
@@ -410,7 +410,7 @@
                                                                             <constraint firstAttribute="height" constant="44" id="WVd-86-amj"/>
                                                                         </constraints>
                                                                         <nil key="textColor"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                                         <textInputTraits key="textInputTraits"/>
                                                                         <connections>
                                                                             <outlet property="delegate" destination="xx0-YH-dF7" id="myB-in-pae"/>
@@ -484,6 +484,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Wbf-tZ-y7H"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                 <state key="normal" title="送出" backgroundImage="ButtonLarge">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -573,8 +574,8 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="設備確認" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzw-wi-FLM">
-                                                <rect key="frame" x="172" y="150" width="70" height="50"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <rect key="frame" x="171" y="150" width="72.333333333333343" height="50"/>
+                                                <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -601,10 +602,11 @@
                                         <rect key="frame" x="0.0" y="656" width="414" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2XI-aq-htx">
-                                                <rect key="frame" x="15" y="8" width="180" height="44"/>
+                                                <rect key="frame" x="15" y="8" width="179.66666666666666" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="9Nq-j8-FCF"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                 <state key="normal" title="設備確認" backgroundImage="ButtonMedium">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -613,7 +615,8 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rfs-6K-iex">
-                                                <rect key="frame" x="220" y="8" width="179" height="44"/>
+                                                <rect key="frame" x="219.66666666666663" y="8" width="179.33333333333337" height="44"/>
+                                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                 <state key="normal" title="取消" backgroundImage="ButtonMedium">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>

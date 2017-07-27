@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -29,7 +29,6 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="NuY-2L-oRf" firstAttribute="width" secondItem="9uv-8Q-ot3" secondAttribute="width" id="1jn-Aj-Xja"/>
                         <constraint firstItem="9uv-8Q-ot3" firstAttribute="leading" secondItem="sOn-OB-ZeI" secondAttribute="leading" id="DbX-SJ-fZa"/>
@@ -56,7 +55,6 @@
                     <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </pageControl>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="sOn-OB-ZeI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Skz-qd-gpF"/>
                 <constraint firstItem="sOn-OB-ZeI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cke-cY-VGG"/>

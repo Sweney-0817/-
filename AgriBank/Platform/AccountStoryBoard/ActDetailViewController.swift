@@ -7,23 +7,42 @@
 //
 
 import UIKit
+let ActDetailView_ShowDetail_Segue = "ShowDetail"
 
-class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate {
+class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate, OneRowDropDownViewDelegate {
     @IBOutlet weak var chooseTypeView: ChooseTypeView!    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var transDayView: UIView!
-    private var typeList:[String]? = nil
+    @IBOutlet weak var chooseAccountView: UIView!
+
+    private var typeList = ["活期存款","支票存款","定期存款","放款存款"]
     private let cellTitleList = ["交易日期","攤還本金","本金餘額"]
+    private var currentType = 0
+    
+    // MARK: - public
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+    }
+    
+    func SetInitial(_ currentType:String)  {
+        self.currentType = typeList.index(of: currentType) ?? self.currentType
+        chooseTypeView.setTypeList(typeList, setDelegate: self, self.currentType)
+    }
     
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        typeList = ["活期存款","支票存款","定期存款","放款存款"]
-        chooseTypeView.setTypeList(typeList, setDelegate: self)
+        chooseTypeView.setTypeList(typeList, setDelegate: self, currentType)
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
         tableView.reloadData()
         setShadowView(transDayView)
+        let view = getUIByID(.UIID_OneRowDropDownView) as! OneRowDropDownView
+        view.frame = chooseAccountView.frame
+        view.frame.origin = .zero
+        view.setOneRow("帳號", "")
+        chooseAccountView.addSubview(view)
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,9 +72,6 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     }
     
     // MARK: - Xib Event
-    @IBAction func clickAccountBtn(_ sender: Any) {
-    }
-    
     @IBAction func clickDateBtn(_ sender: Any) {
         let btn = (sender as! UIButton)
         if btn.title(for: .normal) == "自訂" {
@@ -103,7 +119,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: ShowDetail_Segue_Identify, sender: nil)
+        performSegue(withIdentifier: ActDetailView_ShowDetail_Segue, sender: nil)
     }
     
     // MARK: - Selector
@@ -111,5 +127,10 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         if let datePickerView = view.viewWithTag(ViewTag.View_DoubleDatePickerBackground.rawValue) {
             datePickerView.removeFromSuperview()
         }
+    }
+    
+    // MARK: - OneRowDropDownViewDelegate
+    func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
+        
     }
 }

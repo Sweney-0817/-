@@ -53,7 +53,7 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
     }
 
     private func postRequest(_ strMethod:String, _ strSessionDescription:String, _ needCertificate:Bool = false,  _ httpBody:Data? = nil, _ dicHttpHead:[String:String]? = nil, _ strURL:String? = nil)  {
-        request = ConnectionUtility()
+        request = ConnectionUtility(.Image)
         request?.postRequest(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, dicHttpHead, needCertificate)
     }
     
@@ -82,9 +82,12 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
     // MARK: - ConnectionUtilityDelegate
     func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage
-        let imgView = contentView.viewWithTag(pageControl.currentPage+1) as! UIImageView
-        imgView.image = responseImage
-        imageList[Int(description)!] = responseImage
+        if let page = Int(description) {
+            if let imgView = contentView.viewWithTag(page+1) {
+                (imgView as! UIImageView).image = responseImage
+            }
+            imageList[page] = responseImage
+        }
     }
     
     func didFailedWithError(_ error: Error) {

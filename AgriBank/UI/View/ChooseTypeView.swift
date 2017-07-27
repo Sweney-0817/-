@@ -13,7 +13,7 @@ protocol ChooseTypeDelegate{
 }
 
 let ChooseType_Width = CGFloat(100)
-let ChooseType_Font_Size = UIFont.systemFont(ofSize: 18)
+let ChooseType_Font_Size = UIFont(name: "PingFangTC-Medium", size: 18)
 
 class ChooseTypeView: UIView {
     private var scrollView:UIScrollView? = nil
@@ -34,8 +34,11 @@ class ChooseTypeView: UIView {
         addSubview(scrollView!)
     }
     
-    func setTypeList(_ list:[String]?, setDelegate delegate:ChooseTypeDelegate?) {
+    func setTypeList(_ list:[String]?, setDelegate delegate:ChooseTypeDelegate?,_ currentType:Int? = nil) {
         scrollView?.subviews.forEach{ view in view.removeFromSuperview() }
+        if currentType != nil {
+            currentIndex = currentType! + 1
+        }
         self.delegate = delegate
         if list != nil {
             let width = CGFloat((list?.count)!)*ChooseType_Width
