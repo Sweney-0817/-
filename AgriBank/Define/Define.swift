@@ -258,6 +258,7 @@ enum ViewTag: Int {
     case ActionSheet_Photo = 99             // 頭像設定
     case View_Status                        // 狀態欄
     case View_DoubleDatePickerBackground    // 起始日picker
+    case View_Loading                       // 讀取頁面
 }
 
 // MARK: - AuthorizationManager
@@ -291,15 +292,22 @@ let Gray_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
 let Memo_Color = UIColor(red: 130/255, green: 179/255, blue: 66/255, alpha: 1)
 let Cell_Title_Color = UIColor(red: 127/255, green: 127/255, blue: 127/255, alpha: 1)
 let Cell_Detail_Color = UIColor.black
+let Loading_Background_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 0.5)
 let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFont.systemFont(ofSize: CGFloat(18))
 let Layer_BorderWidth:CGFloat = 1
 let Layer_BorderRadius:CGFloat = 5
+let ToolBar_tintColor = UIColor(red: 92/255, green: 216/255, blue: 255/255, alpha: 1)
+let PickView_Height:CGFloat = 250
 
 // MARK: - 字串定義
 let SystemCell_Identify = "System_Cell"
 let AES_Key = "Systex"
 let File_IDList_Key = "IDlist"
 let File_NoLogin_IDList_key = "NoLoginIDlist"
+let Login_Success = "登出"
+let Logout_Success = "登入"
+let ToolBar_DoneButton_Title = "確認"
+let ToolBar_CancelButton_Title = "取消"
 
 // MARK: - Cell定義
 let Separator_Height = CGFloat(1)

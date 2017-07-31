@@ -7,35 +7,42 @@
 //
 
 import UIKit
+import Darwin
 
 let AuthorizationManage_IDList_Separator = ","
+let AuthorizationManage_HttpHead_Token = "Token"
+let AuthorizationManage_HttpHead_CID = "CID"
+let AuthorizationManage_HttpHead_Default = ["Content-Type":"application/json", "DeviceID":UIDevice.current.identifierForVendor!.uuidString]
+let AuthorizationManage_CIDListKey = ["a25dq":"hs3rwPsoYknnCCWjqIX57RgRflYGhKO1tmQxqWps21k=",
+                                      "b4wp0":"Az9jU/D/6d6+MANr/y/V78FimjSMHNj9A4i7TGS3JyU=",
+                                      "cni24":"gvpZZ70O8Tks20vMcGUEi2IiKDPk74gUhz9cndSIBTA=",
+                                      "dw67m":"KkfD6l0TqI50ix7uBPjKC52XrZhuJFVoAHWR4B1TFUo=",
+                                      "ez98f":"hIb8YaYT2ooLiU2q39k/O5s8W0VO0BdGesGbDZISGiY="]
 
 class AuthorizationManage {
     static let manage = AuthorizationManage()
     private let featureList:[PlatformFeatureID:Bool]? = nil
     private var loginToken:String? = nil
-    private let CIDListKey = ["a25dq":"hs3rwPsoYknnCCWjqIX57RgRflYGhKO1tmQxqWps21k=",
-                              "b4wp0":"Az9jU/D/6d6+MANr/y/V78FimjSMHNj9A4i7TGS3JyU=",
-                              "cni24":"gvpZZ70O8Tks20vMcGUEi2IiKDPk74gUhz9cndSIBTA=",
-                              "dw67m":"KkfD6l0TqI50ix7uBPjKC52XrZhuJFVoAHWR4B1TFUo=",
-                              "ez98f":"hIb8YaYT2ooLiU2q39k/O5s8W0VO0BdGesGbDZISGiY="
-                             ]
     
     func SetLoginToken(_ token:String?) {
         loginToken = token
     }
 
-    func getHttpHead(_ isNeedToken:Bool) -> [String:String] {
-        var head = ["Content-Type":"application/json", "DeviceID":UIDevice.current.identifierForVendor!.uuidString]
+    func getHttpHead(_ isNeedToken:Bool, _ isNeedCID:Bool) -> [String:String] {
+        var head = AuthorizationManage_HttpHead_Default
         if isNeedToken {
-            head["Token"] = loginToken ?? ""
-            head["CID"] = "a25dq"
+            head[AuthorizationManage_HttpHead_Token] = loginToken ?? ""
+        }
+        if isNeedCID {
+//            let random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
+//            head[AuthorizationManage_HttpHead_CID] = [String](AuthorizationManage_CIDListKey.keys)[random]
+            head[AuthorizationManage_HttpHead_CID] = "a25dq"
         }
         return head
     }
     
     func GetCIDKey(_ ID:String) -> String? {
-        return CIDListKey[ID]
+        return AuthorizationManage_CIDListKey[ID]
     }
     
     func converInputToHttpBody(_ input:[String:Any], _ needEncrypt:Bool, _ encryptID:String? = nil) -> Data? {
@@ -43,7 +50,7 @@ class AuthorizationManage {
         do {
             httpBody = try JSONSerialization.data(withJSONObject: input, options: .prettyPrinted)
             if needEncrypt {
-                if let encrypt = String(data: httpBody!, encoding: .utf8)?.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: " ", with: ""), let key = CIDListKey[encryptID ?? ""] {
+                if let encrypt = String(data: httpBody!, encoding: .utf8)?.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: " ", with: ""), let key = AuthorizationManage_CIDListKey[encryptID ?? ""] {
                     // 中台需求: " + body + "
                     let encryptString = "\"" + SecurityUtility.utility.AES256Encrypt( encrypt, key ) + "\""
                     httpBody = encryptString.data(using: .utf8)

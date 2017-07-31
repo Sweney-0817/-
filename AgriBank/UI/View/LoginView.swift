@@ -8,10 +8,6 @@
 
 import UIKit
 
-let Login_PickView_Height:CGFloat = 250
-let Login_ToolBar_tintColor = UIColor(red: 92/255, green: 216/255, blue: 255/255, alpha: 1)
-let Login_DoneButton_Title = "確認"
-let Login_CancelButton_Title = "取消"
 let Login_Account_Length = 10
 let Login_ID_Length = 16
 let Login_Password_Length = 10
@@ -21,7 +17,7 @@ struct LoginStrcture {
 }
 
 protocol LoginDelegate {
-    func clickLoginBtn()
+    func clickLoginBtn(_ info:LoginStrcture)
 }
 
 class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, ImageConfirmViewDelegate {
@@ -32,7 +28,8 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var imageConfirmView: UIView!
     private var request:ConnectionUtility? = nil
-    private var list:[String:[String]]? = nil
+    private var list = [[String:[String]]]()
+    private var bankCode = [String:String]()
     private var currnetCity:String? = nil
     private var isLocker = false
     private var currentTextField:UITextField? = nil
@@ -47,8 +44,9 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     }
     
     // MARK: - pubic
-    func setInitialList(_ list:[String:[String]], _ city:String, _ delegate:LoginDelegate) {
+    func setInitialList(_ list:[[String:[String]]], _ bankCode:[String:String], _ city:String, _ delegate:LoginDelegate) {
         self.list = list
+        self.bankCode = bankCode
         currnetCity = city
         self.delegate = delegate
     }
@@ -69,24 +67,24 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     
     private func addPickerView(_ textField:UITextField) {
         var frame = self.frame
-        frame.origin.y = frame.maxY - Login_PickView_Height
-        frame.size.height = Login_PickView_Height
+        frame.origin.y = frame.maxY - PickView_Height
+        frame.size.height = PickView_Height
         // UIPickerView
         let pickerView = UIPickerView(frame: frame)
         pickerView.dataSource = self
         pickerView.delegate = self
         pickerView.backgroundColor = .white
-        pickerView.selectRow([String](list!.keys).index(of: currnetCity!)!, inComponent: 0, animated: false)
+        pickerView.selectRow(0, inComponent: 0, animated: false)
         // ToolBar
         let toolBar = UIToolbar()
         toolBar.barStyle = .default
         toolBar.isTranslucent = true
-        toolBar.tintColor = Login_ToolBar_tintColor
+        toolBar.tintColor = ToolBar_tintColor
         toolBar.sizeToFit()
         // Adding Button ToolBar
-        let doneButton = UIBarButtonItem(title: Login_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
+        let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: Login_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
+        let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
         toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         textField.inputAccessoryView = toolBar
@@ -104,8 +102,7 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     
     @IBAction func clickLoginBtn(_ sender: Any) {
         if InputIsCorrect() {
-            AuthorizationManage.manage.SetLoginToken("qazwsx")
-            delegate?.clickLoginBtn()
+            delegate?.clickLoginBtn(LoginStrcture())
             removeFromSuperview()
         }
     }
@@ -131,8 +128,11 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     }
     
     func clickDoneBtn(_ sender:Any) {
-        let picker = locationTextfield.inputView as! UIPickerView
-        locationTextfield.text = "\([String](list!.keys)[picker.selectedRow(inComponent: 0)])     \((list?[currnetCity!]?[picker.selectedRow(inComponent: 1)])!)"
+        let pickerView = locationTextfield.inputView as! UIPickerView
+        let dic = list[pickerView.selectedRow(inComponent: 0)]
+        let city = [String](dic.keys).first ?? ""
+        let place = dic[city]?[pickerView.selectedRow(inComponent: 1)] ?? ""
+        locationTextfield.text = city + " " + place
         locationTextfield.resignFirstResponder()
     }
     
@@ -199,29 +199,31 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        var count = 0
-        component == 0 ? ( count = (list?.count)! ) : ( count = (list?[currnetCity!]?.count)! )
-        return count
+        if component == 0 {
+            return list.count
+        }
+        else {
+            let dic = list[pickerView.selectedRow(inComponent: 0)]
+            let city = [String](dic.keys).first ?? ""
+            return (dic[city]?.count)!
+        }
     }
     
     // MARK - UIPickerViewDelegate
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        var title:String? = nil
         if component == 0 {
-            title = [String](list!.keys)[row]
+            let dic = list[row]
+            return [String](dic.keys).first
         }
         else {
-            if currnetCity != nil {
-                title = list?[currnetCity!]?[row]
-            }
+            let dic = list[pickerView.selectedRow(inComponent: 0)]
+            let city = [String](dic.keys).first ?? ""
+            return dic[city]?[row]
         }
-    
-        return title
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if component == 0 {
-            currnetCity = [String](list!.keys)[row]
             pickerView.reloadComponent(1)
         }
     }

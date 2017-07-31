@@ -20,6 +20,7 @@ struct NTRationStruct {
     }
 }
 
+let NTRationView_TypeList = ["活存","定期","定儲","其他"]
 
 class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, ChooseTypeDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var m_vPlace: UIView!
@@ -29,86 +30,61 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     @IBOutlet weak var m_lbData2Title: UILabel!
     @IBOutlet weak var m_tvData: UITableView!
 
-    var m_DDPlace: OneRowDropDownView? = nil
-    var m_strType: String? = nil
-    var m_Data1: [NTRationStruct] = [NTRationStruct]()
-    var m_Data2: [NTRationStruct] = [NTRationStruct]()
-    var m_Data3: [NTRationStruct] = [NTRationStruct]()
-    var m_Data4: [NTRationStruct] = [NTRationStruct]()
-    let m_tfPicker: UITextField = UITextField()
-    var m_PickerData: [[String:[String]]]? = nil
+    private var m_DDPlace: OneRowDropDownView? = nil
+    private var m_strType: String? = nil
+    private var m_Data1: [NTRationStruct] = [NTRationStruct]()
+    private var m_Data2: [NTRationStruct] = [NTRationStruct]()
+    private var m_Data3: [NTRationStruct] = [NTRationStruct]()
+    private var m_Data4: [NTRationStruct] = [NTRationStruct]()
+    private let m_tfPicker:UITextField = UITextField()
+    private var m_PickerData = [[String:[String]]]()
+    private var bankCode = [String:String]()
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setFakeData()
         setAllSubView()
-        initDataTitleForType("活存")
+        initDataTitleForType(NTRationView_TypeList.first!)
         setShadowView(m_vChooseTypeView)
+        SetLoading(true)
+        postRequest("Comm/COMM0402", "COMM0402", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07002","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
     }
-    func setFakeData() {
-        m_Data1.append(NTRationStruct.init("活期存款", "", "0.10010 %"))
-        m_Data1.append(NTRationStruct.init("活期儲蓄存款", "", "0.10010 %"))
-
-        m_Data2.append(NTRationStruct.init("定期存款1個月", "0.10010 %", "0.10010 %"))
-        m_Data2.append(NTRationStruct.init("定期存款3個月", "0.10010 %", "0.10010 %"))
-        m_Data2.append(NTRationStruct.init("定期存款6個月", "0.10010 %", "0.10010 %"))
-        m_Data2.append(NTRationStruct.init("定期存款9個月", "0.10010 %", "0.10010 %"))
-        m_Data2.append(NTRationStruct.init("定期存款1年", "0.10010 %", "0.10010 %"))
-        m_Data2.append(NTRationStruct.init("定期存款2年", "0.10010 %", "0.10010 %"))
-        m_Data2.append(NTRationStruct.init("定期存款3年", "0.10010 %", "0.10010 %"))
-
-        m_Data3.append(NTRationStruct.init("定期儲蓄存款1年", "0.10010 %", "0.10010 %"))
-        m_Data3.append(NTRationStruct.init("定期儲蓄存款2年", "0.10010 %", "0.10010 %"))
-        m_Data3.append(NTRationStruct.init("定期儲蓄存款3年", "0.10010 %", "0.10010 %"))
-
-        m_Data4.append(NTRationStruct.init("基本放款利率", "", "0.10010 %"))
-        m_Data4.append(NTRationStruct.init("基準利率", "", "0.10010 %"))
-        m_Data4.append(NTRationStruct.init("指標利率", "", "0.10010 %"))
-        m_Data4.append(NTRationStruct.init("指數型房貸利率", "", "0.10010 %"))
-        m_Data4.append(NTRationStruct.init("指數型指標房貸利率(月調)", "", "0.10010 %"))
-        m_Data4.append(NTRationStruct.init("一定比率", "", "0.10010 %"))
-        m_Data4.append(NTRationStruct.init("指標利率(月調)", "", "0.10010 %"))
-        m_Data4.append(NTRationStruct.init("基標利率(月調)", "", "0.10010 %"))
-    }
+    
     func setAllSubView() {
         setDDPlace()
         setChooseTypeView()
         setDataTableView()
     }
+    
     func setDDPlace() {
-        if (m_DDPlace == nil)
-        {
+        if (m_DDPlace == nil) {
             m_DDPlace = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDPlace?.delegate = self
-            m_DDPlace?.setOneRow("農會", "彰化縣 彰化區農會")
+            m_DDPlace?.setOneRow("農會", "")
             m_DDPlace?.frame = CGRect(x:0, y:0, width:m_vPlace.frame.width, height:(m_DDPlace?.getHeight())!)
             m_vPlace.addSubview(m_DDPlace!)
         }
         m_vPlace.layer.borderColor = Gray_Color.cgColor
         m_vPlace.layer.borderWidth = 1
     }
+    
     func setChooseTypeView() {
-        let typeList = ["活存","定期","定儲","其他"]
-        m_vChooseTypeView.setTypeList(typeList, setDelegate: self)
+        m_vChooseTypeView.setTypeList(NTRationView_TypeList, setDelegate: self)
         m_vChooseTypeView.layer.borderColor = Gray_Color.cgColor
         m_vChooseTypeView.layer.borderWidth = 1
     }
+    
     func setDataTableView() {
         m_tvData.register(UINib(nibName: UIID.UIID_NTRationCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_NTRationCell.NibName()!)
         m_tvData.allowsSelection = false
     }
-    func setPicker()
-    {
-        if (m_PickerData == nil) {
-            m_PickerData = [["桃園市":["全國農會1"]], ["台北市":["全國農會4","全國農會5"]], ["新北市":["全國農會7","全國農會8","全國農會9"]]]
-        }
+    
+    func setPicker() {
         m_tfPicker.delegate = self
         m_vPlace.addSubview(m_tfPicker)
 
         // UIPickerView
-        let pickerView = UIPickerView(frame: CGRect(x:0, y:self.view.frame.height-Login_PickView_Height, width:self.view.frame.width, height:Login_PickView_Height))
+        let pickerView = UIPickerView(frame: CGRect(x:0, y:self.view.frame.height-PickView_Height, width:self.view.frame.width, height:PickView_Height))
         pickerView.dataSource = self
         pickerView.delegate = self
         pickerView.backgroundColor = .white
@@ -117,17 +93,18 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         let toolBar = UIToolbar()
         toolBar.barStyle = .default
         toolBar.isTranslucent = true
-        toolBar.tintColor = Login_ToolBar_tintColor
+        toolBar.tintColor = ToolBar_tintColor
         toolBar.sizeToFit()
         // Adding Button ToolBar
-        let doneButton = UIBarButtonItem(title: Login_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
+        let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: Login_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
+        let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
         toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         m_tfPicker.inputAccessoryView = toolBar
         m_tfPicker.inputView = pickerView
     }
+    
     func initDataTitleForType(_ type:String) {
         m_strType = type
         switch type {
@@ -148,19 +125,20 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         textFieldShouldBeginEditing(m_tfPicker)
         m_tfPicker.becomeFirstResponder()
     }
+    
     // MARK: - UIActionSheetDelegate
-    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int)
-    {
-        if (actionSheet.buttonTitle(at: buttonIndex)! != "cancel")
-        {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
+        if (actionSheet.buttonTitle(at: buttonIndex)! != "cancel") {
             m_DDPlace?.setOneRow(actionSheet.buttonTitle(at: buttonIndex)!, actionSheet.buttonTitle(at: buttonIndex)!)
         }
     }
+    
     // MARK: - ChooseTypeDelegate
     func clickChooseTypeBtn(_ name:String) {
         initDataTitleForType(name)
@@ -171,6 +149,7 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
+    
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch m_strType! {
@@ -217,12 +196,18 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     
     func clickDoneBtn(_ sender:Any) {
         let pickerView = m_tfPicker.inputView as! UIPickerView
-        let a = m_PickerData?[pickerView.selectedRow(inComponent: 0)]
-        let city = [String](a!.keys)[0]
-        let place = a?[city]?[pickerView.selectedRow(inComponent: 1)]
-        m_DDPlace?.setOneRow((m_DDPlace?.m_lbFirstRowTitle.text)!, city+" "+place!)
+        let a = m_PickerData[pickerView.selectedRow(inComponent: 0)]
+        let city = [String](a.keys).first ?? ""
+        let place = a[city]?[pickerView.selectedRow(inComponent: 1)] ?? ""
+        m_DDPlace?.setOneRow((m_DDPlace?.m_lbFirstRowTitle.text)!, city+" "+place)
         m_tfPicker.resignFirstResponder()
+        
+        if let code = bankCode["\(city)\(place)"] {
+            SetLoading(true)
+            postRequest("Mang/MANG0101", "MANG0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"06001","Operate":"queryData","BR_CODE":"\(code)"], false), AuthorizationManage.manage.getHttpHead(false, false))
+        }
     }
+    
     // MARK: - UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -240,28 +225,26 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if (component == 0)
-        {
-            return m_PickerData!.count
+        if component == 0 {
+            return m_PickerData.count
         }
-        else
-        {
-            let a = m_PickerData?[pickerView.selectedRow(inComponent: 0)]
-            let city = [String](a!.keys)[0]
-            return (a![city]?.count)!
+        else {
+            let a = m_PickerData[pickerView.selectedRow(inComponent: 0)]
+            let city = [String](a.keys).first ?? ""
+            return (a[city]?.count)!
         }
     }
     
     // MARK - UIPickerViewDelegate
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if component == 0 {
-            let a = m_PickerData?[row]
-            return [String](a!.keys)[0]
+            let a = m_PickerData[row]
+            return [String](a.keys).first
         }
         else {
-            let a = m_PickerData?[pickerView.selectedRow(inComponent: 0)]
-            let city = [String](a!.keys)[0]
-            return a![city]?[row]
+            let a = m_PickerData[pickerView.selectedRow(inComponent: 0)]
+            let city = [String](a.keys).first ?? ""
+            return a[city]?[row]
         }
     }
     
@@ -270,5 +253,58 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
             pickerView.reloadComponent(1)
         }
     }
-
+    
+    // MARK: - ConnectionUtilityDelegate
+    override func didRecvdResponse(_ description: String, _ response: NSDictionary) {
+        SetLoading(false)
+        switch description {
+        case "MANG0101":
+            if let data = response.object(forKey: "Data") as? [String:Any] {
+                m_Data1.removeAll()
+                if let list = data["SurviveRateList"] as? [[String:String]] {
+                    for info in list {
+                        m_Data1.append( NTRationStruct(info["SurviveType"] ?? "", "", info["SurviveRate"] ?? "") )
+                    }
+                }
+                m_Data2.removeAll()
+                if let list = data["TDRateList"] as? [[String:String]] {
+                    for info in list {
+                         m_Data2.append( NTRationStruct(info["TDType"] ?? "", info["TDFixRate"] ?? "", info["TDChangeRate"] ?? "") )
+                    }
+                }
+                m_Data3.removeAll()
+                if let list = data["RSRateList"] as? [[String:String]] {
+                    for info in list {
+                        m_Data3.append( NTRationStruct(info["RSType"] ?? "", info["RSFixRate"] ?? "", info["RSChangeRate"] ?? "") )
+                    }
+                }
+                m_Data4.removeAll()
+                if let list = data["OTRateList"] as? [[String:String]] {
+                    for info in list {
+                        m_Data4.append( NTRationStruct(info["OTType"] ?? "", "", info["OTRate"] ?? "") )
+                    }
+                }
+                m_tvData.reloadData()
+            }
+        case "COMM0402":
+            m_PickerData.removeAll()
+            if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
+                for dic in array {
+                    var bankList = [String]()
+                    if let city = dic["hsienName"] as? String, let list = dic["bankList"] as? [[String:Any]] {
+                        for bank in list {
+                            if let name = bank["bankName"] as? String {
+                                bankList.append(name)
+                                if let code = bank["bankCode"] as? String {
+                                    bankCode["\(city)\(name)"] = code
+                                }
+                            }
+                        }
+                        m_PickerData.append([city:bankList])
+                    }
+                }
+            }
+        default: break
+        }
+    }
 }
