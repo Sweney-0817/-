@@ -18,8 +18,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var loginImageView: UIImageView!
     private var login:LoginView? = nil
-    private var bankList = [[String:[String]]]()
-    private var bankCode = [String:String]()
+    private var loginInf:LoginStrcture? = nil
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -30,6 +29,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
         let news = getUIByID(.UIID_AnnounceNews) as! AnnounceNews
         news.frame = newsView.frame
         news.frame.origin = .zero
+        news.tag = ViewTag.View_AnnounceNews.rawValue
         newsView.addSubview(news)
         
         let banner = getUIByID(.UIID_Banner) as! BannerView
@@ -41,7 +41,6 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
         
         AddObserverToKeyBoard()
         postRequest("Comm/COMM0201", "COMM0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01021","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
-        postRequest("Comm/COMM0402", "COMM0402", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07002","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,6 +55,8 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
         if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
             statusView.isHidden = true
         }
+        
+        GetAnnounceNewsInfo()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -86,14 +87,29 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
             clickLoginBtn(loginBtn)
         }
     }
+    
+    // MARK: - Private
+    private func GetAnnounceNewsInfo() {
+        var body = [String:Any]()
+        body = ["WorkCode":"07041","Operate":"getListInfo"]
+        if AuthorizationManage.manage.IsLoginSuccess() {
+            body["CB_Type"] = Int(1)
+            body["CB_CUM_BankCode"] = loginInf?.bankCode ?? ""
+        }
+        else {
+            body["CB_Type"] = Int(2)
+            body["CB_CUM_BankCode"] = " "
+        }
+        postRequest("Info/INFO0201", "INFO0201", AuthorizationManage.manage.converInputToHttpBody(body, false), AuthorizationManage.manage.getHttpHead(false, false))
+    }
 
     // MARK: - StoryBoard Touch Event
     @IBAction func clickLoginBtn(_ sender: Any) {
-        if loginStatusLabel.text == Logout_Success {
+        if loginStatusLabel.text == NoLogin_Title {
             if login == nil {
                 login = getUIByID(.UIID_Login) as? LoginView
                 login?.frame = view.frame
-                login?.setInitialList(bankList, bankCode, "", self)
+                postRequest("Comm/COMM0403", "COMM0403", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07003","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
             }
             view.addSubview(login!)
         }
@@ -122,26 +138,52 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
     
     // MARK: - LoginDelegate
     func clickLoginBtn(_ info:LoginStrcture) {
-        postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","ICIFKEY":"A123456789","ID":"Systexsoftware","PWD":"systex6214","KINBR":"systex6214","varifyId ":"A123456789","CaptchaCode ":"12345", "LoginMode":1,"TYPE":1,"appId": "FFICMBank", "Version": "1.0","appUid": "123456789","uid": "123456789","model": "123456789","systemVersion": "8.3.1","codeName": "X86_64","tradeMark": "Apple"], true, "a25dq"), AuthorizationManage.manage.getHttpHead(false, true))
+        loginInf = info
+        postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn", "TransactionNo":"2017071700000001","ICIFKEY":info.account,"ID":info.id,"PWD":info.password,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID, "Version": AgriBank_Version,"appUid": "123456789","uid": "123456789","model": "123456789","systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true, "a25dq"), AuthorizationManage.manage.getHttpHead(false, true))
     }
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description: String, _ response: NSDictionary) {
-        SetLoading(false)
         switch description {
         case "COMM0101":
-            if let data = response.object(forKey: "Data") as? [String : Any], let token = data["Token"] as? String {
-                AuthorizationManage.manage.SetLoginToken(token)
+            if let data = response.object(forKey: "Data") as? [String : Any] {
+                var info = UserInfo()
+                if let name = data["CNAME"] as? String {
+                    info.CNAME = name
+                }
+                if let token = data["Token"] as? String {
+                    info.Token = token
+                }
+                if let ID = data["USUDID"] as? String {
+                    info.USUDID = ID
+                }
+                if let bankCode = loginInf?.bankCode {
+                    info.BankCode = bankCode
+                }
+                AuthorizationManage.manage.SetUserInfo(info, nil)
+                if let balance = data["TotalBalance"] as? Int {
+                    accountBalanceLabel.text = String(balance)
+                }
+                if let status = data["STATUS"] as? String {
+                // 帳戶狀態  (1.沒過期，2已過期，需要強制變更，3.已過期，不需要強制變更，4.首登，5.此ID已無有效帳戶)
+                    switch status {
+                    case "1": break
+                    case "2": break
+                    case "3": break
+                    case "4": enterFeatureByID(.FeatureID_FirstLoginChange, true)
+                    case "5": break
+                    default: break
+                    }
+                }
             }
-            loginStatusLabel.text = Login_Success
+            loginStatusLabel.text = AuthorizationManage.manage.IsLoginSuccess() ? Login_Title : NoLogin_Title
             featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
+            
         case "COMM0102":
-            AuthorizationManage.manage.SetLoginToken(nil)
-            loginStatusLabel.text = Logout_Success
+            AuthorizationManage.manage.SetUserInfo(nil, nil)
+            loginStatusLabel.text = NoLogin_Title
             featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
-            break
-        case "COMM0103":
-            enterFeatureByID(.FeatureID_FirstLoginChange, true)
+            
         case "COMM0201":
             var bannerList = [BannerStructure]()
             if let data:[String:Any] = response.object(forKey: "Data") as? [String:Any] {
@@ -152,8 +194,11 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
                     (bannerView.subviews.first as! BannerView).SetContentList(bannerList)
                 }
             }
-        case "COMM0402":
+            
+        case "COMM0403":
             if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
+                var bankList = [[String:[String]]]()
+                var bankCode = [String:String]()
                 for dic in array {
                     var bankNameList = [String]()
                     if let city = dic["hsienName"] as? String, let list = dic["bankList"] as? [[String:Any]] {
@@ -168,15 +213,20 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
                         bankList.append( [city:bankNameList] )
                     }
                 }
+                login?.setInitialList(bankList, bankCode, "", self)
+            }
+            
+        case "INFO0201":
+            if let data = response.object(forKey: "Data") as? [String : Any], let list = data["CB_List"] as? [[String:Any]], let news = newsView.viewWithTag(ViewTag.View_AnnounceNews.rawValue) as? AnnounceNews {
+                var newsList = [String]()
+                let title = AuthorizationManage.manage.IsLoginSuccess() ? NewsTitle_Login : NewsTitle_NoLogin
+                for dic in list {
+                    newsList.append("\(title)  \(dic["CB_AddedDT"] ?? "")  \(dic["CB_Title"] ?? "")")
+                }
+                news.setContentList(newsList)
             }
         default: break
         }
-    }
-    
-    override func didFailedWithError(_ error: Error) {
-        SetLoading(false)
-        let alert = UIAlertView(title: nil, message: "Error Message:\(error.localizedDescription)", delegate: nil, cancelButtonTitle:"確認")
-        alert.show()
     }
 }
 

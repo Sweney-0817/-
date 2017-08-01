@@ -19,6 +19,8 @@ let URL_DOMAIN = ""
 let REQUEST_URL = "\(URL_PROTOCOL)://\(URL_DOMAIN)"
 let BarItem_Height_Weight = 30
 let NavigationBarColor = UIColor(colorLiteralRed: 46/255, green: 134/255, blue: 201/255, alpha: 1)
+let Loading_Weight = 100
+let Loading_Height = 100
 
 class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     var request:ConnectionUtility? = nil
@@ -128,11 +130,19 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     func SetLoading(_ isLoading:Bool) {
         if isLoading {
             let loadingView = UIView(frame: view.frame)
+            loadingView.tag = ViewTag.View_Loading.rawValue
             loadingView.backgroundColor = Loading_Background_Color
-            let loading = UIActivityIndicatorView(activityIndicatorStyle: .white)
+            
+            let backgroundView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: Loading_Weight, height: Loading_Height)))
+            backgroundView.backgroundColor = .white
+            backgroundView.center = loadingView.center
+            loadingView.addSubview(backgroundView)
+            
+            let loading = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+            loading.startAnimating()
             loading.center = loadingView.center
             loadingView.addSubview(loading)
-            loadingView.tag = ViewTag.View_Loading.rawValue
+            
             view.addSubview(loadingView)
         }
         else {

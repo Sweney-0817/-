@@ -13,7 +13,11 @@ let Login_ID_Length = 16
 let Login_Password_Length = 10
 
 struct LoginStrcture {
-    
+    var bankCode = ""
+    var account = ""
+    var id = ""
+    var password = ""
+    var imgPassword = ""
 }
 
 protocol LoginDelegate {
@@ -34,12 +38,14 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     private var isLocker = false
     private var currentTextField:UITextField? = nil
     private var delegate:LoginDelegate? = nil
+    private var loginInfo = LoginStrcture()
     
     override func layoutSubviews() {
         super.layoutSubviews()
         let view = Platform.plat.getUIByID(.UIID_ImageConfirmView) as! ImageConfirmView
         view.frame = imageConfirmView.frame
         view.frame.origin = .zero
+        view.delegate = self
         imageConfirmView.addSubview(view)
     }
     
@@ -102,7 +108,11 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     
     @IBAction func clickLoginBtn(_ sender: Any) {
         if InputIsCorrect() {
-            delegate?.clickLoginBtn(LoginStrcture())
+            loginInfo.bankCode = bankCode[locationTextfield.text?.replacingOccurrences(of: " ", with: "") ?? ""] ?? loginInfo.bankCode
+            loginInfo.account = accountTextfield.text ?? loginInfo.account
+            loginInfo.id = idTextfield.text ?? loginInfo.id
+            loginInfo.password = passwordTextfield.text ?? loginInfo.password
+            delegate?.clickLoginBtn(loginInfo)
             removeFromSuperview()
         }
     }
@@ -234,6 +244,6 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     }
     
     func changeInputTextfield(_ input: String){
-        
+        loginInfo.imgPassword = input
     }
 }

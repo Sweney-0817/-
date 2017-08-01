@@ -259,6 +259,7 @@ enum ViewTag: Int {
     case View_Status                        // 狀態欄
     case View_DoubleDatePickerBackground    // 起始日picker
     case View_Loading                       // 讀取頁面
+    case View_AnnounceNews                  // 訊息跑馬燈
 }
 
 // MARK: - AuthorizationManager
@@ -292,7 +293,7 @@ let Gray_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
 let Memo_Color = UIColor(red: 130/255, green: 179/255, blue: 66/255, alpha: 1)
 let Cell_Title_Color = UIColor(red: 127/255, green: 127/255, blue: 127/255, alpha: 1)
 let Cell_Detail_Color = UIColor.black
-let Loading_Background_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 0.5)
+let Loading_Background_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 0.3)
 let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFont.systemFont(ofSize: CGFloat(18))
 let Layer_BorderWidth:CGFloat = 1
 let Layer_BorderRadius:CGFloat = 5
@@ -304,10 +305,21 @@ let SystemCell_Identify = "System_Cell"
 let AES_Key = "Systex"
 let File_IDList_Key = "IDlist"
 let File_NoLogin_IDList_key = "NoLoginIDlist"
-let Login_Success = "登出"
-let Logout_Success = "登入"
+let Login_Title = "登出"
+let NoLogin_Title  = "登入"
 let ToolBar_DoneButton_Title = "確認"
 let ToolBar_CancelButton_Title = "取消"
+let NewsTitle_Login = "地方農漁會公告訊息"
+let NewsTitle_NoLogin = "中心公告訊息"
+
+let AgriBank_Type = Int(1)
+let AgriBank_AppID = "FFICMBank"
+let AgriBank_TradeMark = "Apple"
+let AgriBank_LoginMode = Int(1)
+let AgriBank_InfoDictionary = Bundle.main.infoDictionary ?? ["CFBundleShortVersionString":""]
+let AgriBank_Version:String = (AgriBank_InfoDictionary["CFBundleShortVersionString"] as? String) ?? ""
+let AgriBank_SystemVersion = UIDevice.current.systemVersion
+let AgriBank_DeviceType = UIDevice.current.model
 
 // MARK: - Cell定義
 let Separator_Height = CGFloat(1)

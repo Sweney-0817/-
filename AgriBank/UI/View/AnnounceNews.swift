@@ -65,7 +65,12 @@ class AnnounceNews: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .value1, reuseIdentifier: "newsCell")
-        cell.textLabel?.text = list?[indexPath.row]
+//        cell.textLabel?.text = list?[indexPath.row]
+//        cell.textLabel?.textColor = .white
+        cell.textLabel?.attributedText = NSAttributedString(string: list?[indexPath.row] ?? "", attributes: [NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.white])
+        
+        
+        cell.backgroundColor = .clear
         return cell
     }
     

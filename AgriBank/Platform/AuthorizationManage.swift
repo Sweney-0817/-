@@ -19,19 +19,31 @@ let AuthorizationManage_CIDListKey = ["a25dq":"hs3rwPsoYknnCCWjqIX57RgRflYGhKO1t
                                       "dw67m":"KkfD6l0TqI50ix7uBPjKC52XrZhuJFVoAHWR4B1TFUo=",
                                       "ez98f":"hIb8YaYT2ooLiU2q39k/O5s8W0VO0BdGesGbDZISGiY="]
 
+
+struct UserInfo {
+    var CNAME:String? = nil
+    var Token:String? = nil
+    var USUDID:String? = nil
+    var BankCode:String? = nil
+}
+
 class AuthorizationManage {
     static let manage = AuthorizationManage()
     private let featureList:[PlatformFeatureID:Bool]? = nil
-    private var loginToken:String? = nil
+    private var userInfo:UserInfo? = nil
     
-    func SetLoginToken(_ token:String?) {
-        loginToken = token
+    func SetUserInfo(_ info:UserInfo?, _ authList:[[String:String]]?) {
+        userInfo = info
+    }
+    
+    func IsLoginSuccess() -> Bool {
+        return userInfo?.Token != nil
     }
 
     func getHttpHead(_ isNeedToken:Bool, _ isNeedCID:Bool) -> [String:String] {
         var head = AuthorizationManage_HttpHead_Default
         if isNeedToken {
-            head[AuthorizationManage_HttpHead_Token] = loginToken ?? ""
+            head[AuthorizationManage_HttpHead_Token] = userInfo?.Token ?? ""
         }
         if isNeedCID {
 //            let random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
@@ -70,7 +82,7 @@ class AuthorizationManage {
         case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation, .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_Home, .FeatureID_Edit:
             canEnter = true
         default:
-            canEnter = loginToken != nil ? true : false
+            canEnter = userInfo?.Token != nil ? true : false
         }
         return canEnter
     }
@@ -90,7 +102,7 @@ class AuthorizationManage {
         var IDList = [String]()
         addList.forEach{ ID in IDList.append(ID.rawValue.description) }
         let ID = IDList.joined(separator: AuthorizationManage_IDList_Separator)
-        if loginToken != nil {
+        if userInfo?.Token != nil {
             SecurityUtility.utility.writeFileByKey(ID, SetKey: File_IDList_Key)
         }
         else {
@@ -105,7 +117,7 @@ class AuthorizationManage {
             list = [.FeatureID_Edit]
             
         case .Default_Type:
-            if loginToken != nil {
+            if userInfo?.Token != nil {
                 list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase, .FeatureID_News]
             }
             else {
@@ -113,7 +125,7 @@ class AuthorizationManage {
             }
             
         case .User_Type:
-            if loginToken != nil {
+            if userInfo?.Token != nil {
                 if let IDString = SecurityUtility.utility.readFileByKey(SetKey: File_IDList_Key) {
                     if !(IDString as! String).isEmpty {
                         let IDStringList = (IDString as! String).components(separatedBy: AuthorizationManage_IDList_Separator)
@@ -158,7 +170,7 @@ class AuthorizationManage {
             
             
         case .Menu_Type:
-            if loginToken == nil {
+            if userInfo?.Token == nil {
                 list = [.FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_DeviceBinding]
             }
             else {
