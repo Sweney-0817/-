@@ -12,7 +12,7 @@ import Darwin
 let AuthorizationManage_IDList_Separator = ","
 let AuthorizationManage_HttpHead_Token = "Token"
 let AuthorizationManage_HttpHead_CID = "CID"
-let AuthorizationManage_HttpHead_Default = ["Content-Type":"application/json", "DeviceID":UIDevice.current.identifierForVendor!.uuidString]
+let AuthorizationManage_HttpHead_Default = ["Content-Type":"application/json", "DeviceID":AgriBank_DeviceID]
 let AuthorizationManage_CIDListKey = ["a25dq":"hs3rwPsoYknnCCWjqIX57RgRflYGhKO1tmQxqWps21k=",
                                       "b4wp0":"Az9jU/D/6d6+MANr/y/V78FimjSMHNj9A4i7TGS3JyU=",
                                       "cni24":"gvpZZ70O8Tks20vMcGUEi2IiKDPk74gUhz9cndSIBTA=",
@@ -20,20 +20,37 @@ let AuthorizationManage_CIDListKey = ["a25dq":"hs3rwPsoYknnCCWjqIX57RgRflYGhKO1t
                                       "ez98f":"hIb8YaYT2ooLiU2q39k/O5s8W0VO0BdGesGbDZISGiY="]
 
 
-struct UserInfo {
-    var CNAME:String? = nil
-    var Token:String? = nil
-    var USUDID:String? = nil
-    var BankCode:String? = nil
+struct ResponseLoginInfo {
+    var CNAME:String? = nil         // 用戶名稱
+    var Token:String? = nil         // Token
+    var USUDID:String? = nil        // 使用者ID
 }
 
 class AuthorizationManage {
     static let manage = AuthorizationManage()
     private let featureList:[PlatformFeatureID:Bool]? = nil
-    private var userInfo:UserInfo? = nil
+    private var userInfo:ResponseLoginInfo? = nil       // 登入成功後回傳的資訊
+    private var loginInfo:LoginStrcture? = nil          // 使用者登入的資訊
+    private var apnsToken:String? = nil                 // APNS回傳的token
     
-    func SetUserInfo(_ info:UserInfo?, _ authList:[[String:String]]?) {
+    func SetResponseLoginInfo(_ info:ResponseLoginInfo?, _ authList:[[String:String]]?) {
         userInfo = info
+    }
+    
+    func SetLoginInfo(_ info:LoginStrcture?) {
+        loginInfo = info
+    }
+    
+    func GetLoginInfo() -> LoginStrcture? {
+        return loginInfo
+    }
+    
+    func SetAPNSToken(_ token:String) {
+        apnsToken = token
+    }
+    
+    func GetAPNSToken() -> String? {
+        return apnsToken
     }
     
     func IsLoginSuccess() -> Bool {

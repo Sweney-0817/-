@@ -69,8 +69,8 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     }
     
     // MARK: - public
-    func postRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:[String:String]?, _ strURL:String? = nil, _ needCertificate:Bool = false)  {
-        request = ConnectionUtility()
+    func postRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:[String:String]?, _ strURL:String? = nil, _ needCertificate:Bool = false, _ isImage:Bool = false)  {
+        request = !isImage ? ConnectionUtility() : ConnectionUtility(.Image)
         request?.postRequest(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, loginHttpHead, needCertificate)
     }
     

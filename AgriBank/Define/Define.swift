@@ -295,6 +295,7 @@ let Cell_Title_Color = UIColor(red: 127/255, green: 127/255, blue: 127/255, alph
 let Cell_Detail_Color = UIColor.black
 let Loading_Background_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 0.3)
 let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFont.systemFont(ofSize: CGFloat(18))
+let Disable_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 0.6)
 let Layer_BorderWidth:CGFloat = 1
 let Layer_BorderRadius:CGFloat = 5
 let ToolBar_tintColor = UIColor(red: 92/255, green: 216/255, blue: 255/255, alpha: 1)
@@ -309,8 +310,8 @@ let Login_Title = "登出"
 let NoLogin_Title  = "登入"
 let ToolBar_DoneButton_Title = "確認"
 let ToolBar_CancelButton_Title = "取消"
-let NewsTitle_Login = "地方農漁會公告訊息"
-let NewsTitle_NoLogin = "中心公告訊息"
+//let NewsTitle_Login = "地方農漁會公告訊息"
+//let NewsTitle_NoLogin = "中心公告訊息"
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "FFICMBank"
@@ -320,6 +321,8 @@ let AgriBank_InfoDictionary = Bundle.main.infoDictionary ?? ["CFBundleShortVersi
 let AgriBank_Version:String = (AgriBank_InfoDictionary["CFBundleShortVersionString"] as? String) ?? ""
 let AgriBank_SystemVersion = UIDevice.current.systemVersion
 let AgriBank_DeviceType = UIDevice.current.model
+let AgriBank_Platform = "1"
+let AgriBank_DeviceID = UIDevice.current.identifierForVendor!.uuidString
 
 // MARK: - Cell定義
 let Separator_Height = CGFloat(1)

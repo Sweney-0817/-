@@ -24,6 +24,7 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
         setAllSubView()
         setShadowView(m_vPlace)
         SetLoading(true)
+        
         postRequest("Comm/COMM0402", "COMM0402", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07002","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
     }
     

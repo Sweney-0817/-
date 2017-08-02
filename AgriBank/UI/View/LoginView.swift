@@ -18,6 +18,7 @@ struct LoginStrcture {
     var id = ""
     var password = ""
     var imgPassword = ""
+    var cityCode = ""
 }
 
 protocol LoginDelegate {
@@ -34,6 +35,7 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     private var request:ConnectionUtility? = nil
     private var list = [[String:[String]]]()
     private var bankCode = [String:String]()
+    private var cityCode = [String:String]()
     private var currnetCity:String? = nil
     private var isLocker = false
     private var currentTextField:UITextField? = nil
@@ -50,11 +52,15 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     }
     
     // MARK: - pubic
-    func setInitialList(_ list:[[String:[String]]], _ bankCode:[String:String], _ city:String, _ delegate:LoginDelegate) {
+    func setInitialList(_ list:[[String:[String]]], _ bankCode:[String:String], _ cityCode:[String:String], _ city:String, _ delegate:LoginDelegate) {
         self.list = list
         self.bankCode = bankCode
+        self.cityCode = cityCode
         currnetCity = city
         self.delegate = delegate
+        accountTextfield.text = "A123456789"
+        idTextfield.text = "Systexsoftware"
+        passwordTextfield.text = "systex6214"
     }
     
     func isNeedRise() -> Bool {
@@ -112,6 +118,8 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
             loginInfo.account = accountTextfield.text ?? loginInfo.account
             loginInfo.id = idTextfield.text ?? loginInfo.id
             loginInfo.password = passwordTextfield.text ?? loginInfo.password
+            let city = locationTextfield.text?.components(separatedBy: " ").first ?? ""
+            loginInfo.cityCode = cityCode[city] ?? loginInfo.cityCode
             delegate?.clickLoginBtn(loginInfo)
             removeFromSuperview()
         }

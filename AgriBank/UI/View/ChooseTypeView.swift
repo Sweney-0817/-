@@ -34,17 +34,18 @@ class ChooseTypeView: UIView {
         addSubview(scrollView!)
     }
     
-    func setTypeList(_ list:[String]?, setDelegate delegate:ChooseTypeDelegate?,_ currentType:Int? = nil) {
+    func setTypeList(_ list:[String]?, setDelegate delegate:ChooseTypeDelegate?, _ currentType:Int? = nil, _ customizedWidth:CGFloat? = nil) {
         scrollView?.subviews.forEach{ view in view.removeFromSuperview() }
         if currentType != nil {
             currentIndex = currentType! + 1
         }
         self.delegate = delegate
         if list != nil {
-            let width = CGFloat((list?.count)!)*ChooseType_Width
+            let chooseTypeWidth = customizedWidth ?? ChooseType_Width
+            let width = CGFloat((list?.count)!)*chooseTypeWidth
             scrollView?.contentSize = CGSize(width: (frame.width > width ? frame.width : width), height: 0)
             for index in 1...(list?.count)! {
-                let button = UIButton(frame: CGRect(x: CGFloat(index-1)*ChooseType_Width, y: 0, width: ChooseType_Width, height: (scrollView?.frame.size.height)!))
+                let button = UIButton(frame: CGRect(x: CGFloat(index-1)*chooseTypeWidth, y: 0, width: chooseTypeWidth, height: (scrollView?.frame.size.height)!))
                 button.tag = index
                 button.addTarget(self, action: #selector(clickTypeBtn(_:)), for: .touchUpInside)
                 button.setTitle(list?[index-1], for: .normal)

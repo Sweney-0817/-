@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDelegate {
+class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDelegate, AnnounceNewsDelegate {
     @IBOutlet weak var newsView: UIView!
     @IBOutlet weak var bannerView: UIView!
     @IBOutlet weak var loginStatusLabel: UILabel!
@@ -18,7 +18,8 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var loginImageView: UIImageView!
     private var login:LoginView? = nil
-    private var loginInf:LoginStrcture? = nil
+    private var centerNewsList:[[String:Any]]? = nil
+    private var bankNewsList:[[String:Any]]? = nil
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -40,7 +41,9 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
         featureWall.setInitial(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!, setVertical: 3, setHorizontal: 2, SetDelegate: self)
         
         AddObserverToKeyBoard()
-        postRequest("Comm/COMM0201", "COMM0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01021","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
+        GetVersionInfo()
+        GetBannerInfo()
+        GetAnnounceNewsInfo()
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,8 +58,6 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
         if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
             statusView.isHidden = true
         }
-        
-        GetAnnounceNewsInfo()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -77,6 +78,27 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
                 case .FeatureID_Edit:
                     (controller as! EditViewController).setInitial(true, setShowList: AuthorizationManage.manage.GetPlatformList(.Edit_Type)!, setAddList: AuthorizationManage.manage.GetPlatformList(.User_Type) ?? AuthorizationManage.manage.GetPlatformList(.Default_Type)!)
                     
+                case .FeatureID_News:
+                    var centerNews:[PromotionStruct]? = nil
+                    var bankNews:[PromotionStruct]? = nil
+                    if centerNewsList != nil {
+                        centerNews = [PromotionStruct]()
+                        for index in centerNewsList! {
+                            if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String {
+                                centerNews?.append(PromotionStruct(title, date, "", url))
+                            }
+                        }
+                    }
+                    if bankNewsList != nil {
+                        bankNews = [PromotionStruct]()
+                        for index in bankNewsList! {
+                            if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String {
+                                bankNews?.append(PromotionStruct(title, date, "", url))
+                            }
+                        }
+                    }
+                    (controller as! NewsViewController).SetNewsList(centerNews, bankNews)
+                    
                 default:
                     break
                 }
@@ -88,19 +110,47 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
         }
     }
     
-    // MARK: - Private
-    private func GetAnnounceNewsInfo() {
+    // MARK: - Post電文
+    private func GetAnnounceNewsInfo() { // 最新消息電文
+        let loginInfo = AuthorizationManage.manage.GetLoginInfo()
         var body = [String:Any]()
         body = ["WorkCode":"07041","Operate":"getListInfo"]
         if AuthorizationManage.manage.IsLoginSuccess() {
             body["CB_Type"] = Int(1)
-            body["CB_CUM_BankCode"] = loginInf?.bankCode ?? ""
+            body["CB_CUM_BankCode"] = loginInfo?.bankCode ?? ""
         }
         else {
             body["CB_Type"] = Int(2)
-            body["CB_CUM_BankCode"] = " "
+            body["CB_CUM_BankCode"] = ""
         }
         postRequest("Info/INFO0201", "INFO0201", AuthorizationManage.manage.converInputToHttpBody(body, false), AuthorizationManage.manage.getHttpHead(false, false))
+    }
+    
+    private func GetVersionInfo() {  // 版號控管電文
+        postRequest("Comm/COMM0901", "COMM0901", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01001","Operate":"queryData","version":AgriBank_Version,"platform":AgriBank_Platform], false), AuthorizationManage.manage.getHttpHead(false, false))
+    }
+    
+    func GetBannerInfo() { // 廣告Banner電文
+        postRequest("Comm/COMM0201", "COMM0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01021","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
+    }
+    
+    func PostLogout() { // 登出電文
+        postRequest("Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(true, false))
+    }
+    
+    func GetCanLoginBankInfo() { // 取得農、漁會可登入代碼清單
+        postRequest("Comm/COMM0403", "COMM0403", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07003","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
+    }
+    
+    func GetBankLogoInfo() { // 取得農、漁會LOGO
+        let loginInfo = AuthorizationManage.manage.GetLoginInfo()
+        postRequest("Comm/COMM0404", "COMM0404", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07004","Operate":"queryData","hsienCode":loginInfo?.cityCode ?? "","bankCode":loginInfo?.bankCode ?? ""], false), AuthorizationManage.manage.getHttpHead(false, false))
+    }
+    
+    func RegisterAPNSToken() { // 註冊推播Token
+        if AuthorizationManage.manage.GetAPNSToken() != nil {
+            postRequest("Comm/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":AgriBank_TradeMark,"uid":AgriBank_DeviceID,"model":"1234567","auth":"123456789","appId":AgriBank_AppID,"version":AgriBank_Version,"token":AuthorizationManage.manage.GetAPNSToken()!,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true, false))
+        }
     }
 
     // MARK: - StoryBoard Touch Event
@@ -109,12 +159,12 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
             if login == nil {
                 login = getUIByID(.UIID_Login) as? LoginView
                 login?.frame = view.frame
-                postRequest("Comm/COMM0403", "COMM0403", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07003","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
+                GetCanLoginBankInfo()
             }
             view.addSubview(login!)
         }
         else {
-            postRequest("Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(true, false))
+            PostLogout()
         }
     }
     
@@ -138,8 +188,8 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
     
     // MARK: - LoginDelegate
     func clickLoginBtn(_ info:LoginStrcture) {
-        loginInf = info
-        postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn", "TransactionNo":"2017071700000001","ICIFKEY":info.account,"ID":info.id,"PWD":info.password,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID, "Version": AgriBank_Version,"appUid": "123456789","uid": "123456789","model": "123456789","systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true, "a25dq"), AuthorizationManage.manage.getHttpHead(false, true))
+        AuthorizationManage.manage.SetLoginInfo(info)
+        postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": "123456789","uid": "123456789","model": "123456789","ICIFKEY":info.account,"ID":info.id,"PWD":info.password,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true, "a25dq"), AuthorizationManage.manage.getHttpHead(false, true))
     }
     
     // MARK: - ConnectionUtilityDelegate
@@ -147,7 +197,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
         switch description {
         case "COMM0101":
             if let data = response.object(forKey: "Data") as? [String : Any] {
-                var info = UserInfo()
+                var info = ResponseLoginInfo()
                 if let name = data["CNAME"] as? String {
                     info.CNAME = name
                 }
@@ -157,10 +207,8 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
                 if let ID = data["USUDID"] as? String {
                     info.USUDID = ID
                 }
-                if let bankCode = loginInf?.bankCode {
-                    info.BankCode = bankCode
-                }
-                AuthorizationManage.manage.SetUserInfo(info, nil)
+                AuthorizationManage.manage.SetResponseLoginInfo(info, nil)
+                
                 if let balance = data["TotalBalance"] as? Int {
                     accountBalanceLabel.text = String(balance)
                 }
@@ -176,12 +224,18 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
                     }
                 }
             }
-            loginStatusLabel.text = AuthorizationManage.manage.IsLoginSuccess() ? Login_Title : NoLogin_Title
-            featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
+            if AuthorizationManage.manage.IsLoginSuccess() {
+                loginStatusLabel.text = Login_Title
+                featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
+                GetBankLogoInfo()
+                GetAnnounceNewsInfo()
+                RegisterAPNSToken()
+            }
             
         case "COMM0102":
-            AuthorizationManage.manage.SetUserInfo(nil, nil)
+            AuthorizationManage.manage.SetResponseLoginInfo(nil, nil)
             loginStatusLabel.text = NoLogin_Title
+            accountBalanceLabel.text = ""
             featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
             
         case "COMM0201":
@@ -199,9 +253,10 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
             if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
                 var bankList = [[String:[String]]]()
                 var bankCode = [String:String]()
+                var cityCode = [String:String]()
                 for dic in array {
                     var bankNameList = [String]()
-                    if let city = dic["hsienName"] as? String, let list = dic["bankList"] as? [[String:Any]] {
+                    if let city = dic["hsienName"] as? String, let cityID = dic["hsienCode"] as? String, let list = dic["bankList"] as? [[String:Any]] {
                         for bank in list {
                             if let name = bank["bankName"] as? String {
                                 bankNameList.append(name)
@@ -211,22 +266,63 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
                             }
                         }
                         bankList.append( [city:bankNameList] )
+                        cityCode[city] = cityID
                     }
                 }
-                login?.setInitialList(bankList, bankCode, "", self)
+                login?.setInitialList(bankList, bankCode, cityCode, "", self)
+            }
+        
+        case "COMM0404":
+            if let data = response.object(forKey: "Data") as? [String:Any], let url = data["url"] as? String {
+                postRequest("", "LogoImage", nil, nil, url, false, true)
+                GetAnnounceNewsInfo()
+            }
+            
+        case "COMM0901":
+            if let data = response.object(forKey: "Data") as? [String : Any] {
+//                if let forcedChange = data["forcedChange"] as? String { //是否強制換版
+//                    
+//                }
+//                if let isNew = data["isNew"] as? String { // 是否有更新版本
+//                    
+//                }
+//                if let newVersion = data["newVersion"] as? String { //最新版號
+//                    
+//                }
+                print(data)
             }
             
         case "INFO0201":
-            if let data = response.object(forKey: "Data") as? [String : Any], let list = data["CB_List"] as? [[String:Any]], let news = newsView.viewWithTag(ViewTag.View_AnnounceNews.rawValue) as? AnnounceNews {
-                var newsList = [String]()
-                let title = AuthorizationManage.manage.IsLoginSuccess() ? NewsTitle_Login : NewsTitle_NoLogin
-                for dic in list {
-                    newsList.append("\(title)  \(dic["CB_AddedDT"] ?? "")  \(dic["CB_Title"] ?? "")")
+            if let data = response.object(forKey: "Data") as? [String : Any], let list = data["CB_List"] as? [[String:Any]], let
+                news = newsView.viewWithTag(ViewTag.View_AnnounceNews.rawValue) as? AnnounceNews {
+                if AuthorizationManage.manage.IsLoginSuccess() {
+                    bankNewsList?.removeAll()
+                    bankNewsList = list
                 }
-                news.setContentList(newsList)
+                else {
+                    centerNewsList?.removeAll()
+                    centerNewsList = list
+                }
+                var newsList = [String]()
+//                let title = AuthorizationManage.manage.IsLoginSuccess() ? NewsTitle_Login : NewsTitle_NoLogin
+                for dic in list {
+                    newsList.append("\(dic["CB_AddedDT"] ?? "")  \(dic["CB_Title"] ?? "")")
+                }
+                news.setContentList(newsList, self)
             }
+            
+        case "LogoImage":
+            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
+                logoImageView.image = responseImage
+            }
+            
         default: break
         }
+    }
+    
+    // MARK: - AnnounceNewsDelegate
+    func clickNesw(_ index:Int) {
+        enterFeatureByID(.FeatureID_News, true)
     }
 }
 

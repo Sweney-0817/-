@@ -7,23 +7,46 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // 連線暫存檔清除
         SecurityUtility.utility.removeConnectCatche()
+        // 設定Root View Controller
         window = UIWindow(frame:UIScreen.main.bounds)
         window?.rootViewController = Platform.plat.getUIByID(.UIID_SideMenu) as? UIViewController
         window?.makeKeyAndVisible()
+        // Status bar
         let statusView = UIView(frame: UIApplication.shared.statusBarFrame)
         statusView.backgroundColor = .white
         statusView.tag = ViewTag.View_Status.rawValue
         window?.addSubview(statusView)
+        // APNS註冊
+//        if #available(iOS 10.0, *) {
+//            let center = UNUserNotificationCenter.current()
+//            center.delegate = self
+//            center.requestAuthorization(options: [.sound,.alert], completionHandler: { (granted, error) in
+//                if granted {
+//                    center.getNotificationSettings(completionHandler: { (setting) in
+//                        print(setting)
+//                    })
+//                }
+//                else {
+//                    print("使用者不允許 註冊失敗")
+//                }
+//            })
+//        }
+//        else {
+//            if application.responds(to: #selector(getter: UIApplication.isRegisteredForRemoteNotifications)) {
+//                application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .sound], categories: nil))
+//            }
+//        }
+//        postRegisterToken("testtest")
         return true
     }
 
@@ -48,7 +71,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
+    }
+    
+    func RegisterAPNSToken(_ token:String) {
+        AuthorizationManage.manage.SetAPNSToken(token)
+        if AuthorizationManage.manage.IsLoginSuccess() {
+            let request = ConnectionUtility()
+            request.postRequest(self, "\(REQUEST_URL)/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":"","uid":"1234567","model":"1234567","auth":"123456789","appId":AgriBank_AppID,"version":AgriBank_Version,"token":token,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true, false), false)
+        }
+    }
+    
+    // MARK: - UNUserNotificationCenterDelegate
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+    }
 
-
+    // MARK: - ConnectionUtilityDelegate
+    func didRecvdResponse(_ description: String, _ response: NSDictionary) {
+        
+    }
+    
+    func didFailedWithError(_ error: Error) {
+        
+    }
 }
+
 
