@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDelegate, AnnounceNewsDelegate {
+class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, LoginDelegate, AnnounceNewsDelegate {
     @IBOutlet weak var newsView: UIView!
     @IBOutlet weak var bannerView: UIView!
     @IBOutlet weak var loginStatusLabel: UILabel!
@@ -58,6 +58,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
         if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
             statusView.isHidden = true
         }
+        UpdateLoginImageView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -110,7 +111,23 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
         }
     }
     
-    // MARK: - Post電文
+    // MARK: - Private
+    private func UpdateLoginImageView() {
+        if AuthorizationManage.manage.IsLoginSuccess() {
+            if let loginInfo = AuthorizationManage.manage.GetLoginInfo() {
+                loginImageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: loginInfo.id, setAccount: loginInfo.id)
+                loginImageView.layer.cornerRadius = loginImageView.frame.width/2
+                loginImageView.layer.masksToBounds = true
+            }
+        }
+        else {
+            loginImageView.image = UIImage(named: ImageName.Login.rawValue)
+            loginImageView.layer.cornerRadius = 0
+            loginImageView.layer.masksToBounds = false
+        }
+    }
+    
+    // MARK: - Private Post 電文
     private func GetAnnounceNewsInfo() { // 最新消息電文
         let loginInfo = AuthorizationManage.manage.GetLoginInfo()
         var body = [String:Any]()
@@ -123,33 +140,33 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
             body["CB_Type"] = Int(2)
             body["CB_CUM_BankCode"] = ""
         }
-        postRequest("Info/INFO0201", "INFO0201", AuthorizationManage.manage.converInputToHttpBody(body, false), AuthorizationManage.manage.getHttpHead(false, false))
+        postRequest("Info/INFO0201", "INFO0201", AuthorizationManage.manage.converInputToHttpBody(body, false), AuthorizationManage.manage.getHttpHead(false))
     }
     
     private func GetVersionInfo() {  // 版號控管電文
-        postRequest("Comm/COMM0901", "COMM0901", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01001","Operate":"queryData","version":AgriBank_Version,"platform":AgriBank_Platform], false), AuthorizationManage.manage.getHttpHead(false, false))
+        postRequest("Comm/COMM0901", "COMM0901", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01001","Operate":"queryData","version":AgriBank_Version,"platform":AgriBank_Platform], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    func GetBannerInfo() { // 廣告Banner電文
-        postRequest("Comm/COMM0201", "COMM0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01021","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
+    private func GetBannerInfo() { // 廣告Banner電文
+        postRequest("Comm/COMM0201", "COMM0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01021","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    func PostLogout() { // 登出電文
-        postRequest("Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(true, false))
+    private func PostLogout() { // 登出電文
+        postRequest("Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    func GetCanLoginBankInfo() { // 取得農、漁會可登入代碼清單
-        postRequest("Comm/COMM0403", "COMM0403", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07003","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
+    private func GetCanLoginBankInfo() { // 取得農、漁會可登入代碼清單
+        postRequest("Comm/COMM0403", "COMM0403", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07003","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    func GetBankLogoInfo() { // 取得農、漁會LOGO
+    private func GetBankLogoInfo() { // 取得農、漁會LOGO
         let loginInfo = AuthorizationManage.manage.GetLoginInfo()
-        postRequest("Comm/COMM0404", "COMM0404", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07004","Operate":"queryData","hsienCode":loginInfo?.cityCode ?? "","bankCode":loginInfo?.bankCode ?? ""], false), AuthorizationManage.manage.getHttpHead(false, false))
+        postRequest("Comm/COMM0404", "COMM0404", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07004","Operate":"queryData","hsienCode":loginInfo?.cityCode ?? "","bankCode":loginInfo?.bankCode ?? ""], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    func RegisterAPNSToken() { // 註冊推播Token
+    private func RegisterAPNSToken() { // 註冊推播Token
         if AuthorizationManage.manage.GetAPNSToken() != nil {
-            postRequest("Comm/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":AgriBank_TradeMark,"uid":AgriBank_DeviceID,"model":"1234567","auth":"123456789","appId":AgriBank_AppID,"version":AgriBank_Version,"token":AuthorizationManage.manage.GetAPNSToken()!,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true, false))
+            postRequest("Comm/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":AgriBank_AppUid,"uid":AgriBank_DeviceID,"model":AgriBank_DeviceType,"auth":AgriBank_Auth,"appId":AgriBank_AppID,"version":AgriBank_Version,"token":AuthorizationManage.manage.GetAPNSToken()!,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(false))
         }
     }
 
@@ -189,7 +206,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
     // MARK: - LoginDelegate
     func clickLoginBtn(_ info:LoginStrcture) {
         AuthorizationManage.manage.SetLoginInfo(info)
-        postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": "123456789","uid": "123456789","model": "123456789","ICIFKEY":info.account,"ID":info.id,"PWD":info.password,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true, "a25dq"), AuthorizationManage.manage.getHttpHead(false, true))
+        postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":info.id,"PWD":info.password,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
     }
     
     // MARK: - ConnectionUtilityDelegate
@@ -223,13 +240,18 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
                     default: break
                     }
                 }
+                
+                if AuthorizationManage.manage.IsLoginSuccess() {
+                    loginStatusLabel.text = Login_Title
+                    featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
+                    GetBankLogoInfo()
+                    GetAnnounceNewsInfo()
+                    RegisterAPNSToken()
+                }
+                UpdateLoginImageView()
             }
-            if AuthorizationManage.manage.IsLoginSuccess() {
-                loginStatusLabel.text = Login_Title
-                featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
-                GetBankLogoInfo()
-                GetAnnounceNewsInfo()
-                RegisterAPNSToken()
+            else {
+                super.didRecvdResponse(description, response)
             }
             
         case "COMM0102":
@@ -237,6 +259,7 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
             loginStatusLabel.text = NoLogin_Title
             accountBalanceLabel.text = ""
             featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
+            UpdateLoginImageView()
             
         case "COMM0201":
             var bannerList = [BannerStructure]()
@@ -247,6 +270,9 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
                     }
                     (bannerView.subviews.first as! BannerView).SetContentList(bannerList)
                 }
+            }
+            else {
+                super.didRecvdResponse(description, response)
             }
             
         case "COMM0403":
@@ -271,11 +297,17 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
                 }
                 login?.setInitialList(bankList, bankCode, cityCode, "", self)
             }
+            else {
+                super.didRecvdResponse(description, response)
+            }
         
         case "COMM0404":
             if let data = response.object(forKey: "Data") as? [String:Any], let url = data["url"] as? String {
                 postRequest("", "LogoImage", nil, nil, url, false, true)
                 GetAnnounceNewsInfo()
+            }
+            else {
+                super.didRecvdResponse(description, response)
             }
             
         case "COMM0901":
@@ -290,6 +322,9 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
 //                    
 //                }
                 print(data)
+            }
+            else {
+                super.didRecvdResponse(description, response)
             }
             
         case "INFO0201":
@@ -310,10 +345,16 @@ class HomeViewController: BaseViewController, FeatureWallViewDelegate, LoginDele
                 }
                 news.setContentList(newsList, self)
             }
+            else {
+                super.didRecvdResponse(description, response)
+            }
             
         case "LogoImage":
             if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
                 logoImageView.image = responseImage
+            }
+            else {
+                super.didRecvdResponse(description, response)
             }
             
         default: break

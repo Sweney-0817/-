@@ -48,5 +48,8 @@ class SetAvatarViewController: BasePhotoViewController  {
         cropperViewController.dismiss(animated: true, completion: nil)
         imageView.image = editedImage
         imageView.clipsToBounds = true
+        if let info = AuthorizationManage.manage.GetLoginInfo() {
+            savePersonalImage(editedImage, SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
+        }
     }
 }

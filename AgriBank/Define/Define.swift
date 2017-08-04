@@ -303,13 +303,19 @@ let PickView_Height:CGFloat = 250
 
 // MARK: - 字串定義
 let SystemCell_Identify = "System_Cell"
-let AES_Key = "Systex"
+let AES_Key = "hs3rwPsoYknnCCWjqIX57RgRflYGhKO1tmQxqWps21k="
 let File_IDList_Key = "IDlist"
 let File_NoLogin_IDList_key = "NoLoginIDlist"
 let Login_Title = "登出"
 let NoLogin_Title  = "登入"
 let ToolBar_DoneButton_Title = "確認"
 let ToolBar_CancelButton_Title = "取消"
+let Response_Key = "key"
+let Response_Value = "value"
+let Transaction_Successful_Title = "交易成功"
+let Transaction_Faild_Title = "交易失敗"
+let Change_Successful_Title = "變更成功"
+let Change_Faild_Title = "變更失敗"
 //let NewsTitle_Login = "地方農漁會公告訊息"
 //let NewsTitle_NoLogin = "中心公告訊息"
 
@@ -323,6 +329,8 @@ let AgriBank_SystemVersion = UIDevice.current.systemVersion
 let AgriBank_DeviceType = UIDevice.current.model
 let AgriBank_Platform = "1"
 let AgriBank_DeviceID = UIDevice.current.identifierForVendor!.uuidString
+let AgriBank_AppUid = AgriBank_DeviceID + Bundle.main.bundleIdentifier!
+let AgriBank_Auth = "ED57C853AC9744D58B8A9B3F527D0940"
 
 // MARK: - Cell定義
 let Separator_Height = CGFloat(1)

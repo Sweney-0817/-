@@ -13,11 +13,10 @@ class BasicInfoResultViewController: BaseViewController, UITableViewDataSource, 
     @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: UIView!
-    
     var list:[[String:String]]? = nil
     
     // MARK: - Public
-    func SetList(_ list:[[String:String]]) {
+    func SetList(_ list:[[String:String]]?) {
         self.list = list
     }
     
@@ -29,6 +28,7 @@ class BasicInfoResultViewController: BaseViewController, UITableViewDataSource, 
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
         tableView.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
+        titleView.text = list != nil ? Change_Successful_Title : Change_Faild_Title
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,23 +38,23 @@ class BasicInfoResultViewController: BaseViewController, UITableViewDataSource, 
 
     // MARK: - StoryBoard Touch Event
     @IBAction func clickReturnBtn(_ sender: Any) {
-        enterFeatureByID(.FeatureID_BasicInfoChange, false)
+        enterFeatureByID(.FeatureID_Home, false)
     }
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let height = ResultCell.GetStringHeightByWidthAndFontSize((list?[indexPath.row]["Value"])!, tableView.frame.size.width)
+        let height = ResultCell.GetStringHeightByWidthAndFontSize(list?[indexPath.row][Response_Value] ?? "", tableView.frame.size.width)
         return height
     }
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (list?.count)!;
+        return (list?.count)!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
-        cell.set((list?[indexPath.row]["Key"]!)!, (list?[indexPath.row]["Value"]!)!)
+        cell.set(list?[indexPath.row][Response_Key] ?? "", list?[indexPath.row][Response_Value] ?? "")
         return cell
     }
 }

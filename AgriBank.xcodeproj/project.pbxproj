@@ -595,8 +595,8 @@
 				61FE9D0E1F15D23400FA32FE /* MessageSwitchViewController.swift */,
 				61FE9D0F1F15D23400FA32FE /* SetAvatarViewController.swift */,
 				61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */,
-				61DAE3471F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift */,
 				61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */,
+				61DAE3471F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift */,
 			);
 			name = SettingStoryBoard;
 			sourceTree = "<group>";

@@ -57,11 +57,10 @@ class AuthorizationManage {
         return userInfo?.Token != nil
     }
 
-    func getHttpHead(_ isNeedToken:Bool, _ isNeedCID:Bool) -> [String:String] {
+    func getHttpHead(_ isNeedCID:Bool) -> [String:String] {
         var head = AuthorizationManage_HttpHead_Default
-        if isNeedToken {
-            head[AuthorizationManage_HttpHead_Token] = userInfo?.Token ?? ""
-        }
+        head[AuthorizationManage_HttpHead_Token] = userInfo?.Token ?? ""
+    
         if isNeedCID {
 //            let random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
 //            head[AuthorizationManage_HttpHead_CID] = [String](AuthorizationManage_CIDListKey.keys)[random]
@@ -74,12 +73,15 @@ class AuthorizationManage {
         return AuthorizationManage_CIDListKey[ID]
     }
     
-    func converInputToHttpBody(_ input:[String:Any], _ needEncrypt:Bool, _ encryptID:String? = nil) -> Data? {
+    func converInputToHttpBody(_ input:[String:Any], _ needEncrypt:Bool) -> Data? {
         var httpBody:Data? = nil
         do {
             httpBody = try JSONSerialization.data(withJSONObject: input, options: .prettyPrinted)
             if needEncrypt {
-                if let encrypt = String(data: httpBody!, encoding: .utf8)?.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: " ", with: ""), let key = AuthorizationManage_CIDListKey[encryptID ?? ""] {
+//                let random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
+//                let encryptID = [String](AuthorizationManage_CIDListKey.keys)[random]
+                let encryptID = "a25dq"
+                if let encrypt = String(data: httpBody!, encoding: .utf8)?.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: " ", with: ""), let key = AuthorizationManage_CIDListKey[encryptID] {
                     // 中台需求: " + body + "
                     let encryptString = "\"" + SecurityUtility.utility.AES256Encrypt( encrypt, key ) + "\""
                     httpBody = encryptString.data(using: .utf8)

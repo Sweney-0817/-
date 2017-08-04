@@ -23,9 +23,9 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
 
         setAllSubView()
         setShadowView(m_vPlace)
-        SetLoading(true)
+        setLoading(true)
         
-        postRequest("Comm/COMM0402", "COMM0402", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07002","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
+        postRequest("Comm/COMM0402", "COMM0402", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07002","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
     func setAllSubView() {
@@ -129,8 +129,8 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
         m_tfPicker.resignFirstResponder()
         
         if let code = bankCode["\(city)\(place)"] {
-            SetLoading(true)
-            postRequest("Mang/MANG0201", "MANG0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"06002","Operate":"queryData","BR_CODE":"\(code)"], false), AuthorizationManage.manage.getHttpHead(false, false))
+            setLoading(true)
+            postRequest("Mang/MANG0201", "MANG0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"06002","Operate":"queryData","BR_CODE":"\(code)"], false), AuthorizationManage.manage.getHttpHead(false))
         }
     }
     
@@ -182,7 +182,7 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description: String, _ response: NSDictionary) {
-        SetLoading(false)
+        setLoading(false)
         switch description {
         case "MANG0201":
             if let data = response.object(forKey: "Data") as? [String:Any] {
@@ -196,6 +196,10 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
                 }
                 m_tvData.reloadData()
             }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+            
         case "COMM0402":
             m_PickerData.removeAll()
             if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
@@ -214,6 +218,10 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
                     }
                 }
             }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+            
         default: break
         }
     }

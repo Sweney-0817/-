@@ -14,8 +14,7 @@ struct ServiceBaseStruct {
     var phone:String? = nil
     var fax:String? = nil
     var distance:String? = nil
-    init (_ name:String, _ address:String, _ phone:String, _ fax:String, _ distance:String)
-    {
+    init (_ name:String, _ address:String, _ phone:String, _ fax:String, _ distance:String) {
         self.name = name
         self.address = address
         self.phone = phone
@@ -37,18 +36,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     var m_curData: [ServiceBaseStruct] = [ServiceBaseStruct]()
     var m_strSearchRange: String = "我的週遭"
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setFakeData()
-        setAllSubView()
-        initDataTitleForType("全部")
-        setShadowView(m_vChooseTypeView)
-    }
-    func goDetail() {
-        performSegue(withIdentifier: "goDetail", sender: nil)
-    }
-    
+    // MARK: - Public
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         var data = ConfirmResultStruct("", "", [[String:String]](), "", "", "")
         data.list!.append(["Key": "名稱", "Value":m_curData[m_iSelectedIndex].name!])
@@ -59,6 +47,29 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         let serviceBaseDetailViewController = segue.destination as! ServiceBaseDetailViewController
         serviceBaseDetailViewController.setData(data)
     }
+    
+    // MARK: - Life Cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setFakeData()
+        setAllSubView()
+        initDataTitleForType("全部")
+        setShadowView(m_vChooseTypeView)
+    
+        setLoading(true)
+        postRequest("Info/INFO0301", "INFO0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07052","Operate":"getListInfo"], false), AuthorizationManage.manage.getHttpHead(false))
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    // MARK: - Private
+    func goDetail() {
+        performSegue(withIdentifier: "goDetail", sender: nil)
+    }
+
     func setFakeData() {
         m_Data1.append(ServiceBaseStruct.init("新北市農會", "新北市板橋區縣民大道一段291號", "02-29685191", "02-22710901", "800公尺外"))
         m_Data1.append(ServiceBaseStruct.init("ATM", "新北市板橋區府中路29號", "02-29685191", "02-22710901", "2公里外"))
@@ -77,14 +88,15 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
 
 //        m_Data1.append(ServiceBaseStruct.init("", "", "", "", ""))
     }
+    
     func setAllSubView() {
         setDDPlace()
         setChooseTypeView()
         setDataTableView()
     }
+    
     func setDDPlace() {
-        if (m_DDPlace == nil)
-        {
+        if (m_DDPlace == nil) {
             m_DDPlace = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDPlace?.delegate = self
             m_DDPlace?.setOneRow("查詢範圍", "我的週遭")
@@ -94,15 +106,18 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         m_vPlace.layer.borderColor = Gray_Color.cgColor
         m_vPlace.layer.borderWidth = 1
     }
+    
     func setChooseTypeView() {
         let typeList = ["全部","農漁會","ATM"]
         m_vChooseTypeView.setTypeList(typeList, setDelegate: self)
         m_vChooseTypeView.layer.borderColor = Gray_Color.cgColor
         m_vChooseTypeView.layer.borderWidth = 1
     }
+    
     func setDataTableView() {
         m_tvData.register(UINib(nibName: UIID.UIID_ServiceBaseCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ServiceBaseCell.NibName()!)
     }
+    
     func initDataTitleForType(_ type:String) {
         switch type {
         case "全部":
@@ -115,10 +130,6 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
             m_curData = m_Data1
         }
         m_tvData.reloadData()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 
     // MARK: - OneRowDropDownViewDelegate
@@ -135,16 +146,16 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         
         action.show(in: self.view)
     }
+    
     // MARK: - UIActionSheetDelegate
-    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int)
-    {
-        if (actionSheet.buttonTitle(at: buttonIndex)! != "cancel")
-        {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
+        if (actionSheet.buttonTitle(at: buttonIndex)! != "cancel") {
             m_strSearchRange = actionSheet.buttonTitle(at: buttonIndex)!
             m_DDPlace?.setOneRow((m_DDPlace?.m_lbFirstRowTitle.text)!, actionSheet.buttonTitle(at: buttonIndex)!)
             m_tvData.reloadData()
         }
     }
+    
     // MARK: - ChooseTypeDelegate
     func clickChooseTypeBtn(_ name:String) {
         initDataTitleForType(name)
@@ -155,10 +166,12 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         m_iSelectedIndex = indexPath.row
         goDetail()
     }
+    
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return m_curData.count
@@ -170,6 +183,18 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
             cell.setData(m_curData[indexPath.row].name!, m_curData[indexPath.row].address!, m_strSearchRange == "我的週遭" ? m_curData[indexPath.row].distance! : "")
             cell.selectionStyle = .none
             return cell
+        }
+    }
+    
+    // MARK: - ConnectionUtilityDelegate
+    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
+        setLoading(false)
+        switch description {
+        case "INFO0301":
+            
+            setLoading(true)
+            postRequest("Info/INFO0302", "INFO0302", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07053","Operate":"getListInfo"], false), AuthorizationManage.manage.getHttpHead(false))
+        default: break
         }
     }
 }

@@ -46,8 +46,8 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         setAllSubView()
         initDataTitleForType(NTRationView_TypeList.first!)
         setShadowView(m_vChooseTypeView)
-        SetLoading(true)
-        postRequest("Comm/COMM0402", "COMM0402", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07002","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false, false))
+        setLoading(true)
+        postRequest("Comm/COMM0402", "COMM0402", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07002","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
     func setAllSubView() {
@@ -203,8 +203,8 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         m_tfPicker.resignFirstResponder()
         
         if let code = bankCode["\(city)\(place)"] {
-            SetLoading(true)
-            postRequest("Mang/MANG0101", "MANG0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"06001","Operate":"queryData","BR_CODE":"\(code)"], false), AuthorizationManage.manage.getHttpHead(false, false))
+            setLoading(true)
+            postRequest("Mang/MANG0101", "MANG0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"06001","Operate":"queryData","BR_CODE":"\(code)"], false), AuthorizationManage.manage.getHttpHead(false))
         }
     }
     
@@ -256,7 +256,7 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description: String, _ response: NSDictionary) {
-        SetLoading(false)
+        setLoading(false)
         switch description {
         case "MANG0101":
             if let data = response.object(forKey: "Data") as? [String:Any] {
@@ -286,6 +286,10 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
                 }
                 m_tvData.reloadData()
             }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+            
         case "COMM0402":
             m_PickerData.removeAll()
             if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
@@ -303,6 +307,9 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
                         m_PickerData.append([city:bankList])
                     }
                 }
+            }
+            else {
+                super.didRecvdResponse(description, response)
             }
         default: break
         }

@@ -25,6 +25,7 @@ let Loading_Height = 100
 class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     var request:ConnectionUtility? = nil
     var needShowBackBarItem:Bool = true
+    var transactionId = ""
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -127,7 +128,7 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
         }
     }
     
-    func SetLoading(_ isLoading:Bool) {
+    func setLoading(_ isLoading:Bool) {
         if isLoading {
             let loadingView = UIView(frame: view.frame)
             loadingView.tag = ViewTag.View_Loading.rawValue
@@ -152,13 +153,26 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
         }
     }
     
+    func getTransactionID(_ workCode:String, _ description:String) {
+        postRequest("Comm/COMM0601", description, AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"getTranID"], false), AuthorizationManage.manage.getHttpHead(false))
+    }
+    
+    func showErrorMessage(_ title:String?, _ message:String?) {
+        let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:"確認")
+        alert.show()
+    }
+    
     // MARK: - ConnectionUtilityDelegate
     func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        SetLoading(false)
+        setLoading(false)
+        if let returnMsg = response.object(forKey: "ReturnMsg") as? String, let returnCode = response.object(forKey: "ReturnCode") as? String  {
+            let message = "ReturnMsg:\(returnMsg) ReturnCode:\(returnCode)"
+            showErrorMessage(nil, message)
+        }
     }
     
     func didFailedWithError(_ error: Error) {
-        SetLoading(false)
+        setLoading(false)
         let alert = UIAlertView(title: nil, message: "Error Message:\(error.localizedDescription)", delegate: nil, cancelButtonTitle:"確認")
         alert.show()
     }
@@ -185,18 +199,10 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
         let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
         let keyboardHeight = keyboardRectangle.height
-        if view.frame.origin.y == 0 {
-            view.frame.origin.y -= keyboardHeight
-        }
+        view.frame.origin.y = -keyboardHeight
     }
     
     func keyboardWillHide(_ notification:NSNotification) {
-        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
-        let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
-        let keyboardRectangle = keyboardFrame.cgRectValue
-        let keyboardHeight = keyboardRectangle.height
-        if (view.frame.origin.y+keyboardHeight) == 0 {
-            view.frame.origin.y += keyboardHeight
-        }
+        view.frame.origin.y = 0
     }
 }

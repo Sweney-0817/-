@@ -103,7 +103,7 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
         textField.inputView = pickerView
     }
     
-    func InputIsCorrect() -> Bool {
+    private func InputIsCorrect() -> Bool {
         return true
     }
     
@@ -175,11 +175,8 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
         currentTextField = textField
         if textField == locationTextfield {
             addPickerView(textField)
-            return true
         }
-        else {
-            return true
-        }
+        return true
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

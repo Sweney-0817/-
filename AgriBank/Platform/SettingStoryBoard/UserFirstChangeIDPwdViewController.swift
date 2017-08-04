@@ -39,7 +39,7 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickCheckBtn(_ sender: Any) {
-        postRequest("Comm/COMM0103", "COMM0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01013","Operate":"commitTxn","OID":"","NID":"","OPWD":"","NPWD":""], true), AuthorizationManage.manage.getHttpHead(true, true))
+        postRequest("Comm/COMM0103", "COMM0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01013","Operate":"commitTxn","OID":"","NID":"","OPWD":"","NPWD":""], true), AuthorizationManage.manage.getHttpHead(true))
     }
     
     // MARK: - UITextFieldDelegate
