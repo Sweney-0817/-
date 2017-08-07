@@ -29,6 +29,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>需要開啟相機鏡頭</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>需要開啟定位</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>需要存取您的相簿</string>
 	<key>UILaunchStoryboardName</key>

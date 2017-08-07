@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 struct ServiceBaseStruct {
     var name:String? = nil
@@ -14,35 +15,51 @@ struct ServiceBaseStruct {
     var phone:String? = nil
     var fax:String? = nil
     var distance:String? = nil
-    init (_ name:String, _ address:String, _ phone:String, _ fax:String, _ distance:String) {
+    var type:String? = nil
+    init (_ name:String, _ address:String, _ phone:String, _ fax:String, _ distance:String, _ type:String) {
         self.name = name
         self.address = address
         self.phone = phone
         self.fax = fax
         self.distance = distance
+        self.type = type
     }
 }
 
-class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ChooseTypeDelegate, UITableViewDelegate, UITableViewDataSource {
+let ServiceBase_TypeList = ["全部","農漁會","ATM"]
+let ServiceBase_Default_SearchRange = "我的週遭"
+let ServiceBase_CellHeight = CGFloat(100)
+let ServiceBase_Segue = "goDetail"
+let ServiceBase_Action_Title = "請選擇查詢範圍"
+let ServiceBase_Unit_Type = "1"
+let ServiceBase_ATM_Type = "2"
+let ServiceBase_OneDrop_Title = "查詢範圍"
+
+class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ChooseTypeDelegate, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     @IBOutlet weak var m_vPlace: UIView!
     @IBOutlet weak var m_vChooseTypeView: ChooseTypeView!
     @IBOutlet weak var m_tvData: UITableView!
 
-    var m_DDPlace: OneRowDropDownView? = nil
-    var m_iSelectedIndex = -1
-    var m_Data1: [ServiceBaseStruct] = [ServiceBaseStruct]()
-    var m_Data2: [ServiceBaseStruct] = [ServiceBaseStruct]()
-    var m_Data3: [ServiceBaseStruct] = [ServiceBaseStruct]()
-    var m_curData: [ServiceBaseStruct] = [ServiceBaseStruct]()
-    var m_strSearchRange: String = "我的週遭"
+    private var m_DDPlace: OneRowDropDownView? = nil
+    private var m_iSelectedIndex = -1
+    private var m_strSearchRange = ServiceBase_Default_SearchRange
+    private var currentType = ServiceBase_TypeList.first!
+    private var aroundMeList = [ServiceBaseStruct]()
+    private var unitInfoList = [String:[ServiceBaseStruct]]() // 據點
+    private var unitList = [String]()                         // 據點 - city
+    private var ATMInfoList = [String:[ServiceBaseStruct]]()  // ATM
+    private var ATMList = [String]()                          // ATM - city
+    private var curData = [ServiceBaseStruct]()
+    private var locationManager:CLLocationManager? = nil
+    private var curLocation = CLLocationCoordinate2D()
 
     // MARK: - Public
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         var data = ConfirmResultStruct("", "", [[String:String]](), "", "", "")
-        data.list!.append(["Key": "名稱", "Value":m_curData[m_iSelectedIndex].name!])
-        data.list!.append(["Key": "地址", "Value":m_curData[m_iSelectedIndex].address!])
-        data.list!.append(["Key": "電話", "Value":m_curData[m_iSelectedIndex].phone!])
-        data.list!.append(["Key": "傳真", "Value":m_curData[m_iSelectedIndex].fax!])
+        data.list!.append(["Key": "名稱", "Value": curData[m_iSelectedIndex].name ?? ""])
+        data.list!.append(["Key": "地址", "Value": curData[m_iSelectedIndex].address ?? ""])
+        data.list!.append(["Key": "電話", "Value": curData[m_iSelectedIndex].phone ?? ""])
+        data.list!.append(["Key": "傳真", "Value": curData[m_iSelectedIndex].fax ?? ""])
         super.prepare(for: segue, sender: sender)
         let serviceBaseDetailViewController = segue.destination as! ServiceBaseDetailViewController
         serviceBaseDetailViewController.setData(data)
@@ -52,54 +69,49 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setFakeData()
         setAllSubView()
-        initDataTitleForType("全部")
         setShadowView(m_vChooseTypeView)
-    
-        setLoading(true)
-        postRequest("Info/INFO0301", "INFO0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07052","Operate":"getListInfo"], false), AuthorizationManage.manage.getHttpHead(false))
+        
+        // 開啟定位
+        if CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            locationManager = CLLocationManager()
+            locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager?.delegate = self
+            if CLLocationManager.authorizationStatus() == .notDetermined  {
+                locationManager?.requestWhenInUseAuthorization()
+            }
+        }
+        else {
+            locationManager?.requestWhenInUseAuthorization()
+        }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    // MARK: - Private
-    func goDetail() {
-        performSegue(withIdentifier: "goDetail", sender: nil)
-    }
-
-    func setFakeData() {
-        m_Data1.append(ServiceBaseStruct.init("新北市農會", "新北市板橋區縣民大道一段291號", "02-29685191", "02-22710901", "800公尺外"))
-        m_Data1.append(ServiceBaseStruct.init("ATM", "新北市板橋區府中路29號", "02-29685191", "02-22710901", "2公里外"))
-        m_Data1.append(ServiceBaseStruct.init("三重區農會", "新北市三重區重新路二段1號", "02-29685191", "02-22710901", "8公里外"))
-        m_Data1.append(ServiceBaseStruct.init("ATM", "新北市樹林區鎮前街77號", "02-29685191", "02-22710901", "10公里外"))
-        m_Data1.append(ServiceBaseStruct.init("宜蘭縣農會", "宜蘭市林森路155號", "02-29685191", "02-22710901", "10公里外"))
-        m_Data1.append(ServiceBaseStruct.init("ATM", "宜蘭縣羅東鎮純精路一段109號", "02-29685191", "02-22710901", "10公里外"))
-
-        m_Data2.append(ServiceBaseStruct.init("新北市農會", "新北市板橋區縣民大道一段291號", "02-29685191", "02-22710901", "800公尺外"))
-        m_Data2.append(ServiceBaseStruct.init("三重區農會", "新北市三重區重新路二段1號", "02-29685191", "02-22710901", "8公里外"))
-        m_Data2.append(ServiceBaseStruct.init("宜蘭縣農會", "宜蘭市林森路155號", "02-29685191", "02-22710901", "10公里外"))
-
-        m_Data3.append(ServiceBaseStruct.init("ATM", "新北市板橋區府中路29號", "02-29685191", "02-22710901", "2公里外"))
-        m_Data3.append(ServiceBaseStruct.init("ATM", "新北市樹林區鎮前街77號", "02-29685191", "02-22710901", "10公里外"))
-        m_Data3.append(ServiceBaseStruct.init("ATM", "宜蘭縣羅東鎮純精路一段109號", "02-29685191", "02-22710901", "10公里外"))
-
-//        m_Data1.append(ServiceBaseStruct.init("", "", "", "", ""))
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        locationManager?.startUpdatingLocation()
     }
     
-    func setAllSubView() {
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        locationManager?.stopUpdatingLocation()
+    }
+    
+    // MARK: - Private
+    private func setAllSubView() {
         setDDPlace()
         setChooseTypeView()
         setDataTableView()
     }
     
-    func setDDPlace() {
-        if (m_DDPlace == nil) {
+    private func setDDPlace() {
+        if m_DDPlace == nil {
             m_DDPlace = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDPlace?.delegate = self
-            m_DDPlace?.setOneRow("查詢範圍", "我的週遭")
+            m_DDPlace?.setOneRow(ServiceBase_OneDrop_Title, ServiceBase_Default_SearchRange)
             m_DDPlace?.frame = CGRect(x:0, y:0, width:m_vPlace.frame.width, height:(m_DDPlace?.getHeight())!)
             m_vPlace.addSubview(m_DDPlace!)
         }
@@ -107,94 +119,197 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         m_vPlace.layer.borderWidth = 1
     }
     
-    func setChooseTypeView() {
-        let typeList = ["全部","農漁會","ATM"]
-        m_vChooseTypeView.setTypeList(typeList, setDelegate: self)
+    private func setChooseTypeView() {
+        m_vChooseTypeView.setTypeList(ServiceBase_TypeList, setDelegate: self)
         m_vChooseTypeView.layer.borderColor = Gray_Color.cgColor
         m_vChooseTypeView.layer.borderWidth = 1
     }
     
-    func setDataTableView() {
+    private func setDataTableView() {
         m_tvData.register(UINib(nibName: UIID.UIID_ServiceBaseCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ServiceBaseCell.NibName()!)
     }
     
-    func initDataTitleForType(_ type:String) {
-        switch type {
-        case "全部":
-            m_curData = m_Data1
-        case "農漁會":
-            m_curData = m_Data2
-        case "ATM":
-            m_curData = m_Data3
+    private func initDataTitleForType() {
+        curData.removeAll()
+        switch m_strSearchRange {
+        case ServiceBase_Default_SearchRange:
+            if let index = ServiceBase_TypeList.index(of: currentType) {
+                switch index {
+                case 0:
+                    curData.append(contentsOf: aroundMeList)
+                case 1:
+                    for info in aroundMeList {
+                        if info.type == ServiceBase_Unit_Type {
+                            curData.append(info)
+                        }
+                    }
+                case 2:
+                    curData = [ServiceBaseStruct]()
+                    for info in aroundMeList {
+                        if info.type == ServiceBase_ATM_Type {
+                            curData.append(info)
+                        }
+                    }
+                default: break
+                }
+            }
         default:
-            m_curData = m_Data1
+            if let index = ServiceBase_TypeList.index(of: currentType) {
+                switch index {
+                case 0:
+                    if unitInfoList[m_strSearchRange] != nil {
+                        curData.append(contentsOf: unitInfoList[m_strSearchRange]!)
+                    }
+                    if ATMInfoList[m_strSearchRange] != nil {
+                        curData.append(contentsOf: ATMInfoList[m_strSearchRange]!)
+                    }
+                case 1:
+                    if unitInfoList[m_strSearchRange] != nil {
+                        curData.append(contentsOf: unitInfoList[m_strSearchRange]!)
+                    }
+                case 2:
+                    if ATMInfoList[m_strSearchRange] != nil {
+                        curData.append(contentsOf: ATMInfoList[m_strSearchRange]!)
+                    }
+                default: break
+                }
+            }
         }
         m_tvData.reloadData()
     }
 
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
-        let a = ["我的週遭", "台北市", "新北市"]
-        let action = UIActionSheet.init()
-        action.delegate = self
-        action.title = "請選擇查詢範圍"
-        for s in a  {
-            action.addButton(withTitle: s)
+        var cityList = [ServiceBase_Default_SearchRange]
+        if let index = ServiceBase_TypeList.index(of: currentType) {
+            switch index {
+            case 0:
+                cityList.append(contentsOf: unitList)
+            case 1:
+                cityList.append(contentsOf: unitList)
+            case 2:
+                cityList.append(contentsOf: ATMList)
+            default: break
+            }
         }
-        action.addButton(withTitle: "cancel")
-        action.cancelButtonIndex = a.count
         
-        action.show(in: self.view)
+        if cityList.count != 0 {
+            let action = UIActionSheet()
+            action.delegate = self
+            action.title = ServiceBase_Action_Title
+            for city in cityList  {
+                action.addButton(withTitle: city)
+            }
+            action.show(in: view)
+        }
     }
     
     // MARK: - UIActionSheetDelegate
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
-        if (actionSheet.buttonTitle(at: buttonIndex)! != "cancel") {
-            m_strSearchRange = actionSheet.buttonTitle(at: buttonIndex)!
-            m_DDPlace?.setOneRow((m_DDPlace?.m_lbFirstRowTitle.text)!, actionSheet.buttonTitle(at: buttonIndex)!)
-            m_tvData.reloadData()
-        }
+        m_strSearchRange = actionSheet.buttonTitle(at: buttonIndex)!
+        initDataTitleForType()
+        m_DDPlace?.setOneRow((m_DDPlace?.m_lbFirstRowTitle.text)!, actionSheet.buttonTitle(at: buttonIndex)!)
+        m_tvData.reloadData()
     }
     
     // MARK: - ChooseTypeDelegate
     func clickChooseTypeBtn(_ name:String) {
-        initDataTitleForType(name)
+        if currentType != name {
+            currentType = name
+            initDataTitleForType()
+        }
         m_tvData.reloadData()
     }
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return ServiceBase_CellHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         m_iSelectedIndex = indexPath.row
-        goDetail()
+        performSegue(withIdentifier: ServiceBase_Segue, sender: nil)
     }
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return m_curData.count
+        return curData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (true) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ServiceBaseCell.NibName()!, for: indexPath) as! ServiceBaseCell
-            cell.setData(m_curData[indexPath.row].name!, m_curData[indexPath.row].address!, m_strSearchRange == "我的週遭" ? m_curData[indexPath.row].distance! : "")
-            cell.selectionStyle = .none
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ServiceBaseCell.NibName()!, for: indexPath) as! ServiceBaseCell
+        if indexPath.row < curData.count {
+            cell.setData(curData[indexPath.row].name ?? "", curData[indexPath.row].address ?? "", m_strSearchRange == ServiceBase_Default_SearchRange ? (curData[indexPath.row].distance ?? "") : "")
         }
+        cell.selectionStyle = .none
+        return cell
     }
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
         switch description {
         case "INFO0301":
-            
-            setLoading(true)
-            postRequest("Info/INFO0302", "INFO0302", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07053","Operate":"getListInfo"], false), AuthorizationManage.manage.getHttpHead(false))
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["No"] as? [[String:String]] {
+                for info in array {
+                    if let name = info["Name"], let address = info["Address"], let tel = info["Tel"], let fax = info["Fax"], let distance = info["Distance"], let type = info["Type"] {
+                        aroundMeList.append(ServiceBaseStruct(name, address, tel, fax, distance, type))
+                    }
+                }
+                initDataTitleForType()
+                m_tvData.reloadData()
+                postRequest("Info/INFO0302", "INFO0302", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07053","Operate":"getListInfo"], false), AuthorizationManage.manage.getHttpHead(false))
+            }
+        case "INFO0302":
+            setLoading(false)
+            if let data = response.object(forKey: "Data") as? [String:Any] {
+                if let unit = data["Unit"] as? [[String:String]] {
+                    for info in unit {
+                        if let city = info["CC_CityName"] {
+                            if unitList.index(of: city) == nil {
+                                unitList.append(city)
+                            }
+                            if let name = info["CUM_FullBankChineseName"], let address = info["CUM_Address"], let tel = info["CUM_Telephone"], let fax = info["CUM_Fax"] {
+                                if var array = unitInfoList[city] {
+                                    array.append(ServiceBaseStruct(name, address, tel, fax, "", ""))
+                                }
+                                else {
+                                    unitInfoList[city] = [ServiceBaseStruct(name, address, tel, fax, "", "")]
+                                }
+                            }
+                        }
+                    }
+                }
+                if let ATM = data["Unit"] as? [[String:String]]  {
+                    for info in ATM {
+                        if let city = info["CC_CityName"] {
+                            if ATMList.index(of: city) == nil {
+                                ATMList.append(city)
+                            }
+                            if let name = info["CAM_ATMName"], let address = info["CAM_Address"] {
+                                if var array = ATMInfoList[city] {
+                                    array.append(ServiceBaseStruct(name, address, "", "", "", ""))
+                                }
+                                else {
+                                    ATMInfoList[city] = [ServiceBaseStruct(name, address, "", "", "", "")]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         default: break
+        }
+    }
+    
+    // MARK: - CLLocationManagerDelegate
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])")
+        if let coordinate = locations.first?.coordinate {
+            if curLocation.latitude != coordinate.latitude || curLocation.longitude != coordinate.longitude {
+                curLocation = coordinate
+                setLoading(true)
+                postRequest("Info/INFO0301", "INFO0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07052","Operate":"getListInfo","Longitude":curLocation.longitude,"Latitude":curLocation.latitude], false), AuthorizationManage.manage.getHttpHead(false))
+            }
         }
     }
 }
