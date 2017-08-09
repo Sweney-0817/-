@@ -52,8 +52,8 @@ class EditCell: UITableViewCell {
 }
 
 protocol OverviewCellDelegate {
-    func clickTransBtn()
-    func clickDetailBtn(_ btn:UIButton)
+    func clickExpandBtn1(_ btn:UIButton, _ value:[String:String])
+    func clickExpandBtn2(_ btn:UIButton, _ value:[String:String])
 }
 
 class OverviewCell: UITableViewCell {
@@ -85,7 +85,7 @@ class OverviewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func AddExpnadBtn(_ delegate:OverviewCellDelegate?, _ btnTag:Int) {
+    func AddExpnadBtn(_ delegate:OverviewCellDelegate?, _ type:ActOverviewType, _ isEnable:(Bool,Bool)) {
         status = .Hide
         trailingCons.constant = sTrailing
         leadingCons.constant = sleading
@@ -97,13 +97,21 @@ class OverviewCell: UITableViewCell {
         }
         if expandView == nil {
             expandView = Platform.plat.getUIByID(.UIID_ExpandView, self) as? ExpandView
-            Button_Width = (expandView?.frame.width)!
-            expandView?.transBtn.addTarget(self, action: #selector(clickTransBtn(_:)), for: .touchUpInside)
-            expandView?.detailBtn.addTarget(self, action: #selector(clickDetailBtn(_:)), for: .touchUpInside)
+            Button_Width = type != .Type3 ? (expandView?.frame.size.width)! : (expandView?.frame.size.width)!/2
+            expandView?.SetStatus(isEnable.0, isEnable.1)
+            switch type {
+            case .Type3: expandView?.SetLabelTitle("往來\n明細", "")
+            case .Type4: expandView?.SetLabelTitle("繳交\n貸款", "往來\n明細")
+            default: expandView?.SetLabelTitle("即時\n轉帳", "往來\n明細")
+            }
+            expandView?.button1.addTarget(self, action: #selector(clickButton1(_:)), for: .touchUpInside)
+            expandView?.button1.tag = type.rawValue
+            expandView?.button2.addTarget(self, action: #selector(clickButton2(_:)), for: .touchUpInside)
+            expandView?.button2.tag = type.rawValue
             contentView.addSubview(expandView!)
         }
-        expandView?.detailBtn.tag = btnTag
-        expandView?.frame = CGRect(x: contentView.frame.maxX, y: 0, width: Button_Width, height: contentView.frame.height-1)
+    
+        expandView?.frame = CGRect(x: contentView.frame.maxX, y: 0, width: (expandView?.frame.size.width)!, height: contentView.frame.height-1)
     }
     
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -143,13 +151,13 @@ class OverviewCell: UITableViewCell {
         case .ended:
             if status == .Expanding {
                 if (expandView?.frame.origin.x)! <= contentView.frame.maxX-Button_Width/2 {
-                    expandView?.frame = CGRect(x: contentView.frame.maxX-Button_Width, y: 0, width: Button_Width, height: contentView.frame.height-1)
+                    expandView?.frame = CGRect(x: contentView.frame.maxX-Button_Width, y: 0, width: (expandView?.frame.size.width)!, height: contentView.frame.height-1)
                     status = .Expand
                     trailingCons.constant = sTrailing + Button_Width
                     leadingCons.constant = sleading - Button_Width
                 }
                 else {
-                    expandView?.frame = CGRect(x: contentView.frame.maxX, y: 0, width: Button_Width, height: contentView.frame.height-1)
+                    expandView?.frame = CGRect(x: contentView.frame.maxX, y: 0, width: (expandView?.frame.size.width)!, height: contentView.frame.height-1)
                     status = .Hide
                     trailingCons.constant = sTrailing
                     leadingCons.constant = sleading
@@ -161,12 +169,12 @@ class OverviewCell: UITableViewCell {
         }
     }
     
-    func clickTransBtn(_ sender:Any) {
-        delegate?.clickTransBtn()
+    func clickButton1(_ sender:Any) {
+        delegate?.clickExpandBtn1(sender as! UIButton, [title1Label.text!:detail1Label.text!,title2Label.text!:detail2Label.text!,title3Label.text!:detail3Label.text!])
     }
     
-    func clickDetailBtn(_ sender:Any) {
-        delegate?.clickDetailBtn(sender as! UIButton)
+    func clickButton2(_ sender:Any) {
+        delegate?.clickExpandBtn2(sender as! UIButton, [title1Label.text!:detail1Label.text!,title2Label.text!:detail2Label.text!,title3Label.text!:detail3Label.text!])
     }
 }
 

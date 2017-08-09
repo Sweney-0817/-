@@ -65,7 +65,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
         setLoading(true)
-        getTransactionID("08001", "TrID08001")
+        getTransactionID("08001", TransactionID_Description)
         AddObserverToKeyBoard()
         
 //        emailTextfield.text = "test@gmail.com"
@@ -169,8 +169,8 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
                 super.didRecvdResponse(description, response)
             }
             
-        case "TrID08001":
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data["TransactionId"] as? String {
+        case TransactionID_Description:
+            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("Usif/USIF0101", "USIF0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08001","Operate":"queryData","TransactionId":tranId], false), AuthorizationManage.manage.getHttpHead(false))

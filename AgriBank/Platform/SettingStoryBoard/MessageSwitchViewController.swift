@@ -14,7 +14,7 @@ class MessageSwitchViewController: BaseViewController {
         super.viewDidLoad()
 
         setLoading(true)
-        getTransactionID("07061", "TrID")
+        getTransactionID("08004", TransactionID_Description)
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,7 +32,7 @@ class MessageSwitchViewController: BaseViewController {
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         setLoading(false)
         switch description {
-        case "TrID":
+        case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data["TransactionId"] as? String {
                 transactionId = tranId
                 setLoading(true)

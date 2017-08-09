@@ -24,8 +24,8 @@
                         <color key="textColor" red="0.49803921568627452" green="0.49803921568627452" blue="0.49803921568627452" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12345678901234" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UU4-Kx-7pz">
-                        <rect key="frame" x="105" y="7.5" width="215" height="25.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UU4-Kx-7pz">
+                        <rect key="frame" x="105" y="19.5" width="215" height="0.0"/>
                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -40,8 +40,8 @@
                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TWD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uZc-2r-ZzC">
-                        <rect key="frame" x="105" y="37.5" width="215" height="25.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uZc-2r-ZzC">
+                        <rect key="frame" x="105" y="49.5" width="215" height="0.0"/>
                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -52,8 +52,8 @@
                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999,999,999.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m8V-Fv-LaE">
-                        <rect key="frame" x="105" y="67" width="215" height="25.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m8V-Fv-LaE">
+                        <rect key="frame" x="105" y="80" width="215" height="0.0"/>
                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -66,7 +66,7 @@
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Czx-DI-bKa">
-                        <rect key="frame" x="0.0" y="97.5" width="375" height="1"/>
+                        <rect key="frame" x="0.0" y="98.5" width="375" height="1"/>
                         <color key="backgroundColor" red="0.74509803921568629" green="0.74509803921568629" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="o8Q-iB-u2e"/>
@@ -77,7 +77,7 @@
                     <constraint firstItem="UU4-Kx-7pz" firstAttribute="leading" secondItem="uZc-2r-ZzC" secondAttribute="leading" id="0h2-dI-wdk"/>
                     <constraint firstItem="Czx-DI-bKa" firstAttribute="leading" secondItem="xEm-bu-8Ev" secondAttribute="leading" id="1Fx-kg-8wc"/>
                     <constraint firstItem="sgu-Bs-Y4p" firstAttribute="centerX" secondItem="omK-cf-k70" secondAttribute="centerX" id="25Q-UW-vav"/>
-                    <constraint firstAttribute="bottom" secondItem="Czx-DI-bKa" secondAttribute="bottom" constant="1" id="9hp-hv-lN1"/>
+                    <constraint firstAttribute="bottom" secondItem="Czx-DI-bKa" secondAttribute="bottom" id="9hp-hv-lN1"/>
                     <constraint firstAttribute="trailing" secondItem="Czx-DI-bKa" secondAttribute="trailing" id="B7v-i2-Hnh"/>
                     <constraint firstItem="m8V-Fv-LaE" firstAttribute="height" secondItem="uZc-2r-ZzC" secondAttribute="height" id="CCv-4f-3vx"/>
                     <constraint firstItem="omK-cf-k70" firstAttribute="leading" secondItem="xEm-bu-8Ev" secondAttribute="leading" constant="15" id="DYP-fG-mtD"/>

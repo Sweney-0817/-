@@ -7,17 +7,24 @@
 //
 
 import UIKit
+
 let ActDetailView_ShowDetail_Segue = "ShowDetail"
+let ActDetailView_TypeList = ["活期存款","支票存款","定期存款","放款"]
+let ActDetailView_CellTitleList = [ActDetailView_TypeList[0]:["交易日期","借款記號","交易金額"],
+                                   ActDetailView_TypeList[1]:["交易日期","票號","交易金額"],
+                                   ActDetailView_TypeList[2]:["記帳日","交易金額","結存本金"],
+                                   ActDetailView_TypeList[3]:["交易日期","攤還本金","本金餘額"]]
 
 class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate, OneRowDropDownViewDelegate {
     @IBOutlet weak var chooseTypeView: ChooseTypeView!    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var transDayView: UIView!
     @IBOutlet weak var chooseAccountView: UIView!
-
-    private var typeList = ["活期存款","支票存款","定期存款","放款存款"]
-    private let cellTitleList = ["交易日期","攤還本金","本金餘額"]
-    private var currentType = 0
+    private var typeListIndex = 0
+    private var chooseAccount:String? = nil
+    private var categoryList = [String:[ActOverviewStruct]]()
+    private var categoryType = [String:String]()
+    private var typeList = ActDetailView_TypeList
     
     // MARK: - public
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -25,24 +32,31 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         
     }
     
-    func SetInitial(_ currentType:String)  {
-        self.currentType = typeList.index(of: currentType) ?? self.currentType
-        chooseTypeView.setTypeList(typeList, setDelegate: self, self.currentType)
+    func SetInitial(_ currentType:String?, _ account:String?)  {
+        if currentType != nil && account != nil {
+            typeListIndex = ActDetailView_TypeList.index(of: currentType!) ?? typeListIndex
+            chooseTypeView.setTypeList(ActDetailView_TypeList, setDelegate: self, typeListIndex)
+            chooseAccount = account
+        }
     }
     
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        chooseTypeView.setTypeList(typeList, setDelegate: self, currentType)
+        chooseTypeView.setTypeList(ActDetailView_TypeList, setDelegate: self, typeListIndex)
+        
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
-        tableView.reloadData()
+
         setShadowView(transDayView)
         let view = getUIByID(.UIID_OneRowDropDownView) as! OneRowDropDownView
         view.frame = chooseAccountView.frame
         view.frame.origin = .zero
         view.setOneRow("帳號", "")
         chooseAccountView.addSubview(view)
+        
+        setLoading(true)
+        getTransactionID("02002", TransactionID_Description)
     }
 
     override func didReceiveMemoryWarning() {
@@ -61,9 +75,9 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_OverviewCell.NibName()!, for: indexPath) as! OverviewCell
-        cell.title1Label.text = cellTitleList[0]
-        cell.title2Label.text = cellTitleList[1]
-        cell.title3Label.text = cellTitleList[2]
+        cell.title1Label.text = ActDetailView_CellTitleList[typeList[typeListIndex]]?[0]
+        cell.title2Label.text = ActDetailView_CellTitleList[typeList[typeListIndex]]?[1]
+        cell.title3Label.text = ActDetailView_CellTitleList[typeList[typeListIndex]]?[2]
         return cell
     }
 
@@ -132,5 +146,53 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         
+    }
+    
+    // MARK: - ConnectionUtilityDelegate
+    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
+        setLoading(false)
+        switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"1"], true), AuthorizationManage.manage.getHttpHead(true))
+            }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+        
+        case "ACCT0101":
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+                typeList.removeAll()
+                for category in array {
+                    if let type = category["ACTTYPE"] as? String, let result = category["Result"] as? [[String:Any]] {
+                        // "ACTTYPE"->帳號類別: 活存：P, 支存：T, 定存：K, 放款：L, 綜存：M
+                        switch type {
+                        case "P":
+                            categoryType[ActOverview_TypeList[0]] = type
+                            categoryList[type] = [ActOverviewStruct]()
+                        case "T":
+                            categoryType[ActOverview_TypeList[1]] = type
+                            categoryList[type] = [ActOverviewStruct]()
+                        case "K":
+                            categoryType[ActOverview_TypeList[2]] = type
+                            categoryList[type] = [ActOverviewStruct]()
+                        case "L":
+                            categoryType[ActOverview_TypeList[3]] = type
+                            categoryList[type] = [ActOverviewStruct]()
+                        default: break
+                        }
+                        for actInfo in result {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int {
+                                categoryList[type]?.append(ActOverviewStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                            }
+                        }
+                    }
+                }
+                tableView.reloadData()
+            }
+            
+        default: break
+        }
     }
 }

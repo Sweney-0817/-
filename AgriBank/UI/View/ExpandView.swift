@@ -9,24 +9,29 @@
 import UIKit
 
 class ExpandView: UIView {
-    @IBOutlet weak var transBtn: UIButton!
-    @IBOutlet weak var detailBtn: UIButton!
-
+    @IBOutlet weak var button1: UIButton!
+    @IBOutlet weak var button2: UIButton!
+    @IBOutlet weak var titleLabel1: UILabel!
+    @IBOutlet weak var titleLabel2: UILabel!
+    
     // MARK - Public
-    func SetStatus(_ transStaus: Bool, _ detailStatus: Bool) {
-        transBtn.isEnabled = transStaus
-        if !transStaus {
-            transBtn.backgroundColor = Gray_Color
+    func SetStatus(_ status1: Bool, _ status2: Bool) {
+        button1.isEnabled = status1
+        if !status1 {
+            let view = UIView(frame: button1.frame)
+            view.backgroundColor = Disable_Color
+            self.addSubview(view)
         }
-        else {
-            transBtn.backgroundColor = .clear
+        button2.isEnabled = status2
+        if !status2 {
+            let view = UIView(frame: button2.frame)
+            view.backgroundColor = Disable_Color
+            self.addSubview(view)
         }
-        detailBtn.isEnabled = detailStatus
-        if !detailStatus {
-            detailBtn.backgroundColor = Gray_Color
-        }
-        else {
-            detailBtn.backgroundColor = .clear
-        }
+    }
+    
+    func SetLabelTitle(_ title1:String, _ title2:String) {
+        titleLabel1.text = title1
+        titleLabel2.text = title2
     }
 }

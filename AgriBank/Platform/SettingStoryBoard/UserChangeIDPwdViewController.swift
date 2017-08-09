@@ -46,10 +46,10 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
         setLoading(true)
         if !isChangePassword {
-            getTransactionID("08002", "TrID")
+            getTransactionID("08002", TransactionID_Description)
         }
         else {
-            getTransactionID("08003", "TrID")
+            getTransactionID("08003", TransactionID_Description)
             sourceTextfield.placeholder = "原使用者密碼"
             newTextfield.placeholder = "新使用者密碼"
             againTextfield.placeholder = "再次輸入新使用者密碼"
@@ -123,8 +123,8 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
                 super.didRecvdResponse(description, response)
             }
             
-        case "TrID":
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data["TransactionId"] as? String {
+        case TransactionID_Description:
+            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
             }
             else {

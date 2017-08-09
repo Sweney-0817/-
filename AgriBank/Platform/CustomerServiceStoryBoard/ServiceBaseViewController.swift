@@ -16,13 +16,15 @@ struct ServiceBaseStruct {
     var fax:String? = nil
     var distance:String? = nil
     var type:String? = nil
-    init (_ name:String, _ address:String, _ phone:String, _ fax:String, _ distance:String, _ type:String) {
+    var location:CLLocationCoordinate2D? = nil
+    init (_ name:String, _ address:String, _ phone:String, _ fax:String, _ distance:String, _ type:String, _ location:CLLocationCoordinate2D) {
         self.name = name
         self.address = address
         self.phone = phone
         self.fax = fax
         self.distance = distance
         self.type = type
+        self.location = location
     }
 }
 
@@ -55,14 +57,17 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
 
     // MARK: - Public
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var data = ConfirmResultStruct("", "", [[String:String]](), "", "", "")
-        data.list!.append(["Key": "名稱", "Value": curData[m_iSelectedIndex].name ?? ""])
-        data.list!.append(["Key": "地址", "Value": curData[m_iSelectedIndex].address ?? ""])
-        data.list!.append(["Key": "電話", "Value": curData[m_iSelectedIndex].phone ?? ""])
-        data.list!.append(["Key": "傳真", "Value": curData[m_iSelectedIndex].fax ?? ""])
         super.prepare(for: segue, sender: sender)
-        let serviceBaseDetailViewController = segue.destination as! ServiceBaseDetailViewController
-        serviceBaseDetailViewController.setData(data)
+        if let name = curData[m_iSelectedIndex].name, let address = curData[m_iSelectedIndex].address, let phone = curData[m_iSelectedIndex].phone, let fax = curData[m_iSelectedIndex].fax, let location = curData[m_iSelectedIndex].location {
+            var data = ConfirmResultStruct("", "", [[String:String]](), "", "", "")
+            data.list!.append([Response_Key: "名稱    ", Response_Value: name])
+            data.list!.append([Response_Key: "地址    ", Response_Value: address])
+            data.list!.append([Response_Key: "電話    ", Response_Value: phone])
+            data.list!.append([Response_Key: "傳真    ", Response_Value: fax])
+            
+            let serviceBaseDetailViewController = segue.destination as! ServiceBaseDetailViewController
+            serviceBaseDetailViewController.setData(data , phone, location)
+        }
     }
     
     // MARK: - Life Cycle
@@ -251,8 +256,8 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         case "INFO0301":
             if let data = response.object(forKey: "Data") as? [String:Any], let array = data["No"] as? [[String:String]] {
                 for info in array {
-                    if let name = info["Name"], let address = info["Address"], let tel = info["Tel"], let fax = info["Fax"], let distance = info["Distance"], let type = info["Type"] {
-                        aroundMeList.append(ServiceBaseStruct(name, address, tel, fax, distance, type))
+                    if let name = info["Name"], let address = info["Address"], let tel = info["Tel"], let fax = info["Fax"], let distance = info["Distance"], let type = info["Type"], let longitude = info["Longitude"], let latitude = info["Latitude"] {
+                        aroundMeList.append(ServiceBaseStruct(name, address, tel, fax, distance, type, CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
                     }
                 }
                 initDataTitleForType()
@@ -268,12 +273,12 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
                             if unitList.index(of: city) == nil {
                                 unitList.append(city)
                             }
-                            if let name = info["CUM_FullBankChineseName"], let address = info["CUM_Address"], let tel = info["CUM_Telephone"], let fax = info["CUM_Fax"] {
+                            if let name = info["CUM_FullBankChineseName"], let address = info["CUM_Address"], let tel = info["CUM_Telephone"], let fax = info["CUM_Fax"], let longitude = info["CUM_Longitude"], let latitude = info["CUM_Latitude"] {
                                 if var array = unitInfoList[city] {
-                                    array.append(ServiceBaseStruct(name, address, tel, fax, "", ""))
+                                    array.append(ServiceBaseStruct(name, address, tel, fax, "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
                                 }
                                 else {
-                                    unitInfoList[city] = [ServiceBaseStruct(name, address, tel, fax, "", "")]
+                                    unitInfoList[city] = [ServiceBaseStruct(name, address, tel, fax, "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0))]
                                 }
                             }
                         }
@@ -285,12 +290,12 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
                             if ATMList.index(of: city) == nil {
                                 ATMList.append(city)
                             }
-                            if let name = info["CAM_ATMName"], let address = info["CAM_Address"] {
+                            if let name = info["CAM_ATMName"], let address = info["CAM_Address"],let longitude = info["CAM_Longitude"], let latitude = info["CAM_Latitude"] {
                                 if var array = ATMInfoList[city] {
-                                    array.append(ServiceBaseStruct(name, address, "", "", "", ""))
+                                    array.append(ServiceBaseStruct(name, address, "", "", "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
                                 }
                                 else {
-                                    ATMInfoList[city] = [ServiceBaseStruct(name, address, "", "", "", "")]
+                                    ATMInfoList[city] = [ServiceBaseStruct(name, address, "", "", "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0))]
                                 }
                             }
                         }
@@ -303,7 +308,6 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     
     // MARK: - CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])")
         if let coordinate = locations.first?.coordinate {
             if curLocation.latitude != coordinate.latitude || curLocation.longitude != coordinate.longitude {
                 curLocation = coordinate

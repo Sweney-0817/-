@@ -242,6 +242,9 @@
                             <constraint firstAttribute="trailing" secondItem="REo-pt-JDN" secondAttribute="trailing" id="pZ1-jX-vV7"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="REo-pt-JDN" id="Gc3-en-jUz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GDg-ob-zsb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -252,6 +255,6 @@
         <image name="ButtonSmall" width="87" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="tvc-xL-dlM"/>
+        <segue reference="ZHI-MI-8Du"/>
     </inferredMetricsTieBreakers>
 </document>

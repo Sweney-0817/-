@@ -316,6 +316,8 @@ let Transaction_Successful_Title = "交易成功"
 let Transaction_Faild_Title = "交易失敗"
 let Change_Successful_Title = "變更成功"
 let Change_Faild_Title = "變更失敗"
+let TransactionID_Description = "TrID"
+let TransactionID_Key = "TransactionId"
 //let NewsTitle_Login = "地方農漁會公告訊息"
 //let NewsTitle_NoLogin = "中心公告訊息"
 
