@@ -45,13 +45,14 @@ let ActOverview_Account_EnableTrans:Int = 2
 class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate, OverviewCellDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var chooseTypeView: ChooseTypeView!
     @IBOutlet weak var tableView: UITableView!
-    private var categoryList = [String:[ActOverviewStruct]]()
-    private var categoryType = [String:String]()
+    private var categoryList = [String:[ActOverviewStruct]]() // Key: 電文(ACCT0101)response的"ACTTYPE"
+    private var categoryType = [String:String]()        // Key: ActOverviewType.description() value: 電文(ACCT0101)response的"ACTTYPE"
+    private var typeList = [String]()                   // 使用者帳戶清單的Type List
     private var typeListIndex:Int = 0                   // ActOverview_TypeList 的 index
     private var currentType:ActOverviewType = .Type0    // 目前Type
     private var chooseAccount:String? = nil
-    private var typeList = [String]()                   // 使用者帳戶清單的Type
     private var resultList = [String:Any]()
+    private var pushByclickExpandBtn = false            // 判斷是否從cell觸發 進功能畫面
     
     // MARK: - public
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -218,7 +219,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
         navigationController?.delegate = self
         setLoading(true)
-        getTransactionID("02001", TransactionID_Description)
+        getTransactionID("02031", TransactionID_Description)
     }
 
     override func didReceiveMemoryWarning() {
@@ -325,10 +326,10 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             }
         }
         else {
-            if let index = ActOverview_TypeList.index(of: name), let type = ActOverviewType(rawValue: index) {
+            if let index = ActOverview_TypeList.index(of: name), let type = GetTypeByInputString(name) {
+                typeListIndex = index
                 if currentType != type {
                     currentType = type
-                    typeListIndex = index
                     tableView.sectionHeaderHeight = ActOverview_Section_Height
                     tableView.reloadData()
                 }
@@ -365,7 +366,9 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             cell.detail1Label.text = array[indexPath.row].accountNO
             cell.detail2Label.text = array[indexPath.row].currency
             cell.detail3Label.text = String(array[indexPath.row].balance)
-            cell.AddExpnadBtn(self, ActOverviewType(rawValue: index)!, (array[indexPath.row].status == ActOverview_Account_EnableTrans,true))
+            if let cellType = GetTypeByInputString(ActOverview_TypeList[index]) {
+                cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == ActOverview_Account_EnableTrans,true))
+            }
         }
         return cell
     }
@@ -382,7 +385,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if currentType == .Type0 {
-            typeListIndex =  ActDetailView_TypeList.index(of: typeList[indexPath.section+1]) ?? 0
+            typeListIndex =  ActOverview_TypeList.index(of: typeList[indexPath.section+1]) ?? 0
         }
         
         if categoryType[ActOverview_TypeList[typeListIndex]] != nil, let cell = tableView.cellForRow(at: indexPath) as? OverviewCell {
@@ -397,7 +400,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             typeListIndex = btn.tag
         }
         else {
-            typeListIndex = ActDetailView_TypeList.index(of: currentType.description()) ?? 0
+            typeListIndex = ActOverview_TypeList.index(of: currentType.description()) ?? 0
         }
         let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
         switch type {
@@ -410,6 +413,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         case .Type3:
             chooseAccount = value[ActOverview_CellTitleList.first!]
             enterFeatureByID(.FeatureID_AccountDetailView, false)
+            pushByclickExpandBtn = true
     
         case .Type4:
             enterFeatureByID(.FeatureID_LoanPrincipalInterest, false)
@@ -423,21 +427,24 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             typeListIndex = btn.tag
         }
         else {
-            typeListIndex = ActDetailView_TypeList.index(of: currentType.description()) ?? 0
+            typeListIndex = ActOverview_TypeList.index(of: currentType.description()) ?? 0
         }
         let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
         switch type {
         case .Type1:
             chooseAccount = value[ActOverview_CellTitleList.first!]
             enterFeatureByID(.FeatureID_AccountDetailView, false)
+            pushByclickExpandBtn = true
             
         case .Type2:
             chooseAccount = value[ActOverview_CellTitleList.first!]
             enterFeatureByID(.FeatureID_AccountDetailView, false)
+            pushByclickExpandBtn = true
             
         case .Type4:
             chooseAccount = value[ActOverview_CellTitleList.first!]
             enterFeatureByID(.FeatureID_AccountDetailView, false)
+            pushByclickExpandBtn = true
             
         default: break
         }
@@ -445,7 +452,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     
     // MARK: - UINavigationControllerDelegate
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        if viewController is ActDetailViewController {
+        if pushByclickExpandBtn && viewController is ActDetailViewController {
             (viewController as! ActDetailViewController).SetInitial(ActOverview_TypeList[typeListIndex], chooseAccount)
         }
     }

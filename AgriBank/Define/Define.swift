@@ -318,6 +318,8 @@ let Change_Successful_Title = "變更成功"
 let Change_Faild_Title = "變更失敗"
 let TransactionID_Description = "TrID"
 let TransactionID_Key = "TransactionId"
+let UIActionSheet_Confirm_Title = "確認"
+let UIActionSheet_Cancel_Title = "取消"
 //let NewsTitle_Login = "地方農漁會公告訊息"
 //let NewsTitle_NoLogin = "中心公告訊息"
 

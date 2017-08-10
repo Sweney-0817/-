@@ -112,7 +112,7 @@
                                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017/01/02 - 2017/01/08" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="wxb-xw-U3s">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="wxb-xw-U3s">
                                         <rect key="frame" x="140" y="13" width="235" height="25.5"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
@@ -204,8 +204,12 @@
                     <connections>
                         <outlet property="chooseAccountView" destination="oFA-6H-eHA" id="UHL-Y3-oHE"/>
                         <outlet property="chooseTypeView" destination="Z1A-iY-vDq" id="Ixv-8D-ICB"/>
+                        <outlet property="customizeDayButton" destination="Nee-zo-IhX" id="wBu-rO-LZz"/>
+                        <outlet property="dateLabel" destination="wxb-xw-U3s" id="FIh-iK-qtG"/>
                         <outlet property="tableView" destination="Mga-JL-J95" id="O23-qh-awg"/>
+                        <outlet property="theDayButton" destination="6LF-5p-OAZ" id="Og9-bx-gLY"/>
                         <outlet property="transDayView" destination="aJc-ku-UDT" id="eF0-6j-FS6"/>
+                        <outlet property="weekDayButton" destination="Faq-2S-rK6" id="Gik-ey-cvf"/>
                         <segue destination="15O-qj-AXr" kind="show" identifier="ShowDetail" id="tvc-xL-dlM"/>
                     </connections>
                 </viewController>
@@ -255,6 +259,6 @@
         <image name="ButtonSmall" width="87" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZHI-MI-8Du"/>
+        <segue reference="tvc-xL-dlM"/>
     </inferredMetricsTieBreakers>
 </document>
