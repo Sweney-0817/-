@@ -36,18 +36,21 @@ enum ActOverviewType:Int {
         }
     }
 }
+
 let ActOverview_TypeList = [ActOverviewType.Type1.description(),ActOverviewType.Type2.description(),ActOverviewType.Type3.description(),ActOverviewType.Type4.description()]
-let ActOverview_ChooseTypeList = [ActOverviewType.Type0.description()] + ActOverview_TypeList
+
+// 電文規格:此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
+let ActOverview_Account_EnableTrans:Int = 2
 
 class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate, OverviewCellDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var chooseTypeView: ChooseTypeView!
     @IBOutlet weak var tableView: UITableView!
     private var categoryList = [String:[ActOverviewStruct]]()
     private var categoryType = [String:String]()
-    private var typeListIndex:Int = 0
-    private var currentType:ActOverviewType = .Type0
+    private var typeListIndex:Int = 0                   // ActOverview_TypeList 的 index
+    private var currentType:ActOverviewType = .Type0    // 目前Type
     private var chooseAccount:String? = nil
-    private var typeList = ActOverview_ChooseTypeList
+    private var typeList = [String]()                   // 使用者帳戶清單的Type
     private var resultList = [String:Any]()
     
     // MARK: - public
@@ -55,7 +58,8 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         super.prepare(for: segue, sender: sender)
         let controller = segue.destination as! ShowDetailViewController
         var list = [[String:String]]()
-        switch currentType {
+        let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
+        switch type {
         case .Type1:
             if let ACTNO = resultList["ACTNO"] as? String {
                 list.append([Response_Key: "帳號", Response_Value:ACTNO])
@@ -191,14 +195,26 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         default: break
         }
         
-        controller.setList("\(ActOverview_TypeList[typeListIndex])往來明細", list)
+        controller.setList("\(type.description())往來明細", list)
+    }
+    
+    // MARK: - Private
+    private func GetTypeByInputString(_ input:String) -> ActOverviewType? {
+        var type:ActOverviewType? = nil
+        switch input {
+        case ActOverviewType.Type1.description(): type = .Type1
+        case ActOverviewType.Type2.description(): type = .Type2
+        case ActOverviewType.Type3.description(): type = .Type3
+        case ActOverviewType.Type4.description(): type = .Type4
+        default: break
+        }
+        return type
     }
     
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        chooseTypeView.setTypeList(ActOverview_ChooseTypeList, setDelegate: self)
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
         navigationController?.delegate = self
         setLoading(true)
@@ -228,27 +244,39 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["Result"] as? [[String:Any]] {
                         var addType = false
-                        // "ACTTYPE"->帳號類別: 活存：P, 支存：T, 定存：K, 放款：L, 綜存：M
+                        // "ACTTYPE"->帳號類別: 活存：P, 支存：K, 定存：T, 放款：L, 綜存：M
                         switch type {
                         case "P":
                             categoryType[ActOverview_TypeList[0]] = type
                             categoryList[type] = [ActOverviewStruct]()
                             addType = true
+                            if typeList.index(of: ActOverviewType.Type1.description()) == nil {
+                                typeList.append(ActOverviewType.Type1.description())
+                            }
                             
-                        case "T":
+                        case "K":
                             categoryType[ActOverview_TypeList[1]] = type
                             categoryList[type] = [ActOverviewStruct]()
                             addType = true
+                            if typeList.index(of: ActOverviewType.Type2.description()) == nil {
+                                typeList.append(ActOverviewType.Type2.description())
+                            }
                             
-                        case "K":
+                        case "T":
                             categoryType[ActOverview_TypeList[2]] = type
                             categoryList[type] = [ActOverviewStruct]()
                             addType = true
+                            if typeList.index(of: ActOverviewType.Type3.description()) == nil {
+                                typeList.append(ActOverviewType.Type3.description())
+                            }
                             
                         case "L":
                             categoryType[ActOverview_TypeList[3]] = type
                             categoryList[type] = [ActOverviewStruct]()
                             addType = true
+                            if typeList.index(of: ActOverviewType.Type4.description()) == nil {
+                                typeList.append(ActOverviewType.Type4.description())
+                            }
                             
                         default: break
                         }
@@ -262,7 +290,12 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                         }
                     }
                 }
-                tableView.reloadData()
+                
+                if typeList.count != 0 {
+                    typeList.insert(ActOverviewType.Type0.description(), at: 0)
+                    chooseTypeView.setTypeList(typeList, setDelegate: self)
+                    tableView.reloadData()
+                }
             }
             else {
                 super.didRecvdResponse(description, response)
@@ -283,23 +316,21 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     
     // MARK: - ChooseTypeDelegate
     func clickChooseTypeBtn(_ name:String) {
-        if let index = ActOverview_ChooseTypeList.index(of: name) {
-            if index == 0 {
-                if currentType != .Type0 {
-                    currentType = .Type0
-                    typeListIndex = 0
-                    tableView.sectionHeaderHeight = ActOverview_SectionAll_Height
-                    tableView.reloadData()
-                }
+        if name == ActOverviewType.Type0.description() {
+            if currentType != .Type0 {
+                currentType = .Type0
+                typeListIndex = 0
+                tableView.sectionHeaderHeight = ActOverview_SectionAll_Height
+                tableView.reloadData()
             }
-            else {
-                if let type = ActOverviewType(rawValue: index-1) {
-                    if currentType != type {
-                        currentType = type
-                        typeListIndex = ActOverview_TypeList.index(of: name) ?? 0
-                        tableView.sectionHeaderHeight = ActOverview_Section_Height
-                        tableView.reloadData()
-                    }
+        }
+        else {
+            if let index = ActOverview_TypeList.index(of: name), let type = ActOverviewType(rawValue: index) {
+                if currentType != type {
+                    currentType = type
+                    typeListIndex = index
+                    tableView.sectionHeaderHeight = ActOverview_Section_Height
+                    tableView.reloadData()
                 }
             }
         }
@@ -308,7 +339,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         if currentType == .Type0 {
-            return typeList.count
+            return typeList.count != 0 ? typeList.count-1 : typeList.count
         }
         else {
             return 1
@@ -317,7 +348,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = 0
-        let index = currentType == .Type0 ? (ActOverview_TypeList.index(of: typeList[section]) ??  0): typeListIndex
+        let index = currentType == .Type0 ? (ActOverview_TypeList.index(of: typeList[section+1]) ??  0): typeListIndex
         if let type = categoryType[ActOverview_TypeList[index]], let array = categoryList[type] {
             count = array.count
         }
@@ -329,12 +360,12 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         cell.title1Label.text = ActOverview_CellTitleList[0]
         cell.title2Label.text = ActOverview_CellTitleList[1]
         cell.title3Label.text = ActOverview_CellTitleList[2]
-        let index = currentType == .Type0 ? (ActOverview_TypeList.index(of: typeList[indexPath.section]) ??  0): typeListIndex
+        let index = currentType == .Type0 ? (ActOverview_TypeList.index(of: typeList[indexPath.section+1]) ??  0) : typeListIndex
         if let type = categoryType[ActOverview_TypeList[index]], let array = categoryList[type] {
             cell.detail1Label.text = array[indexPath.row].accountNO
             cell.detail2Label.text = array[indexPath.row].currency
             cell.detail3Label.text = String(array[indexPath.row].balance)
-            cell.AddExpnadBtn(self, ActOverviewType(rawValue: index)!, (array[indexPath.row].status == 2,true))
+            cell.AddExpnadBtn(self, ActOverviewType(rawValue: index)!, (array[indexPath.row].status == ActOverview_Account_EnableTrans,true))
         }
         return cell
     }
@@ -344,14 +375,14 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         var secView:TypeSection? = nil
         if currentType == .Type0 {
             secView = getUIByID(.UIID_TypeSection) as? TypeSection
-            secView?.titleLabel.text = ActOverview_TypeList[section]
+            secView?.titleLabel.text = typeList[section+1]
         }
         return secView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if currentType == .Type0 {
-            typeListIndex = indexPath.section
+            typeListIndex =  ActDetailView_TypeList.index(of: typeList[indexPath.section+1]) ?? 0
         }
         
         if categoryType[ActOverview_TypeList[typeListIndex]] != nil, let cell = tableView.cellForRow(at: indexPath) as? OverviewCell {
@@ -362,7 +393,29 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     
     // MARK: - OverviewCellDelegate
     func clickExpandBtn1(_ btn:UIButton, _ value:[String:String]) {
-        enterFeatureByID(.FeatureID_NTTransfer, false)
+        if currentType == .Type0 {
+            typeListIndex = btn.tag
+        }
+        else {
+            typeListIndex = ActDetailView_TypeList.index(of: currentType.description()) ?? 0
+        }
+        let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
+        switch type {
+        case .Type1:
+            enterFeatureByID(.FeatureID_NTTransfer, false)
+            
+        case .Type2:
+            enterFeatureByID(.FeatureID_NTTransfer, false)
+        
+        case .Type3:
+            chooseAccount = value[ActOverview_CellTitleList.first!]
+            enterFeatureByID(.FeatureID_AccountDetailView, false)
+    
+        case .Type4:
+            enterFeatureByID(.FeatureID_LoanPrincipalInterest, false)
+            
+        default: break
+        }
     }
     
     func clickExpandBtn2(_ btn:UIButton, _ value:[String:String]) {
@@ -370,10 +423,24 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             typeListIndex = btn.tag
         }
         else {
-            typeListIndex = currentType.rawValue
+            typeListIndex = ActDetailView_TypeList.index(of: currentType.description()) ?? 0
         }
-        chooseAccount = value[ActOverview_CellTitleList.first!]
-        enterFeatureByID(.FeatureID_AccountDetailView, false)
+        let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
+        switch type {
+        case .Type1:
+            chooseAccount = value[ActOverview_CellTitleList.first!]
+            enterFeatureByID(.FeatureID_AccountDetailView, false)
+            
+        case .Type2:
+            chooseAccount = value[ActOverview_CellTitleList.first!]
+            enterFeatureByID(.FeatureID_AccountDetailView, false)
+            
+        case .Type4:
+            chooseAccount = value[ActOverview_CellTitleList.first!]
+            enterFeatureByID(.FeatureID_AccountDetailView, false)
+            
+        default: break
+        }
     }
     
     // MARK: - UINavigationControllerDelegate
@@ -382,5 +449,4 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             (viewController as! ActDetailViewController).SetInitial(ActOverview_TypeList[typeListIndex], chooseAccount)
         }
     }
-
 }
