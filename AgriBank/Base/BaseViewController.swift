@@ -130,21 +130,23 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     
     func setLoading(_ isLoading:Bool) {
         if isLoading {
-            let loadingView = UIView(frame: view.frame)
-            loadingView.tag = ViewTag.View_Loading.rawValue
-            loadingView.backgroundColor = Loading_Background_Color
-            
-            let backgroundView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: Loading_Weight, height: Loading_Height)))
-            backgroundView.backgroundColor = .white
-            backgroundView.center = loadingView.center
-            loadingView.addSubview(backgroundView)
-            
-            let loading = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-            loading.startAnimating()
-            loading.center = loadingView.center
-            loadingView.addSubview(loading)
-            
-            view.addSubview(loadingView)
+            if view.viewWithTag(ViewTag.View_Loading.rawValue) == nil {
+                let loadingView = UIView(frame: view.frame)
+                loadingView.tag = ViewTag.View_Loading.rawValue
+                loadingView.backgroundColor = Loading_Background_Color
+                
+                let backgroundView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: Loading_Weight, height: Loading_Height)))
+                backgroundView.backgroundColor = .white
+                backgroundView.center = loadingView.center
+                loadingView.addSubview(backgroundView)
+                
+                let loading = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                loading.startAnimating()
+                loading.center = loadingView.center
+                loadingView.addSubview(loading)
+                
+                view.addSubview(loadingView)
+            }
         }
         else {
             if let loadingView = view.viewWithTag(ViewTag.View_Loading.rawValue) {

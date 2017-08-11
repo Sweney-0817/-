@@ -260,6 +260,8 @@ enum ViewTag: Int {
     case View_DoubleDatePickerBackground    // 起始日picker
     case View_Loading                       // 讀取頁面
     case View_AnnounceNews                  // 訊息跑馬燈
+    case View_StartDatePickerView           // 起始日期Picker
+    case View_EndDatePickerView             // 截止日期Picker
 }
 
 // MARK: - AuthorizationManager

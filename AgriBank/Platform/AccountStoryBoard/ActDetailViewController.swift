@@ -33,11 +33,132 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     private var endDate = ""                     // 截止日
     private var resultList:[[String:Any]]? = nil
     private var typeList:[String]? = nil         // 使用者帳戶清單的Type List
+    private var currentIndex = 0                 //
     
     // MARK: - public
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        
+        let controller = segue.destination as! ShowDetailViewController
+        var list = [[String:String]]()
+        if currentType != nil, let dic = resultList?[currentIndex] {
+            switch currentType! {
+            case ActOverviewType.Type1.description():
+                if let TXDAY = dic["TXDAY"] as? String {
+                    list.append([Response_Key: "交易日期", Response_Value:TXDAY])
+                }
+                if let OAVBAL = dic["OAVBAL"] as? String {
+                    list.append([Response_Key: "可用餘額", Response_Value:OAVBAL])
+                }
+                if let CRDB = dic["CRDB"] as? String {
+                    list.append([Response_Key: "借貸紀號", Response_Value:CRDB == "1" ? "支出" : "存入"])
+                }
+                if let KINBR = dic["KINBR"] as? String {
+                    list.append([Response_Key: "輸入行", Response_Value:KINBR])
+                }
+                if let DSCPT = dic["DSCPT"] as? String {
+                    list.append([Response_Key: "交易摘要", Response_Value:DSCPT])
+                }
+                if let HCODE = dic["HCODE"] as? String {
+                    list.append([Response_Key: "更正記號", Response_Value:HCODE == "0" ? "-" : HCODE])
+                }
+                if let TXAMT = dic["TXAMT"] as? String {
+                    list.append([Response_Key: "交易金額", Response_Value:TXAMT])
+                }
+                if let MACTNO = dic["MACTNO"] as? String {
+                    list.append([Response_Key: "對方帳號", Response_Value:MACTNO])
+                }
+                if let TXRM = dic["TXRM"] as? String {
+                    list.append([Response_Key: "備註", Response_Value:TXRM])
+                }
+                
+            case ActOverviewType.Type2.description():
+                if let TXDAY = dic["TXDAY"] as? String {
+                    list.append([Response_Key: "交易日期", Response_Value:TXDAY])
+                }
+                if let CKSRT = dic["CKSRT"] as? String {
+                    list.append([Response_Key: "票種", Response_Value:CKSRT == "1" ? "支票" : "本票"])
+                }
+                if let CKNO = dic["CKNO"] as? String {
+                    list.append([Response_Key: "票號", Response_Value:CKNO])
+                }
+                if let DSCPT = dic["DSCPT"] as? String {
+                    list.append([Response_Key: "交易摘要", Response_Value:DSCPT])
+                }
+                if let HCODE = dic["HCODE"] as? String {
+                    list.append([Response_Key: "更正記號", Response_Value:HCODE == "0" ? "-" : HCODE])
+                }
+                if let CRDB = dic["CRDB"] as? String {
+                    list.append([Response_Key: "借貸紀號", Response_Value:CRDB == "1" ? "支出" : "存入"])
+                }
+                if let TXAMT = dic["TXAMT"] as? String {
+                    list.append([Response_Key: "交易金額", Response_Value:TXAMT])
+                }
+                if let AVBAL = dic["AVBAL"] as? String {
+                    list.append([Response_Key: "餘額", Response_Value:AVBAL])
+                }
+                if let REMARK = dic["REMARK"] as? String {
+                    list.append([Response_Key: "備註", Response_Value:REMARK])
+                }
+                
+            case ActOverviewType.Type3.description():
+                if let ENTDAY = dic["ENTDAY"] as? String {
+                    list.append([Response_Key: "記帳日", Response_Value:ENTDAY])
+                }
+                if let TRNACT = dic["TRNACT"] as? String {
+                    list.append([Response_Key: "對方帳號", Response_Value:TRNACT])
+                }
+                if let TXCD = dic["TXCD"] as? String {
+                    list.append([Response_Key: "交易代號", Response_Value:TXCD])
+                }
+                if let HCODE = dic["HCODE"] as? String {
+                    list.append([Response_Key: "更正記號", Response_Value:HCODE == "0" ? "-" : HCODE])
+                }
+                if let TAXAMT = dic["TAXAMT"] as? String {
+                    list.append([Response_Key: "所得稅", Response_Value:TAXAMT])
+                }
+                if let PRTAX = dic["PRTAX"] as? String {
+                    list.append([Response_Key: "印花稅", Response_Value:PRTAX])
+                }
+                if let BALNINT = dic["BALNINT"] as? String {
+                    list.append([Response_Key: "淨利/結存本金", Response_Value:BALNINT])
+                }
+                if let PRIBAL = dic["PRIBAL"] as? String {
+                    list.append([Response_Key: "補充保費", Response_Value:PRIBAL])
+                }
+                if let AMTINT = dic["AMTINT"] as? String {
+                    list.append([Response_Key: "交易金額", Response_Value:AMTINT])
+                }
+                if let LOWIRT = dic["LOWIRT"] as? String {
+                    list.append([Response_Key: "利率", Response_Value:LOWIRT])
+                }
+                
+            case ActOverviewType.Type4.description():
+                if let TXDATE = dic["TXDATE"] as? String {
+                    list.append([Response_Key: "交易日期", Response_Value:TXDATE])
+                }
+                if let TXCD = dic["TXCD"] as? String {
+                    list.append([Response_Key: "交易代號", Response_Value:TXCD])
+                }
+                if let PRIAMT = dic["PRIAMT"] as? String {
+                    list.append([Response_Key: "攤還本金/本金", Response_Value:PRIAMT])
+                }
+                if let INTAMT = dic["INTAMT"] as? String {
+                    list.append([Response_Key: "利息", Response_Value:INTAMT])
+                }
+                if let BAL = dic["BAL"] as? String {
+                    list.append([Response_Key: "本金餘額", Response_Value:BAL])
+                }
+                if let DFAMT = dic["DFAMT"] as? String {
+                    list.append([Response_Key: "違約金", Response_Value:DFAMT])
+                }
+                if let DIAMT = dic["DIAMT"] as? String {
+                    list.append([Response_Key: "延遲息", Response_Value:DIAMT])
+                }
+                
+            default: break
+            }
+            controller.setList("\(currentType!)往來明細", list)
+        }
     }
     
     func SetInitial(_ type:String?, _ account:String?)  {
@@ -48,8 +169,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             //  電文已經reponse SetInitial晚 
                 (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount ?? ActDetailView_ChooseAccount_Title)
                 chooseTypeView.setTypeList(typeList, setDelegate: self, typeList?.index(of: currentType!))
-                setLoading(true)
-                PostGetAcntInfo()
+                clickDateBtn(weekDayButton)
             }
         }
     }
@@ -67,8 +187,6 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         view.delegate = self
         view.setOneRow(ActDetailView_ShowAccount_Title, ActDetailView_ChooseAccount_Title)
         chooseAccountView.addSubview(view)
-        
-        clickDateBtn(weekDayButton)
         
         setLoading(true)
         getTransactionID("02041", TransactionID_Description)
@@ -99,11 +217,49 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             cell.title2Label.text = ActDetailView_CellTitleList[currentType!]?[1]
             cell.title3Label.text = ActDetailView_CellTitleList[currentType!]?[2]
             switch type{
-            case .Type0:
+            case .Type1:
                 if let TXDAY = dic["TXDAY"] as? String {
                     cell.detail1Label.text = TXDAY
                 }
+                if let CRDB = dic["CRDB"] as? String {
+                    cell.detail2Label.text = CRDB == "1" ? "支出" : "存入"
+                }
+                if let TXAMT = dic["TXAMT"] as? String {
+                    cell.detail3Label.text = TXAMT
+                }
                 
+            case .Type2:
+                if let TXDAY = dic["TXDAY"] as? String {
+                    cell.detail1Label.text = TXDAY
+                }
+                if let CKNO = dic["CKNO"] as? String {
+                    cell.detail2Label.text = CKNO
+                }
+                if let TXAMT = dic["TXAMT"] as? String {
+                    cell.detail3Label.text = TXAMT
+                }
+            
+            case .Type3:
+                if let ENTDAY = dic["ENTDAY"] as? String {
+                    cell.detail1Label.text = ENTDAY
+                }
+                if let AMTINT = dic["AMTINT"] as? String {
+                    cell.detail2Label.text = AMTINT
+                }
+                if let BALNINT = dic["BALNINT"] as? String {
+                    cell.detail3Label.text = BALNINT
+                }
+            
+            case .Type4:
+                if let TXDAY = dic["TXDAY"] as? String {
+                    cell.detail1Label.text = TXDAY
+                }
+                if let PRIAMT = dic["PRIAMT"] as? String {
+                    cell.detail2Label.text = PRIAMT
+                }
+                if let BAL = dic["BAL"] as? String {
+                    cell.detail3Label.text = BAL
+                }
                 
             default: break
             }
@@ -126,37 +282,61 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         let btn = (sender as! UIButton)
         switch btn {
         case theDayButton:
-            let date = Date()
-            startDate = "\(String(Calendar.current.component(.year, from: date)))/\(String(Calendar.current.component(.month, from: date)))/\(String(Calendar.current.component(.day, from: date)))"
-//                let formatter = DateFormatter()
-//                formatter.dateFormat = "yyyy/MM/dd"
-//                startDate = formatter.string(from: date)
+            let componenets = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            if let day = componenets.day, let month = componenets.month, let year = componenets.year {
+                startDate = "\(year)/\(month)/\(day)"
+            }
+            endDate = ""
+            PostGetAcntInfo()
+            dateLabel.text = startDate + (endDate != "" ? "- \(endDate)" : "")
             
         case weekDayButton:
             let date = Date()
-            startDate = "\(String(Calendar.current.component(.year, from: date)))/\(String(Calendar.current.component(.month, from: date)))/\(String(Calendar.current.component(.day, from: date)))"
-            var newDateComponents = DateComponents()
-            newDateComponents.day = 7
-            let newDate  = Calendar.current.date(byAdding: newDateComponents, to: date) ?? date
-            endDate = "\(String(Calendar.current.component(.year, from: newDate)))/\(String(Calendar.current.component(.month, from: newDate)))/\(String(Calendar.current.component(.day, from: newDate)))"
+            let componenets = Calendar.current.dateComponents([.year, .month, .day], from: date)
+            if let day = componenets.day, let month = componenets.month, let year = componenets.year {
+                endDate = "\(year)/\(month)/\(day)"
+            }
+            
+            let newDate = Calendar.current.date(byAdding: .day, value: -7, to: date) ?? date
+            let startComponenets = Calendar.current.dateComponents([.year, .month, .day], from: newDate)
+            if let day = startComponenets.day, let month = startComponenets.month, let year = startComponenets.year {
+                startDate = "\(year)/\(month)/\(day)"
+            }
+            PostGetAcntInfo()
+            dateLabel.text = startDate + (endDate != "" ? "- \(endDate)" : "")
             
         case customizeDayButton:
             ShowDatePickerView()
             
         default: break
         }
-        
-        dateLabel.text = startDate + (endDate != "" ? "- \(endDate)" : "")
     }
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        currentIndex = indexPath.row
         performSegue(withIdentifier: ActDetailView_ShowDetail_Segue, sender: nil)
     }
     
     // MARK: - Selector
     func clickDetermineBtn(_ sender:Any) {
         if let datePickerView = view.viewWithTag(ViewTag.View_DoubleDatePickerBackground.rawValue) {
+            if let startPicker = datePickerView.viewWithTag(ViewTag.View_StartDatePickerView.rawValue) as? UIDatePicker {
+                let componenets = Calendar.current.dateComponents([.year, .month, .day], from: startPicker.date)
+                if let day = componenets.day, let month = componenets.month, let year = componenets.year {
+                    startDate = "\(year)/\(month)/\(day)"
+                }
+            }
+            
+            if let endPicker = datePickerView.viewWithTag(ViewTag.View_EndDatePickerView.rawValue) as? UIDatePicker {
+                let componenets = Calendar.current.dateComponents([.year, .month, .day], from: endPicker.date)
+                if let day = componenets.day, let month = componenets.month, let year = componenets.year {
+                    endDate = "\(year)/\(month)/\(day)"
+                }
+            }
+            
+            dateLabel.text = startDate + (endDate != "" ? "- \(endDate)" : "")
+            PostGetAcntInfo()
             datePickerView.removeFromSuperview()
         }
     }
@@ -250,6 +430,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     
                     if chooseAccount != nil {
                         (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount!)
+                        clickDateBtn(weekDayButton)
                         PostGetAcntInfo()
                     }
                     else {
@@ -281,8 +462,10 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         if buttonIndex != actionSheet.cancelButtonIndex {
             chooseAccount = actionSheet.buttonTitle(at: buttonIndex)
             (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount ?? ActDetailView_ChooseAccount_Title)
+            if startDate.isEmpty && endDate.isEmpty {
+                clickDateBtn(weekDayButton)
+            }
             if chooseAccount != nil {
-                setLoading(true)
                 PostGetAcntInfo()
             }
         }
@@ -291,17 +474,24 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     // MARK: - Private
     private func ShowDatePickerView() {
         let background = UIView(frame: view.frame)
-        background.backgroundColor = Gray_Color
+        background.backgroundColor = Disable_Color
         background.tag = ViewTag.View_DoubleDatePickerBackground.rawValue
         view.addSubview(background)
         
-        let start = UIDatePicker(frame: CGRect.init(x: 30, y: 130, width: 320, height: 200))
-        start.datePickerMode = .date
-        start.locale = Locale(identifier: "zh_CN")
-        start.backgroundColor = .white
-        background.addSubview(start)
+        let xStrart:CGFloat = 30
+        let yStart:CGFloat = 100
+        let pickerWidth = view.frame.size.width - 2*xStrart
+        var pickerHeight:CGFloat = 200
+        let titleHeight:CGFloat = 30
+        let doneButtonHeight:CGFloat = 40
+        let space:CGFloat = 10
         
-        let startLabel = UILabel(frame: CGRect.init(x: 30, y: 100, width: 320, height: 30))
+        let maxY = yStart + titleHeight*2 + pickerHeight*2 + space*2
+        if maxY > view.frame.maxY {
+            pickerHeight = 150
+        }
+        
+        let startLabel = UILabel(frame: CGRect(x: xStrart, y: yStart, width: pickerWidth, height: titleHeight))
         startLabel.text = "起始日"
         startLabel.font = Cell_Font_Size
         startLabel.backgroundColor = Green_Color
@@ -309,13 +499,14 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         startLabel.textColor = .white
         background.addSubview(startLabel)
         
-        let end = UIDatePicker(frame: CGRect.init(x: 30, y: 380, width: 320, height: 200))
-        end.backgroundColor = .white
-        end.datePickerMode = .date
-        end.locale = Locale(identifier: "zh_CN")
-        background.addSubview(end)
+        let startDatePicker = UIDatePicker(frame: CGRect(x: xStrart, y: startLabel.frame.maxY, width: pickerWidth, height: pickerHeight))
+        startDatePicker.datePickerMode = .date
+        startDatePicker.locale = Locale(identifier: "zh_CN")
+        startDatePicker.backgroundColor = .white
+        startDatePicker.tag = ViewTag.View_StartDatePickerView.rawValue
+        background.addSubview(startDatePicker)
         
-        let endLabel = UILabel(frame: CGRect.init(x: 30, y: 350, width: 320, height: 30))
+        let endLabel = UILabel(frame: CGRect(x: xStrart, y: startDatePicker.frame.maxY+space, width: pickerWidth, height: titleHeight))
         endLabel.text = "截止日"
         endLabel.font = Cell_Font_Size
         endLabel.backgroundColor = Green_Color
@@ -323,8 +514,15 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         endLabel.textColor = .white
         background.addSubview(endLabel)
         
-        let button = UIButton(frame: CGRect.init(x: 30, y: 590, width: 320, height: 40))
-        button.setBackgroundImage(UIImage.init(named: ImageName.ButtonLarge.rawValue), for: .normal)
+        let endDatePicker = UIDatePicker(frame: CGRect(x: xStrart, y: endLabel.frame.maxY, width: pickerWidth, height: pickerHeight))
+        endDatePicker.backgroundColor = .white
+        endDatePicker.datePickerMode = .date
+        endDatePicker.locale = Locale(identifier: "zh_CN")
+        endDatePicker.tag = ViewTag.View_EndDatePickerView.rawValue
+        background.addSubview(endDatePicker)
+        
+        let button = UIButton(frame: CGRect(x: xStrart, y: endDatePicker.frame.maxY+space, width: pickerWidth, height: doneButtonHeight))
+        button.setBackgroundImage(UIImage(named: ImageName.ButtonLarge.rawValue), for: .normal)
         button.tintColor = .white
         button.setTitle("確定", for: .normal)
         button.addTarget(self, action: #selector(clickDetermineBtn(_:)), for: .touchUpInside)
@@ -332,7 +530,10 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     }
     
     private func PostGetAcntInfo() {
-        postRequest("ACIF/ACIF0201", "ACIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02041","Operate":"getAcntInfo","TransactionId":transactionId,"ACTTYPE":categoryType[currentType!] ?? "","ACTNO":chooseAccount!,"TXSDAY":startDate,"TXEDAY":endDate], true), AuthorizationManage.manage.getHttpHead(true))
+        if currentType != nil && chooseAccount != nil, let type = categoryType[currentType!] {
+            setLoading(true)
+            postRequest("ACIF/ACIF0201", "ACIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02041","Operate":"getAcntInfo","TransactionId":transactionId,"ACTTYPE":type,"ACTNO":chooseAccount!,"TXSDAY":startDate,"TXEDAY":endDate], true), AuthorizationManage.manage.getHttpHead(true))
+        }
     }
     
     private func GetTypeByInputString(_ input:String) -> ActOverviewType? {
@@ -344,5 +545,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         case ActOverviewType.Type4.description(): type = .Type4
         default: break
         }
-        
+        return type
+    }
+    
 }

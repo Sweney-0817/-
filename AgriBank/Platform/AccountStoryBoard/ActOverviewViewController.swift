@@ -454,6 +454,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if pushByclickExpandBtn && viewController is ActDetailViewController {
             (viewController as! ActDetailViewController).SetInitial(ActOverview_TypeList[typeListIndex], chooseAccount)
+            navigationController.delegate = nil
         }
     }
 }

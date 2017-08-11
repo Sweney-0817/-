@@ -97,20 +97,21 @@ class OverviewCell: UITableViewCell {
         }
         if expandView == nil {
             expandView = Platform.plat.getUIByID(.UIID_ExpandView, self) as? ExpandView
-            Button_Width = type != .Type3 ? (expandView?.frame.size.width)! : (expandView?.frame.size.width)!/2
-            expandView?.SetStatus(isEnable.0, isEnable.1)
-            switch type {
-            case .Type3: expandView?.SetLabelTitle("往來\n明細", "")
-            case .Type4: expandView?.SetLabelTitle("繳交\n貸款", "往來\n明細")
-            default: expandView?.SetLabelTitle("即時\n轉帳", "往來\n明細")
-            }
             expandView?.button1.addTarget(self, action: #selector(clickButton1(_:)), for: .touchUpInside)
-            expandView?.button1.tag = type.rawValue
             expandView?.button2.addTarget(self, action: #selector(clickButton2(_:)), for: .touchUpInside)
-            expandView?.button2.tag = type.rawValue
             contentView.addSubview(expandView!)
         }
-    
+        
+        expandView?.SetStatus(isEnable.0, isEnable.1)
+        Button_Width = type != .Type3 ? (expandView?.frame.size.width)! : (expandView?.frame.size.width)!/2
+        switch type {
+        case .Type3: expandView?.SetLabelTitle("往來\n明細", "")
+        case .Type4: expandView?.SetLabelTitle("繳交\n貸款", "往來\n明細")
+        default: expandView?.SetLabelTitle("即時\n轉帳", "往來\n明細")
+        }
+        expandView?.button1.tag = type.rawValue
+        expandView?.button2.tag = type.rawValue
+        
         expandView?.frame = CGRect(x: contentView.frame.maxX, y: 0, width: (expandView?.frame.size.width)!, height: contentView.frame.height-1)
     }
     
