@@ -23,9 +23,10 @@ struct LoginStrcture {
 
 protocol LoginDelegate {
     func clickLoginBtn(_ info:LoginStrcture)
+    func clickRefreshBtn()
 }
 
-class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, ImageConfirmViewDelegate {
+class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, ImageConfirmViewDelegate {
     @IBOutlet weak var locationTextfield: UITextField!
     @IBOutlet weak var accountTextfield: UITextField!
     @IBOutlet weak var idTextfield: UITextField!
@@ -41,14 +42,16 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     private var currentTextField:UITextField? = nil
     private var delegate:LoginDelegate? = nil
     private var loginInfo = LoginStrcture()
+    private var imgConfirm:ImageConfirmView? = nil
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let view = Platform.plat.getUIByID(.UIID_ImageConfirmView) as! ImageConfirmView
-        view.frame = imageConfirmView.frame
-        view.frame.origin = .zero
-        view.delegate = self
-        imageConfirmView.addSubview(view)
+        imgConfirm = Platform.plat.getUIByID(.UIID_ImageConfirmView) as? ImageConfirmView
+        imgConfirm?.frame = imageConfirmView.frame
+        imgConfirm?.frame.origin = .zero
+        imgConfirm?.delegate = self
+        imageConfirmView.addSubview(imgConfirm!)
+        contentView.layer.cornerRadius = Layer_BorderRadius
     }
     
     // MARK: - pubic
@@ -58,6 +61,7 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
         self.cityCode = cityCode
         currnetCity = city
         self.delegate = delegate
+        
         accountTextfield.text = "A123456789"
         idTextfield.text = "Systexsoftware"
         passwordTextfield.text = "systex6214"
@@ -71,12 +75,11 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
         return true
     }
     
-    // MARK: - private
-    private func postRequest(_ strMethod:String, _ strSessionDescription:String, _ needCertificate:Bool = false,  _ httpBody:Data? = nil, _ dicHttpHead:[String:String]? = nil, _ strURL:String? = nil)  {
-        request = ConnectionUtility()
-        request?.postRequest(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, dicHttpHead, needCertificate)
+    func SetImageConfirm(_ image:UIImage?) {
+        imgConfirm?.m_ivShow.image = image
     }
     
+    // MARK: - private
     private func addPickerView(_ textField:UITextField) {
         var frame = self.frame
         frame.origin.y = frame.maxY - PickView_Height
@@ -154,20 +157,10 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
         locationTextfield.resignFirstResponder()
     }
     
-    // MARK: - ConnectionUtilityDelegate
-    func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        
-    }
-    
-    func didFailedWithError(_ error: Error) {
-        
-    }
-    
     // MARK: - UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        if textField != locationTextfield && textField != accountTextfield {
-        }
+        currentTextField = nil
         return true
     }
     
@@ -245,7 +238,7 @@ class LoginView: UIView, ConnectionUtilityDelegate, UITextFieldDelegate, UIPicke
     
     // MARK: - ImageConfirmViewDelegate
     func clickRefreshBtn() {
-        
+        delegate?.clickRefreshBtn()
     }
     
     func changeInputTextfield(_ input: String){

@@ -18,18 +18,21 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     @IBOutlet weak var newPasswordTextfield: TextField!
     @IBOutlet weak var againPasswordTextfield: TextField!
     @IBOutlet weak var bottomView: UIView!
+    private var confirmIsSuccess = false
     
-    // MARK: - Public
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-    }
-    
-    // MARK: - Life cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
+        
+        sourceIDTextfield.text = "Systexsoftware"
+        newIDTextfield.text = "softwareSystex"
+        againIDTextfield.text = "softwareSystex"
+        sourcePasswordTextfield.text = "systex6214"
+        newPasswordTextfield.text = "6214systex"
+        againPasswordTextfield.text = "6214systex"
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,9 +40,14 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
         // Dispose of any resources that can be recreated.
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let controller = segue.destination as! UserChangeIDPwdResultViewController
+        controller.SetConrirmIsSuccess(confirmIsSuccess)
+    }
+    
     // MARK: - StoryBoard Touch Event
     @IBAction func clickCheckBtn(_ sender: Any) {
-        postRequest("Comm/COMM0103", "COMM0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01013","Operate":"commitTxn","OID":"","NID":"","OPWD":"","NPWD":""], true), AuthorizationManage.manage.getHttpHead(true))
+        postRequest("Comm/COMM0103", "COMM0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01013","Operate":"commitTxn","OID":SecurityUtility.utility.MD5(string: sourceIDTextfield.text!),"NID":SecurityUtility.utility.MD5(string: againIDTextfield.text!),"OPWD":SecurityUtility.utility.MD5(string: sourcePasswordTextfield.text!),"NPWD":SecurityUtility.utility.MD5(string: againPasswordTextfield.text!)], true), AuthorizationManage.manage.getHttpHead(true))
     }
     
     // MARK: - UITextFieldDelegate
@@ -52,9 +60,12 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "COMM0103":
+            if let returnCode = response.object(forKey: "ReturnCode") as? String, returnCode == ReturnCode_Success {
+                confirmIsSuccess = true
+            }
             performSegue(withIdentifier: UserFirstChangeIDPwd_Seque, sender: nil)
+            
         default: break
         }
     }
-    
 }

@@ -262,6 +262,9 @@ enum ViewTag: Int {
     case View_AnnounceNews                  // 訊息跑馬燈
     case View_StartDatePickerView           // 起始日期Picker
     case View_EndDatePickerView             // 截止日期Picker
+    case View_AccountActionSheet            // 帳號列表ActionSheet
+    case View_BankActionSheet               // 銀行列表ActionSheet
+    case View_InAccountActionSheet          // 轉入帳號列表ActionSheet
 }
 
 // MARK: - AuthorizationManager
@@ -275,11 +278,17 @@ enum AuthorizationType: Int {
 }
 
 // MARK: - Connection Utility
-let RESPONSE_IMAGE_KEY = "ImageKey"
+let RESPONSE_IMAGE_KEY = "Image"
+let RESPONSE_VARIFYID_KEY = "varifyId"
+let RESPONSE_IMAGE_CONFIRM_RESULT_KEY = "ImageConfirmResult"
 enum DownloadType: Int {
     case Json
     case Image
+    case ImageConfirm
+    case ImageConfirmResult
 }
+let Http_Post_Method = "POST"
+let Http_Get_Method = "GET"
 
 // MARK: - 圖片名稱
 enum ImageName: String {
@@ -301,7 +310,7 @@ let Disable_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 
 let Layer_BorderWidth:CGFloat = 1
 let Layer_BorderRadius:CGFloat = 5
 let ToolBar_tintColor = UIColor(red: 92/255, green: 216/255, blue: 255/255, alpha: 1)
-let PickView_Height:CGFloat = 250
+let PickView_Height:CGFloat = 200
 
 // MARK: - 字串定義
 let SystemCell_Identify = "System_Cell"
@@ -322,8 +331,8 @@ let TransactionID_Description = "TrID"
 let TransactionID_Key = "TransactionId"
 let UIActionSheet_Confirm_Title = "確認"
 let UIActionSheet_Cancel_Title = "取消"
-//let NewsTitle_Login = "地方農漁會公告訊息"
-//let NewsTitle_NoLogin = "中心公告訊息"
+let ImageConfirm_Success = "true"
+let ReturnCode_Success = "OK"
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "FFICMBank"
@@ -347,3 +356,13 @@ enum CellStatus {
     case Expand
     case none
 }
+
+// MARK: - Account Struct
+struct AccountStruct {
+    var accountNO = ""
+    var currency = ""
+    var balance:Double = 0
+    var status:Int = 0
+}
+// 電文規格:此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
+let Account_EnableTrans:Int = 2

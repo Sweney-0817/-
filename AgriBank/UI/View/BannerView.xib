@@ -46,7 +46,7 @@
                     </connections>
                 </scrollView>
                 <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="1" translatesAutoresizingMaskIntoConstraints="NO" id="kw9-0a-jyv">
-                    <rect key="frame" x="168" y="113" width="39" height="37"/>
+                    <rect key="frame" x="168" y="118" width="39" height="37"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="39" id="Wy6-WO-Mvw"/>
                         <constraint firstAttribute="height" constant="37" id="X3F-Z1-Rbz"/>
@@ -60,7 +60,7 @@
                 <constraint firstItem="sOn-OB-ZeI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cke-cY-VGG"/>
                 <constraint firstItem="sOn-OB-ZeI" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="d3V-eN-KlP"/>
                 <constraint firstItem="kw9-0a-jyv" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="gOK-lv-1BK"/>
-                <constraint firstAttribute="bottom" secondItem="kw9-0a-jyv" secondAttribute="bottom" id="iSr-Vu-Gpu"/>
+                <constraint firstAttribute="bottom" secondItem="kw9-0a-jyv" secondAttribute="bottom" constant="-5" id="iSr-Vu-Gpu"/>
                 <constraint firstItem="sOn-OB-ZeI" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="jXy-s6-7av"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

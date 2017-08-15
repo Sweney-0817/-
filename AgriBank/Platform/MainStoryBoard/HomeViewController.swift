@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, LoginDelegate, AnnounceNewsDelegate {
+class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, LoginDelegate, AnnounceNewsDelegate, UIAlertViewDelegate {
     @IBOutlet weak var newsView: UIView!
     @IBOutlet weak var bannerView: UIView!
     @IBOutlet weak var loginStatusLabel: UILabel!
@@ -20,6 +20,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Logi
     private var login:LoginView? = nil
     private var centerNewsList:[[String:Any]]? = nil
     private var bankNewsList:[[String:Any]]? = nil
+    private var varifyId = ""   // 圖形驗證碼的「交易編號」
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -156,6 +157,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Logi
     }
     
     private func GetCanLoginBankInfo() { // 取得農、漁會可登入代碼清單
+        setLoading(true)
         postRequest("Comm/COMM0403", "COMM0403", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07003","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
@@ -169,6 +171,16 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Logi
             postRequest("Comm/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":AgriBank_AppUid,"uid":AgriBank_DeviceID,"model":AgriBank_DeviceType,"auth":AgriBank_Auth,"appId":AgriBank_AppID,"version":AgriBank_Version,"token":AuthorizationManage.manage.GetAPNSToken()!,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(false))
         }
     }
+    
+    private func GetImageConfirm() { // 取得圖形驗證碼
+        setLoading(true)
+        getRequest("Comm/COMM0501", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
+    }
+    
+    private func CheckImageConfirm(_ passWord:String) { // 驗證圖形驗證碼
+        setLoading(true)
+        getRequest("Comm/COMM0502?varifyId=\(varifyId)&captchaCode=\(passWord)", "COMM0502", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirmResult)
+    }
 
     // MARK: - StoryBoard Touch Event
     @IBAction func clickLoginBtn(_ sender: Any) {
@@ -178,10 +190,13 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Logi
                 login?.frame = view.frame
                 GetCanLoginBankInfo()
             }
+        
+            GetImageConfirm()
             view.addSubview(login!)
         }
         else {
-            PostLogout()
+            let alert = UIAlertView(title: "確定是否登出", message: "", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "確認")
+            alert.show()
         }
     }
     
@@ -206,13 +221,18 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Logi
     // MARK: - LoginDelegate
     func clickLoginBtn(_ info:LoginStrcture) {
         AuthorizationManage.manage.SetLoginInfo(info)
-        postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":info.id,"PWD":info.password,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+        CheckImageConfirm(info.imgPassword)
+    }
+    
+    func clickRefreshBtn() {
+        GetImageConfirm()
     }
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description: String, _ response: NSDictionary) {
         switch description {
         case "COMM0101":
+            setLoading(false)
             if let data = response.object(forKey: "Data") as? [String : Any] {
                 var info = ResponseLoginInfo()
                 if let name = data["CNAME"] as? String {
@@ -226,19 +246,8 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Logi
                 }
                 AuthorizationManage.manage.SetResponseLoginInfo(info, nil)
                 
-                if let balance = data["TotalBalance"] as? Int {
-                    accountBalanceLabel.text = String(balance)
-                }
-                if let status = data["STATUS"] as? String {
-                // 帳戶狀態  (1.沒過期，2已過期，需要強制變更，3.已過期，不需要強制變更，4.首登，5.此ID已無有效帳戶)
-                    switch status {
-                    case "1": break
-                    case "2": break
-                    case "3": break
-                    case "4": enterFeatureByID(.FeatureID_FirstLoginChange, true)
-                    case "5": break
-                    default: break
-                    }
+                if let balance = data["TotalBalance"] as? Double {
+                    accountBalanceLabel.text = "活存總餘額 \(String(balance))"
                 }
                 
                 if AuthorizationManage.manage.IsLoginSuccess() {
@@ -249,6 +258,18 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Logi
                     RegisterAPNSToken()
                 }
                 UpdateLoginImageView()
+                
+                if let status = data["STATUS"] as? String {
+                    // 帳戶狀態  (1.沒過期，2已過期，需要強制變更，3.已過期，不需要強制變更，4.首登，5.此ID已無有效帳戶)
+                    switch status {
+                    case "1": break
+                    case "2": break
+                    case "3": break
+                    case "4": enterFeatureByID(.FeatureID_FirstLoginChange, true)
+                    case "5": break
+                    default: break
+                    }
+                }
             }
             else {
                 super.didRecvdResponse(description, response)
@@ -276,6 +297,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Logi
             }
             
         case "COMM0403":
+            setLoading(false)
             if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
                 var bankList = [[String:[String]]]()
                 var bankCode = [String:String]()
@@ -339,9 +361,8 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Logi
                     centerNewsList = list
                 }
                 var newsList = [String]()
-//                let title = AuthorizationManage.manage.IsLoginSuccess() ? NewsTitle_Login : NewsTitle_NoLogin
                 for dic in list {
-                    newsList.append("\(dic["CB_AddedDT"] ?? "")  \(dic["CB_Title"] ?? "")")
+                    newsList.append("\(dic["CB_Title"] ?? "")")
                 }
                 news.setContentList(newsList, self)
             }
@@ -357,6 +378,29 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Logi
                 super.didRecvdResponse(description, response)
             }
             
+        case "COMM0501":
+            setLoading(false)
+            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
+                login?.SetImageConfirm(responseImage)
+            }
+            if let ID = response[RESPONSE_VARIFYID_KEY] as? String {
+                varifyId = ID
+            }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+            
+        case "COMM0502":
+            setLoading(false)
+            if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
+                if let info = AuthorizationManage.manage.GetLoginInfo() {
+                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":info.id,"PWD":info.password,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+            }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+            
         default: break
         }
     }
@@ -364,6 +408,13 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Logi
     // MARK: - AnnounceNewsDelegate
     func clickNesw(_ index:Int) {
         enterFeatureByID(.FeatureID_News, true)
+    }
+    
+    // MARK: - UIAlertViewDelegate
+    func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
+        if buttonIndex != alertView.cancelButtonIndex {
+            PostLogout()
+        }
     }
 }
 

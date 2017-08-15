@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="圖形驗證碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="B6D-AY-Ncn" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
-                    <rect key="frame" x="15" y="8" width="150.5" height="44"/>
+                    <rect key="frame" x="15" y="8" width="167" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="TE3-nT-ScU"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="Z5M-mu-EQY"/>
@@ -29,7 +30,7 @@
                     </connections>
                 </textField>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="8qk-ZR-nJc">
-                    <rect key="frame" x="175.5" y="8" width="150.5" height="44"/>
+                    <rect key="frame" x="192" y="8" width="134" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="YfG-UL-YGx"/>
                         <constraint firstAttribute="height" constant="44" id="iJx-W0-evO"/>
@@ -57,6 +58,7 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="B6D-AY-Ncn" firstAttribute="width" secondItem="8qk-ZR-nJc" secondAttribute="width" multiplier="1.25:1" id="B11-Pv-kcx"/>
                 <constraint firstAttribute="bottom" secondItem="Phe-s0-1x7" secondAttribute="bottom" id="DK1-us-vnw"/>
                 <constraint firstItem="8qk-ZR-nJc" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Fp0-eT-hMc"/>
                 <constraint firstItem="gJj-jo-eTJ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="GVS-8d-5zL"/>
@@ -66,7 +68,6 @@
                 <constraint firstItem="gJj-jo-eTJ" firstAttribute="leading" secondItem="8qk-ZR-nJc" secondAttribute="trailing" constant="10" id="rmd-4B-mEV"/>
                 <constraint firstItem="8qk-ZR-nJc" firstAttribute="leading" secondItem="B6D-AY-Ncn" secondAttribute="trailing" constant="10" id="utV-82-5Vu"/>
                 <constraint firstItem="B6D-AY-Ncn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="x8A-9T-bMK"/>
-                <constraint firstItem="8qk-ZR-nJc" firstAttribute="width" secondItem="B6D-AY-Ncn" secondAttribute="width" id="yTk-vt-axz"/>
                 <constraint firstAttribute="trailing" secondItem="gJj-jo-eTJ" secondAttribute="trailing" constant="15" id="z3R-Nl-x3J"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

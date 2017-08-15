@@ -20,7 +20,7 @@
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ctq-ku-OMi">
-                    <rect key="frame" x="17" y="69.5" width="341" height="528"/>
+                    <rect key="frame" x="17" y="65" width="341" height="537"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V4V-ak-80a">
                             <rect key="frame" x="15" y="15" width="24" height="24"/>
@@ -146,7 +146,7 @@
                         <constraint firstItem="1pS-MV-8lP" firstAttribute="centerX" secondItem="Ctq-ku-OMi" secondAttribute="centerX" id="kuh-vH-uzm"/>
                         <constraint firstItem="otZ-hw-mHX" firstAttribute="centerY" secondItem="0LC-lY-FRG" secondAttribute="centerY" id="lW1-Qh-qL8"/>
                         <constraint firstItem="NaA-w9-Z9a" firstAttribute="top" secondItem="ewn-RS-hQo" secondAttribute="bottom" id="mum-Cn-d6e"/>
-                        <constraint firstAttribute="bottom" secondItem="NaA-w9-Z9a" secondAttribute="bottom" constant="21" id="nVY-NJ-ymG"/>
+                        <constraint firstAttribute="bottom" secondItem="NaA-w9-Z9a" secondAttribute="bottom" constant="30" id="nVY-NJ-ymG"/>
                         <constraint firstItem="ewn-RS-hQo" firstAttribute="top" secondItem="XbQ-Sb-po2" secondAttribute="bottom" constant="2" id="oaZ-ep-aRd"/>
                         <constraint firstItem="XbQ-Sb-po2" firstAttribute="height" secondItem="OI6-jV-582" secondAttribute="height" id="rhd-ed-olV"/>
                         <constraint firstItem="9Iu-uw-4Wn" firstAttribute="top" secondItem="1pS-MV-8lP" secondAttribute="bottom" constant="30" id="ugG-Vm-X9K"/>

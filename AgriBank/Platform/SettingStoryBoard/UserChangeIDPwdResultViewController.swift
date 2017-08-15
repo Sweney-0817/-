@@ -27,6 +27,7 @@ class UserChangeIDPwdResultViewController: BaseViewController {
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
         titleLabel.text = isSuccess ? Change_Successful_Title : Change_Faild_Title
+        imageView.image = isSuccess ? UIImage(named: ImageName.CowSuccess.rawValue) : UIImage(named: ImageName.CowFailure.rawValue)
     }
 
     override func didReceiveMemoryWarning() {

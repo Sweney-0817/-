@@ -149,7 +149,7 @@
                                                         </constraints>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                                        <textInputTraits key="textInputTraits"/>
+                                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                         <connections>
                                                             <outlet property="delegate" destination="LZA-QF-vsM" id="Wvq-xy-x8q"/>
                                                         </connections>
@@ -183,7 +183,7 @@
                                                 </constraints>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 <connections>
                                                     <outlet property="delegate" destination="LZA-QF-vsM" id="u7R-iE-EOd"/>
                                                 </connections>
@@ -326,9 +326,12 @@
                         <outlet property="bottomView" destination="8Mw-tQ-gII" id="GqH-Mo-m41"/>
                         <outlet property="chooseActTypeHeight" destination="SFb-OJ-fnj" id="RzQ-th-lpX"/>
                         <outlet property="chooseActTypeView" destination="yg5-ju-6hb" id="puf-s2-HEY"/>
+                        <outlet property="emailTextfield" destination="0oP-df-VOT" id="4yj-4A-n6D"/>
                         <outlet property="enterAccountHeight" destination="02L-FG-66p" id="S7A-H9-YSM"/>
+                        <outlet property="enterAccountTextfield" destination="MAH-zm-KOb" id="qHD-DP-TdW"/>
                         <outlet property="enterAccountView" destination="TqK-Ob-EK1" id="bDS-U5-6zA"/>
                         <outlet property="gapHeight" destination="Gs8-dT-7Hn" id="ec2-15-cvz"/>
+                        <outlet property="memoTextfield" destination="lsS-uH-aIg" id="dkM-bA-SAu"/>
                         <outlet property="middleView" destination="7cM-gr-llm" id="Reb-e4-532"/>
                         <outlet property="nonPredesignatedBtn" destination="kEm-Cc-PMf" id="xkk-mG-Ctr"/>
                         <outlet property="predesignatedBtn" destination="2FD-hO-Ngg" id="9AY-dY-rg9"/>
@@ -337,6 +340,7 @@
                         <outlet property="showBankView" destination="I1y-y5-9ro" id="V0N-MW-7uq"/>
                         <outlet property="topCons" destination="NNp-Iz-Z2E" id="FsS-n7-cqh"/>
                         <outlet property="topView" destination="njT-d5-UVG" id="T0u-vo-aPP"/>
+                        <outlet property="transAmountTextfield" destination="ikQ-JA-fPb" id="9Dv-Yq-Iyv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cL1-av-Y55" userLabel="First Responder" sceneMemberID="firstResponder"/>

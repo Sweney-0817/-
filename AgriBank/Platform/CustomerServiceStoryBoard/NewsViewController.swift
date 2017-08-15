@@ -61,9 +61,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     }
     
     private func setChooseTypeView() {
-        m_vChooseTypeView.setTypeList(News_TypeList, setDelegate: self, nil, m_vChooseTypeView.frame.width/2)
-        m_vChooseTypeView.layer.borderColor = Gray_Color.cgColor
-        m_vChooseTypeView.layer.borderWidth = 1
+        m_vChooseTypeView.setTypeList(News_TypeList, setDelegate: self, nil, view.frame.width/2)
     }
 
     private func setDataTableView() {

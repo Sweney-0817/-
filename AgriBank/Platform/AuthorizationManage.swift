@@ -12,6 +12,7 @@ import Darwin
 let AuthorizationManage_IDList_Separator = ","
 let AuthorizationManage_HttpHead_Token = "Token"
 let AuthorizationManage_HttpHead_CID = "CID"
+let AuthorizationManage_HttpHead_VarifyId = "varifyId"
 let AuthorizationManage_HttpHead_Default = ["Content-Type":"application/json", "DeviceID":AgriBank_DeviceID]
 let AuthorizationManage_CIDListKey = ["a25dq":"hs3rwPsoYknnCCWjqIX57RgRflYGhKO1tmQxqWps21k=",
                                       "b4wp0":"Az9jU/D/6d6+MANr/y/V78FimjSMHNj9A4i7TGS3JyU=",

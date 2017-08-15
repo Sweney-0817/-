@@ -8,11 +8,12 @@
 
 import UIKit
 
+
 let JailBroken_AppName = "/Applications/Cydia.app"
 
 class SecurityUtility {
     static let utility = SecurityUtility()
-    // MARK: AES加密
+    // MARK: - AES加密
     func AES256Encrypt(_ nsEncrypt:String, _ key:String) -> String {
         let encrypt = (nsEncrypt as NSString).aes256Encrypt(withKey: key)
         return encrypt ?? ""
@@ -21,6 +22,21 @@ class SecurityUtility {
     func AES256Decrypt(_ nsDecrypt:String, _ key:String) -> String {
         let decrypt = (nsDecrypt as NSString).aes256Decrypt(withKey: key)
         return decrypt ?? ""
+    }
+    
+    // MARK: - MD5
+    func MD5(string: String) -> String {
+        let messageData = string.data(using:.utf8)!
+        var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
+        
+        _ = digestData.withUnsafeMutableBytes {digestBytes in
+            messageData.withUnsafeBytes {messageBytes in
+                CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
+            }
+        }
+        
+        let md5Hex = digestData.map { String(format: "%02hhx", $0) }.joined()
+        return md5Hex.uppercased()
     }
 
     // MARK: - 模擬器判斷

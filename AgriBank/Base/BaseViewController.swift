@@ -71,8 +71,13 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     
     // MARK: - public
     func postRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:[String:String]?, _ strURL:String? = nil, _ needCertificate:Bool = false, _ isImage:Bool = false)  {
-        request = !isImage ? ConnectionUtility() : ConnectionUtility(.Image)
-        request?.postRequest(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, loginHttpHead, needCertificate)
+        request = !isImage ? ConnectionUtility(.Json) : ConnectionUtility(.Image)
+        request?.requestData(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, loginHttpHead, needCertificate)
+    }
+    
+    func getRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:[String:String]?, _ strURL:String?, _ needCertificate:Bool, _ type:DownloadType)  {
+        request = ConnectionUtility(type, false)
+        request?.requestData(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, loginHttpHead, needCertificate)
     }
     
     func getControllerByID(_ ID:PlatformFeatureID) -> UIViewController {

@@ -13,12 +13,7 @@ let ActOverview_Section_Height = CGFloat(20)
 let ActOverview_ShowDetail_Segue = "ShowDetail"
 let ActOverview_GoActDetail_Segue = "GoAccountDetail"
 let ActOverview_CellTitleList = ["帳號","幣別","帳戶餘額"]
-struct ActOverviewStruct {
-    var accountNO = ""
-    var currency = ""
-    var balance:Double = 0
-    var status:Int = 0
-}
+
 enum ActOverviewType:Int {
     case Type1
     case Type2
@@ -39,13 +34,10 @@ enum ActOverviewType:Int {
 
 let ActOverview_TypeList = [ActOverviewType.Type1.description(),ActOverviewType.Type2.description(),ActOverviewType.Type3.description(),ActOverviewType.Type4.description()]
 
-// 電文規格:此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
-let ActOverview_Account_EnableTrans:Int = 2
-
 class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate, OverviewCellDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var chooseTypeView: ChooseTypeView!
     @IBOutlet weak var tableView: UITableView!
-    private var categoryList = [String:[ActOverviewStruct]]() // Key: 電文(ACCT0101)response的"ACTTYPE"
+    private var categoryList = [String:[AccountStruct]]() // Key: 電文(ACCT0101)response的"ACTTYPE"
     private var categoryType = [String:String]()        // Key: ActOverviewType.description() value: 電文(ACCT0101)response的"ACTTYPE"
     private var typeList = [String]()                   // 使用者帳戶清單的Type List
     private var typeListIndex:Int = 0                   // ActOverview_TypeList 的 index
@@ -249,7 +241,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                         switch type {
                         case "P":
                             categoryType[ActOverview_TypeList[0]] = type
-                            categoryList[type] = [ActOverviewStruct]()
+                            categoryList[type] = [AccountStruct]()
                             addType = true
                             if typeList.index(of: ActOverviewType.Type1.description()) == nil {
                                 typeList.append(ActOverviewType.Type1.description())
@@ -257,7 +249,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                             
                         case "K":
                             categoryType[ActOverview_TypeList[1]] = type
-                            categoryList[type] = [ActOverviewStruct]()
+                            categoryList[type] = [AccountStruct]()
                             addType = true
                             if typeList.index(of: ActOverviewType.Type2.description()) == nil {
                                 typeList.append(ActOverviewType.Type2.description())
@@ -265,7 +257,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                             
                         case "T":
                             categoryType[ActOverview_TypeList[2]] = type
-                            categoryList[type] = [ActOverviewStruct]()
+                            categoryList[type] = [AccountStruct]()
                             addType = true
                             if typeList.index(of: ActOverviewType.Type3.description()) == nil {
                                 typeList.append(ActOverviewType.Type3.description())
@@ -273,7 +265,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                             
                         case "L":
                             categoryType[ActOverview_TypeList[3]] = type
-                            categoryList[type] = [ActOverviewStruct]()
+                            categoryList[type] = [AccountStruct]()
                             addType = true
                             if typeList.index(of: ActOverviewType.Type4.description()) == nil {
                                 typeList.append(ActOverviewType.Type4.description())
@@ -285,7 +277,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                         if addType {
                             for actInfo in result {
                                 if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int {
-                                    categoryList[type]?.append(ActOverviewStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                                    categoryList[type]?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                                 }
                             }
                         }
@@ -367,7 +359,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             cell.detail2Label.text = array[indexPath.row].currency
             cell.detail3Label.text = String(array[indexPath.row].balance)
             if let cellType = GetTypeByInputString(ActOverview_TypeList[index]) {
-                cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == ActOverview_Account_EnableTrans,true))
+                cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == Account_EnableTrans,true))
             }
         }
         return cell

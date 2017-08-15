@@ -22,12 +22,14 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
     private var needCertificate:Bool = false
     var downloadType:DownloadType = .Json
     var responseData = NSMutableData()
+    var isPostMethod = true
     
-    init(_ type:DownloadType = .Json) {
+    init(_ type:DownloadType = .Json, _ postMethod:Bool = true) {
         downloadType = type
+        isPostMethod = postMethod
     }
     
-    func postRequest(_ delegate:ConnectionUtilityDelegate?, _ strURL:String, _ strTag:String, _ httpBody:Data? = nil, _ dicHttpHead:[String:String]? = nil, _ needCertificate:Bool = false) -> Void {
+    func requestData(_ delegate:ConnectionUtilityDelegate?, _ strURL:String, _ strTag:String, _ httpBody:Data? = nil, _ dicHttpHead:[String:String]? = nil, _ needCertificate:Bool = false) -> Void {
         self.delegate = delegate
         self.needCertificate = needCertificate
 
@@ -35,9 +37,9 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
         session.sessionDescription = strTag
         
         switch downloadType {
-        case .Json:
+        case .Json, .ImageConfirm, .ImageConfirmResult:
             var request = URLRequest(url:URL(string:strURL)!, cachePolicy:.reloadIgnoringLocalCacheData, timeoutInterval:REQUEST_TIME_OUT)
-            request.httpMethod = "Post"
+            request.httpMethod = isPostMethod ? Http_Post_Method : Http_Get_Method
             if httpBody != nil {
                 request.httpBody = httpBody
             }
@@ -49,6 +51,7 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
             }
             let task = session.dataTask(with: request)
             task.resume()
+            
         case .Image:
             let task = session.downloadTask(with: URL(string:strURL)!)
             task.resume()
@@ -72,7 +75,7 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
             else {
                 if self.downloadType == .Json {
                     var jsonData = self.responseData as Data
-                    if let value = (task.response as! HTTPURLResponse).allHeaderFields[AnyHashable("CID")] {
+                    if let value = (task.response as! HTTPURLResponse).allHeaderFields[AnyHashable(AuthorizationManage_HttpHead_CID)] {
                         let str = String(data: self.responseData as Data, encoding: .utf8)?.replacingOccurrences(of: "\"", with: "")
                         if let key = AuthorizationManage.manage.GetCIDKey(value as! String) {
                             let decryptStr = SecurityUtility.utility.AES256Decrypt(str!, key)
@@ -88,6 +91,21 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
                     }
                     catch {
                         self.delegate?.didFailedWithError(error)
+                    }
+                }
+                else if self.downloadType == .ImageConfirm {
+                    var resultList = [String:Any]()
+                    if let image = UIImage(data: self.responseData as Data) {
+                        resultList[RESPONSE_IMAGE_KEY] = image
+                    }
+                    if let value = (task.response as! HTTPURLResponse).allHeaderFields[AnyHashable(AuthorizationManage_HttpHead_VarifyId)] {
+                        resultList[RESPONSE_VARIFYID_KEY] = value
+                    }
+                    self.delegate?.didRecvdResponse(session.sessionDescription!, resultList as NSDictionary)
+                }
+                else if self.downloadType == .ImageConfirmResult {
+                    if let flag = String(data: self.responseData as Data, encoding: .utf8) {
+                        self.delegate?.didRecvdResponse(session.sessionDescription!, [RESPONSE_IMAGE_CONFIRM_RESULT_KEY:flag])
                     }
                 }
             }

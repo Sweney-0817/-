@@ -25,7 +25,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     @IBOutlet weak var theDayButton: UIButton!
     @IBOutlet weak var weekDayButton: UIButton!
     @IBOutlet weak var customizeDayButton: UIButton!
-    private var categoryList = [String:[ActOverviewStruct]]() // Key: 電文(ACCT0101)response的"ACTTYPE"
+    private var categoryList = [String:[AccountStruct]]() // Key: 電文(ACCT0101)response的"ACTTYPE"
     private var categoryType = [String:String]() // Key: ActOverviewType.description() value: 電文(ACCT0101)response的"ACTTYPE"
     private var currentType:String? = nil        // 目前選擇的帳戶Type
     private var chooseAccount:String? = nil      // 目前選擇得帳號
@@ -376,7 +376,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                         switch type {
                         case "P":
                             categoryType[ActOverview_TypeList[0]] = type
-                            categoryList[type] = [ActOverviewStruct]()
+                            categoryList[type] = [AccountStruct]()
                             addType = true
                             if typeList?.index(of: ActOverviewType.Type1.description()) == nil {
                                 typeList?.append(ActOverviewType.Type1.description())
@@ -384,7 +384,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                             
                         case "K":
                             categoryType[ActOverview_TypeList[1]] = type
-                            categoryList[type] = [ActOverviewStruct]()
+                            categoryList[type] = [AccountStruct]()
                             addType = true
                             if typeList?.index(of: ActOverviewType.Type2.description()) == nil {
                                 typeList?.append(ActOverviewType.Type2.description())
@@ -392,7 +392,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                             
                         case "T":
                             categoryType[ActOverview_TypeList[2]] = type
-                            categoryList[type] = [ActOverviewStruct]()
+                            categoryList[type] = [AccountStruct]()
                             addType = true
                             if typeList?.index(of: ActOverviewType.Type3.description()) == nil {
                                 typeList?.append(ActOverviewType.Type3.description())
@@ -400,7 +400,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                             
                         case "L":
                             categoryType[ActOverview_TypeList[3]] = type
-                            categoryList[type] = [ActOverviewStruct]()
+                            categoryList[type] = [AccountStruct]()
                             addType = true
                             if typeList?.index(of: ActOverviewType.Type4.description()) == nil {
                                 typeList?.append(ActOverviewType.Type4.description())
@@ -411,8 +411,8 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                         
                         if addType {
                             for actInfo in result {
-                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == ActOverview_Account_EnableTrans {
-                                    categoryList[type]?.append(ActOverviewStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                    categoryList[type]?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                                 }
                             }
                         }
