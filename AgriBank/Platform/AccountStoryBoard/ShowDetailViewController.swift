@@ -19,7 +19,7 @@ class ShowDetailViewController: BaseViewController, UITableViewDataSource {
         self.list = list
     }
 
-    // MARK: - Life cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

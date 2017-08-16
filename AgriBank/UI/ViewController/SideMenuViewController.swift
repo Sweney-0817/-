@@ -35,7 +35,7 @@ class SideMenuViewController: UIViewController {
     private let SideMenu_shadowRadius = CGFloat(20)
     
     
-    // MARK: - Life cycle
+    // MARK: - Override
     convenience init(SetCenter center:UIViewController, SetLeft left:UIViewController? = nil, SetRight right:UIViewController? = nil, SetWidthRate rate:Float) {
         self.init(nibName: nil, bundle: nil)
         centerViewController = UINavigationController(rootViewController:center)

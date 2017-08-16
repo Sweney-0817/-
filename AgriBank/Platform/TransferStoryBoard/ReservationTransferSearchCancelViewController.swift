@@ -33,7 +33,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         detail.setList(list)
     }
     
-    // MARK: - Life cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

@@ -31,7 +31,7 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
         enterFeatureByID(.FeatureID_Home, true)
     }
     
-    // MARK: - Life cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = nil

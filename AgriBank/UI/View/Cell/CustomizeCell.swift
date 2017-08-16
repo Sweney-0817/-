@@ -103,9 +103,9 @@ class OverviewCell: UITableViewCell {
         }
         
         expandView?.SetStatus(isEnable.0, isEnable.1)
-        Button_Width = type != .Type3 ? (expandView?.frame.size.width)! : (expandView?.frame.size.width)!/2
+        Button_Width = (type != .Type3 && type != .Type2) ? (expandView?.frame.size.width)! : (expandView?.frame.size.width)!/2
         switch type {
-        case .Type3: expandView?.SetLabelTitle("往來\n明細", "")
+        case .Type2,.Type3: expandView?.SetLabelTitle("往來\n明細", "")
         case .Type4: expandView?.SetLabelTitle("繳交\n貸款", "往來\n明細")
         default: expandView?.SetLabelTitle("即時\n轉帳", "往來\n明細")
         }

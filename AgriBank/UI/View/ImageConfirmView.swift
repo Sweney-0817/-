@@ -19,12 +19,27 @@ class ImageConfirmView: UIView, UITextFieldDelegate {
     @IBOutlet weak var m_btnRefresh: UIButton!
     @IBOutlet weak var m_vSeparator: UIView!
     var delegate:ImageConfirmViewDelegate? = nil
+    
+    
     @IBAction func m_btnRefreshClick(_ sender: Any) {
         delegate?.clickRefreshBtn()
     }
 
     // MARK: - UITextFieldDelegate
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        // ToolBar
+        let toolBar = UIToolbar()
+        toolBar.barStyle = .default
+        toolBar.isTranslucent = true
+        toolBar.tintColor = ToolBar_tintColor
+        toolBar.sizeToFit()
+        // Adding Button ToolBar
+        let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
+        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        textField.inputAccessoryView = toolBar
         return true
     }
     
@@ -46,5 +61,15 @@ class ImageConfirmView: UIView, UITextFieldDelegate {
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    // MARK: - selector
+    func clickCancelBtn(_ sender:Any) {
+        m_tfInput.text = ""
+        m_tfInput.resignFirstResponder()
+    }
+    
+    func clickDoneBtn(_ sender:Any) {
+        m_tfInput.resignFirstResponder()
     }
 }

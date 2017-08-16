@@ -17,7 +17,7 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
     private var expandList = Set<Int>()
     private var currentID:PlatformFeatureID? = nil
 
-    // MARK: - Life cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

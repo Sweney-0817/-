@@ -15,10 +15,7 @@ class DeviceCheckViewController: BaseViewController, UITableViewDelegate, UITabl
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnDeviceCheck(_ sender: Any) {
-        let data = ConfirmResultStruct(ImageName.CowCheck.rawValue, "請確認本次交易資訊", self.data, nil, "確認送出", "繼續交易")
-//        data.list!.append(["Key": "交易時間", "Value":"2017/05/05 11:13:53"])
-//        data.list!.append(["Key": "掛失日期", "Value":"2017/05/05"])
-        enterConfirmResultController(true, data, true)
+
     }
     
     @IBAction func m_btnCancel(_ sender: Any) {

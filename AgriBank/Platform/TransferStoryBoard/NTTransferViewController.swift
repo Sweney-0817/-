@@ -13,6 +13,8 @@ let NTTransfer_InAccount = "轉入帳號"
 let NTTransfer_OutAccount = "轉出帳號"
 let NTTransfer_Currency = "幣別"
 let NTTransfer_Balance = "餘額"
+let NTTransfer_Trans_Max_Amount:Int = 2000000
+let NTTransfer_Email_Max_Length:Int = 50
 
 class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRowDropDownViewDelegate, TwoRowDropDownViewDelegate, OneRowDropDownViewDelegate, UIActionSheetDelegate {
     @IBOutlet weak var topCons: NSLayoutConstraint!
@@ -52,7 +54,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     private var commonAccountList:[[String:Any]]? = nil // 常用帳戶列表
     private var inAccountIndex:Int? = nil               // 目前選擇轉入帳號
     
-    // MARK: - Life cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -119,6 +121,10 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         
         setLoading(true)
         getTransactionID("03001", TransactionID_Description)
+        
+        emailTextfield.text = "test@test.com"
+        transAmountTextfield.text = "1000"
+        memoTextfield.text = "TEST1"
     }
 
     override func didReceiveMemoryWarning() {
@@ -183,6 +189,45 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         }
     }
     
+    private func InputIsCorrect() -> Bool {
+        var errorMessage = ""
+        if accountList == nil {
+            errorMessage.append("無法取得轉出帳戶\n")
+        }
+        if accountIndex == nil {
+            errorMessage.append("請選擇轉出帳號\n")
+        }
+        
+        if isPredesignated {
+            if agreedAccountList == nil {
+                errorMessage.append("無法取得轉入的約定帳戶\n")
+            }
+            if inAccountIndex == nil {
+                errorMessage.append("請選擇轉入帳號\n")
+            }
+            if (transAmountTextfield.text?.isEmpty)! {
+                errorMessage.append("請輸入轉帳金額\n")
+            }
+            if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
+                errorMessage.append("不得輸入非法字元\n")
+            }
+            if !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {
+                errorMessage.append("email格式不合\n")
+            }
+        }
+        else {
+            
+        }
+        
+        if errorMessage.isEmpty {
+            return true
+        }
+        else {
+            showErrorMessage(nil, errorMessage)
+            return false
+        }
+    }
+    
     // MARK: - StoryBoard Touch Event
     @IBAction func clickPredesignatedBtn(_ sender: Any) { // 約定轉帳
         SetBtnColor(true)
@@ -198,27 +243,32 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     }
  
     @IBAction func clickNonPredesignatedBtn(_ sender: Any) { // 非約定轉帳
-        SetBtnColor(false)
-        chooseActTypeView.isHidden = false
-        chooseActTypeHeight.constant = sChooseActTypeHeight
-        gapHeight.constant = sGapHeight
-        if isCustomizeAct {
-            showBankAccountView.isHidden = true
-            showBankAccountHeight.constant = 0
-            enterAccountView.isHidden = false
-            enterAccountHeight.constant = sEnterAccountHeight
+        if !SecurityUtility.utility.isJailBroken() {
+            SetBtnColor(false)
+            chooseActTypeView.isHidden = false
+            chooseActTypeHeight.constant = sChooseActTypeHeight
+            gapHeight.constant = sGapHeight
+            if isCustomizeAct {
+                showBankAccountView.isHidden = true
+                showBankAccountHeight.constant = 0
+                enterAccountView.isHidden = false
+                enterAccountHeight.constant = sEnterAccountHeight
+            }
+            else {
+                enterAccountView.isHidden = true
+                enterAccountHeight.constant = 0
+                showBankAccountView.isHidden = false
+                showBankAccountHeight.constant = sShowBankAccountHeight
+            }
+            bankNameIndex = nil
+            showBankDorpView?.setOneRow(NTTransfer_BankCode, "")
+            inAccountIndex = nil
+            showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, "")
+            accountTypeSegCon.selectedSegmentIndex = 0
         }
         else {
-            enterAccountView.isHidden = true
-            enterAccountHeight.constant = 0
-            showBankAccountView.isHidden = false
-            showBankAccountHeight.constant = sShowBankAccountHeight
+            
         }
-        bankNameIndex = nil
-        showBankDorpView?.setOneRow(NTTransfer_BankCode, "")
-        inAccountIndex = nil
-        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, "")
-        accountTypeSegCon.selectedSegmentIndex = 0
     }
 
     @IBAction func clickChangeActType(_ sender: Any) {
@@ -246,14 +296,23 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     }
     
     @IBAction func clickSendBtn(_ sender: Any) {
-        var data = ConfirmResultStruct(ImageName.CowCheck.rawValue, "請確認本次交易資訊", [[String:String]](), nil, "確認送出", "繼續交易")
-        data.list!.append(["Key": "轉出帳號", "Value":"12345678901234"])
-        data.list!.append(["Key": "銀行代碼", "Value":"008"])
-        data.list!.append(["Key": "轉入帳號", "Value":"12345678901235"])
-        data.list!.append(["Key": "轉帳金額", "Value":"9,999,999.00"])
-        data.list!.append(["Key": "備註/交易備註", "Value":"備註"])
-        data.list!.append(["Key": "受款人E-mail", "Value":"1234@gmail.com"])
-        enterConfirmResultController(true, data, true)
+        if InputIsCorrect() {
+            if isPredesignated {
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0101", strSessionDescription: "TRAN0101", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":showBankAccountDropView?.getContentByType(.Second) ?? "","INBANK":showBankAccountDropView?.getContentByType(.First) ?? "","TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                
+                var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: "請確認本次交易資訊", list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+                dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:topDropView?.getContentByType(.First) ?? ""])
+                dataConfirm.list?.append([Response_Key: "銀行代碼", Response_Value:showBankAccountDropView?.getContentByType(.First) ?? ""])
+                dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:showBankAccountDropView?.getContentByType(.Second) ?? ""])
+                dataConfirm.list?.append([Response_Key: "轉帳金額", Response_Value:transAmountTextfield.text!])
+                dataConfirm.list?.append([Response_Key: "備註/交易備記", Response_Value:memoTextfield.text!])
+                dataConfirm.list?.append([Response_Key: "受款人email", Response_Value:emailTextfield.text!])
+                enterConfirmResultController(true, dataConfirm, true)
+            }
+            else {
+                
+            }
+        }
     }
     
     // MARK: - UITextFieldDelegate
@@ -263,6 +322,37 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if textField == transAmountTextfield {
+            // ToolBar
+            let toolBar = UIToolbar()
+            toolBar.barStyle = .default
+            toolBar.isTranslucent = true
+            toolBar.tintColor = ToolBar_tintColor
+            toolBar.sizeToFit()
+            // Adding Button ToolBar
+            let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
+            let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
+            toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+            toolBar.isUserInteractionEnabled = true
+            textField.inputAccessoryView = toolBar
+        }
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == transAmountTextfield {
+            if let amount = Int(transAmountTextfield.text!), amount > NTTransfer_Trans_Max_Amount {
+                return false
+            }
+        }
+        if textField == emailTextfield {
+            let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+            if newLength > NTTransfer_Email_Max_Length {
+                return false
+            }
+        }
+
         return true
     }
     
@@ -285,6 +375,9 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 setLoading(true)
                 postRequest("ACCT/ACCT0102", "ACCT0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0","ACTNO":accountList?[accountIndex!].accountNO ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
+            else {
+                showInAccountList(isPredesignated)
+            }
         }
         else {
             showErrorMessage(nil, "請先選擇轉出帳戶")
@@ -304,6 +397,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
+        setLoading(false)
         switch description {
         case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
@@ -353,7 +447,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 super.didRecvdResponse(description, response)
             }
         
-        default: break
+        default: super.didRecvdResponse(description, response)
         }
     }
     
@@ -389,5 +483,15 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             default: break
             }
         }
+    }
+    
+    // MARK: - Selector
+    func clickCancelBtn(_ sender:Any) {
+        transAmountTextfield.text = ""
+        transAmountTextfield.resignFirstResponder()
+    }
+    
+    func clickDoneBtn(_ sender:Any) {
+        transAmountTextfield.resignFirstResponder()
     }
 }

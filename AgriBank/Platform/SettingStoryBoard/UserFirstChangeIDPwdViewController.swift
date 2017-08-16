@@ -65,7 +65,7 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
             }
             performSegue(withIdentifier: UserFirstChangeIDPwd_Seque, sender: nil)
             
-        default: break
+        default: super.didRecvdResponse(description, response)
         }
     }
 }

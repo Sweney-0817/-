@@ -24,7 +24,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
     @IBOutlet weak var amountLabel: UILabel! // 實際金額
     private var topDropView:ThreeRowDropDownView? = nil
     
-    // MARK: - Life cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -51,14 +51,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickSendBtn(_ sender: Any) {
-        var data = ConfirmResultStruct(ImageName.CowCheck.rawValue, "請確認本次交易資訊", [[String:String]](), "本交易受理時間 : 為各營業單位之營業時間 (8:30 - 15:30)", "確認繳交", "繼續交易")
-        data.list!.append(["Key": "轉出帳號", "Value":"12345678901234"])
-        data.list!.append(["Key": "預約轉帳日", "Value":"固定每月30日"])
-        data.list!.append(["Key": "銀行代碼", "Value":"008"])
-        data.list!.append(["Key": "轉入帳號", "Value":"12345678901235"])
-        data.list!.append(["Key": "轉帳金額", "Value":"9,999,999.00"])
-        data.list!.append(["Key": "備註/交易備註", "Value":"備註"])
-        enterConfirmResultController(true, data, true)
+
     }
 
     // MARK: - ThreeRowDropDownViewDelegate

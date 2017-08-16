@@ -50,7 +50,7 @@ class MessageSwitchViewController: BaseViewController {
                 super.didRecvdResponse(description, response)
             }
             
-        default: break
+        default: super.didRecvdResponse(description, response)
         }
     }
 

@@ -311,7 +311,8 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
             else {
                 super.didRecvdResponse(description, response)
             }
-        default: break
+            
+        default: super.didRecvdResponse(description, response)
         }
     }
 }

@@ -20,7 +20,7 @@ class BasicInfoResultViewController: BaseViewController, UITableViewDataSource, 
         self.list = list
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = nil

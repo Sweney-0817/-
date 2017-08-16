@@ -37,4 +37,19 @@ class ThreeRowDropDownView: UIView {
         m_lbThirdRowContent.text = thirdContent
         self.setNeedsLayout()
     }
+    
+    func getContentByType(_ index:DropDownType) -> String {
+        var value = ""
+        switch index {
+        case .First:
+            value = m_lbFirstRowContent.text ?? ""
+        
+        case .Second:
+            value = m_lbSecondRowContent.text ?? ""
+            
+        case .Third:
+            value = m_lbThirdRowContent.text ?? ""
+        }
+        return value
+    }
 }

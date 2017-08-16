@@ -40,7 +40,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
         return true
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -131,7 +131,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
                 super.didRecvdResponse(description, response)
             }
     
-        default: break
+        default: super.didRecvdResponse(description, response)
         }
     }
 }

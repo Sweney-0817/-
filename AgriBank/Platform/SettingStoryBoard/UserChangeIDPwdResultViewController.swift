@@ -19,7 +19,7 @@ class UserChangeIDPwdResultViewController: BaseViewController {
         self.isSuccess = isSuccess
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = nil

@@ -22,12 +22,15 @@ let NavigationBarColor = UIColor(colorLiteralRed: 46/255, green: 134/255, blue: 
 let Loading_Weight = 100
 let Loading_Height = 100
 
-class BaseViewController: UIViewController, ConnectionUtilityDelegate {
+class BaseViewController: UIViewController, LoginDelegate {
     var request:ConnectionUtility? = nil
     var needShowBackBarItem:Bool = true
-    var transactionId = ""
+    var transactionId = ""                    // 交易編號
+    var headVarifyID = ""                     // 圖形驗證碼的「交易編號」
+    var loginView:LoginView? = nil            // 登入頁面
+    var curFeatureID:PlatformFeatureID? = nil // 目前要登入的功能ID
     
-    // MARK: - Life cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -101,15 +104,31 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     }
     
     func enterFeatureByID(_ ID:PlatformFeatureID, _ animated:Bool) {
-        if self is HomeViewController {
+        if ID == .FeatureID_Home {
             Platform.plat.popToRootViewController()
             navigationController?.popToRootViewController(animated: animated)
         }
         else {
-            if let con = navigationController?.viewControllers.first {
-                if con is HomeViewController {
-                    (con as! HomeViewController).enterFeatureByID(ID, animated)
+            if AuthorizationManage.manage.CanEnterFeature(ID) { // 判斷是否需要登入
+                switch ID {
+                case .FeatureID_TaxPayment, .FeatureID_BillPayment:
+                    if !SecurityUtility.utility.isJailBroken() {
+                        
+                    }
+                    else {
+                        showErrorMessage("此功能無法在JB下使用", nil)
+                    }
+                    
+                default:
+                    if let con = navigationController?.viewControllers.first {
+                        if con is HomeViewController {
+                            (con as! HomeViewController).pushFeatureController(ID, animated)
+                        }
+                    }
                 }
+            }
+            else {
+                showLoginView()
             }
         }
     }
@@ -123,11 +142,13 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     func enterConfirmResultController(_ isConfirm:Bool,_ data:ConfirmResultStruct,_ animated:Bool) {
         if isConfirm {
             let controller = getControllerByID(.FeatureID_Confirm)
+            (controller as! ConfirmViewController).transactionId = transactionId
             (controller as! ConfirmViewController).setData(data)
             navigationController?.pushViewController(controller, animated: animated)
         }
         else {
             let controller = getControllerByID(.FeatureID_Result)
+            (controller as! ResultViewController).transactionId = transactionId
             (controller as! ResultViewController).setData(data)
             navigationController?.pushViewController(controller, animated: animated)
         }
@@ -160,28 +181,25 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
         }
     }
     
-    func getTransactionID(_ workCode:String, _ description:String) {
-        postRequest("Comm/COMM0601", description, AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"getTranID"], false), AuthorizationManage.manage.getHttpHead(false))
-    }
     
     func showErrorMessage(_ title:String?, _ message:String?) {
         let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:"確認")
         alert.show()
     }
     
-    // MARK: - ConnectionUtilityDelegate
-    func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        if let returnMsg = response.object(forKey: "ReturnMsg") as? String, let returnCode = response.object(forKey: "ReturnCode") as? String  {
-            let message = "ReturnMsg:\(returnMsg) ReturnCode:\(returnCode)"
-            showErrorMessage(nil, message)
-        }
+    // MARK: - LoginDelegate
+    func clickLoginBtn(_ info:LoginStrcture) {
+        AuthorizationManage.manage.SetLoginInfo(info)
+        checkImageConfirm(info.imgPassword)
     }
     
-    func didFailedWithError(_ error: Error) {
-        setLoading(false)
-        let alert = UIAlertView(title: nil, message: "Error Message:\(error.localizedDescription)", delegate: nil, cancelButtonTitle:"確認")
-        alert.show()
+    func clickLoginRefreshBtn() {
+        getImageConfirm()
+    }
+    
+    func clickLoginCloseBtn() {
+        loginView?.removeFromSuperview()
+        loginView = nil
     }
     
     // MARK: - UIBarButtonItem Selector
@@ -201,7 +219,7 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWillShow(_ notification:NSNotification) {
+    func keyboardWillShow(_ notification:NSNotification) {        
         let userInfo:NSDictionary = notification.userInfo! as NSDictionary
         let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
@@ -211,5 +229,160 @@ class BaseViewController: UIViewController, ConnectionUtilityDelegate {
     
     func keyboardWillHide(_ notification:NSNotification) {
         view.frame.origin.y = 0
+    }
+}
+
+// MARK: - 登入頁面
+extension BaseViewController: ConnectionUtilityDelegate {
+    func getTransactionID(_ workCode:String, _ description:String) { // 取得交易編號
+        postRequest("Comm/COMM0601", description, AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"getTranID"], false), AuthorizationManage.manage.getHttpHead(false))
+    }
+    
+    func showLoginView() { // 顯示Login畫面
+        if loginView == nil {
+            loginView = getUIByID(.UIID_Login) as? LoginView
+            loginView?.frame = view.frame
+            getCanLoginBankInfo()
+            getImageConfirm()
+            view.addSubview(loginView!)
+        }
+    }
+    
+    func getImageConfirm(_ varifyID:String? = nil) { // 取得圖形驗證碼
+        setLoading(true)
+        if varifyID == nil {
+            getRequest("Comm/COMM0501", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
+        }
+        else {
+            getRequest("Comm/COMM0501?varifyId=\(varifyID!)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
+        }
+    }
+    
+    func checkImageConfirm(_ passWord:String, _ varifyID:String? = nil) { // 驗證圖形驗證碼
+        setLoading(true)
+        let ID = varifyID == nil ? headVarifyID : varifyID!
+        getRequest("Comm/COMM0502?varifyId=\(ID)&captchaCode=\(passWord)", "COMM0502", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirmResult)
+    }
+    
+    func getCanLoginBankInfo() { // 取得農、漁會可登入代碼清單
+        setLoading(true)
+        postRequest("Comm/COMM0403", "COMM0403", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07003","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false))
+    }
+    
+    func RegisterAPNSToken() { // 註冊推播Token
+        if AuthorizationManage.manage.GetAPNSToken() != nil {
+            postRequest("Comm/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":AgriBank_AppUid,"uid":AgriBank_DeviceID,"model":AgriBank_DeviceType,"auth":AgriBank_Auth,"appId":AgriBank_AppID,"version":AgriBank_Version,"token":AuthorizationManage.manage.GetAPNSToken()!,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(false))
+        }
+    }
+    
+    func PostLogout() { // 登出電文
+        postRequest("Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(false))
+    }
+    
+    // MARK: - ConnectionUtilityDelegate
+    func didRecvdResponse(_ description:String, _ response: NSDictionary) {
+        var showReturnMsg = false
+        setLoading(false)
+        switch description {
+        case "COMM0501":
+            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
+                loginView?.SetImageConfirm(responseImage)
+            }
+            if let ID = response[RESPONSE_VARIFYID_KEY] as? String {
+                headVarifyID = ID
+            }
+            else {
+                showReturnMsg = true
+            }
+            
+        case "COMM0403":
+            if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
+                var bankList = [[String:[String]]]()
+                var bankCode = [String:String]()
+                var cityCode = [String:String]()
+                for dic in array {
+                    var bankNameList = [String]()
+                    if let city = dic["hsienName"] as? String, let cityID = dic["hsienCode"] as? String, let list = dic["bankList"] as? [[String:Any]] {
+                        for bank in list {
+                            if let name = bank["bankName"] as? String {
+                                bankNameList.append(name)
+                                if let code = bank["bankCode"] as? String {
+                                    bankCode["\(city)\(name)"] = code
+                                }
+                            }
+                        }
+                        bankList.append( [city:bankNameList] )
+                        cityCode[city] = cityID
+                    }
+                }
+                loginView?.setInitialList(bankList, bankCode, cityCode, "", self)
+            }
+            else {
+                showReturnMsg = true
+            }
+            
+        case "COMM0502":
+            if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
+                if let info = AuthorizationManage.manage.GetLoginInfo() {
+                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":info.id,"PWD":info.password,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+            }
+            else {
+                showErrorMessage(Image_ConfirmFaild_Message, nil)
+            }
+            
+        case "COMM0101":
+            if let data = response.object(forKey: "Data") as? [String : Any] {
+                var info = ResponseLoginInfo()
+                if let name = data["CNAME"] as? String {
+                    info.CNAME = name
+                }
+                if let token = data["Token"] as? String {
+                    info.Token = token
+                }
+                if let ID = data["USUDID"] as? String {
+                    info.USUDID = ID
+                }
+                if let balance = data["TotalBalance"] as? Double {
+                    info.Balance = balance
+                }
+                AuthorizationManage.manage.SetResponseLoginInfo(info, nil)
+                RegisterAPNSToken()
+                loginView?.removeFromSuperview()
+                loginView = nil
+                if let status = data["STATUS"] as? String {
+                    // 帳戶狀態  (1.沒過期，2已過期，需要強制變更，3.已過期，不需要強制變更，4.首登，5.此ID已無有效帳戶)
+                    switch status {
+                    case "1": break
+                    case "2": break
+                    case "3": break
+                    case "4": enterFeatureByID(.FeatureID_FirstLoginChange, true)
+                    case "5": break
+                    default: break
+                    }
+                }
+            }
+            else {
+                showReturnMsg = true
+            }
+            
+        case "COMM0102":
+            AuthorizationManage.manage.SetResponseLoginInfo(nil, nil)
+            
+        default: showReturnMsg = true
+        }
+        
+        if showReturnMsg {
+            if let returnMsg = response.object(forKey: "ReturnMsg") as? String, let returnCode = response.object(forKey: "ReturnCode") as? String  {
+                let message = "ReturnMsg:\(returnMsg) ReturnCode:\(returnCode)"
+                showErrorMessage(nil, message)
+            }
+        }
+    }
+    
+    func didFailedWithError(_ error: Error) {
+        setLoading(false)
+        let alert = UIAlertView(title: nil, message: "Error Message:\(error.localizedDescription)", delegate: nil, cancelButtonTitle:"確認")
+        alert.show()
     }
 }

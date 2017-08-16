@@ -18,17 +18,34 @@ class TwoRowDropDownView: UIView {
     @IBOutlet weak var m_lbSecondRowTitle: UILabel!
     @IBOutlet weak var m_lbSecondRowContent: UILabel!
     var delegate:TwoRowDropDownViewDelegate? = nil
+    
     @IBAction func m_btnClick(_ sender: Any) {
         delegate?.clickTwoRowDropDownView(self)
     }
+    
     func getHeight() -> CGFloat {
         return 80
     }
+    
     func setTwoRow(_ firstTitle:String, _ firstContent:String, _ secondTitle:String, _ secondContent:String) {
         m_lbFirstRowTitle.text = firstTitle
         m_lbFirstRowContent.text = firstContent
         m_lbSecondRowTitle.text = secondTitle
         m_lbSecondRowContent.text = secondContent
 //        self.setNeedsLayout()
+    }
+    
+    func getContentByType(_ index:DropDownType) -> String {
+        var value = ""
+        switch index {
+        case .First:
+            value = m_lbFirstRowContent.text ?? ""
+            
+        case .Second:
+            value = m_lbSecondRowContent.text ?? ""
+            
+        default: break
+        }
+        return value
     }
 }

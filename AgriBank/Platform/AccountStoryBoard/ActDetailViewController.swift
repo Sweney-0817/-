@@ -174,7 +174,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         }
     }
     
-    // MARK: - Life cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -453,7 +453,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 tableView.reloadData()
             }
             
-        default: break
+        default: super.didRecvdResponse(description, response)
         }
     }
     

@@ -15,10 +15,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     @IBOutlet weak var m_vWebBankPasswordView: UIView!
     @IBOutlet weak var m_vImageConfirmView: UIView!
     @IBAction func m_btnSendClick(_ sender: Any) {
-        var data = ConfirmResultStruct(ImageName.CowFailure.rawValue, "掛失失敗", [[String:String]](), nil, "", "繼續交易")
-        data.list!.append(["Key": "交易時間", "Value":"2017/05/05 11:13:53"])
-        data.list!.append(["Key": "掛失日期", "Value":"2017/05/05"])
-        enterConfirmResultController(false, data, true)
+
     }
     var m_OneRow: OneRowDropDownView? = nil
     var m_ImageConfirmView: ImageConfirmView? = nil

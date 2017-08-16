@@ -14,10 +14,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
     @IBOutlet weak var m_vDropDownView: UIView!
     @IBOutlet weak var m_vImageConfirmView: UIView!
     @IBAction func m_btnSendClick(_ sender: Any) {
-        var data = ConfirmResultStruct(ImageName.CowSuccess.rawValue, "掛失成功", [[String:String]](), "您掛失的交易以正確處理完畢，請於3個營業日內來行辦理掛失解除手續，若未來行辦理者，視為永久掛失手續。(來行辦理請攜帶身分證及原存印鑑)", "", "繼續交易")
-        data.list!.append(["Key": "交易時間", "Value":"2017/05/05 11:13:53"])
-        data.list!.append(["Key": "掛失日期", "Value":"2017/05/05"])
-        enterConfirmResultController(false, data, true)
+
     }
     var m_OneRow: OneRowDropDownView? = nil
     var m_ImageConfirmView: ImageConfirmView? = nil

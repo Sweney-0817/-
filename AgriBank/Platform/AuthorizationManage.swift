@@ -25,6 +25,7 @@ struct ResponseLoginInfo {
     var CNAME:String? = nil         // 用戶名稱
     var Token:String? = nil         // Token
     var USUDID:String? = nil        // 使用者ID
+    var Balance:Double? = nil       // 餘額
 }
 
 class AuthorizationManage {
@@ -36,6 +37,10 @@ class AuthorizationManage {
     
     func SetResponseLoginInfo(_ info:ResponseLoginInfo?, _ authList:[[String:String]]?) {
         userInfo = info
+    }
+    
+    func getResponseLoginInfo() -> ResponseLoginInfo? {
+        return userInfo
     }
     
     func SetLoginInfo(_ info:LoginStrcture?) {
@@ -96,11 +101,12 @@ class AuthorizationManage {
         return httpBody
     }
     
-    func CanEnterFeature(_ ID:PlatformFeatureID) -> Bool {
+    func CanEnterFeature(_ ID:PlatformFeatureID) -> Bool { // 判斷是否需要登入
         var canEnter = false
         switch ID {
         case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation, .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_Home, .FeatureID_Edit:
             canEnter = true
+            
         default:
             canEnter = userInfo?.Token != nil ? true : false
         }

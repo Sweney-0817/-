@@ -28,7 +28,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, ThreeRow
         detail.setList(list)
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

@@ -39,6 +39,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
             //公式=1.存款金額 * (年利率/12) = 每月可領利息
             let interest = Int(sum * rate+0.5)
             m_lbResult.text = String(interest)
+            
         case "零存整付":
             var rate_t = Double(1)
             let month = Int(m_tfDuration.text ?? "0") ?? 0
@@ -47,6 +48,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
             }
             let total = Int(sum * (rate_t - 1) / rate * (1 + rate) + 0.5)
             m_lbResult.text = String(total)
+            
         case "整存整付":
             var total = sum;
             let month = Int(m_tfDuration.text ?? "0") ?? 0
@@ -54,6 +56,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
                 total *= (1 + rate)
             }
             m_lbResult.text = String(Int(total+0.5))
+            
         default: break
         }
     }
@@ -62,7 +65,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
         clearData()
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
 

@@ -36,7 +36,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
         webContentViewController.setData((m_curData?[m_iSelectedIndex])!)
     }
 
-    // MARK: - Life Cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
 

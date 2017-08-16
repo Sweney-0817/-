@@ -39,7 +39,7 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
         }
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -141,7 +141,8 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
                     }
                 }
             }
-        default: break
+            
+        default: super.didRecvdResponse(description, response)
         }
     }
 }

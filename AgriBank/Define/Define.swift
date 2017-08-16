@@ -159,20 +159,13 @@ struct FeatureStruct {
 }
 
 struct ConfirmResultStruct {
-    var image:String
-    var title:String
+    var image:String = ""
+    var title:String = ""
     var list:[[String:String]]? = nil
-    var memo:String
-    var confirmBtnName:String
-    var resultBtnName:String
-    init(_ image:String, _ title:String, _ list:[[String:String]]?, _ memo:String? = nil, _ confirmBtnName:String? = nil, _ resultBtnName:String? = nil) {
-        self.image = image
-        self.title = title
-        self.list = list
-        self.memo = memo ?? ""
-        self.confirmBtnName = confirmBtnName ?? ""
-        self.resultBtnName = resultBtnName ?? ""
-    }
+    var memo:String = ""
+    var confirmBtnName = ""
+    var resultBtnName = ""
+    var checkRequest:RequestStruct? = nil
 }
 
 // MARK: - UIID
@@ -281,14 +274,25 @@ enum AuthorizationType: Int {
 let RESPONSE_IMAGE_KEY = "Image"
 let RESPONSE_VARIFYID_KEY = "varifyId"
 let RESPONSE_IMAGE_CONFIRM_RESULT_KEY = "ImageConfirmResult"
+let Http_Post_Method = "POST"
+let Http_Get_Method = "GET"
+
 enum DownloadType: Int {
     case Json
     case Image
     case ImageConfirm
     case ImageConfirmResult
 }
-let Http_Post_Method = "POST"
-let Http_Get_Method = "GET"
+
+struct RequestStruct {
+    var strMethod = ""
+    var strSessionDescription = ""
+    var httpBody:Data? = nil
+    var loginHttpHead:[String:String]? = nil
+    var strURL:String? = nil
+    var needCertificate = false
+    var isImage = false
+}
 
 // MARK: - 圖片名稱
 enum ImageName: String {
@@ -321,8 +325,8 @@ let Login_Title = "登出"
 let NoLogin_Title  = "登入"
 let ToolBar_DoneButton_Title = "確認"
 let ToolBar_CancelButton_Title = "取消"
-let Response_Key = "key"
-let Response_Value = "value"
+let Response_Key = "Key"
+let Response_Value = "Value"
 let Transaction_Successful_Title = "交易成功"
 let Transaction_Faild_Title = "交易失敗"
 let Change_Successful_Title = "變更成功"
@@ -366,3 +370,13 @@ struct AccountStruct {
 }
 // 電文規格:此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
 let Account_EnableTrans:Int = 2
+
+// MARK: - DropDownType
+enum DropDownType:Int {
+    case First
+    case Second
+    case Third
+}
+
+// MARK: - 錯誤訊息
+let Image_ConfirmFaild_Message = "圖形驗證碼錯誤"

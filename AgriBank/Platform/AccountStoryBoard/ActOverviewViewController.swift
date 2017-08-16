@@ -204,7 +204,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         return type
     }
     
-    // MARK: - Life cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -303,7 +303,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 super.didRecvdResponse(description, response)
             }
             
-        default: break
+        default: super.didRecvdResponse(description, response)
         }
     }
     

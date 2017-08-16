@@ -24,16 +24,10 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     @IBOutlet weak var m_vImageConfirmView: UIView!
     @IBAction func m_btnSendClick(_ sender: Any) {
         if (m_DDType?.m_lbFirstRowContent.text == "空白支票掛失") {
-            var data = ConfirmResultStruct(ImageName.CowSuccess.rawValue, "掛失成功", [[String:String]](), "您掛失的交易以正確處理完畢，請於3個營業日內來行辦理掛失解除手續，若未來行辦理者，視為永久掛失手續。(來行辦理請攜帶身分證及原存印鑑)", "", "繼續交易")
-            data.list!.append(["Key": "交易時間", "Value":"2017/05/05 11:13:53"])
-            data.list!.append(["Key": "掛失日期", "Value":"2017/05/05"])
-            enterConfirmResultController(false, data, true)
+
         }
         else if (m_DDType?.m_lbFirstRowContent.text == "支票掛失止付") {
-            var data = ConfirmResultStruct(ImageName.CowFailure.rawValue, "掛失失敗", [[String:String]](), nil, "", "繼續交易")
-            data.list!.append(["Key": "交易時間", "Value":"2017/05/05 11:13:53"])
-            data.list!.append(["Key": "掛失日期", "Value":"2017/05/05"])
-            enterConfirmResultController(false, data, true)
+
         }
     }
     var m_DDType: OneRowDropDownView? = nil

@@ -23,7 +23,8 @@ struct LoginStrcture {
 
 protocol LoginDelegate {
     func clickLoginBtn(_ info:LoginStrcture)
-    func clickRefreshBtn()
+    func clickLoginRefreshBtn()
+    func clickLoginCloseBtn()
 }
 
 class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, ImageConfirmViewDelegate {
@@ -112,7 +113,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     
     // MARK: - Xib Touch Event
     @IBAction func clickCloseBtn(_ sender: Any) {
-        removeFromSuperview()
+        delegate?.clickLoginCloseBtn()
     }
     
     @IBAction func clickLoginBtn(_ sender: Any) {
@@ -124,7 +125,6 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
             let city = locationTextfield.text?.components(separatedBy: " ").first ?? ""
             loginInfo.cityCode = cityCode[city] ?? loginInfo.cityCode
             delegate?.clickLoginBtn(loginInfo)
-            removeFromSuperview()
         }
     }
     
@@ -139,10 +139,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         
         isLocker = !isLocker
     }
-    
-    @IBAction func clickRefreshBtn(_ sender: Any) {
-    }
-    
+
     // MARK: - selector
     func clickCancelBtn(_ sender:Any) {
         locationTextfield.resignFirstResponder()
@@ -238,7 +235,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     
     // MARK: - ImageConfirmViewDelegate
     func clickRefreshBtn() {
-        delegate?.clickRefreshBtn()
+        delegate?.clickLoginRefreshBtn()
     }
     
     func changeInputTextfield(_ input: String){

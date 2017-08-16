@@ -11,7 +11,7 @@ import UIKit
 class SetAvatarViewController: BasePhotoViewController  {
     @IBOutlet weak var imageView: UIImageView!
     
-    // MARK: - Life Cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

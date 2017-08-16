@@ -37,7 +37,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
         }
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

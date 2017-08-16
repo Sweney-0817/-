@@ -58,19 +58,9 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     // MARK: - Public
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        if let name = curData[m_iSelectedIndex].name, let address = curData[m_iSelectedIndex].address, let phone = curData[m_iSelectedIndex].phone, let fax = curData[m_iSelectedIndex].fax, let location = curData[m_iSelectedIndex].location {
-            var data = ConfirmResultStruct("", "", [[String:String]](), "", "", "")
-            data.list!.append([Response_Key: "名稱    ", Response_Value: name])
-            data.list!.append([Response_Key: "地址    ", Response_Value: address])
-            data.list!.append([Response_Key: "電話    ", Response_Value: phone])
-            data.list!.append([Response_Key: "傳真    ", Response_Value: fax])
-            
-            let serviceBaseDetailViewController = segue.destination as! ServiceBaseDetailViewController
-            serviceBaseDetailViewController.setData(data , phone, location)
-        }
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -302,7 +292,8 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
                     }
                 }
             }
-        default: break
+            
+        default: super.didRecvdResponse(description, response)
         }
     }
     
