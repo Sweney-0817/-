@@ -375,29 +375,10 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vwQ-Y5-kdO">
                                 <rect key="frame" x="15" y="176" width="345" height="432"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="固定每月" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="62X-9U-8QY">
-                                        <rect key="frame" x="15" y="15" width="75" height="25"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="請選擇預約轉帳類型" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="62X-9U-8QY">
+                                        <rect key="frame" x="15" y="15" width="315" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="75" id="S93-eu-Tpp"/>
                                             <constraint firstAttribute="height" constant="25" id="u7k-bg-8Ek"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                        <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30日" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y0Z-z8-Con">
-                                        <rect key="frame" x="90" y="15" width="50" height="25"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="6r9-Bu-OsD"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="轉出" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1X-hI-1Gz">
-                                        <rect key="frame" x="140" y="15" width="40" height="25"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="wbf-ga-GoN"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -455,7 +436,7 @@
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                         <connections>
                                             <outlet property="delegate" destination="u1E-Wn-Cny" id="taa-tY-oPi"/>
                                         </connections>
@@ -491,26 +472,21 @@
                                     <constraint firstItem="LgE-Jn-ejb" firstAttribute="leading" secondItem="vwQ-Y5-kdO" secondAttribute="leading" id="4X0-mN-TiT"/>
                                     <constraint firstAttribute="trailing" secondItem="6oN-h5-mXC" secondAttribute="trailing" id="5aP-oC-QjQ"/>
                                     <constraint firstItem="6oN-h5-mXC" firstAttribute="top" secondItem="U3g-bj-bSw" secondAttribute="bottom" constant="6" id="7Ln-NJ-o6X"/>
+                                    <constraint firstAttribute="trailing" secondItem="62X-9U-8QY" secondAttribute="trailing" constant="15" id="8ae-Te-AeU"/>
                                     <constraint firstAttribute="trailing" secondItem="LgE-Jn-ejb" secondAttribute="trailing" id="F8F-e6-tdQ"/>
                                     <constraint firstAttribute="trailing" secondItem="0z4-eg-tfL" secondAttribute="trailing" id="G1J-cq-TGc"/>
                                     <constraint firstItem="fRD-WE-mNP" firstAttribute="width" secondItem="wLp-S4-vO3" secondAttribute="width" id="G8w-35-r3Q"/>
                                     <constraint firstItem="fRD-WE-mNP" firstAttribute="height" secondItem="wLp-S4-vO3" secondAttribute="height" id="IZA-km-imq"/>
                                     <constraint firstItem="U3g-bj-bSw" firstAttribute="top" secondItem="0z4-eg-tfL" secondAttribute="bottom" constant="6" id="Ia7-p3-kJl"/>
-                                    <constraint firstItem="y0Z-z8-Con" firstAttribute="height" secondItem="62X-9U-8QY" secondAttribute="height" id="Iki-xm-gLo"/>
-                                    <constraint firstItem="H1X-hI-1Gz" firstAttribute="centerY" secondItem="y0Z-z8-Con" secondAttribute="centerY" id="KxT-41-ZPC"/>
                                     <constraint firstAttribute="trailing" secondItem="Jsa-gy-p5D" secondAttribute="trailing" id="NuA-1d-SmZ"/>
                                     <constraint firstItem="0z4-eg-tfL" firstAttribute="leading" secondItem="vwQ-Y5-kdO" secondAttribute="leading" id="R3Y-6C-Ns4"/>
-                                    <constraint firstItem="y0Z-z8-Con" firstAttribute="leading" secondItem="62X-9U-8QY" secondAttribute="trailing" id="R8g-vf-F9y"/>
                                     <constraint firstItem="wLp-S4-vO3" firstAttribute="top" secondItem="62X-9U-8QY" secondAttribute="bottom" constant="5" id="RgF-Ml-v6G"/>
                                     <constraint firstItem="62X-9U-8QY" firstAttribute="leading" secondItem="vwQ-Y5-kdO" secondAttribute="leading" constant="15" id="Ur3-TN-u65"/>
                                     <constraint firstItem="fRD-WE-mNP" firstAttribute="centerY" secondItem="wLp-S4-vO3" secondAttribute="centerY" id="VAV-MU-nXA"/>
                                     <constraint firstItem="6oN-h5-mXC" firstAttribute="leading" secondItem="vwQ-Y5-kdO" secondAttribute="leading" id="XTt-wG-hS3"/>
-                                    <constraint firstItem="H1X-hI-1Gz" firstAttribute="leading" secondItem="y0Z-z8-Con" secondAttribute="trailing" id="Xfu-ac-RbH"/>
-                                    <constraint firstItem="H1X-hI-1Gz" firstAttribute="height" secondItem="y0Z-z8-Con" secondAttribute="height" id="YAN-bp-fwv"/>
                                     <constraint firstItem="Jsa-gy-p5D" firstAttribute="top" secondItem="8ka-5d-0hA" secondAttribute="bottom" constant="6" id="YVs-Sf-szf"/>
                                     <constraint firstItem="8ka-5d-0hA" firstAttribute="height" secondItem="U3g-bj-bSw" secondAttribute="height" id="bQM-Y9-ymP"/>
                                     <constraint firstAttribute="trailing" secondItem="pgg-V2-EmI" secondAttribute="trailing" id="cxQ-QJ-gJx"/>
-                                    <constraint firstItem="y0Z-z8-Con" firstAttribute="centerY" secondItem="62X-9U-8QY" secondAttribute="centerY" id="huu-N7-sXZ"/>
                                     <constraint firstItem="U3g-bj-bSw" firstAttribute="leading" secondItem="vwQ-Y5-kdO" secondAttribute="leading" constant="15" id="kGZ-jE-5sH"/>
                                     <constraint firstItem="0z4-eg-tfL" firstAttribute="top" secondItem="pgg-V2-EmI" secondAttribute="bottom" id="l4a-fa-fug"/>
                                     <constraint firstItem="pgg-V2-EmI" firstAttribute="leading" secondItem="vwQ-Y5-kdO" secondAttribute="leading" id="mLE-o5-Dz6"/>
@@ -570,10 +546,12 @@
                     </view>
                     <connections>
                         <outlet property="bottomView" destination="EpB-XP-4J7" id="QQK-32-uPs"/>
-                        <outlet property="dateLabel" destination="y0Z-z8-Con" id="ExR-5q-9zw"/>
+                        <outlet property="dateLabel" destination="62X-9U-8QY" id="xpe-uo-mHH"/>
+                        <outlet property="memoTextfield" destination="8ka-5d-0hA" id="eKK-Q3-KHJ"/>
                         <outlet property="middleView" destination="vwQ-Y5-kdO" id="P0T-K3-3fh"/>
                         <outlet property="showBankAccountView" destination="0z4-eg-tfL" id="6Hy-fC-XVY"/>
                         <outlet property="topView" destination="PgX-JK-xt3" id="gOi-KF-R11"/>
+                        <outlet property="transAmountTextfield" destination="U3g-bj-bSw" id="8iH-Vf-3Zw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXa-Dn-UAO" userLabel="First Responder" sceneMemberID="firstResponder"/>

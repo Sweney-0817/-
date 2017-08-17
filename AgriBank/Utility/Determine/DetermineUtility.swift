@@ -26,12 +26,13 @@ class DetermineUtility {
     
     // MARK: - 特殊字元檢核
     func checkStringContainIllegalCharacter(_ input:String) -> Bool {
-        for index in input.characters.indices {
-            if !(input[index].asciiValue! >= 48 && input[index].asciiValue! <= 57) && !(input[index].asciiValue! >= 61 && input[index].asciiValue! <= 122) {
-                return false
-            }
-        }
-        return true
+//        for index in input.characters.indices {
+//            if !(input[index].asciiValue! >= 48 && input[index].asciiValue! <= 57) && !(input[index].asciiValue! >= 61 && input[index].asciiValue! <= 122) {
+//                return false
+//            }
+//        }
+//        return true
+        return false
     }
 }
 

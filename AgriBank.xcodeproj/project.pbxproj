@@ -65,6 +65,7 @@
 		617318171EEFC89300133F7A /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 617318161EEFC89300133F7A /* VPImageCropperViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		617318191EEFCB4B00133F7A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617318181EEFCB4B00133F7A /* LoginView.swift */; };
 		6173181B1EEFD12100133F7A /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6173181A1EEFD12100133F7A /* LoginView.xib */; };
+		61B7CD0B1F458B5200145517 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B7CD0A1F458B5200145517 /* DatePickerView.swift */; };
 		61C64FCC1EE8FB2000C6766A /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C64FCB1EE8FB2000C6766A /* EditViewController.swift */; };
 		61DAE3481F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DAE3471F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift */; };
 		61DB5C381F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DB5C371F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift */; };
@@ -200,7 +201,9 @@
 		617318161EEFC89300133F7A /* VPImageCropperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPImageCropperViewController.m; path = ThirdParty/PersonalImageDealWith/VPImageCropperViewController.m; sourceTree = "<group>"; };
 		617318181EEFCB4B00133F7A /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginView.swift; path = UI/View/LoginView.swift; sourceTree = "<group>"; };
 		6173181A1EEFD12100133F7A /* LoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginView.xib; path = UI/View/LoginView.xib; sourceTree = "<group>"; };
+		61B7CD0A1F458B5200145517 /* DatePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatePickerView.swift; path = UI/View/DatePickerView.swift; sourceTree = "<group>"; };
 		61C64FCB1EE8FB2000C6766A /* EditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditViewController.swift; path = Platform/MainStoryBoard/EditViewController.swift; sourceTree = "<group>"; };
+		61D793FA1F3178D100DF02CD /* AgriBank.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AgriBank.entitlements; sourceTree = "<group>"; };
 		61DAE3471F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserFirstChangeIDPwdViewController.swift; path = Platform/SettingStoryBoard/UserFirstChangeIDPwdViewController.swift; sourceTree = "<group>"; };
 		61DB5C371F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DepositCombinedToDepositSearchViewController.swift; path = Platform/TransferStoryBoard/DepositCombinedToDepositSearchViewController.swift; sourceTree = "<group>"; };
 		61DB5C391F0E0D85006622EC /* DepositCombinedDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DepositCombinedDetailViewController.swift; path = Platform/TransferStoryBoard/DepositCombinedDetailViewController.swift; sourceTree = "<group>"; };
@@ -307,6 +310,7 @@
 		6148D9CD1EDFD10000C02CA3 /* AgriBank */ = {
 			isa = PBXGroup;
 			children = (
+				61D793FA1F3178D100DF02CD /* AgriBank.entitlements */,
 				6148DA3C1EDFE8A400C02CA3 /* Resource */,
 				6148DA3B1EDFE89100C02CA3 /* StoryBoard */,
 				6148DA2F1EDFE7C200C02CA3 /* Utility */,
@@ -462,6 +466,7 @@
 				61564A831F09E7D900CB6C4A /* ThreeRowDropDownView.xib */,
 				BE76753A1F0E3D1A00E1A461 /* ImageConfirmView.swift */,
 				BE76753C1F0E3D2F00E1A461 /* ImageConfirmView.xib */,
+				61B7CD0A1F458B5200145517 /* DatePickerView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -707,6 +712,11 @@
 						DevelopmentTeam = 95E44WWFM7;
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 					6148D9DE1EDFD10000C02CA3 = {
 						CreatedOnToolsVersion = 8.3.2;
@@ -831,6 +841,7 @@
 				BE86EE9C1F135F6F003C7A36 /* PersonalMessageDetailViewController.swift in Sources */,
 				6148DA2A1EDFE7A400C02CA3 /* FeatureWallView.swift in Sources */,
 				61564A8A1F09E7D900CB6C4A /* TwoRowDropDownView.swift in Sources */,
+				61B7CD0B1F458B5200145517 /* DatePickerView.swift in Sources */,
 				61F4F4281EF27B77001E3872 /* TypeSection.swift in Sources */,
 				615B8D731EFCDDA8002B4B53 /* MemoView.swift in Sources */,
 				BE7675351F0CCBC700E1A461 /* ExchangeRateViewController.swift in Sources */,

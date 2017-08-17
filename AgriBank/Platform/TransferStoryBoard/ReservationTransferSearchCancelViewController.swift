@@ -9,6 +9,9 @@
 import UIKit
 
 let ReservationTransferSearchCancel_Segue = "GoReservationDetail"
+let ReservationTransferSearchCancel_OutAccount = "轉出帳號"
+let ReservationTransferSearchCancel_LoginInterval = "登入區間"
+let ReservationTransferSearchCancel_CellTitle = ["登入日期","轉入帳號","金額"]
 
 class ReservationTransferSearchCancelViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var specificDateBtn: UIButton!
@@ -19,7 +22,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     private var chooseAccountDorpView:OneRowDropDownView? = nil
     private var loginIntervalDropView:OneRowDropDownView? = nil
     
-    // MARK: - Public
+    // MARK: - Override
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let detail = segue.destination as! ReservationTransferDetailViewController
         var list = [[String:String]]()
@@ -38,15 +41,17 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         chooseAccountDorpView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        chooseAccountDorpView?.setOneRow("轉出帳號", "")
+        chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, "")
         chooseAccountDorpView?.frame = chooseAccountView.frame
         chooseAccountDorpView?.frame.origin = .zero
+        chooseAccountDorpView?.delegate = self
         chooseAccountView.addSubview(chooseAccountDorpView!)
         
         loginIntervalDropView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        loginIntervalDropView?.setOneRow("登入區間", "")
+        loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "")
         loginIntervalDropView?.frame = loginIntervalView.frame
         loginIntervalDropView?.frame.origin = .zero
+        loginIntervalDropView?.delegate = self
         loginIntervalView.addSubview(loginIntervalDropView!)
         setShadowView(loginIntervalView)
         
@@ -75,7 +80,19 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
-        
+        if sender == chooseAccountDorpView {
+            
+        }
+        else {
+            if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
+                dateView.frame = view.frame
+                dateView.frame.origin = .zero
+                dateView.showTwoDatePickerView(getTwoDate: { startDate, endDate in
+                    self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.year)/\(startDate.month)/\(startDate.day) - \(endDate.year)/\(endDate.month)/\(endDate.day)")
+                })
+                view.addSubview(dateView)
+            }
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -85,10 +102,9 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_OverviewCell.NibName()!, for: indexPath) as! OverviewCell
-        cell.title1Label.text = "登入日期"
-        cell.title2Label.text = "轉入帳號"
-        cell.title3Label.text = "金額"
-        
+        cell.title1Label.text = ReservationTransferSearchCancel_CellTitle[0]
+        cell.title2Label.text = ReservationTransferSearchCancel_CellTitle[1]
+        cell.title3Label.text = ReservationTransferSearchCancel_CellTitle[2]
         return cell
     }
     

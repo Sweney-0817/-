@@ -192,27 +192,27 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     private func InputIsCorrect() -> Bool {
         var errorMessage = ""
         if accountList == nil {
-            errorMessage.append("無法取得轉出帳戶\n")
+            errorMessage.append("\(ErrorMsg_GetList_OutAccount)\n")
         }
         if accountIndex == nil {
-            errorMessage.append("請選擇轉出帳號\n")
+            errorMessage.append("\(ErrorMsg_Choose_OutAccount)\n")
         }
         
         if isPredesignated {
             if agreedAccountList == nil {
-                errorMessage.append("無法取得轉入的約定帳戶\n")
+                errorMessage.append("\(ErrorMsg_GetList_InAgreedAccount)\n")
             }
             if inAccountIndex == nil {
-                errorMessage.append("請選擇轉入帳號\n")
+                errorMessage.append("\(ErrorMsg_Choose_InAccount)\n")
             }
             if (transAmountTextfield.text?.isEmpty)! {
-                errorMessage.append("請輸入轉帳金額\n")
+                errorMessage.append("\(ErrorMsg_Enter_Amount)\n")
             }
             if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
-                errorMessage.append("不得輸入非法字元\n")
+                errorMessage.append("\(ErrorMsg_Illegal_Character)\n")
             }
             if !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {
-                errorMessage.append("email格式不合\n")
+                errorMessage.append("\(ErrorMsg_Invalid_Email)\n")
             }
         }
         else {
@@ -300,7 +300,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             if isPredesignated {
                 let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0101", strSessionDescription: "TRAN0101", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":showBankAccountDropView?.getContentByType(.Second) ?? "","INBANK":showBankAccountDropView?.getContentByType(.First) ?? "","TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
                 
-                var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: "請確認本次交易資訊", list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+                var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
                 dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:topDropView?.getContentByType(.First) ?? ""])
                 dataConfirm.list?.append([Response_Key: "銀行代碼", Response_Value:showBankAccountDropView?.getContentByType(.First) ?? ""])
                 dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:showBankAccountDropView?.getContentByType(.Second) ?? ""])
@@ -380,7 +380,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             }
         }
         else {
-            showErrorMessage(nil, "請先選擇轉出帳戶")
+            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
         }
     }
     
@@ -402,6 +402,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
+                setLoading(true)
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
@@ -409,7 +410,6 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             }
             
         case "ACCT0101":
-            setLoading(false)
             if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["Result"] as? [[String:Any]], type == "P" {
@@ -427,7 +427,6 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             }
             
         case "COMM0401":
-            setLoading(false)
             if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:String]] {
                 bankNameList = array
                 showBankList()
@@ -437,7 +436,6 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             }
             
         case "ACCT0102":
-            setLoading(false)
             if let data = response.object(forKey: "Data") as? [String:Any], let array1 = data["Result"] as? [[String:Any]], let array2 = data["Result2"] as? [[String:Any]] {
                 agreedAccountList = array1
                 commonAccountList = array2

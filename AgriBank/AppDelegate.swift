@@ -79,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         AuthorizationManage.manage.SetAPNSToken(token)
         if AuthorizationManage.manage.IsLoginSuccess() {
             let request = ConnectionUtility()
-            request.postRequest(self, "\(REQUEST_URL)/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":"","uid":"1234567","model":"1234567","auth":"123456789","appId":AgriBank_AppID,"version":AgriBank_Version,"token":token,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(false), false)
+            request.requestData(self, "\(REQUEST_URL)/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":"","uid":"1234567","model":"1234567","auth":"123456789","appId":AgriBank_AppID,"version":AgriBank_Version,"token":token,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(false), false)
         }
     }
     

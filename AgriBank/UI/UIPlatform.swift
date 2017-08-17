@@ -26,6 +26,9 @@ extension Platform {
         case .UIID_SideMenu:
             any = SideMenuViewController(SetCenter: getControllerByID(.FeatureID_Home), SetLeft: nil, SetRight: getControllerByID(.FeatureID_Menu), SetWidthRate:0.3)
             
+        case .UIID_DatePickerView:
+            any = DatePickerView()
+            
         default:
             any = Bundle.main.loadNibNamed(UIID.NibName()!, owner: owner, options: nil)?.first
         }

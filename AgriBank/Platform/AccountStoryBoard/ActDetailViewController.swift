@@ -277,7 +277,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         tableView.reloadData()
     }
     
-    // MARK: - Xib Event
+    // MARK: - StoryBoadr Touch Event
     @IBAction func clickDateBtn(_ sender: Any) {
         let btn = (sender as! UIButton)
         switch btn {
@@ -306,7 +306,17 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             dateLabel.text = startDate + (endDate != "" ? "- \(endDate)" : "")
             
         case customizeDayButton:
-            ShowDatePickerView()
+            if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
+                dateView.frame = view.frame
+                dateView.frame.origin = .zero
+                dateView.showTwoDatePickerView(getTwoDate: { start, end in
+                    self.startDate = "\(start.year)/\(start.month)/\(start.day)"
+                    self.endDate = "\(end.year)/\(end.month)/\(end.day)"
+                    self.dateLabel.text = self.startDate + (self.endDate != "" ? "- \(self.endDate)" : "")
+                    self.PostGetAcntInfo()
+                })
+                view.addSubview(dateView)
+            }
             
         default: break
         }
@@ -316,29 +326,6 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         currentIndex = indexPath.row
         performSegue(withIdentifier: ActDetailView_ShowDetail_Segue, sender: nil)
-    }
-    
-    // MARK: - Selector
-    func clickDetermineBtn(_ sender:Any) {
-        if let datePickerView = view.viewWithTag(ViewTag.View_DoubleDatePickerBackground.rawValue) {
-            if let startPicker = datePickerView.viewWithTag(ViewTag.View_StartDatePickerView.rawValue) as? UIDatePicker {
-                let componenets = Calendar.current.dateComponents([.year, .month, .day], from: startPicker.date)
-                if let day = componenets.day, let month = componenets.month, let year = componenets.year {
-                    startDate = "\(year)/\(month)/\(day)"
-                }
-            }
-            
-            if let endPicker = datePickerView.viewWithTag(ViewTag.View_EndDatePickerView.rawValue) as? UIDatePicker {
-                let componenets = Calendar.current.dateComponents([.year, .month, .day], from: endPicker.date)
-                if let day = componenets.day, let month = componenets.month, let year = componenets.year {
-                    endDate = "\(year)/\(month)/\(day)"
-                }
-            }
-            
-            dateLabel.text = startDate + (endDate != "" ? "- \(endDate)" : "")
-            PostGetAcntInfo()
-            datePickerView.removeFromSuperview()
-        }
     }
     
     // MARK: - OneRowDropDownViewDelegate
@@ -472,63 +459,6 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     }
     
     // MARK: - Private
-    private func ShowDatePickerView() {
-        let background = UIView(frame: view.frame)
-        background.backgroundColor = Disable_Color
-        background.tag = ViewTag.View_DoubleDatePickerBackground.rawValue
-        view.addSubview(background)
-        
-        let xStrart:CGFloat = 30
-        let yStart:CGFloat = 100
-        let pickerWidth = view.frame.size.width - 2*xStrart
-        var pickerHeight:CGFloat = 200
-        let titleHeight:CGFloat = 30
-        let doneButtonHeight:CGFloat = 40
-        let space:CGFloat = 10
-        
-        let maxY = yStart + titleHeight*2 + pickerHeight*2 + space*2
-        if maxY > view.frame.maxY {
-            pickerHeight = 150
-        }
-        
-        let startLabel = UILabel(frame: CGRect(x: xStrart, y: yStart, width: pickerWidth, height: titleHeight))
-        startLabel.text = "起始日"
-        startLabel.font = Cell_Font_Size
-        startLabel.backgroundColor = Green_Color
-        startLabel.textAlignment = .center
-        startLabel.textColor = .white
-        background.addSubview(startLabel)
-        
-        let startDatePicker = UIDatePicker(frame: CGRect(x: xStrart, y: startLabel.frame.maxY, width: pickerWidth, height: pickerHeight))
-        startDatePicker.datePickerMode = .date
-        startDatePicker.locale = Locale(identifier: "zh_CN")
-        startDatePicker.backgroundColor = .white
-        startDatePicker.tag = ViewTag.View_StartDatePickerView.rawValue
-        background.addSubview(startDatePicker)
-        
-        let endLabel = UILabel(frame: CGRect(x: xStrart, y: startDatePicker.frame.maxY+space, width: pickerWidth, height: titleHeight))
-        endLabel.text = "截止日"
-        endLabel.font = Cell_Font_Size
-        endLabel.backgroundColor = Green_Color
-        endLabel.textAlignment = .center
-        endLabel.textColor = .white
-        background.addSubview(endLabel)
-        
-        let endDatePicker = UIDatePicker(frame: CGRect(x: xStrart, y: endLabel.frame.maxY, width: pickerWidth, height: pickerHeight))
-        endDatePicker.backgroundColor = .white
-        endDatePicker.datePickerMode = .date
-        endDatePicker.locale = Locale(identifier: "zh_CN")
-        endDatePicker.tag = ViewTag.View_EndDatePickerView.rawValue
-        background.addSubview(endDatePicker)
-        
-        let button = UIButton(frame: CGRect(x: xStrart, y: endDatePicker.frame.maxY+space, width: pickerWidth, height: doneButtonHeight))
-        button.setBackgroundImage(UIImage(named: ImageName.ButtonLarge.rawValue), for: .normal)
-        button.tintColor = .white
-        button.setTitle("確定", for: .normal)
-        button.addTarget(self, action: #selector(clickDetermineBtn(_:)), for: .touchUpInside)
-        background.addSubview(button)
-    }
-    
     private func PostGetAcntInfo() {
         if currentType != nil && chooseAccount != nil, let type = categoryType[currentType!] {
             setLoading(true)

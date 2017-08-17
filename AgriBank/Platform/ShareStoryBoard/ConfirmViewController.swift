@@ -152,13 +152,22 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 }
             }
             else {
-                showErrorMessage(Image_ConfirmFaild_Message, nil)
+                showErrorMessage(ErrorMsg_Image_ConfirmFaild, nil)
             }
 
         default:
             if data?.checkRequest != nil && description == (data?.checkRequest?.strSessionDescription)! {
                 if let responseData = response.object(forKey: "Data") as? [[String:String]] {
                     data?.list = responseData
+                }
+                else {
+                    data?.list?.removeAll()
+                }
+                if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
+                    data?.title = Transaction_Successful_Title
+                }
+                else {
+                    data?.title = Transaction_Faild_Title
                 }
                 performSegue(withIdentifier: Confirm_Segue, sender: nil)
             }

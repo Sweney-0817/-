@@ -60,7 +60,7 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "COMM0103":
-            if let returnCode = response.object(forKey: "ReturnCode") as? String, returnCode == ReturnCode_Success {
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
                 confirmIsSuccess = true
             }
             performSegue(withIdentifier: UserFirstChangeIDPwd_Seque, sender: nil)

@@ -195,6 +195,7 @@ enum UIID: Int {
     case UIID_PromotionCell             // PromotionCell for農漁會優惠產品
     case UIID_NewsCell                  // NewsCell for最新消息、個人訊息
     case UIID_ServiceBaseCell           // ServiceBaseCell for服務據點
+    case UIID_DatePickerView          // DatePickerView class
     
     func NibName() -> String? {
         switch self {
@@ -250,7 +251,7 @@ enum UIID: Int {
 enum ViewTag: Int {
     case ActionSheet_Photo = 99             // 頭像設定
     case View_Status                        // 狀態欄
-    case View_DoubleDatePickerBackground    // 起始日picker
+    case View_DatePickerBackground          // 日期Picker Background
     case View_Loading                       // 讀取頁面
     case View_AnnounceNews                  // 訊息跑馬燈
     case View_StartDatePickerView           // 起始日期Picker
@@ -337,6 +338,8 @@ let UIActionSheet_Confirm_Title = "確認"
 let UIActionSheet_Cancel_Title = "取消"
 let ImageConfirm_Success = "true"
 let ReturnCode_Success = "OK"
+let ReturnCode_Key = "ReturnCode"
+let Check_Transaction_Title = "請確認本次交易資訊"
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "FFICMBank"
@@ -379,4 +382,12 @@ enum DropDownType:Int {
 }
 
 // MARK: - 錯誤訊息
-let Image_ConfirmFaild_Message = "圖形驗證碼錯誤"
+let ErrorMsg_Image_ConfirmFaild = "圖形驗證碼錯誤"
+let ErrorMsg_Choose_OutAccount = "請先選擇轉出帳戶"
+let ErrorMsg_GetList_OutAccount = "無法取得轉出帳戶"
+let ErrorMsg_GetList_InAgreedAccount = "無法取得轉入的約定帳戶"
+let ErrorMsg_Choose_InAccount = "請選擇轉入帳號"
+let ErrorMsg_Enter_Amount = "請輸入轉帳金額"
+let ErrorMsg_Illegal_Character = "不得輸入非法字元"
+let ErrorMsg_Invalid_Email = "email格式不合"
+let ErrorMsg_Transfer_Date = "請選擇轉出日期"

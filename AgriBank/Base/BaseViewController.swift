@@ -328,7 +328,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 }
             }
             else {
-                showErrorMessage(Image_ConfirmFaild_Message, nil)
+                showErrorMessage(ErrorMsg_Image_ConfirmFaild, nil)
             }
             
         case "COMM0101":
