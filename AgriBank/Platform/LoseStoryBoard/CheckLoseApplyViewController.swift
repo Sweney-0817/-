@@ -22,30 +22,30 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     @IBOutlet weak var m_vFeeAccount: UIView!
     @IBOutlet weak var m_consFeeAccountHeight: NSLayoutConstraint!
     @IBOutlet weak var m_vImageConfirmView: UIView!
-    @IBAction func m_btnSendClick(_ sender: Any) {
-        if (m_DDType?.m_lbFirstRowContent.text == "空白支票掛失") {
-
-        }
-        else if (m_DDType?.m_lbFirstRowContent.text == "支票掛失止付") {
-
-        }
-    }
-    var m_DDType: OneRowDropDownView? = nil
-    var m_DDAccount: OneRowDropDownView? = nil
-    var m_CheckDate: OneRowDropDownView? = nil
-    var m_FeeAccount: OneRowDropDownView? = nil
-    var m_curDropDownView: OneRowDropDownView? = nil
-    var m_ImageConfirmView: ImageConfirmView? = nil
+    private var m_DDType: OneRowDropDownView? = nil
+    private var m_DDAccount: OneRowDropDownView? = nil
+    private var m_CheckDate: OneRowDropDownView? = nil
+    private var m_FeeAccount: OneRowDropDownView? = nil
+    private var m_curDropDownView: OneRowDropDownView? = nil
+    private var m_ImageConfirmView: ImageConfirmView? = nil
     
-
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         setAllSubView()
         setShadowView(m_vShadowView)
         hideSomeSubviews()
+        setLoading(true)
+        getTransactionID("04003", TransactionID_Description)
     }
-
-    func setAllSubView() {
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: - Private
+    private func setAllSubView() {
         setDDTypeView()
         setDDAccountView()
         setCheckNumberView()
@@ -55,9 +55,8 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         setImageConfirmView()
     }
 
-    func setDDTypeView() {
-        if (m_DDType == nil)
-        {
+    private func setDDTypeView() {
+        if m_DDType == nil {
             m_DDType = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDType?.delegate = self
             m_DDType?.setOneRow("掛失類別", "空白支票掛失")
@@ -68,9 +67,8 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         m_vDDType.layer.borderWidth = 1
     }
 
-    func setDDAccountView() {
-        if (m_DDAccount == nil)
-        {
+    private func setDDAccountView() {
+        if m_DDAccount == nil {
             m_DDAccount = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDAccount?.delegate = self
             m_DDAccount?.setOneRow("支票帳號", "12345678901234")
@@ -81,19 +79,18 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         m_vDDAccount.layer.borderWidth = 1
     }
     
-    func setCheckNumberView() {
+    private func setCheckNumberView() {
         m_vCheckNumber.layer.borderColor = Gray_Color.cgColor
         m_vCheckNumber.layer.borderWidth = 1
     }
 
-    func setCheckAmountView() {
+    private func setCheckAmountView() {
         m_vCheckAmount.layer.borderColor = Gray_Color.cgColor
         m_vCheckAmount.layer.borderWidth = 1
     }
 
-    func setCheckDateView() {
-        if (m_CheckDate == nil)
-        {
+    private func setCheckDateView() {
+        if m_CheckDate == nil {
             m_CheckDate = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_CheckDate?.delegate = self
             m_CheckDate?.setOneRow("發票日", "2017/05/30")
@@ -105,9 +102,8 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         m_vCheckDate.layer.borderWidth = 1
     }
 
-    func setFeeAccountView() {
-        if (m_FeeAccount == nil)
-        {
+    private func setFeeAccountView() {
+        if m_FeeAccount == nil {
             m_FeeAccount = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_FeeAccount?.delegate = self
             m_FeeAccount?.setOneRow("手續費轉帳帳號", "12345678901235")
@@ -118,9 +114,8 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         m_vFeeAccount.layer.borderWidth = 1
     }
 
-    func setImageConfirmView() {
-        if (m_ImageConfirmView == nil)
-        {
+    private func setImageConfirmView() {
+        if m_ImageConfirmView == nil {
             m_ImageConfirmView = getUIByID(.UIID_ImageConfirmView) as? ImageConfirmView
             m_ImageConfirmView?.delegate = self
             m_vImageConfirmView.addSubview(m_ImageConfirmView!)
@@ -130,7 +125,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         m_vImageConfirmView.layer.borderWidth = 1
     }
     
-    func hideSomeSubviews() {
+    private func hideSomeSubviews() {
         m_vCheckAmount.isHidden = true
         m_vCheckDate.isHidden = true
         m_vFeeAccount.isHidden = true
@@ -139,18 +134,13 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         m_consFeeAccountHeight.constant = 0
     }
     
-    func showSomeSubviews() {
+    private func showSomeSubviews() {
         m_vCheckAmount.isHidden = false
         m_vCheckDate.isHidden = false
         m_vFeeAccount.isHidden = false
         m_consCheckAmountHeight.constant = 60
         m_consCheckDateHeight.constant = 60
         m_consFeeAccountHeight.constant = 60
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - OneRowDropDownViewDelegate
@@ -176,7 +166,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
             a.append("12345678901236")
             a.append("12345678901237")
         }
-        let action = UIActionSheet.init()
+        let action = UIActionSheet()
         action.delegate = self
         action.title = "select account"
         for s in a  {
@@ -189,24 +179,21 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     }
     
     // MARK: - UIActionSheetDelegate
-    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int)
-    {
-//        print("\(buttonIndex)")
-        if (actionSheet.buttonTitle(at: buttonIndex)! != "cancel")
-        {
-            if (m_curDropDownView == m_DDType) {
-                if (buttonIndex == 0) {//空白支票掛失
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
+        if actionSheet.buttonTitle(at: buttonIndex)! != "cancel" {
+            if m_curDropDownView == m_DDType {
+                if buttonIndex == 0 {   //空白支票掛失
                     hideSomeSubviews()
                 }
-                else {//支票掛失止付
+                else {                  //支票掛失止付
                     showSomeSubviews()
                 }
             }
-            else if (m_curDropDownView == m_DDAccount) {
+            else if m_curDropDownView == m_DDAccount {
             }
-            else if (m_curDropDownView == m_CheckDate) {
+            else if m_curDropDownView == m_CheckDate {
             }
-            else if (m_curDropDownView == m_FeeAccount) {
+            else if m_curDropDownView == m_FeeAccount {
             }
             m_curDropDownView?.setOneRow((m_curDropDownView?.m_lbFirstRowTitle.text)!, actionSheet.buttonTitle(at: buttonIndex)!)
         }
@@ -223,7 +210,6 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         return true
     }
     
-
     // MARK: - ImageConfirmCellDelegate
     func clickRefreshBtn() {
     }
@@ -231,8 +217,31 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     func changeInputTextfield(_ input: String) {
     }
     
-    func moveView(_ height: CGFloat) {
+    // MARK: - StoryBoard Touch Event
+    @IBAction func m_btnSendClick(_ sender: Any) {
+        if m_DDType?.m_lbFirstRowContent.text == "空白支票掛失" {
+            
+        }
+        else if m_DDType?.m_lbFirstRowContent.text == "支票掛失止付" {
+            
+        }
     }
     
-
+    // MARK: - ConnectionUtilityDelegate
+    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
+        setLoading(false)
+        switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                setLoading(true)
+                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+            }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+        
+        default: super.didRecvdResponse(description, response)
+        }
+    }
 }

@@ -128,6 +128,7 @@ class BaseViewController: UIViewController, LoginDelegate {
                 }
             }
             else {
+                curFeatureID = ID
                 showLoginView()
             }
         }
@@ -246,6 +247,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
             getImageConfirm()
             view.addSubview(loginView!)
         }
+        AddObserverToKeyBoard()
     }
     
     func getImageConfirm(_ varifyID:String? = nil) { // 取得圖形驗證碼
@@ -254,7 +256,11 @@ extension BaseViewController: ConnectionUtilityDelegate {
             getRequest("Comm/COMM0501", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
         }
         else {
-            getRequest("Comm/COMM0501?varifyId=\(varifyID!)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
+            let componenets = Calendar.current.dateComponents([.month, .day, .hour, .minute, .second], from: Date())
+            if let day = componenets.day, let month = componenets.month, let minute = componenets.minute, let second = componenets.second, let hour = componenets.hour {
+                getRequest("Comm/COMM0501?varifyId=\(month)/\(day)\(hour)\(minute)\(second)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
+            }
+//            getRequest("Comm/COMM0501?varifyId=\(varifyID!)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
         }
     }
     
@@ -269,13 +275,13 @@ extension BaseViewController: ConnectionUtilityDelegate {
         postRequest("Comm/COMM0403", "COMM0403", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07003","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    func RegisterAPNSToken() { // 註冊推播Token
+    func registerAPNSToken() { // 註冊推播Token
         if AuthorizationManage.manage.GetAPNSToken() != nil {
             postRequest("Comm/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":AgriBank_AppUid,"uid":AgriBank_DeviceID,"model":AgriBank_DeviceType,"auth":AgriBank_Auth,"appId":AgriBank_AppID,"version":AgriBank_Version,"token":AuthorizationManage.manage.GetAPNSToken()!,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(false))
         }
     }
     
-    func PostLogout() { // 登出電文
+    func postLogout() { // 登出電文
         postRequest("Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
@@ -347,9 +353,13 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     info.Balance = balance
                 }
                 AuthorizationManage.manage.SetResponseLoginInfo(info, nil)
-                RegisterAPNSToken()
+                registerAPNSToken()
                 loginView?.removeFromSuperview()
                 loginView = nil
+                if curFeatureID != nil {
+                    enterFeatureByID(curFeatureID!, true)
+                    curFeatureID = nil
+                }
                 if let status = data["STATUS"] as? String {
                     // 帳戶狀態  (1.沒過期，2已過期，需要強制變更，3.已過期，不需要強制變更，4.首登，5.此ID已無有效帳戶)
                     switch status {

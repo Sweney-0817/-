@@ -10,10 +10,12 @@ import UIKit
 
 let ReservationTransferSearchCancel_Segue = "GoReservationDetail"
 let ReservationTransferSearchCancel_OutAccount = "轉出帳號"
+let ReservationTransferSearchCancel_Default_OutAccount = "請選擇轉出帳號"
 let ReservationTransferSearchCancel_LoginInterval = "登入區間"
+let ReservationTransferSearchCancel_Default_Interval = "請選擇登入區間"
 let ReservationTransferSearchCancel_CellTitle = ["登入日期","轉入帳號","金額"]
 
-class ReservationTransferSearchCancelViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDataSource, UITableViewDelegate {
+class ReservationTransferSearchCancelViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate {
     @IBOutlet weak var specificDateBtn: UIButton!
     @IBOutlet weak var fixedDateBtn: UIButton!
     @IBOutlet weak var chooseAccountView: UIView!
@@ -21,34 +23,102 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     @IBOutlet weak var tableView: UITableView!
     private var chooseAccountDorpView:OneRowDropDownView? = nil
     private var loginIntervalDropView:OneRowDropDownView? = nil
+    private var accountList:[AccountStruct]? = nil      // 帳號列表
+    private var accountIndex:Int? = nil                 // 目前選擇轉出帳號
+    private var startDate = ""
+    private var endDate = ""
+    private var isSpecific = true
+    private var resultList = [[String:String]]()
+    private var curResultIndex:Int? = nil
     
     // MARK: - Override
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let detail = segue.destination as! ReservationTransferDetailViewController
+        let controller = segue.destination as! ReservationTransferDetailViewController
+        controller.transactionId = transactionId
         var list = [[String:String]]()
-        list.append(["Key": "登入日期", "Value":"2017/01/03"])
-        list.append(["Key": "預約轉帳日", "Value":"2017/02/01"])
-        list.append(["Key": "銀行代碼", "Value":"008"])
-        list.append(["Key": "轉入帳號", "Value":"1234567890"])
-        list.append(["Key": "金額", "Value":"9999999999"])
-        list.append(["Key": "交易備記", "Value":"-"])
-        list.append(["Key": "處理結果", "Value":"-"])
-        detail.setList(list)
+        var input = ReservationTransDetailStruct()
+        input.outAccount = chooseAccountDorpView?.getContentByType(.First) ?? ""
+        if curResultIndex != nil && curResultIndex! < resultList.count {
+            let dic = resultList[curResultIndex!]
+            if let RGDAY = dic["RGDAY"] {
+                input.loginDate = RGDAY
+                list.append([Response_Key:"登錄日期", Response_Value:RGDAY])
+            }
+            else {
+                list.append([Response_Key:"登錄日期", Response_Value:""])
+            }
+            if let RVDAY = dic["RVDAY"] {
+                input.reservationTransDate = RVDAY
+                list.append([Response_Key:"預約轉帳日", Response_Value:RVDAY])
+            }
+            else {
+                list.append([Response_Key:"預約轉帳日", Response_Value:""])
+            }
+            if let LSTDT = dic["LSTDT"] {
+                list.append([Response_Key:"上次轉帳日期", Response_Value:LSTDT])
+            }
+            else {
+                list.append([Response_Key:"上次轉帳日期", Response_Value:""])
+            }
+            if let TXTNO = dic["TXTNO"] {
+                input.serialNumber = TXTNO
+                list.append([Response_Key:"登錄序號", Response_Value:TXTNO])
+            }
+            else {
+                list.append([Response_Key:"登錄序號", Response_Value:""])
+            }
+            if let TRACTNO = dic["TRACTNO"] {
+                list.append([Response_Key:"轉入帳號", Response_Value:TRACTNO])
+            }
+            else {
+                list.append([Response_Key:"轉入帳號", Response_Value:""])
+            }
+            if let TRBANK = dic["TRBANK"] {
+                input.bankCode = TRBANK
+                list.append([Response_Key:"銀行代碼", Response_Value:TRBANK])
+            }
+            else {
+                list.append([Response_Key:"銀行代碼", Response_Value:""])
+            }
+            if let AMOUNT = dic["AMOUNT"] {
+                input.amount = AMOUNT
+                list.append([Response_Key:"金額", Response_Value:AMOUNT])
+            }
+            else {
+                list.append([Response_Key:"金額", Response_Value:""])
+            }
+            if let DSCPTX = dic["DSCPTX"] {
+                input.memo = DSCPTX
+                list.append([Response_Key:"交易備註", Response_Value:DSCPTX])
+            }
+            else {
+                list.append([Response_Key:"交易備註", Response_Value:""])
+            }
+            if let ERRCODE = dic["ERRCODE"] {
+                list.append([Response_Key:"處理結果", Response_Value:ERRCODE])
+            }
+            else {
+                list.append([Response_Key:"處理結果", Response_Value:""])
+            }
+            if let TRACTNO = dic["TRACTNO"] {
+                input.inAccount = TRACTNO
+            }
+        }
+        controller.setList(list, input)
     }
     
-    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         chooseAccountDorpView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, "")
+        chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, ReservationTransferSearchCancel_Default_OutAccount)
         chooseAccountDorpView?.frame = chooseAccountView.frame
         chooseAccountDorpView?.frame.origin = .zero
         chooseAccountDorpView?.delegate = self
         chooseAccountView.addSubview(chooseAccountDorpView!)
         
         loginIntervalDropView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "")
+        loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, ReservationTransferSearchCancel_Default_Interval)
         loginIntervalDropView?.frame = loginIntervalView.frame
         loginIntervalDropView?.frame.origin = .zero
         loginIntervalDropView?.delegate = self
@@ -56,6 +126,9 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         setShadowView(loginIntervalView)
         
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
+        
+        setLoading(true)
+        getTransactionID("03003", TransactionID_Description)
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,6 +142,8 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         specificDateBtn.backgroundColor = Green_Color
         fixedDateBtn.setTitleColor(.black, for: .normal)
         fixedDateBtn.backgroundColor = .white
+        isSpecific = true
+        cleanAllDate()
     }
     
     @IBAction func ClickFixedDateBtn(_ sender: Any) {
@@ -76,20 +151,39 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         fixedDateBtn.backgroundColor = Green_Color
         specificDateBtn.setTitleColor(.black, for: .normal)
         specificDateBtn.backgroundColor = .white
+        isSpecific = false
+        cleanAllDate()
     }
     
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if sender == chooseAccountDorpView {
-            
+            if accountList != nil {
+                let actSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                for index in accountList! {
+                    actSheet.addButton(withTitle: index.accountNO)
+                }
+                actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
+                actSheet.show(in: view)
+            }
         }
         else {
             if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
                 dateView.frame = view.frame
                 dateView.frame.origin = .zero
-                dateView.showTwoDatePickerView(getTwoDate: { startDate, endDate in
-                    self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.year)/\(startDate.month)/\(startDate.day) - \(endDate.year)/\(endDate.month)/\(endDate.day)")
-                })
+                dateView.showTwoDatePickerView(isSpecific) { startDate, endDate in
+                    if self.isSpecific {
+                        self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.year)/\(startDate.month)/\(startDate.day) - \(endDate.year)/\(endDate.month)/\(endDate.day)")
+                        self.startDate = "\(startDate.year)\(startDate.month)\(startDate.day)"
+                        self.endDate = "\(endDate.year)\(endDate.month)\(endDate.day)"
+                    }
+                    else {
+                        self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.day) - \(endDate.day)")
+                        self.startDate = startDate.day.replacingOccurrences(of: "日", with: "")
+                        self.endDate = endDate.day.replacingOccurrences(of: "日", with: "")
+                    }
+                    self.getReservationTransferDetail()
+                }
                 view.addSubview(dateView)
             }
         }
@@ -97,7 +191,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return resultList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -105,6 +199,15 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         cell.title1Label.text = ReservationTransferSearchCancel_CellTitle[0]
         cell.title2Label.text = ReservationTransferSearchCancel_CellTitle[1]
         cell.title3Label.text = ReservationTransferSearchCancel_CellTitle[2]
+        if let RGDAY = resultList[indexPath.row]["RGDAY"] {
+            cell.detail1Label.text = RGDAY
+        }
+        if let TRACTNO = resultList[indexPath.row]["TRACTNO"] {
+            cell.detail2Label.text = TRACTNO
+        }
+        if let AMOUNT = resultList[indexPath.row]["AMOUNT"] {
+            cell.detail3Label.text = AMOUNT
+        }
         return cell
     }
     
@@ -114,6 +217,85 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        curResultIndex = indexPath.row
         performSegue(withIdentifier: ReservationTransferSearchCancel_Segue, sender: nil)
+    }
+    
+    // MARK: - ConnectionUtilityDelegate
+    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
+        setLoading(false)
+        switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                setLoading(true)
+                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+            }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+            
+        case "ACCT0101":
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+                for category in array {
+                    if let type = category["ACTTYPE"] as? String, let result = category["Result"] as? [[String:Any]], type == Account_Saving_Type {
+                        accountList = [AccountStruct]()
+                        for actInfo in result {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+            
+        case "TRAN0301":
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:String]] {
+                resultList = array
+                tableView.reloadData()
+            }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+            
+        default: super.didRecvdResponse(description, response)
+        }
+    }
+    
+    // MARK: - UIActionSheetDelegate
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
+        if buttonIndex != actionSheet.cancelButtonIndex {
+            switch actionSheet.tag {
+            case ViewTag.View_AccountActionSheet.rawValue:
+                accountIndex = buttonIndex-1
+                if let info = accountList?[accountIndex!] {
+                    chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, info.accountNO)
+                    getReservationTransferDetail()
+                }
+                
+            default: break
+            }
+        }
+    }
+    
+    // MARK: - Private
+    private func cleanAllDate() {
+        accountIndex = nil
+        chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, ReservationTransferSearchCancel_Default_OutAccount)
+        startDate = ""
+        endDate = ""
+        loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, ReservationTransferSearchCancel_Default_Interval)
+        resultList.removeAll()
+        tableView.reloadData()
+    }
+    
+    func getReservationTransferDetail() {
+        if accountIndex != nil && !startDate.isEmpty && !endDate.isEmpty {
+            setLoading(true)
+            postRequest("TRAN/TRAN0301", "TRAN0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"getList","TransactionId":transactionId,"ACTNO":chooseAccountDorpView?.getContentByType(.First) ?? "","KIND":isSpecific ? "1":"2","RVDAY":isSpecific ? startDate:"00000000","RVDAY2":isSpecific ? endDate:"00000000","IDD1":isSpecific ? "00":startDate,"IDD2":isSpecific ? "00":endDate], true), AuthorizationManage.manage.getHttpHead(true))
+        }
     }
 }

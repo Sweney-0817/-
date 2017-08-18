@@ -309,12 +309,12 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
                 dateView.frame = view.frame
                 dateView.frame.origin = .zero
-                dateView.showTwoDatePickerView(getTwoDate: { start, end in
+                dateView.showTwoDatePickerView(true) { start, end in
                     self.startDate = "\(start.year)/\(start.month)/\(start.day)"
                     self.endDate = "\(end.year)/\(end.month)/\(end.day)"
                     self.dateLabel.text = self.startDate + (self.endDate != "" ? "- \(self.endDate)" : "")
                     self.PostGetAcntInfo()
-                })
+                }
                 view.addSubview(dateView)
             }
             
@@ -347,7 +347,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
-                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"1"], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
                 super.didRecvdResponse(description, response)

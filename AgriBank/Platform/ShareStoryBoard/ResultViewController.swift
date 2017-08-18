@@ -54,7 +54,7 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let height = ResultCell.GetStringHeightByWidthAndFontSize((data?.list?[indexPath.row]["Value"]!)!, m_tvData.frame.size.width)
+        let height = ResultCell.GetStringHeightByWidthAndFontSize((data?.list?[indexPath.row][Response_Value]!)!, m_tvData.frame.size.width)
         return height
     }
     
@@ -85,7 +85,7 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
-        cell.set((data?.list?[indexPath.row]["Key"]!)!, (data?.list?[indexPath.row]["Value"]!)!)
+        cell.set((data?.list?[indexPath.row][Response_Key]!)!, (data?.list?[indexPath.row][Response_Value]!)!)
         return cell
     }
 }

@@ -43,7 +43,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         GetVersionInfo()
         GetBannerInfo()
         GetAnnounceNewsInfo()
-        AddObserverToKeyBoard()
     }
 
     override func didReceiveMemoryWarning() {
@@ -274,7 +273,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     // MARK: - UIAlertViewDelegate
     func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
         if buttonIndex != alertView.cancelButtonIndex {
-            PostLogout()
+            postLogout()
         }
     }
 }

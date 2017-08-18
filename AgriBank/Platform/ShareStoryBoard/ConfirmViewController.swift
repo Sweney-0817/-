@@ -53,12 +53,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         setShadowView(m_vBottomView)
         AddObserverToKeyBoard()
         
-//        getImageConfirm(transactionId)
-        let componenets = Calendar.current.dateComponents([.month, .day, .hour, .minute, .second], from: Date())
-        if let day = componenets.day, let month = componenets.month, let minute = componenets.minute, let second = componenets.second, let hour = componenets.hour {
-            headVarifyID = "\(month)/\(day)\(hour)\(minute)\(second)"
-            getImageConfirm(headVarifyID)
-        }
+        getImageConfirm(transactionId)
     }
     
     override func didReceiveMemoryWarning() {
@@ -165,9 +160,11 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 }
                 if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
                     data?.title = Transaction_Successful_Title
+                    data?.image = ImageName.CowSuccess.rawValue
                 }
                 else {
                     data?.title = Transaction_Faild_Title
+                    data?.image = ImageName.CowFailure.rawValue
                 }
                 performSegue(withIdentifier: Confirm_Segue, sender: nil)
             }

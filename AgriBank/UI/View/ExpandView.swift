@@ -18,15 +18,11 @@ class ExpandView: UIView {
     func SetStatus(_ status1: Bool, _ status2: Bool) {
         button1.isEnabled = status1
         if !status1 {
-            let view = UIView(frame: button1.frame)
-            view.backgroundColor = Disable_Color
-            self.addSubview(view)
+            button1.backgroundColor = Disable_Color
         }
         button2.isEnabled = status2
         if !status2 {
-            let view = UIView(frame: button2.frame)
-            view.backgroundColor = Disable_Color
-            self.addSubview(view)
+            button2.backgroundColor = Disable_Color
         }
     }
     

@@ -739,6 +739,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomView" destination="CKC-qt-pr4" id="8te-92-Egg"/>
+                        <outlet property="cancelButton" destination="dgZ-6f-mhk" id="FUP-bH-92U"/>
                         <outlet property="tableView" destination="4zv-WK-er2" id="75F-Hs-KCx"/>
                     </connections>
                 </viewController>

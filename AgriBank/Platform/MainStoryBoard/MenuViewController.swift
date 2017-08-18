@@ -74,6 +74,9 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
                         (cell as! MenuCell).directionImage.image = nil
                     }
                 }
+                else {
+                    (cell as! MenuCell).directionImage.image = nil
+                }
             }
         }
         else {

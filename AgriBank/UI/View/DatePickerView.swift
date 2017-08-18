@@ -21,10 +21,12 @@ let DatePicker_Specific_Date = ["1日","2日","3日","4日","5日","6日","7日"
 class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     private var getTwoDate:((DatePickerStruct,DatePickerStruct)->())? = nil
     private var getOneDate:((DatePickerStruct)->())? = nil
+    private var isSpecific = true
     
     // MARK: - Public
-    func showTwoDatePickerView(getTwoDate: ((DatePickerStruct,DatePickerStruct)->())?) {
+    func showTwoDatePickerView(_ isSpecific:Bool, getTwoDate: ((DatePickerStruct,DatePickerStruct)->())?) {
         self.getTwoDate = getTwoDate
+        self.isSpecific = isSpecific
         self.backgroundColor = Disable_Color
         
         let xStrart:CGFloat = 30
@@ -48,9 +50,16 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         startLabel.textColor = .white
         addSubview(startLabel)
         
-        let startDatePicker = UIDatePicker(frame: CGRect(x: xStrart, y: startLabel.frame.maxY, width: pickerWidth, height: pickerHeight))
-        startDatePicker.datePickerMode = .date
-        startDatePicker.locale = Locale(identifier: "zh_CN")
+        let startDatePicker = isSpecific ? UIDatePicker(frame: CGRect(x: xStrart, y: startLabel.frame.maxY, width: pickerWidth, height: pickerHeight)) : UIPickerView(frame: CGRect(x: xStrart, y: startLabel.frame.maxY, width: pickerWidth, height: pickerHeight))
+        if isSpecific {
+            (startDatePicker as! UIDatePicker).datePickerMode = .date
+            (startDatePicker as! UIDatePicker).locale = Locale(identifier: "zh_CN")
+        }
+        else {
+            (startDatePicker as! UIPickerView).dataSource = self
+            (startDatePicker as! UIPickerView).delegate = self
+            (startDatePicker as! UIPickerView).selectRow(0, inComponent: 0, animated: false)
+        }
         startDatePicker.backgroundColor = .white
         startDatePicker.tag = ViewTag.View_StartDatePickerView.rawValue
         addSubview(startDatePicker)
@@ -63,10 +72,17 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         endLabel.textColor = .white
         addSubview(endLabel)
         
-        let endDatePicker = UIDatePicker(frame: CGRect(x: xStrart, y: endLabel.frame.maxY, width: pickerWidth, height: pickerHeight))
+        let endDatePicker = isSpecific ? UIDatePicker(frame: CGRect(x: xStrart, y: endLabel.frame.maxY, width: pickerWidth, height: pickerHeight)) : UIPickerView(frame: CGRect(x: xStrart, y: endLabel.frame.maxY, width: pickerWidth, height: pickerHeight))
+        if isSpecific {
+            (endDatePicker as! UIDatePicker).datePickerMode = .date
+            (endDatePicker as! UIDatePicker).locale = Locale(identifier: "zh_CN")
+        }
+        else {
+            (endDatePicker as! UIPickerView).dataSource = self
+            (endDatePicker as! UIPickerView).delegate = self
+            (endDatePicker as! UIPickerView).selectRow(0, inComponent: 0, animated: false)
+        }
         endDatePicker.backgroundColor = .white
-        endDatePicker.datePickerMode = .date
-        endDatePicker.locale = Locale(identifier: "zh_CN")
         endDatePicker.tag = ViewTag.View_EndDatePickerView.rawValue
         addSubview(endDatePicker)
         
@@ -80,6 +96,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     func showOneDatePickerView(_ isSpecific:Bool, getOneDate: ((DatePickerStruct)->())?) {
         self.getOneDate = getOneDate
+        self.isSpecific = isSpecific
         self.backgroundColor = Disable_Color
         
         let xStrart:CGFloat = 30
@@ -124,55 +141,81 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     func clickTwoDateDetermineBtn(_ sender:Any) {
         var start = DatePickerStruct()
         var end = DatePickerStruct()
-        var startDate:Date? = nil
-        var endDate:Date? = nil
-        if let startPicker = self.viewWithTag(ViewTag.View_StartDatePickerView.rawValue) as? UIDatePicker {
-            let componenets = Calendar.current.dateComponents([.year, .month, .day], from: startPicker.date)
-            if let day = componenets.day, let month = componenets.month, let year = componenets.year {
-                startDate = startPicker.date
-                start.day = String(format: "%02d", day)
-                start.month = String(format: "%02d", month)
-                start.year = String(year)
+        if isSpecific {
+            var startDate:Date? = nil
+            var endDate:Date? = nil
+            if let startPicker = self.viewWithTag(ViewTag.View_StartDatePickerView.rawValue) as? UIDatePicker {
+                let componenets = Calendar.current.dateComponents([.year, .month, .day], from: startPicker.date)
+                if let day = componenets.day, let month = componenets.month, let year = componenets.year {
+                    startDate = startPicker.date
+                    start.day = String(format: "%02d", day)
+                    start.month = String(format: "%02d", month)
+                    start.year = String(year)
+                }
             }
-        }
-        
-        if let endPicker = self.viewWithTag(ViewTag.View_EndDatePickerView.rawValue) as? UIDatePicker {
-            let componenets = Calendar.current.dateComponents([.year, .month, .day], from: endPicker.date)
-            if let day = componenets.day, let month = componenets.month, let year = componenets.year {
-                endDate = endPicker.date
-                end.day = String(format: "%02d", day)
-                end.month = String(format: "%02d", month)
-                end.year = String(year)
+            
+            if let endPicker = self.viewWithTag(ViewTag.View_EndDatePickerView.rawValue) as? UIDatePicker {
+                let componenets = Calendar.current.dateComponents([.year, .month, .day], from: endPicker.date)
+                if let day = componenets.day, let month = componenets.month, let year = componenets.year {
+                    endDate = endPicker.date
+                    end.day = String(format: "%02d", day)
+                    end.month = String(format: "%02d", month)
+                    end.year = String(year)
+                }
             }
-        }
-        
-        if startDate != nil && endDate != nil && getTwoDate != nil {
-            if startDate! <= endDate! {
-                getTwoDate!(start, end)
-                removeFromSuperview()
+            
+            if startDate != nil && endDate != nil && getTwoDate != nil {
+                if startDate! <= endDate! {
+                    getTwoDate!(start, end)
+                    removeFromSuperview()
+                }
+                else {
+                    let alert = UIAlertView(title: ErrorMsg_Choose_Date, message: nil, delegate: nil, cancelButtonTitle: "確定")
+                    alert.show()
+                }
             }
             else {
-                let alert = UIAlertView(title: "起始日不可大於截止日", message: nil, delegate: nil, cancelButtonTitle: "確定")
-                alert.show()
+                removeFromSuperview()
             }
         }
         else {
-            removeFromSuperview()
+            if let startPicker = self.viewWithTag(ViewTag.View_StartDatePickerView.rawValue) as? UIPickerView {
+                start.day = DatePicker_Specific_Date[startPicker.selectedRow(inComponent: 0)]
+            }
+            if let endPicker = self.viewWithTag(ViewTag.View_EndDatePickerView.rawValue) as? UIPickerView {
+                end.day = DatePicker_Specific_Date[endPicker.selectedRow(inComponent: 0)]
+            }
+            let startValue = Int(start.day.replacingOccurrences(of: "日", with: "")) ?? 0
+            let endValue = Int(end.day.replacingOccurrences(of: "日", with: "")) ?? 0
+            if startValue < endValue {
+                if getTwoDate != nil {
+                    getTwoDate!(start, end)
+                }
+                removeFromSuperview()
+            }
+            else {
+                let alert = UIAlertView(title: ErrorMsg_Choose_Date, message: nil, delegate: nil, cancelButtonTitle: "確定")
+                alert.show()
+            }
         }
     }
     
     func clickOneDeteDetermineBtn(_ sender:Any) {
         var start = DatePickerStruct()
-        if let startPicker = self.viewWithTag(ViewTag.View_StartDatePickerView.rawValue) as? UIDatePicker {
-            let componenets = Calendar.current.dateComponents([.year, .month, .day], from: startPicker.date)
-            if let day = componenets.day, let month = componenets.month, let year = componenets.year {
-                start.day = String(format: "%02d", day)
-                start.month = String(format: "%02d", month)
-                start.year = String(year)
+        if isSpecific {
+            if let startPicker = self.viewWithTag(ViewTag.View_StartDatePickerView.rawValue) as? UIDatePicker {
+                let componenets = Calendar.current.dateComponents([.year, .month, .day], from: startPicker.date)
+                if let day = componenets.day, let month = componenets.month, let year = componenets.year {
+                    start.day = String(format: "%02d", day)
+                    start.month = String(format: "%02d", month)
+                    start.year = String(year)
+                }
             }
         }
-        if let startPicker = self.viewWithTag(ViewTag.View_StartDatePickerView.rawValue) as? UIPickerView {
-            start.day = DatePicker_Specific_Date[startPicker.selectedRow(inComponent: 0)]
+        else {
+            if let startPicker = self.viewWithTag(ViewTag.View_StartDatePickerView.rawValue) as? UIPickerView {
+                start.day = DatePicker_Specific_Date[startPicker.selectedRow(inComponent: 0)]
+            }
         }
         
         if getOneDate != nil {

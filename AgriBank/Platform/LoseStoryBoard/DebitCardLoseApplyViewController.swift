@@ -107,8 +107,4 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     
     func changeInputTextfield(_ input: String) {
     }
-    
-    func moveView(_ height: CGFloat) {
-    }
-
 }

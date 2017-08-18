@@ -326,8 +326,6 @@ let Login_Title = "登出"
 let NoLogin_Title  = "登入"
 let ToolBar_DoneButton_Title = "確認"
 let ToolBar_CancelButton_Title = "取消"
-let Response_Key = "Key"
-let Response_Value = "Value"
 let Transaction_Successful_Title = "交易成功"
 let Transaction_Faild_Title = "交易失敗"
 let Change_Successful_Title = "變更成功"
@@ -336,9 +334,6 @@ let TransactionID_Description = "TrID"
 let TransactionID_Key = "TransactionId"
 let UIActionSheet_Confirm_Title = "確認"
 let UIActionSheet_Cancel_Title = "取消"
-let ImageConfirm_Success = "true"
-let ReturnCode_Success = "OK"
-let ReturnCode_Key = "ReturnCode"
 let Check_Transaction_Title = "請確認本次交易資訊"
 
 let AgriBank_Type = Int(1)
@@ -371,8 +366,17 @@ struct AccountStruct {
     var balance:Double = 0
     var status:Int = 0
 }
-// 電文規格:此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
-let Account_EnableTrans:Int = 2
+
+// MARK: - 電文定義
+let ImageConfirm_Success = "true"
+let ReturnCode_Success = "OK"
+let ReturnCode_Key = "ReturnCode"
+let Response_Key = "Key"
+let Response_Value = "Value"
+let Account_EnableTrans:Int = 2     // 此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
+let Can_Transaction_Status:Int = 1  // 是否可進行交易 0:不可交易 1:可交易
+let Account_Saving_Type = "P"       // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
+
 
 // MARK: - DropDownType
 enum DropDownType:Int {
@@ -391,3 +395,5 @@ let ErrorMsg_Enter_Amount = "請輸入轉帳金額"
 let ErrorMsg_Illegal_Character = "不得輸入非法字元"
 let ErrorMsg_Invalid_Email = "email格式不合"
 let ErrorMsg_Transfer_Date = "請選擇轉出日期"
+let ErrorMsg_Choose_Date = "起始日不可大於截止日"
+let ErrorMsg_Choose_SavingAccount = "請選擇存摺帳號"

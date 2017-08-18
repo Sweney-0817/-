@@ -14,7 +14,6 @@ let News_ShowDetail_Seque = "goDetail"
 class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var m_vChooseTypeView: ChooseTypeView!
     @IBOutlet weak var m_tvData: UITableView!
-    @IBOutlet weak var disableView: UIView!
     var m_iSelectedIndex = -1
     var m_Data1: [PromotionStruct] = [PromotionStruct]()
     var m_Data2: [PromotionStruct] = [PromotionStruct]()
@@ -43,7 +42,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
         setAllSubView()
         initDataForType(News_TypeList.first!)
         setShadowView(m_vChooseTypeView)
-        disableView.isHidden = AuthorizationManage.manage.IsLoginSuccess()
+        m_vChooseTypeView.setButtonStatus(News_TypeList[1], AuthorizationManage.manage.IsLoginSuccess())
     }
     
     override func didReceiveMemoryWarning() {
@@ -82,10 +81,12 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     func clickChooseTypeBtn(_ name:String) {
         initDataForType(name)
     }
+    
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         m_iSelectedIndex = indexPath.row
         goDetail()

@@ -64,6 +64,19 @@ class ChooseTypeView: UIView {
         }
     }
     
+    func setButtonStatus(_ title:String, _ isEnable:Bool) {
+        if let array = scrollView?.subviews {
+            for btn in array {
+                if btn is UIButton {
+                    if (btn as! UIButton).titleLabel?.text == title {
+                        (btn as! UIButton).isEnabled = isEnable
+                        (btn as! UIButton).backgroundColor = isEnable ? .white : Disable_Color
+                    }
+                }
+            }
+        }
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         scrollView?.frame = CGRect(origin: .zero, size: frame.size)

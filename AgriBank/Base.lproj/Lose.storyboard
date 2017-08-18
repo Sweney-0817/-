@@ -60,7 +60,7 @@
                                             <constraint firstAttribute="width" secondItem="76j-LJ-KJL" secondAttribute="height" multiplier="375:36" id="l0K-On-tEA"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="y3N-VE-KWH">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BankBookLost" translatesAutoresizingMaskIntoConstraints="NO" id="y3N-VE-KWH">
                                         <rect key="frame" x="18" y="178.66666666666669" width="379" height="253.00000000000006"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="253" id="CRi-45-gwK"/>
@@ -204,7 +204,7 @@
                                             <constraint firstAttribute="width" secondItem="3ZQ-C5-ClB" secondAttribute="height" multiplier="375:36" id="UFl-9V-8He"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="n7u-zq-iu9">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CardLost" translatesAutoresizingMaskIntoConstraints="NO" id="n7u-zq-iu9">
                                         <rect key="frame" x="18" y="237.66666666666669" width="379" height="253"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -415,7 +415,7 @@
                                                             <constraint firstAttribute="width" secondItem="aNz-wF-yBs" secondAttribute="height" multiplier="375:36" id="8Tj-Ue-swc"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eXO-Lw-HYQ">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CheckLost" translatesAutoresizingMaskIntoConstraints="NO" id="eXO-Lw-HYQ">
                                                         <rect key="frame" x="18" y="473.66666666666663" width="379" height="252.99999999999989"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="253" id="ujq-az-dNv"/>
@@ -512,7 +512,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="BankBookLost" width="340" height="253"/>
         <image name="ButtonLarge" width="346" height="44"/>
+        <image name="CardLost" width="340" height="253"/>
+        <image name="CheckLost" width="340" height="253"/>
         <image name="HintDownArrow" width="375" height="36"/>
         <image name="Textfield" width="311" height="44"/>
     </resources>
