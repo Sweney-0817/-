@@ -259,6 +259,10 @@ enum ViewTag: Int {
     case View_AccountActionSheet            // 帳號列表ActionSheet
     case View_BankActionSheet               // 銀行列表ActionSheet
     case View_InAccountActionSheet          // 轉入帳號列表ActionSheet
+    case View_ExpireSaveActionSheet         // 綜存戶轉定存-自動轉期利率
+    case View_DepositTypeActionSheet        // 綜存戶轉定存-存款種類
+    case View_RateTypeActionSheet           // 綜存戶轉定存-利率方式
+    case View_TransPeriodActionSheet        // 綜存戶轉定存-轉存期別
 }
 
 // MARK: - AuthorizationManager
@@ -404,3 +408,9 @@ let ErrorMsg_Choose_CheckAccount = "請選擇支票帳號"
 let ErrorMsg_Enter_CheckNumber = "請輸入票據號碼"
 let ErrorMsg_Enter_CheckAmount = "請輸入票面金額"
 let ErrorMsg_Choose_InvoicDate = "請選擇發票日"
+let ErrorMsg_Choose_DepositType = "請選擇存款種類"
+let ErrorMsg_Choose_RateType = "請選擇利率方式"
+let ErrorMsg_Choose_DepositAccount = "請選擇綜存帳戶"
+let ErrorMsg_Choose_TransPeriod = "請選擇轉存期別"
+let ErrorMsg_Choose_AutoTransRate = "請選擇自動轉期利率"
+let ErrorMsg_Enter_TransSaveAmount = "請輸入轉存金額"

@@ -223,7 +223,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             return true
         }
         else {
-            showErrorMessage(nil, errorMessage)
+            showErrorMessage(errorMessage, nil)
             return false
         }
     }

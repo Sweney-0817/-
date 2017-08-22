@@ -281,6 +281,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
+        setLoading(false)
         switch description {
         case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
@@ -360,7 +361,6 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         
         default: super.didRecvdResponse(description, response)
         }
-        setLoading(false)
     }
     
     // MARK: - Selector
