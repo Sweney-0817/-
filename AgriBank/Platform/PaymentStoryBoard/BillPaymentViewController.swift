@@ -241,7 +241,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
         return true
     }
     
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }

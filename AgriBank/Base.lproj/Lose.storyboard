@@ -323,7 +323,7 @@
                                                                         </constraints>
                                                                         <nil key="textColor"/>
                                                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                                                        <textInputTraits key="textInputTraits"/>
+                                                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                                         <connections>
                                                                             <outlet property="delegate" destination="a59-e8-u1E" id="Bsg-F9-oWd"/>
                                                                         </connections>
@@ -347,7 +347,7 @@
                                                                         </constraints>
                                                                         <nil key="textColor"/>
                                                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                                                        <textInputTraits key="textInputTraits"/>
+                                                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                                         <connections>
                                                                             <outlet property="delegate" destination="a59-e8-u1E" id="R3Z-o4-0qh"/>
                                                                         </connections>

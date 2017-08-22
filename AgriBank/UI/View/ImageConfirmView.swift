@@ -11,6 +11,7 @@ import UIKit
 protocol ImageConfirmViewDelegate {
     func clickRefreshBtn()
     func changeInputTextfield(_ input: String)
+    func ImageConfirmTextfieldBeginEditing(_ textfield:UITextField)
 }
 
 class ImageConfirmView: UIView, UITextFieldDelegate {
@@ -27,6 +28,7 @@ class ImageConfirmView: UIView, UITextFieldDelegate {
 
     // MARK: - UITextFieldDelegate
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        delegate?.ImageConfirmTextfieldBeginEditing(textField)
         // ToolBar
         let toolBar = UIToolbar()
         toolBar.barStyle = .default
@@ -43,12 +45,8 @@ class ImageConfirmView: UIView, UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        return true
-    }
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if(string == "") {
+        if string == "" {
             delegate?.changeInputTextfield(textField.text!.substring(to: textField.text!.index(textField.text!.endIndex, offsetBy:-1)))
         }
         else {
@@ -58,7 +56,7 @@ class ImageConfirmView: UIView, UITextFieldDelegate {
         return true
     }
     
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }

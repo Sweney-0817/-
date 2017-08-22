@@ -18,7 +18,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AB9-PT-nBa">
                     <rect key="frame" x="8" y="8" width="359" height="44"/>
                     <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                    <nil key="textColor"/>
+                    <color key="textColor" red="0.27058823529411763" green="0.65098039215686276" blue="0.42352941176470588" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>

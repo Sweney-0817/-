@@ -89,13 +89,13 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         setLoading(false)
         switch description {
-        case "COMM0701":
-            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
-            }
-            else {
-                cancelButton.backgroundColor = Disable_Color
-                cancelButton.isEnabled = false
-            }
+        case "COMM0701": break
+//            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
+//            }
+//            else {
+//                cancelButton.backgroundColor = Disable_Color
+//                cancelButton.isEnabled = false
+//            }
             
         default: super.didRecvdResponse(description, response)
         }

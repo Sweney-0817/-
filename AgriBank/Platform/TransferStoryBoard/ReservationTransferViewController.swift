@@ -92,9 +92,9 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
             dateView.frame = view.frame
             dateView.showOneDatePickerView(true) { start in
-                self.chooseDay = String(format: "%02d", start.day)
-                self.chooseMonth = String(format: "%02d", start.month)
-                self.chooseYear = String(start.year)
+                self.chooseDay = start.day
+                self.chooseMonth = start.month
+                self.chooseYear = start.year
                 let date = "\(start.year)/\(start.month)/\(start.day)"
                 let detailDate = NSString(string:"特定日期(3個月內) \(date) 轉出")
                 let attributeDate = NSMutableAttributedString(string: (detailDate as String), attributes: [NSFontAttributeName:Default_Font])
@@ -248,7 +248,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         case "ACCT0101":
             if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 for category in array {
-                    if let type = category["ACTTYPE"] as? String, let result = category["Result"] as? [[String:Any]], type == Account_Saving_Type {
+                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
                             if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {

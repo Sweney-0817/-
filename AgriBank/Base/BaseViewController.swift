@@ -258,7 +258,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
         else {
             let componenets = Calendar.current.dateComponents([.month, .day, .hour, .minute, .second], from: Date())
             if let day = componenets.day, let month = componenets.month, let minute = componenets.minute, let second = componenets.second, let hour = componenets.hour {
-                getRequest("Comm/COMM0501?varifyId=\(month)/\(day)\(hour)\(minute)\(second)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
+                headVarifyID = "\(month)\(day)\(hour)\(minute)\(second)"
+                getRequest("Comm/COMM0501?varifyId=\(headVarifyID)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
             }
 //            getRequest("Comm/COMM0501?varifyId=\(varifyID!)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
         }
@@ -266,7 +267,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
     
     func checkImageConfirm(_ passWord:String, _ varifyID:String? = nil) { // 驗證圖形驗證碼
         setLoading(true)
-        let ID = varifyID == nil ? headVarifyID : varifyID!
+//        let ID = varifyID == nil ? headVarifyID : varifyID!
+        let ID = headVarifyID
         getRequest("Comm/COMM0502?varifyId=\(ID)&captchaCode=\(passWord)", "COMM0502", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirmResult)
     }
     

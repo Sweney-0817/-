@@ -189,7 +189,7 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
                 m_Data1.removeAll()
                 if let list = data["Result"] as? [[String:Any]] {
                     for info in list {
-                        if let name = info["FC_Name"] as? String, let buy = info["CashToBuy"] as? Double, let sole = info["CashIsSole"] as? Double {
+                        if let name = info["FC_Name"] as? String, let buy = info["CashToBuy"] as? Double, let sole = info["CashIsSold"] as? Double {
                             m_Data1.append( NTRationStruct(name, String(buy), String(sole)) )
                         }
                     }

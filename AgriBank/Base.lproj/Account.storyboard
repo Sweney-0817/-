@@ -85,14 +85,14 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="83m-V9-vbC">
-                                <rect key="frame" x="0.0" y="141" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="142" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="z3S-IF-uBh"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mga-JL-J95">
-                                <rect key="frame" x="0.0" y="242" width="375" height="425"/>
+                                <rect key="frame" x="0.0" y="243" width="375" height="424"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="ekq-wH-QQP" id="Hc3-ap-Im8"/>
@@ -100,7 +100,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aJc-ku-UDT">
-                                <rect key="frame" x="0.0" y="142" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="143" width="375" height="100"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="近一週(交易日)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pLq-sc-gl1">
                                         <rect key="frame" x="15" y="13" width="125" height="25.5"/>
@@ -173,7 +173,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oFA-6H-eHA">
-                                <rect key="frame" x="0.0" y="81" width="375" height="60"/>
+                                <rect key="frame" x="0.0" y="81" width="375" height="61"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -186,7 +186,7 @@
                             <constraint firstAttribute="trailing" secondItem="Mga-JL-J95" secondAttribute="trailing" id="DFW-Qf-r1K"/>
                             <constraint firstAttribute="trailing" secondItem="Z1A-iY-vDq" secondAttribute="trailing" id="DT4-z2-RVO"/>
                             <constraint firstItem="aJc-ku-UDT" firstAttribute="top" secondItem="83m-V9-vbC" secondAttribute="bottom" id="NZe-w3-xiy"/>
-                            <constraint firstItem="83m-V9-vbC" firstAttribute="top" secondItem="iTM-sa-A7x" secondAttribute="bottom" constant="60" id="PRu-oW-RDl"/>
+                            <constraint firstItem="83m-V9-vbC" firstAttribute="top" secondItem="iTM-sa-A7x" secondAttribute="bottom" constant="61" id="PRu-oW-RDl"/>
                             <constraint firstItem="Mga-JL-J95" firstAttribute="top" secondItem="aJc-ku-UDT" secondAttribute="bottom" id="RZ5-nc-YaT"/>
                             <constraint firstAttribute="trailing" secondItem="83m-V9-vbC" secondAttribute="trailing" id="Tca-st-7cB"/>
                             <constraint firstItem="aJc-ku-UDT" firstAttribute="leading" secondItem="DNE-kg-HgQ" secondAttribute="leading" id="UYf-eD-ech"/>

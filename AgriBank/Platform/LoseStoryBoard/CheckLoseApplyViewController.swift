@@ -8,7 +8,17 @@
 
 import UIKit
 
-class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate {
+let CheckLoseApply_ChooseType_Title = "掛失類別"
+let CheckLoseApply_TypeList = ["支票掛失止付","空白支票掛失"]
+let CheckLoseApply_CheckAccount_Title = "支票帳號"
+let CheckLoseApply_CheckAccount_Default = "請選擇支票帳號"
+let CheckLoseApply_Date_Title = "發票日"
+let CheckLoseApply_Date_Default = "請選擇發票日"
+let CheckLoseApply_TransAccount_Title = "手續費轉帳帳號"
+let CheckLoseApply_TransAccount_Default = "請選擇轉帳帳號"
+let CheckLoseApply_Memo = "請您本人攜帶身分證及原留印鑑來行辦理取消掛失或重新申請作業"
+
+class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate, UITextFieldDelegate {
     @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vDDType: UIView!
     @IBOutlet weak var m_vDDAccount: UIView!
@@ -28,20 +38,30 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     private var m_FeeAccount: OneRowDropDownView? = nil
     private var m_curDropDownView: OneRowDropDownView? = nil
     private var m_ImageConfirmView: ImageConfirmView? = nil
+    private var accountList:[AccountStruct]? = nil      // 帳號列表
+    private var password = ""
+    private var checkAccountList:[AccountStruct]? = nil // 支票帳號列表
+    private var curTextfield:UITextField? = nil
     
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         setAllSubView()
         setShadowView(m_vShadowView)
-        hideSomeSubviews()
         setLoading(true)
         getTransactionID("04003", TransactionID_Description)
+        AddObserverToKeyBoard()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func keyboardWillShow(_ notification: NSNotification) {
+        if m_DDType?.getContentByType(.First) == CheckLoseApply_TypeList[0] && curTextfield != m_tfCheckNumber && curTextfield != m_tfCheckAmount {
+            super.keyboardWillShow(notification)
+        }
     }
     
     // MARK: - Private
@@ -59,7 +79,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         if m_DDType == nil {
             m_DDType = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDType?.delegate = self
-            m_DDType?.setOneRow("掛失類別", "空白支票掛失")
+            m_DDType?.setOneRow(CheckLoseApply_ChooseType_Title, CheckLoseApply_TypeList[0])
             m_DDType?.frame = CGRect(x:0, y:0, width:m_vDDType.frame.width, height:(m_DDType?.getHeight())!)
             m_vDDType.addSubview(m_DDType!)
         }
@@ -71,7 +91,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         if m_DDAccount == nil {
             m_DDAccount = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDAccount?.delegate = self
-            m_DDAccount?.setOneRow("支票帳號", "12345678901234")
+            m_DDAccount?.setOneRow(CheckLoseApply_CheckAccount_Title, CheckLoseApply_CheckAccount_Default)
             m_DDAccount?.frame = CGRect(x:0, y:0, width:m_vDDAccount.frame.width, height:(m_DDAccount?.getHeight())!)
             m_vDDAccount.addSubview(m_DDAccount!)
         }
@@ -93,7 +113,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         if m_CheckDate == nil {
             m_CheckDate = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_CheckDate?.delegate = self
-            m_CheckDate?.setOneRow("發票日", "2017/05/30")
+            m_CheckDate?.setOneRow(CheckLoseApply_Date_Title, CheckLoseApply_Date_Default)
             m_CheckDate?.frame = CGRect(x:0, y:0, width:m_vCheckDate.frame.width, height:(m_CheckDate?.getHeight())!)
             m_vCheckDate.addSubview(m_CheckDate!)
         }
@@ -106,7 +126,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         if m_FeeAccount == nil {
             m_FeeAccount = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_FeeAccount?.delegate = self
-            m_FeeAccount?.setOneRow("手續費轉帳帳號", "12345678901235")
+            m_FeeAccount?.setOneRow(CheckLoseApply_TransAccount_Title, CheckLoseApply_TransAccount_Default)
             m_FeeAccount?.frame = CGRect(x:0, y:0, width:m_vFeeAccount.frame.width, height:(m_FeeAccount?.getHeight())!)
             m_vFeeAccount.addSubview(m_FeeAccount!)
         }
@@ -146,90 +166,121 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         m_curDropDownView = sender
-        var a = [String]()
-        if (m_curDropDownView == m_DDType) {
-            a.append("空白支票掛失")
-            a.append("支票掛失止付")
+        if m_curDropDownView == m_CheckDate {
+            if let datePicker = getUIByID(.UIID_DatePickerView) as? DatePickerView {
+                datePicker.frame = view.frame
+                datePicker.showOneDatePickerView(true) { start in
+                    self.m_CheckDate?.setOneRow(CheckLoseApply_Date_Title, "\(start.year)/\(start.month)/\(start.day)")
+                }
+                view.addSubview(datePicker)
+            }
         }
-        else if (m_curDropDownView == m_DDAccount) {
-            a.append("12345678901234")
-            a.append("12345678901235")
-            a.append("12345678901236")
-            a.append("12345678901237")
+        else {
+            var list = [String]()
+            if m_curDropDownView == m_DDType {
+                list = CheckLoseApply_TypeList
+            }
+            else if m_curDropDownView == m_DDAccount && checkAccountList != nil {
+                for index in checkAccountList! {
+                    list.append(index.accountNO)
+                }
+            }
+            else if m_curDropDownView == m_FeeAccount && accountList != nil {
+                for index in accountList! {
+                    list.append(index.accountNO)
+                }
+            }
+            
+            let action = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            for title in list {
+                action.addButton(withTitle: title)
+            }
+            action.show(in: self.view)
         }
-        else if (m_curDropDownView == m_CheckDate) {
-            a.append("選日期")
-        }
-        else if (m_curDropDownView == m_FeeAccount) {
-            a.append("12345678901234")
-            a.append("12345678901235")
-            a.append("12345678901236")
-            a.append("12345678901237")
-        }
-        let action = UIActionSheet()
-        action.delegate = self
-        action.title = "select account"
-        for s in a  {
-            action.addButton(withTitle: s)
-        }
-        action.addButton(withTitle: "cancel")
-        action.cancelButtonIndex = a.count
-        
-        action.show(in: self.view)
     }
     
     // MARK: - UIActionSheetDelegate
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
-        if actionSheet.buttonTitle(at: buttonIndex)! != "cancel" {
+        if actionSheet.cancelButtonIndex != buttonIndex {
             if m_curDropDownView == m_DDType {
-                if buttonIndex == 0 {   //空白支票掛失
-                    hideSomeSubviews()
-                }
-                else {                  //支票掛失止付
+                if (actionSheet.buttonTitle(at: buttonIndex) ?? "") == CheckLoseApply_TypeList[0] {
                     showSomeSubviews()
                 }
+                else {
+                    hideSomeSubviews()
+                }
             }
-            else if m_curDropDownView == m_DDAccount {
-            }
-            else if m_curDropDownView == m_CheckDate {
-            }
-            else if m_curDropDownView == m_FeeAccount {
-            }
-            m_curDropDownView?.setOneRow((m_curDropDownView?.m_lbFirstRowTitle.text)!, actionSheet.buttonTitle(at: buttonIndex)!)
+            m_curDropDownView?.setOneRow(m_curDropDownView?.m_lbFirstRowTitle.text ?? "", actionSheet.buttonTitle(at: buttonIndex) ?? "")
         }
         m_curDropDownView = nil
     }
     
     // MARK: - UITextFieldDelegate
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        curTextfield = textField
+        // ToolBar
+        let toolBar = UIToolbar()
+        toolBar.barStyle = .default
+        toolBar.isTranslucent = true
+        toolBar.tintColor = ToolBar_tintColor
+        toolBar.sizeToFit()
+        // Adding Button ToolBar
+        let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
+        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        textField.inputAccessoryView = toolBar
         return true
     }
-    
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
+
     // MARK: - ImageConfirmCellDelegate
     func clickRefreshBtn() {
+        getImageConfirm(transactionId)
     }
     
     func changeInputTextfield(_ input: String) {
+        password = input
+    }
+    
+    func ImageConfirmTextfieldBeginEditing(_ textfield:UITextField) {
+        curTextfield = textfield
     }
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnSendClick(_ sender: Any) {
-        if m_DDType?.m_lbFirstRowContent.text == "空白支票掛失" {
-            
+        var errorMessage = ""
+        if checkAccountList == nil {
+            errorMessage.append("\(ErrorMsg_Choose_CheckAccount)\n")
         }
-        else if m_DDType?.m_lbFirstRowContent.text == "支票掛失止付" {
-            
+        if (m_tfCheckNumber.text?.isEmpty)! {
+            errorMessage.append("\(ErrorMsg_Enter_CheckNumber)\n")
+        }
+        if m_DDType?.m_lbFirstRowContent.text == CheckLoseApply_TypeList[0] {
+            if (m_tfCheckAmount.text?.isEmpty)! {
+                errorMessage.append("\(ErrorMsg_Enter_CheckAmount)\n")
+            }
+            if m_CheckDate?.getContentByType(.First) == CheckLoseApply_Date_Default {
+                errorMessage.append("\(ErrorMsg_Choose_InvoicDate)\n")
+            }
+            if accountList == nil {
+                errorMessage.append("\(ErrorMsg_GetList_OutAccount)\n")
+            }
+            if m_FeeAccount?.getContentByType(.First) == CheckLoseApply_TransAccount_Default {
+                errorMessage.append("\(ErrorMsg_Choose_OutAccount)\n")
+            }
+        }
+        
+        if errorMessage.isEmpty {
+            checkImageConfirm(password, transactionId)
+        }
+        else {
+            showErrorMessage(errorMessage, nil)
         }
     }
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
         switch description {
         case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
@@ -241,7 +292,84 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
                 super.didRecvdResponse(description, response)
             }
         
+        case "ACCT0101":
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
+                for category in array {
+                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]] {
+                        if type == Account_Saving_Type {
+                            accountList = [AccountStruct]()
+                            for actInfo in result {
+                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                    accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                                }
+                            }
+                        }
+                        else if type == Account_Check_Type {
+                            checkAccountList = [AccountStruct]()
+                            for actInfo in result {
+                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                    checkAccountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                getImageConfirm(transactionId)
+            }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+            
+        case "COMM0501":
+            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
+                m_ImageConfirmView?.m_ivShow.image = responseImage
+            }
+            
+        case "COMM0502":
+            if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
+                if m_DDType?.m_lbFirstRowContent.text == CheckLoseApply_TypeList[0] {
+                    postRequest("LOSE/LOSE0301", "LOSE0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"0403","Operate":"setLoseCheck1","TransactionId":transactionId,"Type":"11","REFNO":m_DDAccount?.getContentByType(.First) ?? "","CKNO":m_tfCheckNumber.text ?? "","TXAMT":m_tfCheckAmount.text ?? "","MACTNO":m_FeeAccount?.getContentByType(.First) ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+                else {
+                    postRequest("LOSE/LOSE0302", "LOSE0302", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"0403","Operate":"setLoseCheck2","TransactionId":transactionId,"Type":"13","REFNO":m_DDAccount?.getContentByType(.First) ?? "","CKNO":m_tfCheckNumber.text ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+            }
+            else {
+                showErrorMessage(ErrorMsg_Image_ConfirmFaild, nil)
+            }
+            
+        case "LOSE0301", "LOSE0302":
+            var result = ConfirmResultStruct()
+            result.resultBtnName = "繼續交易"
+            if let data = response.object(forKey:"Data") as? [String:String] {
+                result.list = [[String:String]]()
+                result.list?.append([Response_Key:"交易時間",Response_Value:data["TXTIME"] ?? ""])
+                result.list?.append([Response_Key:"掛失日期",Response_Value:data["TXDAY"] ?? ""])
+            }
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
+                result.title = Transaction_Successful_Title
+                result.image = ImageName.CowSuccess.rawValue
+                result.memo = CheckLoseApply_Memo
+            }
+            else {
+                result.title = Transaction_Faild_Title
+                result.image = ImageName.CowFailure.rawValue
+            }
+            enterConfirmResultController(false, result, true)
+        
         default: super.didRecvdResponse(description, response)
         }
+        setLoading(false)
+    }
+    
+    // MARK: - Selector
+    func clickCancelBtn(_ sender:Any) {
+        curTextfield?.text = ""
+        curTextfield?.resignFirstResponder()
+    }
+    
+    func clickDoneBtn(_ sender:Any) {
+        curTextfield?.resignFirstResponder()
     }
 }

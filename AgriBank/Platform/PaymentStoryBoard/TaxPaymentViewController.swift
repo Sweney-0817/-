@@ -191,7 +191,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
         return true
     }
     
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }

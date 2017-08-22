@@ -376,6 +376,8 @@ let Response_Value = "Value"
 let Account_EnableTrans:Int = 2     // 此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
 let Can_Transaction_Status:Int = 1  // 是否可進行交易 0:不可交易 1:可交易
 let Account_Saving_Type = "P"       // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
+let Account_Check_Type = "K"        // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
+let Account_Deposit_Type = "M"      // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 
 
 // MARK: - DropDownType
@@ -397,3 +399,8 @@ let ErrorMsg_Invalid_Email = "email格式不合"
 let ErrorMsg_Transfer_Date = "請選擇轉出日期"
 let ErrorMsg_Choose_Date = "起始日不可大於截止日"
 let ErrorMsg_Choose_SavingAccount = "請選擇存摺帳號"
+let ErrorMsg_Enter_Password = "請輸入網銀密碼"
+let ErrorMsg_Choose_CheckAccount = "請選擇支票帳號"
+let ErrorMsg_Enter_CheckNumber = "請輸入票據號碼"
+let ErrorMsg_Enter_CheckAmount = "請輸入票面金額"
+let ErrorMsg_Choose_InvoicDate = "請選擇發票日"

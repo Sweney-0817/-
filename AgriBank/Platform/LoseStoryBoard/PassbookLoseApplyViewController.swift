@@ -10,9 +10,9 @@ import UIKit
 
 let PassbookLoseApply_Account_Title = "存摺帳號"
 let PassbookLoseApply_Account_Default = "請選擇存摺帳號"
+let PassbookLoseApply_Memo = "請您本人攜帶身分證及原留印鑑來行辦理取消掛失或重新申請作業"
 
-class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate
- {
+class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate {
     @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vDropDownView: UIView!
     @IBOutlet weak var m_vImageConfirmView: UIView!
@@ -100,6 +100,8 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
     func changeInputTextfield(_ input: String) {
         password = input
     }
+    
+    func ImageConfirmTextfieldBeginEditing(_ textfield:UITextField) {}
 
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
@@ -118,7 +120,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
         case "ACCT0101":
             if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
                 for category in array {
-                    if let type = category["ACTTYPE"] as? String, let result = category["Result"] as? [[String:Any]], type == Account_Saving_Type {
+                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
                             if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
@@ -158,7 +160,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
                 result.title = Transaction_Successful_Title
                 result.image = ImageName.CowSuccess.rawValue
-                result.memo = "請您本人攜帶身分證及原留印鑑來行辦理取消掛失或重新申請作業"
+                result.memo = PassbookLoseApply_Memo
             }
             else {
                 result.title = Transaction_Faild_Title
@@ -173,7 +175,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnSendClick(_ sender: Any) {
         if accountIndex != nil {
-            checkImageConfirm(password)
+            checkImageConfirm(password, transactionId)
         }
         else {
             showErrorMessage(ErrorMsg_Choose_SavingAccount, nil)

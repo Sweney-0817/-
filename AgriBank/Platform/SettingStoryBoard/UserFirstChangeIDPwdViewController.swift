@@ -47,6 +47,7 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickCheckBtn(_ sender: Any) {
+        setLoading(true)
         postRequest("Comm/COMM0103", "COMM0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01013","Operate":"commitTxn","OID":SecurityUtility.utility.MD5(string: sourceIDTextfield.text!),"NID":SecurityUtility.utility.MD5(string: againIDTextfield.text!),"OPWD":SecurityUtility.utility.MD5(string: sourcePasswordTextfield.text!),"NPWD":SecurityUtility.utility.MD5(string: againPasswordTextfield.text!)], true), AuthorizationManage.manage.getHttpHead(true))
     }
     
@@ -58,6 +59,7 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
+        setLoading(false)
         switch description {
         case "COMM0103":
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {

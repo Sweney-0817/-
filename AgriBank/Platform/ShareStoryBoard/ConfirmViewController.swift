@@ -112,22 +112,18 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     
     // MARK: - ImageConfirmCellDelegate
     func clickRefreshBtn() {
-//        checkImageConfirm(password, transactionId)
-        let componenets = Calendar.current.dateComponents([.month, .day, .hour, .minute, .second], from: Date())
-        if let day = componenets.day, let month = componenets.month, let minute = componenets.minute, let second = componenets.second, let hour = componenets.hour {
-            headVarifyID = "\(month)/\(day)\(hour)\(minute)\(second)"
-            getImageConfirm(headVarifyID)
-        }
+        getImageConfirm(transactionId)
     }
     
     func changeInputTextfield(_ input: String) {
         password = input
     }
     
+    func ImageConfirmTextfieldBeginEditing(_ textfield:UITextField) {}
+    
     // MARK: - StoryBoard Touch Event
     @IBAction func clickCheckBtn(_ sender: Any) {
-//        checkImageConfirm(password, transactionId)
-        checkImageConfirm(password, headVarifyID)
+        checkImageConfirm(password, transactionId)
     }
     
     // MARK: - ConnectionUtilityDelegate

@@ -171,7 +171,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-        if !DetermineUtility.utility.checkStringContainIllegalCharacter( newString ) {
+        if DetermineUtility.utility.checkStringContainIllegalCharacter( newString ) {
             return false
         }
         
@@ -241,4 +241,6 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     func changeInputTextfield(_ input: String){
         loginInfo.imgPassword = input
     }
+    
+    func ImageConfirmTextfieldBeginEditing(_ textfield:UITextField) {}
 }
