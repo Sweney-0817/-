@@ -15,6 +15,8 @@ let DepositCombinedToDeposit_DepositType_Title = "存款種類"
 let DepositCombinedToDeposit_Period_Title = "轉存期別"
 let DepositCombinedToDeposit_Rate_Title = "利率方式"
 let DepositCombinedToDeposit_AutoRateType_Title = "自動轉\n期利率"
+let DepositCombinedToDeposit_ExpireSaveType1 = "是，本金續存"
+let DepositCombinedToDeposit_ExpireSaveType2 = "不續存"
 
 class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDelegate, ThreeRowDropDownViewDelegate, OneRowDropDownViewDelegate, UIActionSheetDelegate {
     @IBOutlet weak var topView: UIView!
@@ -121,7 +123,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
     @IBAction func clickSendBtn(_ sender: Any) {
         if InputIsCorrect() {
             setLoading(true)
-            postRequest("ACCT/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
+            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
         }
     }
     
@@ -305,11 +307,53 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             }
         
         case "COMM0701":
-            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
+//            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
+            if let data = response.object(forKey: "Data") as? [String:Any], let date = data["CurrentDate"] as? String {
+                let TACTNO = topDropView?.getContentByType(.First) ?? ""
+                let TYPE = responseDepositList[curDepositTypeIndex!]["Type"] ?? ""
+                let PRDCD = periodDropView?.getContentByType(.First) ?? ""
+                var IRTID = ""
+                if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]], let irtid = Detail[curRateTypeIndex!]["IRTID"] as? [String:String], let Value = irtid["Value"] {
+                    IRTID = Value
+                }
+                var AUTTRN = ""
+                var AIRTID = ""
+                var index:Int? = nil
+                if isExpireSaveType1 {
+                    if responseExpireSaveList.count > 0 {
+                        index = 0
+                    }
+                }
+                else {
+                    if responseExpireSaveList.count > 1 {
+                        index = 1
+                    }
+                }
+                if index != nil {
+                    if let Value = responseExpireSaveList[index!]["Value"] as? String {
+                        AUTTRN = Value
+                    }
+                    if let array = responseExpireSaveList[index!]["AIRTID"] as? [[String:Any]], let Value = array[autoTransRateTypeIndex!]["Value"] as? String {
+                        AIRTID = Value
+                    }
+                }
+                let TXAMT = transAmountTextfield.text ?? ""
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
                 
+                var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+                dataConfirm.list?.append([Response_Key: "綜合存款帳號", Response_Value:TACTNO])
+                dataConfirm.list?.append([Response_Key: "餘額", Response_Value:topDropView?.getContentByType(.Third) ?? ""])
+                dataConfirm.list?.append([Response_Key: "存款種類", Response_Value:depositTypeDropView?.getContentByType(.First) ?? ""])
+                dataConfirm.list?.append([Response_Key: "轉存期別", Response_Value:periodDropView?.getContentByType(.First) ?? ""])
+                dataConfirm.list?.append([Response_Key: "利率方式", Response_Value:rateTypeDropView?.getContentByType(.First) ?? ""])
+                dataConfirm.list?.append([Response_Key: "目前利率", Response_Value:currentRateLabel.text ?? ""])
+                dataConfirm.list?.append([Response_Key: "轉存金額", Response_Value:transAmountTextfield.text ?? ""])
+                dataConfirm.list?.append([Response_Key: "到期續存", Response_Value:isExpireSaveType1 ? DepositCombinedToDeposit_ExpireSaveType1 : DepositCombinedToDeposit_ExpireSaveType2])
+                dataConfirm.list?.append([Response_Key: "自動轉期利率", Response_Value:autoTransRateTypeDropView?.getContentByType(.First) ?? ""])
+                enterConfirmResultController(true, dataConfirm, true)
             }
             else {
-                
+                showErrorMessage(ErrorMsg_IsNot_TransTime, nil)
             }
             
         default: super.didRecvdResponse(description, response)

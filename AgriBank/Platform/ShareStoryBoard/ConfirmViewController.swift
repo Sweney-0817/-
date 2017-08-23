@@ -93,11 +93,11 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (data?.list?.count)!+1;
+        return (data?.list?.count)!+1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (indexPath.row == (data?.list?.count)!) {
+        if indexPath.row == (data?.list?.count)! {
             let cell = tableView.dequeueReusableCell(withIdentifier: SystemCell_Identify, for: indexPath)
             imageConfirmView?.frame = CGRect(x:0, y:0, width:cell.contentView.frame.width, height:cell.contentView.frame.height)
             cell.contentView.addSubview(imageConfirmView!)
