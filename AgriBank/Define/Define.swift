@@ -382,6 +382,7 @@ let Can_Transaction_Status:Int = 1  // 是否可進行交易 0:不可交易 1:�
 let Account_Saving_Type = "P"       // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Check_Type = "K"        // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Deposit_Type = "M"      // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
+let Account_Loan_Type = "L"         // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 
 
 // MARK: - DropDownType

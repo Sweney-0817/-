@@ -138,6 +138,9 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
                 result = array
                 tableView.reloadData()
             }
+            else {
+                super.didRecvdResponse(description, response)
+            }
             
         default: super.didRecvdResponse(description, response)
         }
