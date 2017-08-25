@@ -10,7 +10,6 @@ import UIKit
 
 let DepositCombinedToDepositSearch_Segue = "GoDepositDetail"
 let DepositCombinedToDepositSearch_Account_Title = "活存帳號"
-let DepositCombinedToDepositSearch_Account_Default = "請選擇活存帳號"
 let DepositCombinedToDepositSearch_Cell_Title = ["定存帳號","定存金額","到期日"]
 
 class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate {
@@ -26,7 +25,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         topDropView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        topDropView?.setOneRow(DepositCombinedToDepositSearch_Account_Title, DepositCombinedToDepositSearch_Account_Default)
+        topDropView?.setOneRow(DepositCombinedToDepositSearch_Account_Title, Choose_Title)
         topDropView?.frame = topView.frame
         topDropView?.frame.origin = .zero
         topDropView?.delegate = self

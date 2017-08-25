@@ -11,7 +11,6 @@ import UIKit
 let CheckLoseApply_ChooseType_Title = "掛失類別"
 let CheckLoseApply_TypeList = ["支票掛失止付","空白支票掛失"]
 let CheckLoseApply_CheckAccount_Title = "支票帳號"
-let CheckLoseApply_CheckAccount_Default = "請選擇支票帳號"
 let CheckLoseApply_Date_Title = "發票日"
 let CheckLoseApply_Date_Default = "請選擇發票日"
 let CheckLoseApply_TransAccount_Title = "手續費轉帳帳號"
@@ -91,7 +90,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         if m_DDAccount == nil {
             m_DDAccount = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDAccount?.delegate = self
-            m_DDAccount?.setOneRow(CheckLoseApply_CheckAccount_Title, CheckLoseApply_CheckAccount_Default)
+            m_DDAccount?.setOneRow(CheckLoseApply_CheckAccount_Title, Choose_Title)
             m_DDAccount?.frame = CGRect(x:0, y:0, width:m_vDDAccount.frame.width, height:(m_DDAccount?.getHeight())!)
             m_vDDAccount.addSubview(m_DDAccount!)
         }

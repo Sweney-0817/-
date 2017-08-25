@@ -51,7 +51,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         topDropView = getUIByID(.UIID_ThreeRowDropDownView) as? ThreeRowDropDownView
-        topDropView?.setThreeRow(DepositCombinedToDeposit_Account_Title, "", DepositCombinedToDeposit_Currency_Title, "", DepositCombinedToDeposit_Balance_Title, "")
+        topDropView?.setThreeRow(DepositCombinedToDeposit_Account_Title, Choose_Title, DepositCombinedToDeposit_Currency_Title, "", DepositCombinedToDeposit_Balance_Title, "")
         topDropView?.frame = topView.frame
         topDropView?.frame.origin = .zero
         topDropView?.delegate = self

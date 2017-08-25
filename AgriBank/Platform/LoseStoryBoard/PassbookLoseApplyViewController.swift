@@ -9,7 +9,6 @@
 import UIKit
 
 let PassbookLoseApply_Account_Title = "存摺帳號"
-let PassbookLoseApply_Account_Default = "請選擇存摺帳號"
 let PassbookLoseApply_Memo = "請您本人攜帶身分證及原留印鑑來行辦理取消掛失或重新申請作業"
 
 class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate {
@@ -46,7 +45,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
         if m_OneRow == nil {
             m_OneRow = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_OneRow?.delegate = self
-            m_OneRow?.setOneRow(PassbookLoseApply_Account_Title, PassbookLoseApply_Account_Default)
+            m_OneRow?.setOneRow(PassbookLoseApply_Account_Title, Choose_Title)
             m_vDropDownView.addSubview(m_OneRow!)
         }
         m_OneRow?.frame = CGRect(x:0, y:0, width:m_vDropDownView.frame.width, height:(m_OneRow?.getHeight())!)

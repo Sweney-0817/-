@@ -105,7 +105,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         }
         
         topDropView = getUIByID(.UIID_ThreeRowDropDownView) as? ThreeRowDropDownView
-        topDropView?.setThreeRow(NTTransfer_OutAccount, "", NTTransfer_Currency, "", NTTransfer_Balance, "")
+        topDropView?.setThreeRow(NTTransfer_OutAccount, Choose_Title, NTTransfer_Currency, "", NTTransfer_Balance, "")
         topDropView?.frame = topView.frame
         topDropView?.frame.origin = .zero
         topDropView?.delegate = self
@@ -319,7 +319,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:showBankAccountDropView?.getContentByType(.Second) ?? ""])
                 dataConfirm.list?.append([Response_Key: "轉帳金額", Response_Value:transAmountTextfield.text!])
                 dataConfirm.list?.append([Response_Key: "備註/交易備記", Response_Value:memoTextfield.text!])
-                dataConfirm.list?.append([Response_Key: "受款人email", Response_Value:emailTextfield.text!])
+                dataConfirm.list?.append([Response_Key: "受款人E-mail", Response_Value:emailTextfield.text!])
                 enterConfirmResultController(true, dataConfirm, true)
             }
             else {

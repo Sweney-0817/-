@@ -82,113 +82,218 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 if let TXDAY = dic["TXDAY"] as? String {
                     list.append([Response_Key: "交易日期", Response_Value:TXDAY])
                 }
-                if let OAVBAL = dic["OAVBAL"] as? String {
-                    list.append([Response_Key: "可用餘額", Response_Value:OAVBAL])
+                else {
+                    list.append([Response_Key: "交易日期", Response_Value:""])
                 }
                 if let CRDB = dic["CRDB"] as? String {
                     list.append([Response_Key: "借貸紀號", Response_Value:CRDB == "1" ? "支出" : "存入"])
                 }
+                else {
+                    list.append([Response_Key: "借貸紀號", Response_Value:""])
+                }
                 if let KINBR = dic["KINBR"] as? String {
                     list.append([Response_Key: "輸入行", Response_Value:KINBR])
+                }
+                else {
+                    list.append([Response_Key: "輸入行", Response_Value:""])
                 }
                 if let DSCPT = dic["DSCPT"] as? String {
                     list.append([Response_Key: "交易摘要", Response_Value:DSCPT])
                 }
+                else {
+                    list.append([Response_Key: "交易摘要", Response_Value:""])
+                }
                 if let HCODE = dic["HCODE"] as? String {
                     list.append([Response_Key: "更正記號", Response_Value:HCODE == "0" ? "-" : HCODE])
+                }
+                else {
+                    list.append([Response_Key: "更正記號", Response_Value:""])
                 }
                 if let TXAMT = dic["TXAMT"] as? String {
                     list.append([Response_Key: "交易金額", Response_Value:TXAMT])
                 }
+                else {
+                    list.append([Response_Key: "交易金額", Response_Value:""])
+                }
+                if let OAVBAL = dic["OAVBAL"] as? String {
+                    list.append([Response_Key: "餘額", Response_Value:OAVBAL])
+                }
+                else {
+                    list.append([Response_Key: "餘額", Response_Value:""])
+                }
                 if let MACTNO = dic["MACTNO"] as? String {
                     list.append([Response_Key: "對方帳號", Response_Value:MACTNO])
                 }
+                else {
+                    list.append([Response_Key: "對方帳號", Response_Value:""])
+                }
                 if let TXRM = dic["TXRM"] as? String {
                     list.append([Response_Key: "備註", Response_Value:TXRM])
+                }
+                else {
+                    list.append([Response_Key: "備註", Response_Value:""])
                 }
                 
             case ActOverviewType.Type2.description():
                 if let TXDAY = dic["TXDAY"] as? String {
                     list.append([Response_Key: "交易日期", Response_Value:TXDAY])
                 }
+                else {
+                    list.append([Response_Key: "交易日期", Response_Value:""])
+                }
                 if let CKSRT = dic["CKSRT"] as? String {
                     list.append([Response_Key: "票種", Response_Value:CKSRT == "1" ? "支票" : "本票"])
+                }
+                else {
+                    list.append([Response_Key: "票種", Response_Value:""])
                 }
                 if let CKNO = dic["CKNO"] as? String {
                     list.append([Response_Key: "票號", Response_Value:CKNO])
                 }
+                else {
+                    list.append([Response_Key: "票號", Response_Value:""])
+                }
                 if let DSCPT = dic["DSCPT"] as? String {
                     list.append([Response_Key: "交易摘要", Response_Value:DSCPT])
+                }
+                else {
+                    list.append([Response_Key: "交易摘要", Response_Value:""])
                 }
                 if let HCODE = dic["HCODE"] as? String {
                     list.append([Response_Key: "更正記號", Response_Value:HCODE == "0" ? "-" : HCODE])
                 }
+                else {
+                    list.append([Response_Key: "更正記號", Response_Value:""])
+                }
                 if let CRDB = dic["CRDB"] as? String {
                     list.append([Response_Key: "借貸紀號", Response_Value:CRDB == "1" ? "支出" : "存入"])
+                }
+                else {
+                    list.append([Response_Key: "借貸紀號", Response_Value:""])
                 }
                 if let TXAMT = dic["TXAMT"] as? String {
                     list.append([Response_Key: "交易金額", Response_Value:TXAMT])
                 }
+                else {
+                    list.append([Response_Key: "交易金額", Response_Value:""])
+                }
                 if let AVBAL = dic["AVBAL"] as? String {
                     list.append([Response_Key: "餘額", Response_Value:AVBAL])
                 }
+                else {
+                    list.append([Response_Key: "餘額", Response_Value:""])
+                }
                 if let REMARK = dic["REMARK"] as? String {
                     list.append([Response_Key: "備註", Response_Value:REMARK])
+                }
+                else {
+                    list.append([Response_Key: "備註", Response_Value:""])
                 }
                 
             case ActOverviewType.Type3.description():
                 if let ENTDAY = dic["ENTDAY"] as? String {
                     list.append([Response_Key: "記帳日", Response_Value:ENTDAY])
                 }
+                else {
+                    list.append([Response_Key: "記帳日", Response_Value:""])
+                }
                 if let TRNACT = dic["TRNACT"] as? String {
                     list.append([Response_Key: "對方帳號", Response_Value:TRNACT])
+                }
+                else {
+                    list.append([Response_Key: "對方帳號", Response_Value:""])
                 }
                 if let TXCD = dic["TXCD"] as? String {
                     list.append([Response_Key: "交易代號", Response_Value:TXCD])
                 }
+                else {
+                    list.append([Response_Key: "交易代號", Response_Value:""])
+                }
                 if let HCODE = dic["HCODE"] as? String {
                     list.append([Response_Key: "更正記號", Response_Value:HCODE == "0" ? "-" : HCODE])
+                }
+                else {
+                    list.append([Response_Key: "更正記號", Response_Value:""])
                 }
                 if let TAXAMT = dic["TAXAMT"] as? String {
                     list.append([Response_Key: "所得稅", Response_Value:TAXAMT])
                 }
+                else {
+                    list.append([Response_Key: "所得稅", Response_Value:""])
+                }
                 if let PRTAX = dic["PRTAX"] as? String {
                     list.append([Response_Key: "印花稅", Response_Value:PRTAX])
+                }
+                else {
+                    list.append([Response_Key: "印花稅", Response_Value:""])
                 }
                 if let BALNINT = dic["BALNINT"] as? String {
                     list.append([Response_Key: "淨利/結存本金", Response_Value:BALNINT])
                 }
+                else {
+                    list.append([Response_Key: "淨利/結存本金", Response_Value:""])
+                }
                 if let PRIBAL = dic["PRIBAL"] as? String {
                     list.append([Response_Key: "補充保費", Response_Value:PRIBAL])
+                }
+                else {
+                    list.append([Response_Key: "補充保費", Response_Value:""])
                 }
                 if let AMTINT = dic["AMTINT"] as? String {
                     list.append([Response_Key: "交易金額", Response_Value:AMTINT])
                 }
+                else {
+                    list.append([Response_Key: "交易金額", Response_Value:""])
+                }
                 if let LOWIRT = dic["LOWIRT"] as? String {
                     list.append([Response_Key: "利率", Response_Value:LOWIRT])
+                }
+                else {
+                    list.append([Response_Key: "利率", Response_Value:""])
                 }
                 
             case ActOverviewType.Type4.description():
                 if let TXDATE = dic["TXDATE"] as? String {
                     list.append([Response_Key: "交易日期", Response_Value:TXDATE])
                 }
+                else {
+                    list.append([Response_Key: "交易日期", Response_Value:""])
+                }
                 if let TXCD = dic["TXCD"] as? String {
                     list.append([Response_Key: "交易代號", Response_Value:TXCD])
+                }
+                else {
+                    list.append([Response_Key: "交易代號", Response_Value:""])
                 }
                 if let PRIAMT = dic["PRIAMT"] as? String {
                     list.append([Response_Key: "攤還本金/本金", Response_Value:PRIAMT])
                 }
+                else {
+                    list.append([Response_Key: "攤還本金/本金", Response_Value:""])
+                }
                 if let INTAMT = dic["INTAMT"] as? String {
                     list.append([Response_Key: "利息", Response_Value:INTAMT])
+                }
+                else {
+                    list.append([Response_Key: "利息", Response_Value:""])
                 }
                 if let BAL = dic["BAL"] as? String {
                     list.append([Response_Key: "本金餘額", Response_Value:BAL])
                 }
+                else {
+                    list.append([Response_Key: "本金餘額", Response_Value:""])
+                }
                 if let DFAMT = dic["DFAMT"] as? String {
                     list.append([Response_Key: "違約金", Response_Value:DFAMT])
                 }
+                else {
+                    list.append([Response_Key: "違約金", Response_Value:""])
+                }
                 if let DIAMT = dic["DIAMT"] as? String {
                     list.append([Response_Key: "延遲息", Response_Value:DIAMT])
+                }
+                else {
+                    list.append([Response_Key: "延遲息", Response_Value:""])
                 }
                 
             default: break
@@ -274,6 +379,9 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         chooseAccount = nil
         (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, ActDetailView_ChooseAccount_Title)
         resultList = nil
+        startDate = ""
+        endDate = ""
+        dateLabel.text = ""
         tableView.reloadData()
     }
     
@@ -303,7 +411,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 startDate = "\(year)/\(month)/\(day)"
             }
             PostGetAcntInfo()
-            dateLabel.text = startDate + (endDate != "" ? "- \(endDate)" : "")
+            dateLabel.text = startDate + (endDate != "" ? " - \(endDate)" : "")
             
         case customizeDayButton:
             if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
@@ -312,7 +420,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 dateView.showTwoDatePickerView(true) { start, end in
                     self.startDate = "\(start.year)/\(start.month)/\(start.day)"
                     self.endDate = "\(end.year)/\(end.month)/\(end.day)"
-                    self.dateLabel.text = self.startDate + (self.endDate != "" ? "- \(self.endDate)" : "")
+                    self.dateLabel.text = self.startDate + (self.endDate != "" ? " - \(self.endDate)" : "")
                     self.PostGetAcntInfo()
                 }
                 view.addSubview(dateView)

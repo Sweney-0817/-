@@ -11,7 +11,6 @@ import UIKit
 let LoanPrincipalInterest_PayLoan_Segue = "GoPayLoan"
 let LoanPrincipalInterest_Detail_Segue = "GoDetail"
 let LoanPrincipalInterest_Accout_Title = "放款帳號"
-let LoanPrincipalInterest_Accout_Default = "請選擇放款帳號"
 
 class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, OneRowDropDownViewDelegate, UIActionSheetDelegate {
     @IBOutlet weak var topView: UIView!
@@ -53,7 +52,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
         setShadowView(middleView!)
         
         topDropView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        topDropView?.setOneRow(LoanPrincipalInterest_Accout_Title, LoanPrincipalInterest_Accout_Default)
+        topDropView?.setOneRow(LoanPrincipalInterest_Accout_Title, Choose_Title)
         topDropView?.frame = topView.frame
         topDropView?.frame.origin = .zero
         topDropView?.delegate = self

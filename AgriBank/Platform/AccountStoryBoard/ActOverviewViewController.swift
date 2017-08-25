@@ -12,7 +12,7 @@ let ActOverview_SectionAll_Height = CGFloat(48)
 let ActOverview_Section_Height = CGFloat(20)
 let ActOverview_ShowDetail_Segue = "ShowDetail"
 let ActOverview_GoActDetail_Segue = "GoAccountDetail"
-let ActOverview_CellTitleList = ["帳號","幣別","帳戶餘額"]
+let ActOverview_CellTitleList = ["帳號","幣別","帳面餘額"]
 
 enum ActOverviewType:Int {
     case Type1
@@ -42,154 +42,9 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     private var typeList = [String]()                   // 使用者帳戶清單的Type List
     private var typeListIndex:Int = 0                   // ActOverview_TypeList 的 index
     private var currentType:ActOverviewType = .Type0    // 目前Type
-    private var chooseAccount:String? = nil
-    private var resultList = [String:Any]()
+    private var chooseAccount:String? = nil             // cell選擇的帳戶
+    private var resultList = [String:Any]()             // 電文(ACIF0101)response
     private var pushByclickExpandBtn = false            // 判斷是否從cell觸發 進功能畫面
-    
-    // MARK: - public
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        let controller = segue.destination as! ShowDetailViewController
-        var list = [[String:String]]()
-        let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
-        switch type {
-        case .Type1:
-            if let ACTNO = resultList["ACTNO"] as? String {
-                list.append([Response_Key: "帳號", Response_Value:ACTNO])
-            }
-            if let AVBAL = resultList["AVBAL"] as? Double {
-                list.append([Response_Key: "可用餘額", Response_Value:String(AVBAL)])
-            }
-            if let NAMT = resultList["NAMT"] as? Double {
-                list.append([Response_Key: "本交金額", Response_Value:String(NAMT)])
-            }
-            if let ACTBAL = resultList["ACTBAL"] as? Double {
-                list.append([Response_Key: "帳戶餘額", Response_Value:String(ACTBAL)])
-            }
-         
-        case .Type2:
-            if let ACTNO = resultList["ACTNO"] as? String {
-                list.append([Response_Key: "帳號", Response_Value:ACTNO])
-            }
-            if let PRIBAL = resultList["PRIBAL"] as? Double {
-                list.append([Response_Key: "帳戶餘額", Response_Value:String(PRIBAL)])
-            }
-            if let AVBAL = resultList["AVBAL"] as? Double {
-                list.append([Response_Key: "可用金額", Response_Value:String(AVBAL)])
-            }
-            if let NAMT = resultList["NAMT"] as? Double {
-                list.append([Response_Key: "本交票金額", Response_Value:String(NAMT)])
-            }
-            if let STPBAL = resultList["STPBAL"] as? Double {
-                list.append([Response_Key: "扣押總金額", Response_Value:String(STPBAL)])
-            }
-            if let LTXDAY = resultList["LTXDAY"] as? String {
-                list.append([Response_Key: "拒往日/上交日", Response_Value:LTXDAY])
-            }
-            if let LNLMT = resultList["LNLMT"] as? String {
-                list.append([Response_Key: "透支限額", Response_Value:LNLMT])
-            }
-            
-        case .Type3:
-            if let ACTNO = resultList["ACTNO"] as? String {
-                list.append([Response_Key: "帳號", Response_Value:ACTNO])
-            }
-            if let CTNO = resultList["CTNO"] as? String {
-                list.append([Response_Key: "存單號碼", Response_Value:CTNO])
-            }
-            if let CIDAY = resultList["CIDAY"] as? String {
-                list.append([Response_Key: "起存日", Response_Value:CIDAY])
-            }
-            if let EDAY = resultList["EDAY"] as? String {
-                list.append([Response_Key: "到期日", Response_Value:EDAY])
-            }
-            if let MCNT = resultList["MCNT"] as? String {
-                list.append([Response_Key: "期間(月)", Response_Value:MCNT])
-            }
-            if let CENT = resultList["CENT"] as? String {
-                list.append([Response_Key: "期間(日)", Response_Value:CENT])
-            }
-            if let INTRT = resultList["INTRT"] as? Double {
-                list.append([Response_Key: "利率", Response_Value:String(INTRT)])
-            }
-            if let CTBAL = resultList["CTBAL"] as? Double {
-                list.append([Response_Key: "存單面額", Response_Value:String(CTBAL)])
-            }
-            if let IRTID = resultList["IRTID"] as? String {
-                list.append([Response_Key: "利率型態", Response_Value:(IRTID == "1" ? "固定":"機動")])
-            }
-            if let MRTGE = resultList["MRTGE"] as? String {
-                list.append([Response_Key: "設質記號", Response_Value:(MRTGE == "0" ? "未設質":"已設質")])
-            }
-            if let ATERM = resultList["ATERM"] as? String {
-                list.append([Response_Key: "自動轉期記號", Response_Value:(ATERM == "00" ? "不轉期":"轉期")])
-            }
-            
-        case .Type4:
-            if let ACTNO = resultList["ACTNO"] as? String {
-                list.append([Response_Key: "帳號", Response_Value:ACTNO])
-            }
-            if let SUBNO = resultList["SUBNO"] as? Double {
-                list.append([Response_Key: "分號", Response_Value:String(SUBNO)])
-            }
-            if let APAMT = resultList["APAMT"] as? Double {
-                list.append([Response_Key: "初貸金額", Response_Value:String(APAMT)])
-            }
-            if let ACTBAL = resultList["ACTBAL"] as? Double {
-                list.append([Response_Key: "貸款餘額", Response_Value:String(ACTBAL)])
-            }
-            if let APSDAY = resultList["APSDAY"] as? String {
-                list.append([Response_Key: "貸放起日", Response_Value:APSDAY])
-            }
-            if let APEDAY = resultList["APEDAY"] as? String {
-                list.append([Response_Key: "貸放止日", Response_Value:APEDAY])
-            }
-            if let RATECD = resultList["RATECD"] as? String {
-                var type = ""
-                switch RATECD {
-                case "01": type = "固定利率"
-                case "02": type = "定期固定利率"
-                case "03": type = "定期機動利率"
-                case "04": type = "機動利率"
-                default: break
-                }
-                list.append([Response_Key: "利率型態", Response_Value:type])
-            }
-            if let IRT = resultList["IRT"] as? Double {
-                list.append([Response_Key: "計息利率(%)", Response_Value:String(IRT)])
-            }
-            if let PRCD = resultList["PRCD"] as? String {
-                var type = ""
-                switch PRCD {
-                case "01": type = "按期繳息到期還本"
-                case "02": type = "先收息後本息平均攤還"
-                case "03": type = "先收息後本金平均攤還"
-                case "04": type = "本息平均攤還"
-                case "05": type = "本金平均攤還"
-                case "06": type = "到期繳息還本"
-                case "09": type = "約定還本方式"
-                default: break
-                }
-                list.append([Response_Key: "利率型態", Response_Value:type])
-            }
-            if let OIDATE = resultList["OIDATE"] as? String {
-                list.append([Response_Key: "上次收息日", Response_Value:OIDATE])
-            }
-            if let PRDATE = resultList["PRDATE"] as? String {
-                list.append([Response_Key: "預定還本日", Response_Value:PRDATE])
-            }
-            if let IDATE = resultList["IDATE"] as? String {
-                list.append([Response_Key: "預定收息日", Response_Value:IDATE])
-            }
-            if let PAYACTNO = resultList["PAYACTNO"] as? String {
-                list.append([Response_Key: "自動扣繳帳號", Response_Value:PAYACTNO])
-            }
-            
-        default: break
-        }
-        
-        controller.setList("\(type.description())往來明細", list)
-    }
     
     // MARK: - Private
     private func GetTypeByInputString(_ input:String) -> ActOverviewType? {
@@ -217,6 +72,246 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        let controller = segue.destination as! ShowDetailViewController
+        var list = [[String:String]]()
+        let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
+        switch type {
+        case .Type1:
+            if let ACTNO = resultList["ACTNO"] as? String {
+                list.append([Response_Key: "帳號", Response_Value:ACTNO])
+            }
+            else {
+                list.append([Response_Key: "帳號", Response_Value:""])
+            }
+            if let AVBAL = resultList["AVBAL"] as? String {
+                list.append([Response_Key: "可用餘額", Response_Value:AVBAL])
+            }
+            else {
+                list.append([Response_Key: "可用餘額", Response_Value:""])
+            }
+            if let NAMT = resultList["NAMT"] as? String {
+                list.append([Response_Key: "本交金額", Response_Value:NAMT])
+            }
+            else {
+                list.append([Response_Key: "本交金額", Response_Value:""])
+            }
+            if let ACTBAL = resultList["ACTBAL"] as? String {
+                list.append([Response_Key: "帳戶餘額", Response_Value:ACTBAL])
+            }
+            else {
+                list.append([Response_Key: "帳戶餘額", Response_Value:""])
+            }
+            
+        case .Type2:
+            if let ACTNO = resultList["ACTNO"] as? String {
+                list.append([Response_Key: "帳號", Response_Value:ACTNO])
+            }
+            else {
+                list.append([Response_Key: "帳號", Response_Value:""])
+            }
+            if let PRIBAL = resultList["PRIBAL"] as? String {
+                list.append([Response_Key: "帳戶餘額", Response_Value:PRIBAL])
+            }
+            else {
+                list.append([Response_Key: "帳戶餘額", Response_Value:""])
+            }
+            if let AVBAL = resultList["AVBAL"] as? String {
+                list.append([Response_Key: "可用餘額", Response_Value:AVBAL])
+            }
+            else {
+                list.append([Response_Key: "可用餘額", Response_Value:""])
+            }
+            if let NAMT = resultList["NAMT"] as? String {
+                list.append([Response_Key: "本交票金額", Response_Value:NAMT])
+            }
+            else {
+                list.append([Response_Key: "本交票金額", Response_Value:""])
+            }
+            if let STPBAL = resultList["STPBAL"] as? String {
+                list.append([Response_Key: "扣押總金額", Response_Value:STPBAL])
+            }
+            else {
+                list.append([Response_Key: "扣押總金額", Response_Value:""])
+            }
+            if let LTXDAY = resultList["LTXDAY"] as? String {
+                list.append([Response_Key: "拒往日/上交日", Response_Value:LTXDAY])
+            }
+            else {
+                list.append([Response_Key: "拒往日/上交日", Response_Value:""])
+            }
+            if let LNLMT = resultList["LNLMT"] as? String {
+                list.append([Response_Key: "透支限額", Response_Value:LNLMT])
+            }
+            else {
+                list.append([Response_Key: "透支限額", Response_Value:""])
+            }
+            
+        case .Type3:
+            if let ACTNO = resultList["ACTNO"] as? String {
+                list.append([Response_Key: "帳號", Response_Value:ACTNO])
+            }
+            else {
+                list.append([Response_Key: "帳號", Response_Value:""])
+            }
+            if let CTNO = resultList["CTNO"] as? String {
+                list.append([Response_Key: "存單號碼", Response_Value:CTNO])
+            }
+            else {
+                list.append([Response_Key: "存單號碼", Response_Value:""])
+            }
+            if let CIDAY = resultList["CIDAY"] as? String {
+                list.append([Response_Key: "起存日", Response_Value:CIDAY])
+            }
+            else {
+                list.append([Response_Key: "起存日", Response_Value:""])
+            }
+            if let EDAY = resultList["EDAY"] as? String {
+                list.append([Response_Key: "到期日", Response_Value:EDAY])
+            }
+            else {
+                list.append([Response_Key: "到期日", Response_Value:""])
+            }
+            if let MCNT = resultList["MCNT"] as? String, let DCNT = resultList["DCNT"] as? String {
+                list.append([Response_Key: "期間", Response_Value:"\(MCNT)月\(DCNT)日"])
+            }
+            else {
+                list.append([Response_Key: "期間", Response_Value:""])
+            }
+            if let INTRT = resultList["INTRT"] as? String {
+                list.append([Response_Key: "利率", Response_Value:INTRT])
+            }
+            else {
+                list.append([Response_Key: "利率", Response_Value:""])
+            }
+            if let CTBAL = resultList["CTBAL"] as? String {
+                list.append([Response_Key: "存單面額", Response_Value:CTBAL])
+            }
+            else {
+                list.append([Response_Key: "存單面額", Response_Value:""])
+            }
+            if let IRTID = resultList["IRTID"] as? String {
+                list.append([Response_Key: "利率型態", Response_Value:(IRTID == "1" ? "固定":"機動")])
+            }
+            else {
+                list.append([Response_Key: "利率型態", Response_Value:""])
+            }
+            if let MRTGE = resultList["MRTGE"] as? String {
+                list.append([Response_Key: "設質記號", Response_Value:(MRTGE == "0" ? "未設質":"已設質")])
+            }
+            else {
+                list.append([Response_Key: "設質記號", Response_Value:""])
+            }
+            if let ATERM = resultList["ATERM"] as? String {
+                list.append([Response_Key: "自動轉期記號", Response_Value:(ATERM == "00" ? "不轉期":"轉期")])
+            }
+            else {
+                list.append([Response_Key: "自動轉期記號", Response_Value:""])
+            }
+            
+        case .Type4:
+            if let ACTNO = resultList["ACTNO"] as? String {
+                list.append([Response_Key: "帳號", Response_Value:ACTNO])
+            }
+            else {
+                list.append([Response_Key: "帳號", Response_Value:""])
+            }
+            if let SUBNO = resultList["SUBNO"] as? String {
+                list.append([Response_Key: "分號", Response_Value:SUBNO])
+            }
+            else {
+                list.append([Response_Key: "分號", Response_Value:""])
+            }
+            if let APAMT = resultList["APAMT"] as? String {
+                list.append([Response_Key: "初貸金額", Response_Value:APAMT])
+            }
+            else {
+                list.append([Response_Key: "初貸金額", Response_Value:""])
+            }
+            if let ACTBAL = resultList["ACTBAL"] as? String {
+                list.append([Response_Key: "貸款餘額", Response_Value:ACTBAL])
+            }
+            else {
+                list.append([Response_Key: "貸款餘額", Response_Value:""])
+            }
+            if let APSDAY = resultList["APSDAY"] as? String {
+                list.append([Response_Key: "貸放起日", Response_Value:APSDAY])
+            }
+            else {
+                list.append([Response_Key: "貸放起日", Response_Value:""])
+            }
+            if let APEDAY = resultList["APEDAY"] as? String {
+                list.append([Response_Key: "貸放止日", Response_Value:APEDAY])
+            }
+            if let RATECD = resultList["RATECD"] as? String {
+                var type = ""
+                switch RATECD {
+                case "01": type = "固定利率"
+                case "02": type = "定期固定利率"
+                case "03": type = "定期機動利率"
+                case "04": type = "機動利率"
+                default: break
+                }
+                list.append([Response_Key: "利率型態", Response_Value:type])
+            }
+            else {
+                list.append([Response_Key: "利率型態", Response_Value:""])
+            }
+            if let IRT = resultList["IRT"] as? String {
+                list.append([Response_Key: "計息利率(%)", Response_Value:IRT])
+            }
+            else {
+                list.append([Response_Key: "計息利率(%)", Response_Value:""])
+            }
+            if let PRCD = resultList["PRCD"] as? String {
+                var type = ""
+                switch PRCD {
+                case "01": type = "按期繳息到期還本"
+                case "02": type = "先收息後本息平均攤還"
+                case "03": type = "先收息後本金平均攤還"
+                case "04": type = "本息平均攤還"
+                case "05": type = "本金平均攤還"
+                case "06": type = "到期繳息還本"
+                case "09": type = "約定還本方式"
+                default: break
+                }
+                list.append([Response_Key: "還本方式", Response_Value:type])
+            }
+            else {
+                list.append([Response_Key: "還本方式", Response_Value:""])
+            }
+            if let OIDATE = resultList["OIDATE"] as? String {
+                list.append([Response_Key: "上次收息日", Response_Value:OIDATE])
+            }
+            else {
+                list.append([Response_Key: "上次收息日", Response_Value:""])
+            }
+            if let PRDATE = resultList["PRDATE"] as? String {
+                list.append([Response_Key: "預定還本日", Response_Value:PRDATE])
+            }
+            else {
+                list.append([Response_Key: "預定還本日", Response_Value:""])
+            }
+            if let IDATE = resultList["IDATE"] as? String {
+                list.append([Response_Key: "預定收息日", Response_Value:IDATE])
+            }
+            else {
+                list.append([Response_Key: "預定收息日", Response_Value:""])
+            }
+            if let PAYACTNO = resultList["PAYACTNO"] as? String {
+                list.append([Response_Key: "自動扣繳帳號", Response_Value:PAYACTNO])
+            }
+            else {
+                list.append([Response_Key: "自動扣繳帳號", Response_Value:""])
+            }
+            
+        default: break
+        }
+        
+        controller.setList("\(type.description())往來明細", list)
     }
 
     // MARK: - ConnectionUtilityDelegate
@@ -403,7 +498,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             
         case .Type2:
             chooseAccount = value[ActOverview_CellTitleList.first!]
-            enterFeatureByID(.FeatureID_NTTransfer, false)
+            enterFeatureByID(.FeatureID_AccountDetailView, false)
             pushByclickExpandBtn = true
         
         case .Type3:
@@ -430,11 +525,6 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
         switch type {
         case .Type1:
-            chooseAccount = value[ActOverview_CellTitleList.first!]
-            enterFeatureByID(.FeatureID_AccountDetailView, false)
-            pushByclickExpandBtn = true
-            
-        case .Type2:
             chooseAccount = value[ActOverview_CellTitleList.first!]
             enterFeatureByID(.FeatureID_AccountDetailView, false)
             pushByclickExpandBtn = true

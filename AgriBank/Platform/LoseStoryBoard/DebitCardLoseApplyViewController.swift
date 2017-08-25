@@ -9,7 +9,6 @@
 import UIKit
 
 let DebitCardLoseApply_Account_Title = "卡片帳號"
-let DebitCardLoseApply_Account_Default = "請選擇卡片帳號"
 let DebitCardLoseApply_Memo = "請您本人攜帶身分證及原留印鑑來行辦理取消掛失或重新申請作業"
 
 class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UITextFieldDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate {
@@ -50,7 +49,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
         if m_OneRow == nil {
             m_OneRow = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_OneRow?.delegate = self
-            m_OneRow?.setOneRow(DebitCardLoseApply_Account_Title, DebitCardLoseApply_Account_Default)
+            m_OneRow?.setOneRow(DebitCardLoseApply_Account_Title, Choose_Title)
             m_vDropDownView.addSubview(m_OneRow!)
         }
         m_OneRow?.frame = CGRect(x:0, y:0, width:m_vDropDownView.frame.width, height:(m_OneRow?.getHeight())!)

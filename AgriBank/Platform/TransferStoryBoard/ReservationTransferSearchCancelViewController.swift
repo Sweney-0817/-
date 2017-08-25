@@ -10,9 +10,7 @@ import UIKit
 
 let ReservationTransferSearchCancel_Segue = "GoReservationDetail"
 let ReservationTransferSearchCancel_OutAccount = "轉出帳號"
-let ReservationTransferSearchCancel_Default_OutAccount = "請選擇轉出帳號"
 let ReservationTransferSearchCancel_LoginInterval = "登入區間"
-let ReservationTransferSearchCancel_Default_Interval = "請選擇登入區間"
 let ReservationTransferSearchCancel_CellTitle = ["登入日期","轉入帳號","金額"]
 
 class ReservationTransferSearchCancelViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate {
@@ -111,14 +109,14 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         chooseAccountDorpView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, ReservationTransferSearchCancel_Default_OutAccount)
+        chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, Choose_Title)
         chooseAccountDorpView?.frame = chooseAccountView.frame
         chooseAccountDorpView?.frame.origin = .zero
         chooseAccountDorpView?.delegate = self
         chooseAccountView.addSubview(chooseAccountDorpView!)
         
         loginIntervalDropView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, ReservationTransferSearchCancel_Default_Interval)
+        loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, Choose_Title)
         loginIntervalDropView?.frame = loginIntervalView.frame
         loginIntervalDropView?.frame.origin = .zero
         loginIntervalDropView?.delegate = self
@@ -284,10 +282,10 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     // MARK: - Private
     private func cleanAllDate() {
         accountIndex = nil
-        chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, ReservationTransferSearchCancel_Default_OutAccount)
+        chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, Choose_Title)
         startDate = ""
         endDate = ""
-        loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, ReservationTransferSearchCancel_Default_Interval)
+        loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, Choose_Title)
         resultList.removeAll()
         tableView.reloadData()
     }

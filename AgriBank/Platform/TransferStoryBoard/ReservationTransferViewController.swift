@@ -29,7 +29,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     private var accountIndex:Int? = nil                 // 目前選擇轉出帳號
     private var agreedAccountList:[[String:Any]]? = nil // 約定帳戶列表
     private var inAccountIndex:Int? = nil               // 目前選擇轉入帳號
-    private var isFixedDate = true
+    private var isFixedDate = true                      // 判斷是否為「固定每月」
     private var chooseDay = ""                          // 選擇的日
     private var chooseMonth = ""                        // 選擇的月
     private var chooseYear = ""                         // 選擇的年
@@ -39,7 +39,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         topDropView = getUIByID(.UIID_ThreeRowDropDownView) as? ThreeRowDropDownView
-        topDropView?.setThreeRow(ReservationTransfer_OutAccount, "", ReservationTransfer_Currency, "", ReservationTransfer_Balance, "")
+        topDropView?.setThreeRow(ReservationTransfer_OutAccount, Choose_Title, ReservationTransfer_Currency, "", ReservationTransfer_Balance, "")
         topDropView?.frame = topView.frame
         topDropView?.frame.origin = .zero
         topDropView?.delegate = self
