@@ -68,12 +68,12 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
         getTransactionID("08001", TransactionID_Description)
         AddObserverToKeyBoard()
         
-//        emailTextfield.text = "test@gmail.com"
-//        mobliePhoneTextfield.text = "0900100100"
-//        teleAreaCodeTextfield.text = "03"
-//        telePhoneTextfield.text = "87525527"
-//        postalCodeTextfield.text = "113"
-//        addressTextfield.text = "台北市內湖區瑞光路258巷2號7樓之4"
+        emailTextfield.text = "test@gmail.com"
+        mobliePhoneTextfield.text = "0900100100"
+        teleAreaCodeTextfield.text = "03"
+        telePhoneTextfield.text = "87525527"
+        postalCodeTextfield.text = "113"
+        addressTextfield.text = "台北市內湖區瑞光路258巷2號7樓之4"
     }
 
     override func didReceiveMemoryWarning() {
@@ -156,12 +156,16 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
                         funcd = "89"
                         teleAreaCodeTextfield.text = teleAreaCode
                         teleAreaCodeTextfield.isEnabled = false
+                        teleAreaCodeTextfield.backgroundColor = Disable_Color
                         telePhoneTextfield.text = telePhone
                         telePhoneTextfield.isEnabled = false
+                        telePhoneTextfield.backgroundColor = Disable_Color
                         addressTextfield.text = address
                         addressTextfield.isEnabled = false
+                        addressTextfield.backgroundColor = Disable_Color
                         postalCodeTextfield.text = postalCode
                         postalCodeTextfield.isEnabled = false
+                        postalCodeTextfield.backgroundColor = Disable_Color
                     }
                 }
             }

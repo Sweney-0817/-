@@ -8,7 +8,8 @@
 
 import UIKit
 
-let PayLoan_Segue = "GoPayLoan"
+let LoanPrincipalInterest_PayLoan_Segue = "GoPayLoan"
+let LoanPrincipalInterest_Detail_Segue = "GoDetail"
 let LoanPrincipalInterest_Accout_Title = "放款帳號"
 let LoanPrincipalInterest_Accout_Default = "請選擇放款帳號"
 
@@ -22,12 +23,19 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
     private var topDropView:OneRowDropDownView? = nil
     private var accountList:[AccountStruct]? = nil                  // 帳號列表
     private var result:[String:Any]? = nil                          // 電文Response
-    private var curIndex:Int? = nil
+    private var oneResult:[String:Any]? = nil                       // 電文Response
+    private var curIndex:Int? = nil                                 // result["Result"] => Array, Array的Index
+    private var memoStatus:String? = nil                            // 是否臨櫃結清作業
     
     // MARK: - Public
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier != PayLoan_Segue {
-            let detail = segue.destination as! LoanPrincipalInterestDetailViewController
+        if segue.identifier == LoanPrincipalInterest_PayLoan_Segue {
+            let controller = segue.destination as! PayLoanPrincipalInterestViewController
+            controller.transactionId = transactionId
+            controller.setList(oneResult, topDropView?.getContentByType(.First))
+        }
+        else {
+            let controller = segue.destination as! LoanPrincipalInterestDetailViewController
             var list = [[String:String]]()
             list.append([Response_Key: "放款帳號", Response_Value:topDropView?.getContentByType(.First) ?? ""])
             if let ACTBAL = result?["ACTBAL"] as? String {
@@ -72,10 +80,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
             else {
                 list.append([Response_Key: "應繳總額", Response_Value:""])
             }
-            detail.setList(list)
-        }
-        else {
-            
+            controller.setList(list)
         }
     }
     
@@ -102,11 +107,6 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - StoryBoard Touch Event
-    @IBAction func clickMoreBtn(_ sender: Any) {
-        
-    }
-    
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let array = result?["Result"] as? [[String:String]] {
@@ -117,11 +117,25 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_LoanPrincipalInterestCell.NibName()!, for: indexPath) as! LoanPrincipalInterestCell
-        if indexPath.row == 0 {
-            cell.payBtn.isHidden = false
-        }
-        else {
-            cell.payBtn.isHidden = true
+        if let array = result?["Result"] as? [[String:String]] {
+            if let Order = array[indexPath.row]["Order"], Order == "Y" {
+                cell.payBtn.isHidden = false
+            }
+            else {
+                cell.payBtn.isHidden = true
+            }
+            if let SDATE = array[indexPath.row]["SDATE"], let EDATE = array[indexPath.row]["EDATE"] {
+                cell.calculatePeriodLabel.text = "\(SDATE) - \(EDATE)"
+            }
+            if let PRAMT = array[indexPath.row]["PRAMT"], let INT = array[indexPath.row]["INT"] {
+                cell.principalInterestLabel.text = "\(PRAMT) / \(INT)"
+            }
+            if let PRAMT = array[indexPath.row]["DFAMT"] {
+                cell.breachContractLabel.text = "\(PRAMT)"
+            }
+            if let DIAMT = array[indexPath.row]["DIAMT"] {
+                cell.delayInterestLabel.text = "\(DIAMT)"
+            }
         }
         return cell
     }
@@ -132,8 +146,31 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0  {
-            performSegue(withIdentifier: PayLoan_Segue, sender: nil)
+        if let array = result?["Result"] as? [[String:String]], let Order = array[indexPath.row]["Order"], Order == "Y" {
+            curIndex = indexPath.row
+            if memoStatus != nil {
+                var message = ""
+                switch memoStatus! {
+                case "1":
+                    message = "請客戶親洽臨櫃辦理結清作業"
+                    
+                case "2":
+                    message = "請客戶親洽臨櫃辦理還本作業"
+                    
+                default: break
+                }
+                if !message.isEmpty {
+                    let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:UIAlert_Cancel_Title)
+                    alert.show()
+                }
+                else {
+                    setLoading(true)
+                    postRequest("TRAN/TRAN0601", "TRAN0601-1", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"getList","TransactionId":transactionId,"REFNO":topDropView?.getContentByType(.First) ?? "","PRDCNT":"1"], true), AuthorizationManage.manage.getHttpHead(true)) // PRDCNT:繳息期數=>0-為查回全部,1-為可繳交第一期
+                }
+            }
+            else {
+                showErrorMessage("Memo狀態不明", nil)
+            }
         }
     }
     
@@ -180,9 +217,9 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                 super.didRecvdResponse(description, response)
             }
             
-        case "TRAN0601":
-            if let data = response.object(forKey: "Data") as? [String:Any], let dic = data["Result"] as? [String:Any] {
-                result = dic
+        case "TRAN0601-0":
+            if let data = response.object(forKey: "Data") as? [String:Any] {
+                result = data
                 if let APAMT = result?["APAMT"] as? String {
                     loanAmountLabel.text = APAMT
                 }
@@ -192,7 +229,19 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                 if let TOTAL = result?["TOTAL"] as? String {
                     needPayAmountLabel.text = TOTAL
                 }
-                tableView.reloadData()
+                if let Memo = result?["Memo"] as? String {
+                    memoStatus = Memo
+                }
+            }
+            else {
+                super.didRecvdResponse(description, response)
+            }
+            tableView.reloadData()
+            
+        case "TRAN0601-1":
+            if let data = response.object(forKey: "Data") as? [String:Any] {
+                oneResult = data
+                performSegue(withIdentifier: LoanPrincipalInterest_PayLoan_Segue, sender: nil)
             }
             else {
                 super.didRecvdResponse(description, response)
@@ -209,10 +258,20 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
             case ViewTag.View_AccountActionSheet.rawValue:
                 topDropView?.setOneRow(LoanPrincipalInterest_Accout_Title, actionSheet.buttonTitle(at: buttonIndex) ?? "")
                 setLoading(true)
-                postRequest("TRAN/TRAN0601", "TRAN0601", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"getList","TransactionId":transactionId,"REFNO":actionSheet.buttonTitle(at: buttonIndex) ?? "","PRDCNT":"0"], true), AuthorizationManage.manage.getHttpHead(true)) // PRDCNT:繳息期數=>0-為查回全部,1-為可繳交第一期
+                postRequest("TRAN/TRAN0601", "TRAN0601-0", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"getList","TransactionId":transactionId,"REFNO":actionSheet.buttonTitle(at: buttonIndex) ?? "","PRDCNT":"0"], true), AuthorizationManage.manage.getHttpHead(true)) // PRDCNT:繳息期數=>0-為查回全部,1-為可繳交第一期
                 
             default: break
             }
+        }
+    }
+    
+    // MARK: - StoryBoard Touch Event
+    @IBAction func clickMoreButton(_ sender: Any) {
+        if topDropView?.getContentByType(.First) == LoanPrincipalInterest_Accout_Default {
+            showErrorMessage(ErrorMsg_Choose_OutAccount, nil)
+        }
+        else {
+            performSegue(withIdentifier: LoanPrincipalInterest_Detail_Segue, sender: nil)
         }
     }
 }

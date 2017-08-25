@@ -336,9 +336,9 @@ let Change_Successful_Title = "變更成功"
 let Change_Faild_Title = "變更失敗"
 let TransactionID_Description = "TrID"
 let TransactionID_Key = "TransactionId"
-let UIActionSheet_Confirm_Title = "確認"
 let UIActionSheet_Cancel_Title = "取消"
 let Check_Transaction_Title = "請確認本次交易資訊"
+let UIAlert_Cancel_Title = "確認"
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "FFICMBank"

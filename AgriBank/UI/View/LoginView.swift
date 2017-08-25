@@ -63,8 +63,8 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         currnetCity = city
         self.delegate = delegate
         
-        accountTextfield.text = "A123456789"
-        idTextfield.text = "Systexsoftware"
+        accountTextfield.text = "B123456789"
+        idTextfield.text = "systex"
         passwordTextfield.text = "systex6214"
     }
     

@@ -43,7 +43,7 @@ class LoanPrincipalInterestDetailViewController: BaseViewController, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
-        cell.set((list?[indexPath.row]["Key"])!, (list?[indexPath.row]["Value"])!)
+        cell.set((list?[indexPath.row][Response_Key])!, (list?[indexPath.row][Response_Value])!)
         return cell
     }
     

@@ -238,7 +238,6 @@ class LoanPrincipalInterestCell: UITableViewCell {
     @IBOutlet weak var calculatePeriodLabel: UILabel!
     @IBOutlet weak var principalInterestLabel: UILabel!
     @IBOutlet weak var breachContractLabel: UILabel!
-    
     @IBOutlet weak var delayInterestLabel: UILabel!
     @IBOutlet weak var payBtn: UIButton!
     
