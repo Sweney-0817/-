@@ -22,12 +22,52 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
     @IBOutlet weak var tableView: UITableView!
     private var topDropView:OneRowDropDownView? = nil
     private var accountList:[AccountStruct]? = nil                  // 帳號列表
+    private var accountIndex:Int? = nil                             // 目前選擇放款帳號
     private var result:[String:Any]? = nil                          // 電文Response
     private var oneResult:[String:Any]? = nil                       // 電文Response
     private var curIndex:Int? = nil                                 // result["Result"] => Array, Array的Index
     private var memoStatus:String? = nil                            // 是否臨櫃結清作業
+    private var inputAccount:String? = nil                          // 由「帳戶總覽」帶入的帳號
     
     // MARK: - Public
+    func setInitial(_ account:String?)  {
+        if accountList != nil && account != nil {
+            for index in 0..<(accountList?.count)! {
+                if let info = accountList?[index], info.accountNO == account! {
+                    accountIndex = index
+                    topDropView?.setOneRow(LoanPrincipalInterest_Accout_Title,info.accountNO)
+                    break
+                }
+            }
+        }
+        else {
+            inputAccount = account
+        }
+    }
+    
+    // MARK: - Override
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        tableView.register(UINib(nibName: UIID.UIID_LoanPrincipalInterestCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_LoanPrincipalInterestCell.NibName()!)
+        setShadowView(middleView!)
+        
+        topDropView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
+        topDropView?.setOneRow(LoanPrincipalInterest_Accout_Title, LoanPrincipalInterest_Accout_Default)
+        topDropView?.frame = topView.frame
+        topDropView?.frame.origin = .zero
+        topDropView?.delegate = self
+        topView.addSubview(topDropView!)
+        
+        setLoading(true)
+        getTransactionID("03006", TransactionID_Description)
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == LoanPrincipalInterest_PayLoan_Segue {
             let controller = segue.destination as! PayLoanPrincipalInterestViewController
@@ -82,29 +122,6 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
             }
             controller.setList(list)
         }
-    }
-    
-    // MARK: - Override
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        tableView.register(UINib(nibName: UIID.UIID_LoanPrincipalInterestCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_LoanPrincipalInterestCell.NibName()!)
-        setShadowView(middleView!)
-        
-        topDropView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        topDropView?.setOneRow(LoanPrincipalInterest_Accout_Title, LoanPrincipalInterest_Accout_Default)
-        topDropView?.frame = topView.frame
-        topDropView?.frame.origin = .zero
-        topDropView?.delegate = self
-        topView.addSubview(topDropView!)
-        
-        setLoading(true)
-        getTransactionID("03006", TransactionID_Description)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // MARK: - UITableViewDataSource
@@ -212,6 +229,21 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                         }
                     }
                 }
+                
+                if inputAccount != nil {
+                    for index in 0..<(accountList?.count)! {
+                        if let info = accountList?[index], info.accountNO == inputAccount! {
+                            accountIndex = index
+                            topDropView?.setOneRow(LoanPrincipalInterest_Accout_Title,info.accountNO)
+                            break
+                        }
+                    }
+                    if accountIndex != nil {
+                        setLoading(true)
+                        postRequest("TRAN/TRAN0601", "TRAN0601-0", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"getList","TransactionId":transactionId,"REFNO":topDropView?.getContentByType(.First) ?? "","PRDCNT":"0"], true), AuthorizationManage.manage.getHttpHead(true)) // PRDCNT:繳息期數=>0-為查回全部,1-為可繳交第一期
+                    }
+                    inputAccount = nil
+                }
             }
             else {
                 super.didRecvdResponse(description, response)
@@ -256,6 +288,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
         if buttonIndex != actionSheet.cancelButtonIndex {
             switch actionSheet.tag {
             case ViewTag.View_AccountActionSheet.rawValue:
+                accountIndex = buttonIndex-1
                 topDropView?.setOneRow(LoanPrincipalInterest_Accout_Title, actionSheet.buttonTitle(at: buttonIndex) ?? "")
                 setLoading(true)
                 postRequest("TRAN/TRAN0601", "TRAN0601-0", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"getList","TransactionId":transactionId,"REFNO":actionSheet.buttonTitle(at: buttonIndex) ?? "","PRDCNT":"0"], true), AuthorizationManage.manage.getHttpHead(true)) // PRDCNT:繳息期數=>0-為查回全部,1-為可繳交第一期
@@ -267,7 +300,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickMoreButton(_ sender: Any) {
-        if topDropView?.getContentByType(.First) == LoanPrincipalInterest_Accout_Default {
+        if accountIndex == nil {
             showErrorMessage(ErrorMsg_Choose_OutAccount, nil)
         }
         else {

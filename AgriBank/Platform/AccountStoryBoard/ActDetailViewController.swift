@@ -31,11 +31,47 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     private var chooseAccount:String? = nil      // 目前選擇得帳號
     private var startDate = ""                   // 起始日
     private var endDate = ""                     // 截止日
-    private var resultList:[[String:Any]]? = nil
+    private var resultList:[[String:Any]]? = nil // 電文response
     private var typeList:[String]? = nil         // 使用者帳戶清單的Type List
-    private var currentIndex = 0                 //
+    private var currentIndex = 0                 // resultList Index
     
-    // MARK: - public
+    // MARK: - Public
+    func setInitial(_ type:String?, _ account:String?)  {
+        currentType = type
+        chooseAccount = account
+        if currentType != nil && chooseAccount != nil {
+            if categoryType[currentType!] != nil {
+            //  電文已經reponse SetInitial晚 
+                (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount ?? ActDetailView_ChooseAccount_Title)
+                chooseTypeView.setTypeList(typeList, setDelegate: self, typeList?.index(of: currentType!))
+                clickDateBtn(weekDayButton)
+            }
+        }
+    }
+    
+    // MARK: - Override
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
+
+        setShadowView(transDayView)
+        let view = getUIByID(.UIID_OneRowDropDownView) as! OneRowDropDownView
+        view.frame = chooseAccountView.frame
+        view.frame.origin = .zero
+        view.delegate = self
+        view.setOneRow(ActDetailView_ShowAccount_Title, ActDetailView_ChooseAccount_Title)
+        chooseAccountView.addSubview(view)
+        
+        setLoading(true)
+        getTransactionID("02041", TransactionID_Description)
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let controller = segue.destination as! ShowDetailViewController
@@ -159,42 +195,6 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             }
             controller.setList("\(currentType!)往來明細", list)
         }
-    }
-    
-    func SetInitial(_ type:String?, _ account:String?)  {
-        currentType = type
-        chooseAccount = account
-        if currentType != nil && chooseAccount != nil {
-            if categoryType[currentType!] != nil {
-            //  電文已經reponse SetInitial晚 
-                (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount ?? ActDetailView_ChooseAccount_Title)
-                chooseTypeView.setTypeList(typeList, setDelegate: self, typeList?.index(of: currentType!))
-                clickDateBtn(weekDayButton)
-            }
-        }
-    }
-    
-    // MARK: - Override
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
-
-        setShadowView(transDayView)
-        let view = getUIByID(.UIID_OneRowDropDownView) as! OneRowDropDownView
-        view.frame = chooseAccountView.frame
-        view.frame.origin = .zero
-        view.delegate = self
-        view.setOneRow(ActDetailView_ShowAccount_Title, ActDetailView_ChooseAccount_Title)
-        chooseAccountView.addSubview(view)
-        
-        setLoading(true)
-        getTransactionID("02041", TransactionID_Description)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - UITableViewDataSource

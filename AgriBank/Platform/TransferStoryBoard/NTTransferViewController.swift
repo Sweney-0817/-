@@ -53,6 +53,23 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     private var agreedAccountList:[[String:Any]]? = nil // 約定帳戶列表
     private var commonAccountList:[[String:Any]]? = nil // 常用帳戶列表
     private var inAccountIndex:Int? = nil               // 目前選擇轉入帳號
+    private var inputAccount:String? = nil              // 由「帳戶總覽」帶入的帳號
+    
+    // MARK: - Public
+    func setInitial(_ account:String?)  {
+        if accountList != nil && account != nil {
+            for index in 0..<(accountList?.count)! {
+                if let info = accountList?[index], info.accountNO == account! {
+                    accountIndex = index
+                    topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, info.currency, NTTransfer_Balance, String(info.balance))
+                    break
+                }
+            }
+        }
+        else {
+            inputAccount = account
+        }
+    }
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -121,10 +138,6 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         
         setLoading(true)
         getTransactionID("03001", TransactionID_Description)
-        
-        emailTextfield.text = "test@test.com"
-        transAmountTextfield.text = "1000"
-        memoTextfield.text = "TEST1"
     }
 
     override func didReceiveMemoryWarning() {
@@ -132,7 +145,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - private 
+    // MARK: - Private
     private func SetBtnColor(_ isPredesignated:Bool) {
         self.isPredesignated = isPredesignated
         if isPredesignated {
@@ -420,6 +433,17 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                             }
                         }
                     }
+                }
+                
+                if inputAccount != nil {
+                    for index in 0..<(accountList?.count)! {
+                        if let info = accountList?[index], info.accountNO == inputAccount! {
+                            accountIndex = index
+                            topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, info.currency, NTTransfer_Balance, String(info.balance))
+                            break
+                        }
+                    }
+                    inputAccount = nil
                 }
             }
             else {

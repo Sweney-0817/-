@@ -397,10 +397,14 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
         switch type {
         case .Type1:
+            chooseAccount = value[ActOverview_CellTitleList.first!]
             enterFeatureByID(.FeatureID_NTTransfer, false)
+            pushByclickExpandBtn = true
             
         case .Type2:
+            chooseAccount = value[ActOverview_CellTitleList.first!]
             enterFeatureByID(.FeatureID_NTTransfer, false)
+            pushByclickExpandBtn = true
         
         case .Type3:
             chooseAccount = value[ActOverview_CellTitleList.first!]
@@ -408,7 +412,9 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             pushByclickExpandBtn = true
     
         case .Type4:
+            chooseAccount = value[ActOverview_CellTitleList.first!]
             enterFeatureByID(.FeatureID_LoanPrincipalInterest, false)
+            pushByclickExpandBtn = true
             
         default: break
         }
@@ -444,8 +450,16 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     
     // MARK: - UINavigationControllerDelegate
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        if pushByclickExpandBtn && viewController is ActDetailViewController {
-            (viewController as! ActDetailViewController).SetInitial(ActOverview_TypeList[typeListIndex], chooseAccount)
+        if pushByclickExpandBtn  {
+            if viewController is ActDetailViewController {
+                (viewController as! ActDetailViewController).setInitial(ActOverview_TypeList[typeListIndex], chooseAccount)
+            }
+            else if viewController is NTTransferViewController {
+                (viewController as! NTTransferViewController).setInitial(chooseAccount)
+            }
+            else if viewController is LoanPrincipalInterestViewController {
+                (viewController as! LoanPrincipalInterestViewController).setInitial(chooseAccount)
+            }
             navigationController.delegate = nil
         }
     }
