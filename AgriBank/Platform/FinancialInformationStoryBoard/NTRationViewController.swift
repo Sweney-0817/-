@@ -21,6 +21,7 @@ struct NTRationStruct {
 }
 
 let NTRationView_TypeList = ["活存","定期","定儲","其他"]
+let NTRationView_Bank_Title = "農會"
 
 class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, ChooseTypeDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var m_vPlace: UIView!
@@ -40,6 +41,7 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     private var m_PickerData = [[String:[String]]]()
     private var bankCode = [String:String]()
     
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,17 +52,24 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         postRequest("Comm/COMM0402", "COMM0402", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07002","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    func setAllSubView() {
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: - Private
+    private func setAllSubView() {
         setDDPlace()
         setChooseTypeView()
         setDataTableView()
     }
     
-    func setDDPlace() {
+    private func setDDPlace() {
         if (m_DDPlace == nil) {
             m_DDPlace = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDPlace?.delegate = self
-            m_DDPlace?.setOneRow("農會", "")
+            m_DDPlace?.setOneRow(NTRationView_Bank_Title, Choose_Title)
+            m_DDPlace?.m_lbFirstRowTitle.textAlignment = .center
             m_DDPlace?.frame = CGRect(x:0, y:0, width:m_vPlace.frame.width, height:(m_DDPlace?.getHeight())!)
             m_vPlace.addSubview(m_DDPlace!)
         }
@@ -68,18 +77,18 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         m_vPlace.layer.borderWidth = 1
     }
     
-    func setChooseTypeView() {
+    private func setChooseTypeView() {
         m_vChooseTypeView.setTypeList(NTRationView_TypeList, setDelegate: self)
         m_vChooseTypeView.layer.borderColor = Gray_Color.cgColor
         m_vChooseTypeView.layer.borderWidth = 1
     }
     
-    func setDataTableView() {
+    private func setDataTableView() {
         m_tvData.register(UINib(nibName: UIID.UIID_NTRationCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_NTRationCell.NibName()!)
         m_tvData.allowsSelection = false
     }
     
-    func setPicker() {
+    private func setPicker() {
         m_tfPicker.delegate = self
         m_vPlace.addSubview(m_tfPicker)
 
@@ -105,13 +114,13 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         m_tfPicker.inputView = pickerView
     }
     
-    func initDataTitleForType(_ type:String) {
+    private func initDataTitleForType(_ type:String) {
         m_strType = type
         switch type {
-            case "活存", "其他":
+            case NTRationView_TypeList[0], NTRationView_TypeList[3]:
                 m_lbData1Title.text = ""
                 m_lbData2Title.text = "利率"
-            case "定期", "定儲":
+            case NTRationView_TypeList[1], NTRationView_TypeList[2]:
                 m_lbData1Title.text = "固定利率"
                 m_lbData2Title.text = "機動利率"
         default:
@@ -120,23 +129,11 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
             
         }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         textFieldShouldBeginEditing(m_tfPicker)
         m_tfPicker.becomeFirstResponder()
-    }
-    
-    // MARK: - UIActionSheetDelegate
-    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
-        if (actionSheet.buttonTitle(at: buttonIndex)! != "cancel") {
-            m_DDPlace?.setOneRow(actionSheet.buttonTitle(at: buttonIndex)!, actionSheet.buttonTitle(at: buttonIndex)!)
-        }
     }
     
     // MARK: - ChooseTypeDelegate
@@ -153,13 +150,13 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch m_strType! {
-            case "活存":
+            case NTRationView_TypeList[0]:
             return m_Data1.count
-            case "定期":
+            case NTRationView_TypeList[1]:
             return m_Data2.count
-            case "定儲":
+            case NTRationView_TypeList[2]:
             return m_Data3.count
-            case "其他":
+            case NTRationView_TypeList[3]:
             return m_Data4.count
         default:
             return 0
@@ -167,26 +164,24 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (true) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_NTRationCell.NibName()!, for: indexPath) as! NTRationCell
-            switch m_strType! {
-            case "活存":
-                let data = m_Data1[indexPath.row]
-                cell.setData(data.title!, data.data1!, data.data2!)
-            case "定期":
-                let data = m_Data2[indexPath.row]
-                cell.setData(data.title!, data.data1!, data.data2!)
-            case "定儲":
-                let data = m_Data3[indexPath.row]
-                cell.setData(data.title!, data.data1!, data.data2!)
-            case "其他":
-                let data = m_Data4[indexPath.row]
-                cell.setData(data.title!, data.data1!, data.data2!)
-            default:
-                cell.setData("", "", "")
-            }
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_NTRationCell.NibName()!, for: indexPath) as! NTRationCell
+        switch m_strType! {
+        case NTRationView_TypeList[0]:
+            let data = m_Data1[indexPath.row]
+            cell.setData(data.title!, data.data1!, data.data2!)
+        case NTRationView_TypeList[1]:
+            let data = m_Data2[indexPath.row]
+            cell.setData(data.title!, data.data1!, data.data2!)
+        case NTRationView_TypeList[2]:
+            let data = m_Data3[indexPath.row]
+            cell.setData(data.title!, data.data1!, data.data2!)
+        case NTRationView_TypeList[3]:
+            let data = m_Data4[indexPath.row]
+            cell.setData(data.title!, data.data1!, data.data2!)
+        default:
+            cell.setData("", "", "")
         }
+        return cell
     }
 
     // MARK: - For Picker
@@ -199,7 +194,7 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         let a = m_PickerData[pickerView.selectedRow(inComponent: 0)]
         let city = [String](a.keys).first ?? ""
         let place = a[city]?[pickerView.selectedRow(inComponent: 1)] ?? ""
-        m_DDPlace?.setOneRow((m_DDPlace?.m_lbFirstRowTitle.text)!, city+" "+place)
+        m_DDPlace?.setOneRow(NTRationView_Bank_Title, city+" "+place)
         m_tfPicker.resignFirstResponder()
         
         if let code = bankCode["\(city)\(place)"] {

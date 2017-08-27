@@ -21,6 +21,7 @@ struct PromotionStruct {
     }
 }
 
+let Promotion_Seivice_Title = "提供單位"
 class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var m_vPlace: UIView!
     @IBOutlet weak var m_tvData: UITableView!
@@ -67,7 +68,7 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
         if (m_DDPlace == nil) {
             m_DDPlace = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDPlace?.delegate = self
-            m_DDPlace?.setOneRow("提供單位", "")
+            m_DDPlace?.setOneRow(Promotion_Seivice_Title, Choose_Title)
             m_DDPlace?.frame = CGRect(x:0, y:0, width:m_vPlace.frame.width, height:(m_DDPlace?.getHeight())!)
             m_vPlace.addSubview(m_DDPlace!)
         }
@@ -129,7 +130,7 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
         switch description {
         case "INFO0101":
             if let data = response.object(forKey: "Data") as? [String:Any], let list = data["AllPromo"] as? [[String:Any]] {
-                for index in 0...list.count-1 {
+                for index in 0..<list.count {
                     let dic = list[index]
                     if let city = dic["CC_CityName"] as? String, let promotion = dic["LocalPromo"] as? [[String:String]] {
                         var pList = [PromotionStruct]()

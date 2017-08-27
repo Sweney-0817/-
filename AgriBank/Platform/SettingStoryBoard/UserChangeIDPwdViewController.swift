@@ -54,9 +54,6 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
             newTextfield.placeholder = "新使用者密碼"
             againTextfield.placeholder = "再次輸入新使用者密碼"
         }
-        sourceTextfield.text = "Agribank11234567"
-        newTextfield.text = "1qaz2wsx3edc"
-        againTextfield.text = "1qaz2wsx3edc"
     }
 
     override func didReceiveMemoryWarning() {

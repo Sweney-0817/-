@@ -231,6 +231,13 @@
                                     <constraint firstAttribute="height" constant="60" id="5QW-U6-637"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gbe-1G-r53">
+                                <rect key="frame" x="0.0" y="80" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="q2y-fC-PVL"/>
+                                </constraints>
+                            </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lYR-cv-JS9">
                                 <rect key="frame" x="0.0" y="100" width="375" height="507"/>
                                 <subviews>
@@ -449,9 +456,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="oCU-QK-Tce" secondAttribute="trailing" id="3lU-OX-JHB"/>
+                            <constraint firstAttribute="trailing" secondItem="gbe-1G-r53" secondAttribute="trailing" id="AeL-d0-blm"/>
                             <constraint firstItem="IM8-cM-CNQ" firstAttribute="leading" secondItem="g6D-yD-eA8" secondAttribute="leading" id="GNA-OE-bFE"/>
                             <constraint firstItem="lYR-cv-JS9" firstAttribute="leading" secondItem="g6D-yD-eA8" secondAttribute="leading" id="JtR-9U-taq"/>
                             <constraint firstItem="cD3-XN-njt" firstAttribute="top" secondItem="oCU-QK-Tce" secondAttribute="bottom" id="KVJ-7G-6fO"/>
+                            <constraint firstItem="gbe-1G-r53" firstAttribute="top" secondItem="IM8-cM-CNQ" secondAttribute="bottom" id="Qgt-Qb-qQM"/>
                             <constraint firstAttribute="trailing" secondItem="lYR-cv-JS9" secondAttribute="trailing" id="QsG-Jp-nMj"/>
                             <constraint firstItem="IM8-cM-CNQ" firstAttribute="top" secondItem="cYm-8L-xP6" secondAttribute="bottom" id="UWw-i7-s4W"/>
                             <constraint firstAttribute="trailing" secondItem="IM8-cM-CNQ" secondAttribute="trailing" id="Xeb-fa-A3R"/>
@@ -459,6 +468,7 @@
                             <constraint firstItem="oCU-QK-Tce" firstAttribute="leading" secondItem="g6D-yD-eA8" secondAttribute="leading" id="cmI-nN-eUk"/>
                             <constraint firstItem="lYR-cv-JS9" firstAttribute="top" secondItem="IM8-cM-CNQ" secondAttribute="bottom" constant="20" id="hpx-RD-jkP"/>
                             <constraint firstItem="oCU-QK-Tce" firstAttribute="top" secondItem="lYR-cv-JS9" secondAttribute="bottom" id="pTZ-io-v1f"/>
+                            <constraint firstItem="gbe-1G-r53" firstAttribute="leading" secondItem="g6D-yD-eA8" secondAttribute="leading" id="tMS-bg-B1k"/>
                         </constraints>
                     </view>
                     <connections>

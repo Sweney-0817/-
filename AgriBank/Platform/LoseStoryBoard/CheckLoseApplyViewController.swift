@@ -12,9 +12,7 @@ let CheckLoseApply_ChooseType_Title = "掛失類別"
 let CheckLoseApply_TypeList = ["支票掛失止付","空白支票掛失"]
 let CheckLoseApply_CheckAccount_Title = "支票帳號"
 let CheckLoseApply_Date_Title = "發票日"
-let CheckLoseApply_Date_Default = "請選擇發票日"
 let CheckLoseApply_TransAccount_Title = "手續費轉帳帳號"
-let CheckLoseApply_TransAccount_Default = "請選擇轉帳帳號"
 let CheckLoseApply_Memo = "請您本人攜帶身分證及原留印鑑來行辦理取消掛失或重新申請作業"
 
 class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate, UITextFieldDelegate {
@@ -112,7 +110,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         if m_CheckDate == nil {
             m_CheckDate = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_CheckDate?.delegate = self
-            m_CheckDate?.setOneRow(CheckLoseApply_Date_Title, CheckLoseApply_Date_Default)
+            m_CheckDate?.setOneRow(CheckLoseApply_Date_Title, Choose_Title)
             m_CheckDate?.frame = CGRect(x:0, y:0, width:m_vCheckDate.frame.width, height:(m_CheckDate?.getHeight())!)
             m_vCheckDate.addSubview(m_CheckDate!)
         }
@@ -125,7 +123,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         if m_FeeAccount == nil {
             m_FeeAccount = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_FeeAccount?.delegate = self
-            m_FeeAccount?.setOneRow(CheckLoseApply_TransAccount_Title, CheckLoseApply_TransAccount_Default)
+            m_FeeAccount?.setOneRow(CheckLoseApply_TransAccount_Title, Choose_Title)
             m_FeeAccount?.frame = CGRect(x:0, y:0, width:m_vFeeAccount.frame.width, height:(m_FeeAccount?.getHeight())!)
             m_vFeeAccount.addSubview(m_FeeAccount!)
         }
@@ -259,13 +257,13 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
             if (m_tfCheckAmount.text?.isEmpty)! {
                 errorMessage.append("\(ErrorMsg_Enter_CheckAmount)\n")
             }
-            if m_CheckDate?.getContentByType(.First) == CheckLoseApply_Date_Default {
+            if m_CheckDate?.getContentByType(.First) == Choose_Title {
                 errorMessage.append("\(ErrorMsg_Choose_InvoicDate)\n")
             }
             if accountList == nil {
                 errorMessage.append("\(ErrorMsg_GetList_OutAccount)\n")
             }
-            if m_FeeAccount?.getContentByType(.First) == CheckLoseApply_TransAccount_Default {
+            if m_FeeAccount?.getContentByType(.First) == Choose_Title {
                 errorMessage.append("\(ErrorMsg_Choose_OutAccount)\n")
             }
         }

@@ -26,13 +26,6 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
 
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
-        
-        sourceIDTextfield.text = "Systexsoftware"
-        newIDTextfield.text = "softwareSystex"
-        againIDTextfield.text = "softwareSystex"
-        sourcePasswordTextfield.text = "systex6214"
-        newPasswordTextfield.text = "6214systex"
-        againPasswordTextfield.text = "6214systex"
     }
 
     override func didReceiveMemoryWarning() {

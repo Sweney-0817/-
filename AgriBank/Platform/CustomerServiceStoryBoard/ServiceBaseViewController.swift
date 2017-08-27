@@ -32,7 +32,6 @@ let ServiceBase_TypeList = ["全部","農漁會","ATM"]
 let ServiceBase_Default_SearchRange = "我的週遭"
 let ServiceBase_CellHeight = CGFloat(100)
 let ServiceBase_Segue = "goDetail"
-let ServiceBase_Action_Title = "請選擇查詢範圍"
 let ServiceBase_Unit_Type = "1"
 let ServiceBase_ATM_Type = "2"
 let ServiceBase_OneDrop_Title = "查詢範圍"
@@ -191,7 +190,6 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         if cityList.count != 0 {
             let action = UIActionSheet()
             action.delegate = self
-            action.title = ServiceBase_Action_Title
             for city in cityList  {
                 action.addButton(withTitle: city)
             }

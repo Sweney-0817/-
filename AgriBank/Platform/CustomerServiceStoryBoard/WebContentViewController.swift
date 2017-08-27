@@ -17,7 +17,7 @@ class WebContentViewController: BaseViewController {
         super.viewDidLoad()
 
         m_lbTitle.text = m_Data?.title
-        let req:URLRequest = URLRequest(url: URL.init(string: (m_Data?.url)!)!)
+        let req:URLRequest = URLRequest(url: URL(string: (m_Data?.url)!)!)
         m_wvContent.loadRequest(req)
     }
 

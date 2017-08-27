@@ -86,8 +86,6 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
     
     func setChooseTypeView() {
         m_vChooseTypeView.setTypeList(RegularSavingCalculation_TypeList, setDelegate: self)
-        m_vChooseTypeView.layer.borderColor = Gray_Color.cgColor
-        m_vChooseTypeView.layer.borderWidth = 1
     }
     
     func setAmountView() {

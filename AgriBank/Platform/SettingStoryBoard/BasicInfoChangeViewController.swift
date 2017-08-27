@@ -31,28 +31,22 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
     private var postalCode = ""   // 原郵遞區號
     private var address = ""      // 原聯絡地址
     
-    // MARK: - Public
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let controller = segue.destination as! BasicInfoResultViewController
-        controller.SetList(resultList)
-    }
-    
     // MARK: - Private
     private func InputIsCorrect() -> Bool {
         if emailTextfield.text!.isEmpty && mobliePhoneTextfield.text!.isEmpty && telePhoneTextfield.text!.isEmpty && teleAreaCodeTextfield.text!.isEmpty && postalCodeTextfield.text!.isEmpty && addressTextfield.text!.isEmpty {
-            showErrorMessage(nil, "至少需修改一項")
+            showErrorMessage(ErrorMsg_NeedChangeOne, nil)
             return false
         }
         if (telePhoneTextfield.text!.isEmpty && !teleAreaCodeTextfield.text!.isEmpty) || (!telePhoneTextfield.text!.isEmpty && teleAreaCodeTextfield.text!.isEmpty) {
-            showErrorMessage(nil, "「新區碼」及「新聯絡電話」必須一起修改")
+            showErrorMessage(ErrorMsg_Telephone, nil)
             return false
         }
         if (postalCodeTextfield.text!.isEmpty && !addressTextfield.text!.isEmpty) || (!postalCodeTextfield.text!.isEmpty && addressTextfield.text!.isEmpty) {
-            showErrorMessage(nil, "「新郵遞區號」及「新聯絡地址」必須一起修改")
+            showErrorMessage(ErrorMsg_Address, nil)
             return false
         }
         if !emailTextfield.text!.isEmpty && !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {
-            showErrorMessage(nil, "Email格式不符")
+            showErrorMessage(ErrorMsg_Invalid_Email, nil)
             return false
         }
         
@@ -67,18 +61,16 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
         setLoading(true)
         getTransactionID("08001", TransactionID_Description)
         AddObserverToKeyBoard()
-        
-        emailTextfield.text = "test@gmail.com"
-        mobliePhoneTextfield.text = "0900100100"
-        teleAreaCodeTextfield.text = "03"
-        telePhoneTextfield.text = "87525527"
-        postalCodeTextfield.text = "113"
-        addressTextfield.text = "台北市內湖區瑞光路258巷2號7樓之4"
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let controller = segue.destination as! BasicInfoResultViewController
+        controller.SetList(resultList)
     }
 
     // MARK: - StoryBoard Touch Event
