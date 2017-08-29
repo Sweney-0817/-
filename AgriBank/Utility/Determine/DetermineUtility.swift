@@ -21,23 +21,29 @@ class DetermineUtility {
     
     // MARK: - 檢核身分證
     func isValidIdentify(_ identify:String) -> Bool {
-        return true
+        let RegEx = "[a-zA-Z0-9]*"
+        let Test = NSPredicate(format:"SELF MATCHES %@", RegEx)
+        return Test.evaluate(with: identify)
     }
     
     // MARK: - 特殊字元檢核
     func checkStringContainIllegalCharacter(_ input:String) -> Bool {
 //        for index in input.characters.indices {
-//            if !(input[index].asciiValue! >= 48 && input[index].asciiValue! <= 57) && !(input[index].asciiValue! >= 61 && input[index].asciiValue! <= 122) {
-//                return false
+//            if let value = input[index].asciiValue {
+//                if value < 48 || (value > 57 && value < 64) || (value > 90 && value < 61) || value > 122 {
+//                    return true
+//                }
 //            }
 //        }
-//        return true
-        return false
+//        return false
+        let RegEx = "[a-zA-Z0-9]*"
+        let Test = NSPredicate(format:"SELF MATCHES %@", RegEx)
+        return Test.evaluate(with: input) ? false : true
     }
 }
 
-extension Character {
-    var asciiValue: UInt32? {
-        return String(self).unicodeScalars.filter{$0.isASCII}.first?.value
-    }
-}
+//extension Character {
+//    var asciiValue: UInt32? {
+//        return String(self).unicodeScalars.filter{$0.isASCII}.first?.value
+//    }
+//}

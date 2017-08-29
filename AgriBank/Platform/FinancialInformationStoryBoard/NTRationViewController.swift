@@ -100,8 +100,7 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         pickerView.selectRow(0, inComponent: 0, animated: false)
         // ToolBar
         let toolBar = UIToolbar()
-        toolBar.barStyle = .default
-        toolBar.isTranslucent = true
+        toolBar.barTintColor = ToolBar_barTintColor
         toolBar.tintColor = ToolBar_tintColor
         toolBar.sizeToFit()
         // Adding Button ToolBar

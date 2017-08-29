@@ -182,7 +182,6 @@ class BaseViewController: UIViewController, LoginDelegate {
         }
     }
     
-    
     func showErrorMessage(_ title:String?, _ message:String?) {
         let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:UIAlert_Cancel_Title)
         alert.show()
@@ -203,6 +202,17 @@ class BaseViewController: UIViewController, LoginDelegate {
         loginView = nil
     }
     
+    func showLoginView() { // 顯示Login畫面
+        if loginView == nil {
+            loginView = getUIByID(.UIID_Login) as? LoginView
+            loginView?.frame = view.frame
+            getCanLoginBankInfo()
+            getImageConfirm()
+            view.addSubview(loginView!)
+        }
+        AddObserverToKeyBoard()
+    }
+    
     // MARK: - UIBarButtonItem Selector
     func clickShowSideMenu() {
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
@@ -220,7 +230,11 @@ class BaseViewController: UIViewController, LoginDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWillShow(_ notification:NSNotification) {        
+    func keyboardWillShow(_ notification:NSNotification) {
+        if loginView != nil, !(loginView?.isNeedRise())! {
+            view.frame.origin.y = 0
+            return
+        }
         let userInfo:NSDictionary = notification.userInfo! as NSDictionary
         let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
@@ -233,21 +247,10 @@ class BaseViewController: UIViewController, LoginDelegate {
     }
 }
 
-// MARK: - 登入頁面
+// MARK: - 電文發送 接收
 extension BaseViewController: ConnectionUtilityDelegate {
     func getTransactionID(_ workCode:String, _ description:String) { // 取得交易編號
         postRequest("Comm/COMM0601", description, AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"getTranID"], false), AuthorizationManage.manage.getHttpHead(false))
-    }
-    
-    func showLoginView() { // 顯示Login畫面
-        if loginView == nil {
-            loginView = getUIByID(.UIID_Login) as? LoginView
-            loginView?.frame = view.frame
-            getCanLoginBankInfo()
-            getImageConfirm()
-            view.addSubview(loginView!)
-        }
-        AddObserverToKeyBoard()
     }
     
     func getImageConfirm(_ varifyID:String? = nil) { // 取得圖形驗證碼
@@ -294,7 +297,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
         switch description {
         case "COMM0501":
             if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
-                loginView?.SetImageConfirm(responseImage)
+                loginView?.setImageConfirm(responseImage)
             }
             if let ID = response[RESPONSE_VARIFYID_KEY] as? String {
                 headVarifyID = ID
@@ -323,7 +326,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         cityCode[city] = cityID
                     }
                 }
-                loginView?.setInitialList(bankList, bankCode, cityCode, "", self)
+                loginView?.setInitialList(bankList, bankCode, cityCode, self)
             }
             else {
                 showReturnMsg = true
@@ -358,6 +361,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 }
                 AuthorizationManage.manage.SetResponseLoginInfo(info, nil)
                 registerAPNSToken()
+                loginView?.saveDataInFile()
                 loginView?.removeFromSuperview()
                 loginView = nil
                 if curFeatureID != nil {

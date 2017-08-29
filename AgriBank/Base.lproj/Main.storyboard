@@ -31,7 +31,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="VcP-7e-jcN"/>
+                                    <constraint firstAttribute="height" constant="44" id="wMB-G8-GyB"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MfV-fU-wHy">
@@ -101,7 +101,7 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login" translatesAutoresizingMaskIntoConstraints="NO" id="gJv-Eg-KzY">
-                                <rect key="frame" x="157" y="162" width="60" height="60"/>
+                                <rect key="frame" x="157.5" y="162" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="i7n-Xn-Hzi"/>
                                     <constraint firstAttribute="height" constant="60" id="tFW-oe-tHC"/>
@@ -194,7 +194,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="140"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackHome" translatesAutoresizingMaskIntoConstraints="NO" id="oIP-SP-GCV">
-                                        <rect key="frame" x="157" y="40" width="60" height="60"/>
+                                        <rect key="frame" x="157.5" y="40" width="60" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="DaF-S4-YoK"/>
                                             <constraint firstAttribute="width" constant="60" id="gtM-FV-OcK"/>

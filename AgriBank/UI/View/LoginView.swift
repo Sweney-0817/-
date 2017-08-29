@@ -34,17 +34,19 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     @IBOutlet weak var passwordTextfield: UITextField!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var imageConfirmView: UIView!
+    @IBOutlet weak var lockButton: UIButton!
     private var request:ConnectionUtility? = nil
     private var list = [[String:[String]]]()
     private var bankCode = [String:String]()
     private var cityCode = [String:String]()
-    private var currnetCity:String? = nil
     private var isLocker = false
     private var currentTextField:UITextField? = nil
     private var delegate:LoginDelegate? = nil
     private var loginInfo = LoginStrcture()
     private var imgConfirm:ImageConfirmView? = nil
+    private var curAccount:String? = nil
     
+    // MARK: - Override
     override func layoutSubviews() {
         super.layoutSubviews()
         imgConfirm = Platform.plat.getUIByID(.UIID_ImageConfirmView) as? ImageConfirmView
@@ -53,22 +55,47 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         imgConfirm?.delegate = self
         imageConfirmView.addSubview(imgConfirm!)
         contentView.layer.cornerRadius = Layer_BorderRadius
+        if let account = SecurityUtility.utility.readFileByKey(SetKey: File_Account_Key, setDecryptKey: AES_Key) as? String {
+            isLocker = true
+            if isLocker {
+                lockButton.setBackgroundImage(UIImage(named: ImageName.Locker.rawValue), for: .normal)
+            }
+            else {
+                lockButton.setBackgroundImage(UIImage(named: ImageName.Unlocker.rawValue), for: .normal)
+            }
+            accountTextfield.text = account
+        }
     }
     
-    // MARK: - pubic
-    func setInitialList(_ list:[[String:[String]]], _ bankCode:[String:String], _ cityCode:[String:String], _ city:String, _ delegate:LoginDelegate) {
+    // MARK: - Public
+    func setInitialList(_ list:[[String:[String]]], _ bankCode:[String:String], _ cityCode:[String:String], _ delegate:LoginDelegate) {
         self.list = list
         self.bankCode = bankCode
         self.cityCode = cityCode
-        currnetCity = city
         self.delegate = delegate
-        
-        accountTextfield.text = "B123456789"
-        idTextfield.text = "systex"
-        passwordTextfield.text = "systex6214"
+    
+        if let cCode = SecurityUtility.utility.readFileByKey(SetKey: File_CityCode_Key, setDecryptKey: AES_Key) as? String, let bCode = SecurityUtility.utility.readFileByKey(SetKey: File_BankCode_Key, setDecryptKey: AES_Key) as? String {
+            var city = ""
+            for key in cityCode.keys {
+                if cityCode[key] == cCode {
+                    city = key
+                    break
+                }
+            }
+            var bank = ""
+            for key in bankCode.keys {
+                if bankCode[key] == bCode {
+                    bank = key.replacingOccurrences(of: city, with: "")
+                    break
+                }
+            }
+            if !city.isEmpty && !bank.isEmpty {
+                locationTextfield.text = city + " " + bank
+            }
+        }
     }
     
-    func isNeedRise() -> Bool {
+    func isNeedRise() -> Bool { // 畫面是否需要提高
         if currentTextField == locationTextfield || currentTextField == accountTextfield {
             return false
         }
@@ -76,11 +103,22 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         return true
     }
     
-    func SetImageConfirm(_ image:UIImage?) {
+    func setImageConfirm(_ image:UIImage?) { // 設圖形驗證碼
         imgConfirm?.m_ivShow.image = image
     }
     
-    // MARK: - private
+    func saveDataInFile() { // 登入成功後，儲存登入成功的農漁會代碼
+        if isLocker {
+            SecurityUtility.utility.writeFileByKey(loginInfo.account, SetKey: File_Account_Key, setEncryptKey: AES_Key)
+        }
+        else {
+            SecurityUtility.utility.writeFileByKey(nil, SetKey: File_Account_Key)
+        }
+        SecurityUtility.utility.writeFileByKey(loginInfo.cityCode, SetKey: File_CityCode_Key, setEncryptKey: AES_Key)
+        SecurityUtility.utility.writeFileByKey(loginInfo.bankCode, SetKey: File_BankCode_Key, setEncryptKey: AES_Key)
+    }
+    
+    // MARK: - Private
     private func addPickerView(_ textField:UITextField) {
         var frame = self.frame
         frame.origin.y = frame.maxY - PickView_Height
@@ -93,8 +131,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         pickerView.selectRow(0, inComponent: 0, animated: false)
         // ToolBar
         let toolBar = UIToolbar()
-        toolBar.barStyle = .default
-        toolBar.isTranslucent = true
+        toolBar.barTintColor = ToolBar_barTintColor
         toolBar.tintColor = ToolBar_tintColor
         toolBar.sizeToFit()
         // Adding Button ToolBar
@@ -108,7 +145,33 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     }
     
     private func InputIsCorrect() -> Bool {
-        return true
+        var message = ""
+        if (locationTextfield.text?.isEmpty)! {
+            message.append("\(ErrorMsg_Choose_CityBank)\n")
+        }
+        if (accountTextfield.text?.isEmpty)! {
+            message.append("\(ErrorMsg_Enter_Identify)\n")
+        }
+        else {
+            if !DetermineUtility.utility.isValidIdentify(accountTextfield.text!) {
+                message.append("\(ErrorMsg_Error_Identify)\n")
+            }
+        }
+        if (idTextfield.text?.isEmpty)! {
+            message.append("\(ErrorMsg_Enter_UserID)\n")
+        }
+        if (passwordTextfield.text?.isEmpty)! {
+            message.append("\(ErrorMsg_Enter_UserPassword)\n")
+        }
+        
+        if message.isEmpty {
+            return true
+        }
+        else {
+            let alert = UIAlertView(title: message, message: nil, delegate: nil, cancelButtonTitle:UIAlert_Cancel_Title)
+            alert.show()
+            return false
+        }
     }
     
     // MARK: - Xib Touch Event
@@ -164,7 +227,12 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         currentTextField = textField
         if textField == locationTextfield {
-            addPickerView(textField)
+            if list.count != 0 {
+                addPickerView(textField)
+            }
+            else {
+                return false
+            }
         }
         return true
     }
@@ -242,5 +310,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         loginInfo.imgPassword = input
     }
     
-    func ImageConfirmTextfieldBeginEditing(_ textfield:UITextField) {}
+    func ImageConfirmTextfieldBeginEditing(_ textfield:UITextField) {
+        currentTextField = textfield
+    }
 }

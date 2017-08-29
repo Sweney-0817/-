@@ -42,7 +42,6 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     @IBOutlet weak var m_tvData: UITableView!
 
     private var m_DDPlace: OneRowDropDownView? = nil
-    private var m_iSelectedIndex = -1
     private var m_strSearchRange = ServiceBase_Default_SearchRange
     private var currentType = ServiceBase_TypeList.first!
     private var aroundMeList = [ServiceBaseStruct]()
@@ -51,14 +50,10 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     private var ATMInfoList = [String:[ServiceBaseStruct]]()  // ATM
     private var ATMList = [String]()                          // ATM - city
     private var curData = [ServiceBaseStruct]()
+    private var m_iSelectedIndex:Int? = nil
     private var locationManager:CLLocationManager? = nil
     private var curLocation = CLLocationCoordinate2D()
 
-    // MARK: - Public
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-    }
-    
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +64,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         // 開啟定位
         if CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             locationManager = CLLocationManager()
-            locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager?.delegate = self
             if CLLocationManager.authorizationStatus() == .notDetermined  {
                 locationManager?.requestWhenInUseAuthorization()
@@ -78,6 +73,9 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         else {
             locationManager?.requestWhenInUseAuthorization()
         }
+        
+        setLoading(true)
+        postRequest("Info/INFO0302", "INFO0302", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07053","Operate":"getListInfo"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
     override func didReceiveMemoryWarning() {
@@ -92,6 +90,18 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         locationManager?.stopUpdatingLocation()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if let controller = segue.destination as? ServiceBaseDetailViewController {
+            var list = [[String:String]]()
+            list.append([Response_Key:"名稱",Response_Value:curData[m_iSelectedIndex!].name ?? ""])
+            list.append([Response_Key:"地址",Response_Value:curData[m_iSelectedIndex!].address ?? ""])
+            list.append([Response_Key:"電話",Response_Value:curData[m_iSelectedIndex!].phone ?? ""])
+            list.append([Response_Key:"傳真",Response_Value:curData[m_iSelectedIndex!].fax ?? ""])
+            controller.setData(list, curData[m_iSelectedIndex!].phone ?? "", curLocation)
+        }
     }
     
     // MARK: - Private
@@ -131,19 +141,21 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
                 switch index {
                 case 0:
                     curData.append(contentsOf: aroundMeList)
+                    
                 case 1:
                     for info in aroundMeList {
                         if info.type == ServiceBase_Unit_Type {
                             curData.append(info)
                         }
                     }
+                    
                 case 2:
-                    curData = [ServiceBaseStruct]()
                     for info in aroundMeList {
                         if info.type == ServiceBase_ATM_Type {
                             curData.append(info)
                         }
                     }
+                    
                 default: break
                 }
             }
@@ -240,21 +252,23 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
+        setLoading(false)
         switch description {
         case "INFO0301":
             if let data = response.object(forKey: "Data") as? [String:Any], let array = data["No"] as? [[String:String]] {
+                aroundMeList.removeAll()
                 for info in array {
                     if let name = info["Name"], let address = info["Address"], let tel = info["Tel"], let fax = info["Fax"], let distance = info["Distance"], let type = info["Type"], let longitude = info["Longitude"], let latitude = info["Latitude"] {
                         aroundMeList.append(ServiceBaseStruct(name, address, tel, fax, distance, type, CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
                     }
                 }
                 initDataTitleForType()
-                m_tvData.reloadData()
-                postRequest("Info/INFO0302", "INFO0302", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07053","Operate":"getListInfo"], false), AuthorizationManage.manage.getHttpHead(false))
             }
+            
         case "INFO0302":
-            setLoading(false)
             if let data = response.object(forKey: "Data") as? [String:Any] {
+                unitList.removeAll()
+                unitInfoList.removeAll()
                 if let unit = data["Unit"] as? [[String:String]] {
                     for info in unit {
                         if let city = info["CC_CityName"] {
@@ -273,6 +287,8 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
                     }
                 }
                 if let ATM = data["Unit"] as? [[String:String]]  {
+                    ATMList.removeAll()
+                    ATMInfoList.removeAll()
                     for info in ATM {
                         if let city = info["CC_CityName"] {
                             if ATMList.index(of: city) == nil {
@@ -300,7 +316,6 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         if let coordinate = locations.first?.coordinate {
             if curLocation.latitude != coordinate.latitude || curLocation.longitude != coordinate.longitude {
                 curLocation = coordinate
-                setLoading(true)
                 postRequest("Info/INFO0301", "INFO0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07052","Operate":"getListInfo","Longitude":curLocation.longitude,"Latitude":curLocation.latitude], false), AuthorizationManage.manage.getHttpHead(false))
             }
         }

@@ -40,7 +40,7 @@
                                 <constraint firstAttribute="width" constant="94" id="tSG-0Z-hXc"/>
                             </constraints>
                         </imageView>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="9Iu-uw-4Wn" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="請選擇" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="9Iu-uw-4Wn" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                             <rect key="frame" x="15" y="195" width="256" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="CRg-EQ-at5"/>
@@ -75,13 +75,6 @@
                                 <action selector="clickLockBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="sZv-SV-NOt"/>
                             </connections>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropDown" translatesAutoresizingMaskIntoConstraints="NO" id="lYI-ew-UL7">
-                            <rect key="frame" x="236" y="261" width="20" height="20"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="20" id="24m-dg-0El"/>
-                                <constraint firstAttribute="width" constant="20" id="mpm-XC-Cqb"/>
-                            </constraints>
-                        </imageView>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="使用者代碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="OI6-jV-582" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                             <rect key="frame" x="15" y="303" width="311" height="44"/>
                             <nil key="textColor"/>
@@ -118,7 +111,6 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="lYI-ew-UL7" firstAttribute="trailing" secondItem="0LC-lY-FRG" secondAttribute="trailing" constant="-15" id="5We-DA-jbD"/>
                         <constraint firstItem="9Iu-uw-4Wn" firstAttribute="leading" secondItem="Ctq-ku-OMi" secondAttribute="leading" constant="15" id="5oa-93-2cg"/>
                         <constraint firstItem="0LC-lY-FRG" firstAttribute="height" secondItem="9Iu-uw-4Wn" secondAttribute="height" id="9Cq-69-z2S"/>
                         <constraint firstItem="0LC-lY-FRG" firstAttribute="leading" secondItem="9Iu-uw-4Wn" secondAttribute="leading" id="9xG-Dz-uuN"/>
@@ -131,7 +123,6 @@
                         <constraint firstItem="NaA-w9-Z9a" firstAttribute="height" secondItem="XbQ-Sb-po2" secondAttribute="height" id="Kk9-cz-yxg"/>
                         <constraint firstItem="1pS-MV-8lP" firstAttribute="top" secondItem="Ctq-ku-OMi" secondAttribute="top" constant="65" id="NBB-yP-ZIx"/>
                         <constraint firstAttribute="trailing" secondItem="OI6-jV-582" secondAttribute="trailing" constant="15" id="QmB-hV-GdY"/>
-                        <constraint firstItem="lYI-ew-UL7" firstAttribute="centerY" secondItem="0LC-lY-FRG" secondAttribute="centerY" id="SMu-MR-05g"/>
                         <constraint firstItem="OI6-jV-582" firstAttribute="top" secondItem="0LC-lY-FRG" secondAttribute="bottom" constant="10" id="U6e-no-jgq"/>
                         <constraint firstItem="XbQ-Sb-po2" firstAttribute="width" secondItem="OI6-jV-582" secondAttribute="width" id="Uva-PH-6v7"/>
                         <constraint firstItem="OI6-jV-582" firstAttribute="leading" secondItem="0LC-lY-FRG" secondAttribute="leading" id="WPb-xN-SOP"/>
@@ -175,6 +166,7 @@
                 <outlet property="idTextfield" destination="OI6-jV-582" id="Wac-gL-aJR"/>
                 <outlet property="imageConfirmView" destination="ewn-RS-hQo" id="HNa-AY-aPL"/>
                 <outlet property="locationTextfield" destination="9Iu-uw-4Wn" id="hmQ-fF-Sdt"/>
+                <outlet property="lockButton" destination="otZ-hw-mHX" id="96O-ui-j1U"/>
                 <outlet property="passwordTextfield" destination="XbQ-Sb-po2" id="MdE-pp-Tn8"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="53.5"/>

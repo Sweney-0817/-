@@ -131,8 +131,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         if textField == transAmountTextfield {
             // ToolBar
             let toolBar = UIToolbar()
-            toolBar.barStyle = .default
-            toolBar.isTranslucent = true
+            toolBar.barTintColor = ToolBar_barTintColor
             toolBar.tintColor = ToolBar_tintColor
             toolBar.sizeToFit()
             // Adding Button ToolBar

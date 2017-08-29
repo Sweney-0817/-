@@ -104,7 +104,7 @@ class AuthorizationManage {
     func CanEnterFeature(_ ID:PlatformFeatureID) -> Bool { // 判斷是否需要登入
         var canEnter = false
         switch ID {
-        case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation, .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_Home, .FeatureID_Edit:
+        case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation, .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_Home, .FeatureID_Edit, .FeatureID_DeviceBinding:
             canEnter = true
             
         default:
@@ -144,10 +144,10 @@ class AuthorizationManage {
             
         case .Default_Type:
             if userInfo?.Token != nil {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase, .FeatureID_News]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase]
             }
             else {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase, .FeatureID_News]
             }
             
         case .User_Type:
@@ -165,6 +165,9 @@ class AuthorizationManage {
                             }
                         }
                     }
+                    else {
+                        list = [PlatformFeatureID]()
+                    }
                 }
             }
             else {
@@ -180,6 +183,9 @@ class AuthorizationManage {
                                 list?.append( PlatformFeatureID(rawValue: Int(ID)!)! )
                             }
                         }
+                    }
+                    else {
+                        list = [PlatformFeatureID]()
                     }
                 }
             }

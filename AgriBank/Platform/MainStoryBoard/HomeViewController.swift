@@ -67,7 +67,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             statusView.isHidden = false
         }
     }
-    
+
     // MARK: - Pubilc
     func pushFeatureController(_ ID:PlatformFeatureID, _ animated:Bool) {
         let controller = getControllerByID(ID)
@@ -214,8 +214,8 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 super.didRecvdResponse(description, response)
             }
             
-        case "COMM0901":
-            if let data = response.object(forKey: "Data") as? [String : Any] {
+        case "COMM0901": break
+//            if let data = response.object(forKey: "Data") as? [String : Any] {
 //                if let forcedChange = data["forcedChange"] as? String { //是否強制換版
 //                    
 //                }
@@ -225,11 +225,10 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
 //                if let newVersion = data["newVersion"] as? String { //最新版號
 //                    
 //                }
-                print(data)
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
+//            }
+//            else {
+//                super.didRecvdResponse(description, response)
+//            }
             
         case "INFO0201":
             if let data = response.object(forKey: "Data") as? [String : Any], let list = data["CB_List"] as? [[String:Any]], let

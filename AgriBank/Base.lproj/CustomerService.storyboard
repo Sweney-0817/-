@@ -472,6 +472,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="callPhoneButton" destination="B3Y-fo-Bb0" id="nPp-9l-1wl"/>
                         <outlet property="m_tvData" destination="dPn-up-oOn" id="phf-Rn-rVA"/>
                     </connections>
                 </viewController>

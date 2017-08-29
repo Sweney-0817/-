@@ -318,7 +318,8 @@ let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFon
 let Disable_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 0.6)
 let Layer_BorderWidth:CGFloat = 1
 let Layer_BorderRadius:CGFloat = 5
-let ToolBar_tintColor = UIColor(red: 92/255, green: 216/255, blue: 255/255, alpha: 1)
+let ToolBar_tintColor = Green_Color
+let ToolBar_barTintColor = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
 let PickView_Height:CGFloat = 200
 
 // MARK: - 字串定義
@@ -326,6 +327,9 @@ let SystemCell_Identify = "System_Cell"
 let AES_Key = "hs3rwPsoYknnCCWjqIX57RgRflYGhKO1tmQxqWps21k="
 let File_IDList_Key = "IDlist"
 let File_NoLogin_IDList_key = "NoLoginIDlist"
+let File_Account_Key = "Account"
+let File_CityCode_Key = "CityCode"
+let File_BankCode_Key = "BankCode"
 let Login_Title = "登出"
 let NoLogin_Title  = "登入"
 let ToolBar_DoneButton_Title = "確認"
@@ -401,7 +405,7 @@ let ErrorMsg_GetList_InAgreedAccount = "無法取得轉入的約定帳戶"
 let ErrorMsg_Choose_InAccount = "請選擇轉入帳號"
 let ErrorMsg_Enter_Amount = "請輸入轉帳金額"
 let ErrorMsg_Illegal_Character = "不得輸入非法字元"
-let ErrorMsg_Invalid_Email = "email格式不合"
+let ErrorMsg_Invalid_Email = "E-mail格式不合"
 let ErrorMsg_Transfer_Date = "請選擇轉出日期"
 let ErrorMsg_Choose_Date = "起始日不可大於截止日"
 let ErrorMsg_Choose_SavingAccount = "請選擇存摺帳號"
@@ -420,3 +424,8 @@ let ErrorMsg_IsNot_TransTime = "目前非營業時間"
 let ErrorMsg_NeedChangeOne = "至少需修改一項"
 let ErrorMsg_Telephone = "「新區碼」及「新聯絡電話」必須一起修改"
 let ErrorMsg_Address = "「新郵遞區號」及「新聯絡地址」必須一起修改"
+let ErrorMsg_Choose_CityBank = "請選擇地區"
+let ErrorMsg_Enter_Identify = "請輸入身份證字號"
+let ErrorMsg_Error_Identify = "身份證字號格式錯誤"
+let ErrorMsg_Enter_UserID = "請輸入使用者代碼"
+let ErrorMsg_Enter_UserPassword = "請輸入使用者密碼"

@@ -15,8 +15,11 @@ class SetAvatarViewController: BasePhotoViewController  {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        imageView.layer.cornerRadius = imageView.frame.width/2
-        imageView.layer.masksToBounds = true
+        if let info = AuthorizationManage.manage.GetLoginInfo() {
+            imageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
+            imageView.layer.cornerRadius = imageView.frame.width/2
+            imageView.layer.masksToBounds = true
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,12 +43,19 @@ class SetAvatarViewController: BasePhotoViewController  {
     }
     
     @IBAction func clickDeleteBtn(_ sender: Any) {
+        imageView.layer.cornerRadius = 0
+        imageView.layer.masksToBounds = false
         imageView.image = UIImage(named: ImageName.Login.rawValue)
+        if let info = AuthorizationManage.manage.GetLoginInfo() {
+            savePersonalImage(nil, SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
+        }
     }
     
     // MARK: - VPImageCropperDelegate
     override func imageCropper(_ cropperViewController: VPImageCropperViewController!, didFinished editedImage: UIImage!) {
         cropperViewController.dismiss(animated: true, completion: nil)
+        imageView.layer.cornerRadius = imageView.frame.width/2
+        imageView.layer.masksToBounds = true
         imageView.image = editedImage
         imageView.clipsToBounds = true
         if let info = AuthorizationManage.manage.GetLoginInfo() {

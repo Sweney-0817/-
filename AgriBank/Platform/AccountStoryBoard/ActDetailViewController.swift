@@ -13,7 +13,6 @@ let ActDetailView_CellTitleList = [ActOverview_TypeList[0]:["交易日期","借�
                                    ActOverview_TypeList[1]:["交易日期","票號","交易金額"],
                                    ActOverview_TypeList[2]:["記帳日","交易金額","結存本金"],
                                    ActOverview_TypeList[3]:["交易日期","攤還本金","本金餘額"]]
-let ActDetailView_ChooseAccount_Title = "請選擇查詢帳號"
 let ActDetailView_ShowAccount_Title = "帳號"
 
 class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate, OneRowDropDownViewDelegate, UIActionSheetDelegate {
@@ -42,7 +41,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         if currentType != nil && chooseAccount != nil {
             if categoryType[currentType!] != nil {
             //  電文已經reponse SetInitial晚 
-                (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount ?? ActDetailView_ChooseAccount_Title)
+                (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount ?? Choose_Title)
                 chooseTypeView.setTypeList(typeList, setDelegate: self, typeList?.index(of: currentType!))
                 clickDateBtn(weekDayButton)
             }
@@ -57,10 +56,11 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
 
         setShadowView(transDayView)
         let view = getUIByID(.UIID_OneRowDropDownView) as! OneRowDropDownView
+        view.m_lbFirstRowTitle.textAlignment = .center
         view.frame = chooseAccountView.frame
         view.frame.origin = .zero
         view.delegate = self
-        view.setOneRow(ActDetailView_ShowAccount_Title, ActDetailView_ChooseAccount_Title)
+        view.setOneRow(ActDetailView_ShowAccount_Title, Choose_Title)
         chooseAccountView.addSubview(view)
         
         setLoading(true)
@@ -377,7 +377,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     func clickChooseTypeBtn(_ name:String) {
         currentType = name
         chooseAccount = nil
-        (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, ActDetailView_ChooseAccount_Title)
+        (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, Choose_Title)
         resultList = nil
         startDate = ""
         endDate = ""
@@ -556,7 +556,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if buttonIndex != actionSheet.cancelButtonIndex {
             chooseAccount = actionSheet.buttonTitle(at: buttonIndex)
-            (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount ?? ActDetailView_ChooseAccount_Title)
+            (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount ?? Choose_Title)
             if startDate.isEmpty && endDate.isEmpty {
                 clickDateBtn(weekDayButton)
             }

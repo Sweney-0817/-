@@ -7,7 +7,7 @@
 #import "NSString+AESCrypt.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-NSString *gStrIV = @"ENoEgYKYLyGOAW0lQxJ3pw==";
+NSString *gStrIV = @"ENoEgYKYLyGOAW0lQxJ3pw=="; // 農業金庫專用
 @implementation NSString (AESCrypt)
 
 - (NSString *)AES256EncryptWithKey:(NSString *)key

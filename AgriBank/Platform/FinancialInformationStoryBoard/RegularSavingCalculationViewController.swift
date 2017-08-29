@@ -10,7 +10,7 @@ import UIKit
 
 let RegularSavingCalculation_TypeList = ["存本取息","零存整付","整存整付"]
 let RegularSavingCalculation_MonthList = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"]
-let RegularSavingCalculation_MaxRate = 18
+let RegularSavingCalculation_MaxRate:CGFloat = 18
 let RegularSavingCalculation_MaxLength = 12
 
 class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -155,8 +155,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
   
         // ToolBar
         let toolBar = UIToolbar()
-        toolBar.barStyle = .default
-        toolBar.isTranslucent = true
+        toolBar.barTintColor = ToolBar_barTintColor
         toolBar.tintColor = ToolBar_tintColor
         toolBar.sizeToFit()
         // Adding Button ToolBar
@@ -172,7 +171,8 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         if textField == m_tfRate {
-            if let rate = Int(newString), rate <= RegularSavingCalculation_MaxRate {
+            let formatter = NumberFormatter()
+            if let rate = formatter.number(from: newString), CGFloat(rate) <= RegularSavingCalculation_MaxRate {
                 return true
             }
             else {

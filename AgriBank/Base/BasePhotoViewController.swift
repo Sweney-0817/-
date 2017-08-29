@@ -49,7 +49,7 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
         actSheet.show(in: view)
     }
     
-    func savePersonalImage(_ image:UIImage, SetAESKey key:String, SetIdentify identify:String, setAccount account:String? = nil) {
+    func savePersonalImage(_ image:UIImage?, SetAESKey key:String, SetIdentify identify:String, setAccount account:String? = nil) {
         let documentPaths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory,
                                                                 FileManager.SearchPathDomainMask.userDomainMask, true)
         let documnetPath = documentPaths[0] as NSString
@@ -66,12 +66,23 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
         }
         
         let imageName = SecurityUtility.utility.AES256Encrypt((account != nil ? account! : identify), key) + BasePhoto_Type
-        let imageCompression = UIImageJPEGRepresentation(image, CompressionValue_Image)
-        do  {
-            try imageCompression?.write(to: URL(fileURLWithPath: directoryPath).appendingPathComponent(imageName), options: .atomic)
+        if image != nil {
+            let imageCompression = UIImageJPEGRepresentation(image!, CompressionValue_Image)
+            do  {
+                try imageCompression?.write(to: URL(fileURLWithPath: directoryPath).appendingPathComponent(imageName), options: .atomic)
+            }
+            catch let error as NSError {
+                print("SavePersonalImage imageCompression?.write - \(error.description)" )
+            }
         }
-        catch let error as NSError {
-            print("SavePersonalImage imageCompression?.write - \(error.description)" )
+        else {
+            do {
+                try FileManager.default.removeItem(at: URL(fileURLWithPath: directoryPath).appendingPathComponent(imageName))
+            }
+            catch let error as NSError {
+                print("SavePersonalImage FileManager.default.removeItem - \(error.description)" )
+                return
+            }
         }
     }
     

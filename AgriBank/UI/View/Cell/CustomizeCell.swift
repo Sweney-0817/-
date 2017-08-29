@@ -182,6 +182,7 @@ class OverviewCell: UITableViewCell {
 class ResultCell: UITableViewCell {
     @IBOutlet weak var m_lbTitle: UILabel!
     @IBOutlet weak var m_lbData: UILabel!
+    @IBOutlet weak var titleWeight: NSLayoutConstraint! // 特殊:為了「農漁會據點」拉的，其餘應該不會變
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -197,16 +198,9 @@ class ResultCell: UITableViewCell {
     }
     
     static func GetStringHeightByWidthAndFontSize(_ content:String, _ width:CGFloat) -> CGFloat {
-        //.xib拉的
-        let dataWidth = width-117-(15*3)
+        //.xib拉的 171:m_lbTitle的固定寬 剩下數字參考Xib
+        let dataWidth = width-171-(15*3)
         let plusHeight:CGFloat = 17+18
-        
-//        let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: dataWidth, height: CGFloat.greatestFiniteMagnitude))
-//        label.numberOfLines = 0
-//        label.lineBreakMode = NSLineBreakMode.byWordWrapping//        label.font = UIFont.systemFont(ofSize: 18.0)
-//        label.text = content
-//        label.sizeToFit()
-//        return label.frame.height+plusHeight
         
         let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSFontAttributeName: Default_Font], context: nil)
         return boundingBox.height+plusHeight

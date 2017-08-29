@@ -9,32 +9,39 @@
 import UIKit
 import CoreLocation
 
+let ServiceBaseDetail_Cell_Title_Weight:CGFloat = 50
+let ServiceBaseDetail_Map_URL = "https://www.google.com.tw/maps?addr="
+
 class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var m_tvData: UITableView!
-    private var data:ConfirmResultStruct? = nil
+    @IBOutlet weak var callPhoneButton: UIButton!
+    private var data:[[String:String]]? = nil
     private var telePhone = ""
     private var curLocation = CLLocationCoordinate2D()
     private var mapWebView:UIWebView? = nil
     
-    func setData(_ data:ConfirmResultStruct, _ telePhone:String, _ curLocation:CLLocationCoordinate2D) {
+    // MARK: - Public
+    func setData(_ data:[[String:String]]?, _ telePhone:String, _ curLocation:CLLocationCoordinate2D) {
         self.data = data
         self.telePhone = telePhone
         self.curLocation = curLocation
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setAllSubView()
-    }
-    
-    func setAllSubView() {
+    // MARK: - Private
+    private func setAllSubView() {
         setDataTableView()
     }
     
-    func setDataTableView() {
+    private func setDataTableView() {
         m_tvData.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
         m_tvData.allowsSelection = false
+    }
+    
+    // MARK: - Override
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setAllSubView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,27 +50,37 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let height = ResultCell.GetStringHeightByWidthAndFontSize((data?.list?[indexPath.row][Response_Value]!)!, m_tvData.frame.size.width)
+        let height = ResultCell.GetStringHeightByWidthAndFontSize((data?[indexPath.row][Response_Value]!)!, m_tvData.frame.size.width)
         return height
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as? ResultCell {
+            if cell.m_lbData.text == telePhone {
+                m_btnCallOutClick(callPhoneButton)
+            }
+        }
     }
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data?.list?.count ?? 0
+        return data?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
-        cell.set((data?.list?[indexPath.row][Response_Key]!)!, (data?.list?[indexPath.row][Response_Value]!)!)
+        cell.titleWeight.constant = ServiceBaseDetail_Cell_Title_Weight
+        cell.set((data?[indexPath.row][Response_Key]!)!, (data?[indexPath.row][Response_Value]!)!)
         return cell
     }
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnShowMapClick(_ sender: Any) {
-        mapWebView = UIWebView(frame: view.frame)
-    
-        mapWebView?.loadRequest(URLRequest(url: URL(string: "https://www.google.com.tw/maps?addr=\(curLocation.latitude),\(curLocation.longitude)")!))
-        view.addSubview(mapWebView!)
+        if mapWebView == nil {
+            mapWebView = UIWebView(frame: view.frame)
+            view.addSubview(mapWebView!)
+        }
+        mapWebView?.loadRequest(URLRequest(url: URL(string: "\(ServiceBaseDetail_Map_URL)\(curLocation.latitude),\(curLocation.longitude)")!))
     }
     
     @IBAction func m_btnCallOutClick(_ sender: Any) {

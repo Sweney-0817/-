@@ -61,28 +61,28 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
         topView.layer.borderColor = Gray_Color.cgColor
         
         depositTypeDropView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        depositTypeDropView?.setOneRow(DepositCombinedToDeposit_DepositType_Title, "")
+        depositTypeDropView?.setOneRow(DepositCombinedToDeposit_DepositType_Title, Choose_Title)
         depositTypeDropView?.frame = depositTypeView.frame
         depositTypeDropView?.frame.origin = .zero
         depositTypeDropView?.delegate = self
         depositTypeView.addSubview(depositTypeDropView!)
         
         rateTypeDropView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        rateTypeDropView?.setOneRow(DepositCombinedToDeposit_Rate_Title, "")
+        rateTypeDropView?.setOneRow(DepositCombinedToDeposit_Rate_Title, Choose_Title)
         rateTypeDropView?.frame = rateTypeView.frame
         rateTypeDropView?.frame.origin = .zero
         rateTypeDropView?.delegate = self
         rateTypeView.addSubview(rateTypeDropView!)
         
         periodDropView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        periodDropView?.setOneRow(DepositCombinedToDeposit_Period_Title, "")
+        periodDropView?.setOneRow(DepositCombinedToDeposit_Period_Title, Choose_Title)
         periodDropView?.frame = periodView.frame
         periodDropView?.frame.origin = .zero
         periodDropView?.delegate = self
         periodView.addSubview(periodDropView!)
         
         autoTransRateTypeDropView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        autoTransRateTypeDropView?.setOneRow(DepositCombinedToDeposit_AutoRateType_Title, "")
+        autoTransRateTypeDropView?.setOneRow(DepositCombinedToDeposit_AutoRateType_Title, Choose_Title)
         autoTransRateTypeDropView?.frame = autoTransRateType.frame
         autoTransRateTypeDropView?.frame.origin = .zero
         autoTransRateTypeDropView?.delegate = self
@@ -117,7 +117,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             expireSaveType1tBtn.setImage(UIImage(named: ImageName.RadioOff.rawValue), for: .normal)
         }
         autoTransRateTypeIndex = nil
-        autoTransRateTypeDropView?.setOneRow(DepositCombinedToDeposit_AutoRateType_Title, "")
+        autoTransRateTypeDropView?.setOneRow(DepositCombinedToDeposit_AutoRateType_Title, Choose_Title)
     }
     
     @IBAction func clickSendBtn(_ sender: Any) {
@@ -131,8 +131,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         // ToolBar
         let toolBar = UIToolbar()
-        toolBar.barStyle = .default
-        toolBar.isTranslucent = true
+        toolBar.barTintColor = ToolBar_barTintColor
         toolBar.tintColor = ToolBar_tintColor
         toolBar.sizeToFit()
         // Adding Button ToolBar
@@ -387,16 +386,16 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                 curDepositTypeIndex = buttonIndex-1
                 depositTypeDropView?.setOneRow(DepositCombinedToDeposit_DepositType_Title, actionSheet.buttonTitle(at: buttonIndex) ?? "")
                 curRateTypeIndex = nil
-                rateTypeDropView?.setOneRow(DepositCombinedToDeposit_Rate_Title, "")
+                rateTypeDropView?.setOneRow(DepositCombinedToDeposit_Rate_Title, Choose_Title)
                 curPeriodIndex = nil
-                periodDropView?.setOneRow(DepositCombinedToDeposit_Period_Title, "")
+                periodDropView?.setOneRow(DepositCombinedToDeposit_Period_Title, Choose_Title)
                 currentRateLabel.text = ""
                 
             case ViewTag.View_RateTypeActionSheet.rawValue:
                 curRateTypeIndex = buttonIndex-1
                 rateTypeDropView?.setOneRow(DepositCombinedToDeposit_Rate_Title, actionSheet.buttonTitle(at: buttonIndex) ?? "")
                 curPeriodIndex = nil
-                periodDropView?.setOneRow(DepositCombinedToDeposit_Period_Title, "")
+                periodDropView?.setOneRow(DepositCombinedToDeposit_Period_Title, Choose_Title)
                 currentRateLabel.text = ""
                 
             case ViewTag.View_TransPeriodActionSheet.rawValue:
