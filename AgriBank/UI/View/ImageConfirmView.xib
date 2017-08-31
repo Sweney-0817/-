@@ -24,7 +24,7 @@
                     </constraints>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                    <textInputTraits key="textInputTraits"/>
                     <connections>
                         <outlet property="delegate" destination="iN0-l3-epB" id="PPO-Xu-3Au"/>
                     </connections>

@@ -31,6 +31,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         news.frame = newsView.frame
         news.frame.origin = .zero
         news.tag = ViewTag.View_AnnounceNews.rawValue
+        news.delegate = self
         newsView.addSubview(news)
         
         let banner = getUIByID(.UIID_Banner) as! BannerView
@@ -40,9 +41,9 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         
         featureWall.setInitial(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!, setVertical: 3, setHorizontal: 2, SetDelegate: self)
         
-        GetVersionInfo()
-        GetBannerInfo()
-        GetAnnounceNewsInfo()
+        getVersionInfo()
+        getBannerInfo()
+        getAnnounceNewsInfo()
     }
 
     override func didReceiveMemoryWarning() {
@@ -115,13 +116,13 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             }
             loginStatusLabel.text = Login_Title
             if centerNewsList == nil {
-                GetAnnounceNewsInfo()
+                getAnnounceNewsInfo()
             }
             if logoImage != nil {
                 logoImageView.image = logoImage
             }
             else {
-                GetBankLogoInfo()
+                getBankLogoInfo()
             }
         }
         else {
@@ -135,7 +136,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     }
     
     // MARK: - Private Post 電文
-    private func GetAnnounceNewsInfo() { // 最新消息電文
+    private func getAnnounceNewsInfo() { // 最新消息電文
         let loginInfo = AuthorizationManage.manage.GetLoginInfo()
         var body = [String:Any]()
         body = ["WorkCode":"07041","Operate":"getListInfo"]
@@ -150,15 +151,15 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         postRequest("Info/INFO0201", "INFO0201", AuthorizationManage.manage.converInputToHttpBody(body, false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    private func GetVersionInfo() {  // 版號控管電文
+    private func getVersionInfo() {  // 版號控管電文
         postRequest("Comm/COMM0901", "COMM0901", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01001","Operate":"queryData","version":AgriBank_Version,"platform":AgriBank_Platform], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    private func GetBannerInfo() { // 廣告Banner電文
+    private func getBannerInfo() { // 廣告Banner電文
         postRequest("Comm/COMM0201", "COMM0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01021","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    private func GetBankLogoInfo() { // 取得農、漁會LOGO
+    private func getBankLogoInfo() { // 取得農、漁會LOGO
         let loginInfo = AuthorizationManage.manage.GetLoginInfo()
         postRequest("Comm/COMM0404", "COMM0404", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07004","Operate":"queryData","hsienCode":loginInfo?.cityCode ?? "","bankCode":loginInfo?.bankCode ?? ""], false), AuthorizationManage.manage.getHttpHead(false))
     }
@@ -169,7 +170,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             showLoginView()
         }
         else {
-            let alert = UIAlertView(title: "確定是否登出", message: "", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "確認")
+            let alert = UIAlertView(title: LogOut_Title, message: "", delegate: self, cancelButtonTitle: UIAlert_Cancel_Title, otherButtonTitles: UIAlert_Confirm_Title)
             alert.show()
         }
     }
@@ -208,7 +209,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         case "COMM0404":
             if let data = response.object(forKey: "Data") as? [String:Any], let url = data["url"] as? String {
                 postRequest("", "LogoImage", nil, nil, url, false, true)
-                GetAnnounceNewsInfo()
+                getAnnounceNewsInfo()
             }
             else {
                 super.didRecvdResponse(description, response)
@@ -259,6 +260,10 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             else {
                 super.didRecvdResponse(description, response)
             }
+            
+        case "COMM0102":
+            logoImage = UIImage(named: ImageName.DefaultLogo.rawValue)
+            super.didRecvdResponse(description, response)
             
         default: super.didRecvdResponse(description, response)
         }

@@ -51,7 +51,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         
         m_btnConfirm.setTitle(data?.confirmBtnName, for: .normal)
         setShadowView(m_vBottomView)
-        AddObserverToKeyBoard()
+        addObserverToKeyBoard()
         
         getImageConfirm(transactionId)
     }

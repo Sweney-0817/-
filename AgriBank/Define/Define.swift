@@ -301,7 +301,7 @@ struct RequestStruct {
 
 // MARK: - 圖片名稱
 enum ImageName: String {
-    case BackBarItem, BackHome, ButtonLarge, ButtonSmall, ButtonMedium, Close, CowCheck, CowFailure, CowSuccess, DropDown, DropUp, EntryRight, HintDownArrow, Locker, Login, Vegetable, Refresh, RightBarItem, RadioOn, RadioOff, Textfield, Unlocker
+    case BackBarItem, BackHome, ButtonLarge, ButtonSmall, ButtonMedium, Close, CowCheck, CowFailure, CowSuccess, DefaultLogo, DropDown, DropUp, EntryRight, HintDownArrow, Locker, Login, Vegetable, Refresh, RightBarItem, RadioOn, RadioOff, Textfield, Unlocker
 }
 
 // MARK: - 顏色定義
@@ -318,8 +318,9 @@ let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFon
 let Disable_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 0.6)
 let Layer_BorderWidth:CGFloat = 1
 let Layer_BorderRadius:CGFloat = 5
-let ToolBar_tintColor = Green_Color
+let ToolBar_tintColor = UIColor.blue
 let ToolBar_barTintColor = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
+let ToolBar_Title_Weight:CGFloat = 100
 let PickView_Height:CGFloat = 200
 
 // MARK: - 字串定義
@@ -330,19 +331,22 @@ let File_NoLogin_IDList_key = "NoLoginIDlist"
 let File_Account_Key = "Account"
 let File_CityCode_Key = "CityCode"
 let File_BankCode_Key = "BankCode"
+let TransactionID_Description = "TrID"
+let TransactionID_Key = "TransactionId"
 let Login_Title = "登出"
 let NoLogin_Title  = "登入"
-let ToolBar_DoneButton_Title = "確認"
+let LogOut_Title = "確定是否登出"
+let ToolBar_DoneButton_Title = "確定"
 let ToolBar_CancelButton_Title = "取消"
 let Transaction_Successful_Title = "交易成功"
 let Transaction_Faild_Title = "交易失敗"
 let Change_Successful_Title = "變更成功"
 let Change_Faild_Title = "變更失敗"
-let TransactionID_Description = "TrID"
-let TransactionID_Key = "TransactionId"
 let UIActionSheet_Cancel_Title = "取消"
 let Check_Transaction_Title = "請確認本次交易資訊"
-let UIAlert_Cancel_Title = "確認"
+let UIAlert_Default_Title = "注意"
+let UIAlert_Cancel_Title = "取消"
+let UIAlert_Confirm_Title = "確定"
 let Choose_Title = "請選擇"
 
 let AgriBank_Type = Int(1)
@@ -357,6 +361,7 @@ let AgriBank_Platform = "1"
 let AgriBank_DeviceID = UIDevice.current.identifierForVendor!.uuidString
 let AgriBank_AppUid = AgriBank_DeviceID + Bundle.main.bundleIdentifier!
 let AgriBank_Auth = "ED57C853AC9744D58B8A9B3F527D0940"
+
 
 // MARK: - Cell定義
 let Separator_Height = CGFloat(1)
@@ -403,7 +408,7 @@ let ErrorMsg_Choose_OutAccount = "請先選擇轉出帳戶"
 let ErrorMsg_GetList_OutAccount = "無法取得轉出帳戶"
 let ErrorMsg_GetList_InAgreedAccount = "無法取得轉入的約定帳戶"
 let ErrorMsg_Choose_InAccount = "請選擇轉入帳號"
-let ErrorMsg_Enter_Amount = "請輸入轉帳金額"
+let ErrorMsg_Enter_TransAmount = "請輸入轉帳金額"
 let ErrorMsg_Illegal_Character = "不得輸入非法字元"
 let ErrorMsg_Invalid_Email = "E-mail格式不合"
 let ErrorMsg_Transfer_Date = "請選擇轉出日期"
@@ -429,3 +434,9 @@ let ErrorMsg_Enter_Identify = "請輸入身份證字號"
 let ErrorMsg_Error_Identify = "身份證字號格式錯誤"
 let ErrorMsg_Enter_UserID = "請輸入使用者代碼"
 let ErrorMsg_Enter_UserPassword = "請輸入使用者密碼"
+let ErrorMsg_Enter_SaveAmount = "請輸入存款金額"
+let ErrorMsg_Enter_SaveRate = "請輸入存款年利率"
+let ErrorMsg_GreaterThan_MaxRate = "存款年利率不得大於18%"
+let ErrorMsg_Choose_SaveDuration = "請選擇存款期限"
+let ErrorMsg_Format = "格式不符"
+let ErrorMsg_Not_Zero = "不得於0"

@@ -176,7 +176,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                 default: break
                 }
                 if !message.isEmpty {
-                    let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:UIAlert_Cancel_Title)
+                    let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:UIAlert_Confirm_Title)
                     alert.show()
                 }
                 else {

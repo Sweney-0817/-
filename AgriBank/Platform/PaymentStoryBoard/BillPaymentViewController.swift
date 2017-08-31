@@ -44,7 +44,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
         initInputForType("自訂帳號")
         setShadowView(m_vShadowView)
         m_segAccountType.setTitleTextAttributes([NSFontAttributeName:Default_Font], for: .normal)
-        AddObserverToKeyBoard()
+        addObserverToKeyBoard()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

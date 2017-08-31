@@ -47,7 +47,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         setShadowView(m_vShadowView)
         setLoading(true)
         getTransactionID("04003", TransactionID_Description)
-        AddObserverToKeyBoard()
+        addObserverToKeyBoard()
     }
     
     override func didReceiveMemoryWarning() {
@@ -224,7 +224,13 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
+        titleLabel.textColor = .black
+        titleLabel.text = Choose_Title
+        titleLabel.textAlignment = .center
+        let titleButton = UIBarButtonItem(customView: titleLabel)
+        
+        toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         textField.inputAccessoryView = toolBar
         return true

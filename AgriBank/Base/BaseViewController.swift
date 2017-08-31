@@ -18,17 +18,18 @@ let URL_DOMAIN = ""
 #endif
 let REQUEST_URL = "\(URL_PROTOCOL)://\(URL_DOMAIN)"
 let BarItem_Height_Weight = 30
-let NavigationBarColor = UIColor(colorLiteralRed: 46/255, green: 134/255, blue: 201/255, alpha: 1)
+let Color_NavigationBar = UIColor(colorLiteralRed: 46/255, green: 134/255, blue: 201/255, alpha: 1)
 let Loading_Weight = 100
 let Loading_Height = 100
 
 class BaseViewController: UIViewController, LoginDelegate {
     var request:ConnectionUtility? = nil
     var needShowBackBarItem:Bool = true
-    var transactionId = ""                    // 交易編號
-    var headVarifyID = ""                     // 圖形驗證碼的「交易編號」
-    var loginView:LoginView? = nil            // 登入頁面
-    var curFeatureID:PlatformFeatureID? = nil // 目前要登入的功能ID
+    var transactionId = ""                      // 交易編號
+    var headVarifyID = ""                       // 圖形驗證碼的「交易編號」
+    var loginView:LoginView? = nil              // 登入頁面
+    var curFeatureID:PlatformFeatureID? = nil   // 目前要登入的功能ID
+    var touchTap:UITapGestureRecognizer? = nil  // 手勢: 用來關閉Textfield
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -53,7 +54,8 @@ class BaseViewController: UIViewController, LoginDelegate {
             navigationItem.setHidesBackButton(true, animated:false);
         }
         
-        navigationController?.navigationBar.barTintColor = NavigationBarColor
+        navigationController?.navigationBar.barTintColor = Color_NavigationBar
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -70,9 +72,12 @@ class BaseViewController: UIViewController, LoginDelegate {
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        if touchTap != nil {
+            view.removeGestureRecognizer(touchTap!)
+        }
     }
     
-    // MARK: - public
+    // MARK: - Public
     func postRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:[String:String]?, _ strURL:String? = nil, _ needCertificate:Bool = false, _ isImage:Bool = false)  {
         request = !isImage ? ConnectionUtility(.Json) : ConnectionUtility(.Image)
         request?.requestData(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, loginHttpHead, needCertificate)
@@ -182,9 +187,22 @@ class BaseViewController: UIViewController, LoginDelegate {
         }
     }
     
-    func showErrorMessage(_ title:String?, _ message:String?) {
-        let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:UIAlert_Cancel_Title)
+    func showErrorMessage(_ inputTitle:String?, _ message:String?) {
+        let title = inputTitle != nil ? inputTitle! : UIAlert_Default_Title
+        let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:UIAlert_Confirm_Title)
         alert.show()
+    }
+    
+    func showLoginView() { // 顯示Login畫面
+        if loginView == nil {
+            loginView = getUIByID(.UIID_Login) as? LoginView
+            loginView?.frame = view.frame
+            getCanLoginBankInfo()
+            getImageConfirm()
+            view.addSubview(loginView!)
+            addObserverToKeyBoard()
+            addGestureForKeyBoard()
+        }
     }
     
     // MARK: - LoginDelegate
@@ -202,19 +220,9 @@ class BaseViewController: UIViewController, LoginDelegate {
         loginView = nil
     }
     
-    func showLoginView() { // 顯示Login畫面
-        if loginView == nil {
-            loginView = getUIByID(.UIID_Login) as? LoginView
-            loginView?.frame = view.frame
-            getCanLoginBankInfo()
-            getImageConfirm()
-            view.addSubview(loginView!)
-        }
-        AddObserverToKeyBoard()
-    }
-    
     // MARK: - UIBarButtonItem Selector
     func clickShowSideMenu() {
+        dismissKeyboard()
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
             (rootViewController as! SideMenuViewController).ShowSideMenu(true)
         }
@@ -225,8 +233,10 @@ class BaseViewController: UIViewController, LoginDelegate {
     }
     
     // MARK: - KeyBoard
-    func AddObserverToKeyBoard() {
+    func addObserverToKeyBoard() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
@@ -244,6 +254,17 @@ class BaseViewController: UIViewController, LoginDelegate {
     
     func keyboardWillHide(_ notification:NSNotification) {
         view.frame.origin.y = 0
+    }
+    
+    func addGestureForKeyBoard() {
+        if touchTap == nil {
+            touchTap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+            view.addGestureRecognizer(touchTap!)
+        }
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 
@@ -307,10 +328,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
             }
             
         case "COMM0403":
+            var bankList = [[String:[String]]]()
+            var bankCode = [String:String]()
+            var cityCode = [String:String]()
             if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
-                var bankList = [[String:[String]]]()
-                var bankCode = [String:String]()
-                var cityCode = [String:String]()
                 for dic in array {
                     var bankNameList = [String]()
                     if let city = dic["hsienName"] as? String, let cityID = dic["hsienCode"] as? String, let list = dic["bankList"] as? [[String:Any]] {
@@ -326,11 +347,11 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         cityCode[city] = cityID
                     }
                 }
-                loginView?.setInitialList(bankList, bankCode, cityCode, self)
             }
             else {
                 showReturnMsg = true
             }
+            loginView?.setInitialList(bankList, bankCode, cityCode, self)
             
         case "COMM0502":
             if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
@@ -341,6 +362,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 }
             }
             else {
+                getImageConfirm()
                 showErrorMessage(ErrorMsg_Image_ConfirmFaild, nil)
             }
             
@@ -400,7 +422,6 @@ extension BaseViewController: ConnectionUtilityDelegate {
     
     func didFailedWithError(_ error: Error) {
         setLoading(false)
-        let alert = UIAlertView(title: nil, message: "Error Message:\(error.localizedDescription)", delegate: nil, cancelButtonTitle:"確認")
-        alert.show()
+        showErrorMessage(nil, error.localizedDescription)
     }
 }

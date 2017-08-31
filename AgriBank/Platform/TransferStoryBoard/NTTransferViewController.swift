@@ -134,7 +134,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         
         setShadowView(bottomView)
         
-        AddObserverToKeyBoard()
+        addObserverToKeyBoard()
         
         setLoading(true)
         getTransactionID("03001", TransactionID_Description)
@@ -219,7 +219,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 errorMessage.append("\(ErrorMsg_Choose_InAccount)\n")
             }
             if (transAmountTextfield.text?.isEmpty)! {
-                errorMessage.append("\(ErrorMsg_Enter_Amount)\n")
+                errorMessage.append("\(ErrorMsg_Enter_TransAmount)\n")
             }
             if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
                 errorMessage.append("\(ErrorMsg_Illegal_Character)\n")
@@ -345,7 +345,13 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
             let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
             let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-            toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+            let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
+            titleLabel.textColor = .black
+            titleLabel.text = Choose_Title
+            titleLabel.textAlignment = .center
+            let titleButton = UIBarButtonItem(customView: titleLabel)
+            
+            toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
             toolBar.isUserInteractionEnabled = true
             textField.inputAccessoryView = toolBar
         }

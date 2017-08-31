@@ -10,6 +10,7 @@ import UIKit
 
 let News_TypeList = ["中心公告","農漁會公告"]
 let News_ShowDetail_Seque = "goDetail"
+let News_ShowDate = "發佈日期:"
 
 class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var m_vChooseTypeView: ChooseTypeView!
@@ -99,7 +100,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_NewsCell.NibName()!, for: indexPath) as! NewsCell
-        cell.setData((m_curData?[indexPath.row].title!)!, "發佈日期", (m_curData?[indexPath.row].date!)!)
+        cell.setData((m_curData?[indexPath.row].title!)!, News_ShowDate, (m_curData?[indexPath.row].date!)!)
         cell.selectionStyle = .none
         return cell
     }

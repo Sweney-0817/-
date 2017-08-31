@@ -138,40 +138,38 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
+        titleLabel.textColor = .black
+        titleLabel.text = Choose_Title
+        titleLabel.textAlignment = .center
+        let titleButton = UIBarButtonItem(customView: titleLabel)
+        
+        toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         textField.inputAccessoryView = toolBar
         textField.inputView = pickerView
     }
     
-    private func InputIsCorrect() -> Bool {
-        var message = ""
+    private func InputIsCorrect() -> String? {
         if (locationTextfield.text?.isEmpty)! {
-            message.append("\(ErrorMsg_Choose_CityBank)\n")
+            return ErrorMsg_Choose_CityBank
         }
         if (accountTextfield.text?.isEmpty)! {
-            message.append("\(ErrorMsg_Enter_Identify)\n")
+            return ErrorMsg_Enter_Identify
         }
         else {
             if !DetermineUtility.utility.isValidIdentify(accountTextfield.text!) {
-                message.append("\(ErrorMsg_Error_Identify)\n")
+                return ErrorMsg_Error_Identify
             }
         }
         if (idTextfield.text?.isEmpty)! {
-            message.append("\(ErrorMsg_Enter_UserID)\n")
+            return ErrorMsg_Enter_UserID
         }
         if (passwordTextfield.text?.isEmpty)! {
-            message.append("\(ErrorMsg_Enter_UserPassword)\n")
+            return ErrorMsg_Enter_UserPassword
         }
         
-        if message.isEmpty {
-            return true
-        }
-        else {
-            let alert = UIAlertView(title: message, message: nil, delegate: nil, cancelButtonTitle:UIAlert_Cancel_Title)
-            alert.show()
-            return false
-        }
+        return nil
     }
     
     // MARK: - Xib Touch Event
@@ -180,7 +178,12 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     }
     
     @IBAction func clickLoginBtn(_ sender: Any) {
-        if InputIsCorrect() {
+        if let message = InputIsCorrect() {
+            let alert = UIAlertView(title: UIAlert_Default_Title, message: message, delegate: nil, cancelButtonTitle:UIAlert_Confirm_Title)
+            alert.show()
+        }
+        else {
+            self.endEditing(true)
             loginInfo.bankCode = bankCode[locationTextfield.text?.replacingOccurrences(of: " ", with: "") ?? ""] ?? loginInfo.bankCode
             loginInfo.account = accountTextfield.text ?? loginInfo.account
             loginInfo.id = idTextfield.text ?? loginInfo.id

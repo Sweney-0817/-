@@ -110,6 +110,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OEo-ZT-CoH">
                                 <rect key="frame" x="0.0" y="162" width="375" height="90"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <connections>
                                     <action selector="clickLoginBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gf5-ws-NKo"/>
                                 </connections>

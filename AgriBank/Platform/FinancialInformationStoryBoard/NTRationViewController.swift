@@ -65,7 +65,7 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     }
     
     private func setDDPlace() {
-        if (m_DDPlace == nil) {
+        if m_DDPlace == nil {
             m_DDPlace = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDPlace?.delegate = self
             m_DDPlace?.setOneRow(NTRationView_Bank_Title, Choose_Title)
@@ -107,7 +107,13 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
+        titleLabel.textColor = .black
+        titleLabel.text = Choose_Title
+        titleLabel.textAlignment = .center
+        let titleButton = UIBarButtonItem(customView: titleLabel)
+        
+        toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         m_tfPicker.inputAccessoryView = toolBar
         m_tfPicker.inputView = pickerView
@@ -253,53 +259,64 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         setLoading(false)
         switch description {
         case "MANG0101":
+            m_Data1.removeAll()
+            m_Data2.removeAll()
+            m_Data3.removeAll()
+            m_Data4.removeAll()
             if let data = response.object(forKey: "Data") as? [String:Any] {
-                m_Data1.removeAll()
                 if let list = data["SurviveRateList"] as? [[String:String]] {
                     for info in list {
                         m_Data1.append( NTRationStruct(info["SurviveType"] ?? "", "", info["SurviveRate"] ?? "") )
                     }
                 }
-                m_Data2.removeAll()
                 if let list = data["TDRateList"] as? [[String:String]] {
                     for info in list {
                          m_Data2.append( NTRationStruct(info["TDType"] ?? "", info["TDFixRate"] ?? "", info["TDChangeRate"] ?? "") )
                     }
                 }
-                m_Data3.removeAll()
                 if let list = data["RSRateList"] as? [[String:String]] {
                     for info in list {
                         m_Data3.append( NTRationStruct(info["RSType"] ?? "", info["RSFixRate"] ?? "", info["RSChangeRate"] ?? "") )
                     }
                 }
-                m_Data4.removeAll()
                 if let list = data["OTRateList"] as? [[String:String]] {
                     for info in list {
                         m_Data4.append( NTRationStruct(info["OTType"] ?? "", "", info["OTRate"] ?? "") )
                     }
                 }
-                m_tvData.reloadData()
             }
             else {
                 super.didRecvdResponse(description, response)
             }
+            m_tvData.reloadData()
             
         case "COMM0402":
             m_PickerData.removeAll()
             if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
+                let cCode = (SecurityUtility.utility.readFileByKey(SetKey: File_CityCode_Key, setDecryptKey: AES_Key) as? String) ?? ""
+                let bCode = (SecurityUtility.utility.readFileByKey(SetKey: File_BankCode_Key, setDecryptKey: AES_Key) as? String) ?? ""
+                var cCity:String? = nil
+                var cBank:String? = nil
                 for dic in array {
                     var bankList = [String]()
-                    if let city = dic["hsienName"] as? String, let list = dic["bankList"] as? [[String:Any]] {
+                    if let city = dic["hsienName"] as? String, let cityID = dic["hsienCode"] as? String, let list = dic["bankList"] as? [[String:Any]] {
+                        cCity = (cityID == cCode) ? city : cCity
                         for bank in list {
                             if let name = bank["bankName"] as? String {
                                 bankList.append(name)
                                 if let code = bank["bankCode"] as? String {
                                     bankCode["\(city)\(name)"] = code
+                                    cBank = (code == bCode) ? name : cBank
                                 }
                             }
                         }
                         m_PickerData.append([city:bankList])
                     }
+                }
+                if cCity != nil && cBank != nil {
+                    m_DDPlace?.setOneRow(NTRationView_Bank_Title, cCity!+" "+cBank!)
+                    setLoading(true)
+                    postRequest("Mang/MANG0101", "MANG0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"06001","Operate":"queryData","BR_CODE":"\(bCode)"], false), AuthorizationManage.manage.getHttpHead(false))
                 }
             }
             else {

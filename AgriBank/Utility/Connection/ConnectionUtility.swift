@@ -12,6 +12,7 @@ let REQUEST_TIME_OUT:TimeInterval = 10  // Time out
 let CERTIFICATE_NAME = ""               // 憑證名稱
 let CERTIFICATE_TYPE = "cer"            // 憑證副檔名
 
+
 protocol ConnectionUtilityDelegate {
     func didRecvdResponse(_ description:String, _ response: NSDictionary) -> Void
     func didFailedWithError(_ error: Error) -> Void

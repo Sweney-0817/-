@@ -9,11 +9,11 @@
 import UIKit
 
 let RegularSavingCalculation_TypeList = ["存本取息","零存整付","整存整付"]
-let RegularSavingCalculation_MonthList = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"]
+let RegularSavingCalculation_MonthList = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36"]
 let RegularSavingCalculation_MaxRate:CGFloat = 18
 let RegularSavingCalculation_MaxLength = 12
 
-class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDelegate, UITextFieldDelegate, UIActionSheetDelegate {
     @IBOutlet weak var m_vChooseTypeView: ChooseTypeView!
     @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vAmount: UIView!
@@ -26,38 +26,40 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
     @IBOutlet weak var m_vResult: UIView!
     @IBOutlet weak var m_lbResultTitle: UILabel!
     @IBOutlet weak var m_lbResult: UILabel!
-    private var currentType = "存本取息"
+    private var currentType = RegularSavingCalculation_TypeList[0]
     private var currentTextField:UITextField? = nil
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnCalculateClick(_ sender: Any) {
         // 參照 https://ebank.naffic.org.tw/ibank/Login/A001_3
-        let sum = Double( m_tfAmount.text ?? "0" ) ?? 0
-        let rate = (Double( m_tfRate.text ?? "0" ) ?? 0) / Double(12) / Double(100)
-        switch currentType {
-        case "存本取息":
-            //公式=1.存款金額 * (年利率/12) = 每月可領利息
-            let interest = Int(sum * rate+0.5)
-            m_lbResult.text = String(interest)
-            
-        case "零存整付":
-            var rate_t = Double(1)
-            let month = Int(m_tfDuration.text ?? "0") ?? 0
-            for _ in 0..<month {
-                rate_t *= (1 + rate)
+        if InputIsCorrect() {
+            let sum = Double( m_tfAmount.text ?? "0" ) ?? 0
+            let rate = (Double( m_tfRate.text ?? "0" ) ?? 0) / Double(12) / Double(100)
+            switch currentType {
+            case RegularSavingCalculation_TypeList[0]:
+                //公式=1.存款金額 * (年利率/12) = 每月可領利息
+                let interest = Int(sum * rate+0.5)
+                m_lbResult.text = String(interest)
+                
+            case RegularSavingCalculation_TypeList[1]:
+                var rate_t = Double(1)
+                let month = Int(m_tfDuration.text ?? "0") ?? 0
+                for _ in 0..<month {
+                    rate_t *= (1 + rate)
+                }
+                let total = Int(sum * (rate_t - 1) / rate * (1 + rate) + 0.5)
+                m_lbResult.text = String(total)
+                
+            case RegularSavingCalculation_TypeList[2]:
+                var total = sum;
+                let month = Int(m_tfDuration.text ?? "0") ?? 0
+                for _ in 0..<month {
+                    total *= (1 + rate)
+                }
+                m_lbResult.text = String(Int(total+0.5))
+                
+            default: break
             }
-            let total = Int(sum * (rate_t - 1) / rate * (1 + rate) + 0.5)
-            m_lbResult.text = String(total)
-            
-        case "整存整付":
-            var total = sum;
-            let month = Int(m_tfDuration.text ?? "0") ?? 0
-            for _ in 0..<month {
-                total *= (1 + rate)
-            }
-            m_lbResult.text = String(Int(total+0.5))
-            
-        default: break
         }
     }
     
@@ -74,9 +76,16 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
         setShadowView(m_vChooseTypeView)
         setShadowView(m_vShadowView)
         setShadowView(m_vResult)
+        addGestureForKeyBoard()
     }
     
-    func setAllSubView() {
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: - Private
+    private func setAllSubView() {
         setChooseTypeView()
         setAmountView()
         setDurationView()
@@ -84,40 +93,41 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
         setResultView()
     }
     
-    func setChooseTypeView() {
-        m_vChooseTypeView.setTypeList(RegularSavingCalculation_TypeList, setDelegate: self)
+    private func setChooseTypeView() {
+        let width = m_vChooseTypeView.frame.width / CGFloat(RegularSavingCalculation_TypeList.count)
+        m_vChooseTypeView.setTypeList(RegularSavingCalculation_TypeList, setDelegate: self, nil, width)
     }
     
-    func setAmountView() {
+    private func setAmountView() {
         m_vAmount.layer.borderColor = Gray_Color.cgColor
         m_vAmount.layer.borderWidth = 1
     }
     
-    func setDurationView() {
+    private func setDurationView() {
         m_vDuration.layer.borderColor = Gray_Color.cgColor
         m_vDuration.layer.borderWidth = 1
     }
     
-    func setRateView() {
+    private func setRateView() {
         m_vRate.layer.borderColor = Gray_Color.cgColor
         m_vRate.layer.borderWidth = 1
     }
     
-    func setResultView() {
+    private func setResultView() {
         m_vResult.layer.borderColor = Gray_Color.cgColor
         m_vResult.layer.borderWidth = 1
     }
     
-    func clearData() {
+    private func clearData() {
         m_tfAmount.text = ""
         m_tfDuration.text = ""
         m_tfRate.text = ""
         m_lbResult.text = "-"
     }
     
-    func initInputForType(_ type:String) {
+    private func initInputForType(_ type:String) {
         currentType = type
-        if (type == "存本取息") {
+        if type == RegularSavingCalculation_TypeList[0] {
             m_consDurationHeight.constant = 1
             m_tfDuration.isHidden = true
             m_lbResultTitle.text = "每月利息"
@@ -129,10 +139,74 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
         }
         clearData()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    private func InputIsCorrect() -> Bool {
+        if (m_tfAmount.text?.isEmpty)! {
+            showErrorMessage(nil, ErrorMsg_Enter_SaveAmount)
+            return false
+        }
+        else {
+            if let amount = Int(m_tfAmount.text!), amount == 0 {
+                showErrorMessage(nil, m_tfAmount.placeholder!+ErrorMsg_Not_Zero)
+                return false
+            }
+        }
+        
+        switch currentType {
+        case RegularSavingCalculation_TypeList[0]:
+            if (m_tfRate.text?.isEmpty)! {
+                showErrorMessage(nil, ErrorMsg_Enter_SaveRate)
+                return false
+            }
+            let formatter = NumberFormatter()
+            if let rate = formatter.number(from: m_tfRate.text!) {
+                if CGFloat(rate) <= RegularSavingCalculation_MaxRate {
+                    if CGFloat(rate) == 0 {
+                        showErrorMessage(nil, m_tfRate.placeholder!+ErrorMsg_Not_Zero)
+                        return false
+                    }
+                }
+                else  {
+                    showErrorMessage(nil, ErrorMsg_GreaterThan_MaxRate)
+                    return false
+                }
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_Format)
+                return false
+            }
+            
+        case RegularSavingCalculation_TypeList[1], RegularSavingCalculation_TypeList[2]:
+            if (m_tfDuration.text?.isEmpty)! {
+                showErrorMessage(nil, ErrorMsg_Choose_SaveDuration)
+                return false
+            }
+            if (m_tfRate.text?.isEmpty)! {
+                showErrorMessage(nil, ErrorMsg_Enter_SaveRate)
+                return false
+            }
+            let formatter = NumberFormatter()
+            if let rate = formatter.number(from: m_tfRate.text!) {
+                if CGFloat(rate) <= RegularSavingCalculation_MaxRate {
+                    if CGFloat(rate) == 0 {
+                        showErrorMessage(nil, m_tfRate.placeholder!+ErrorMsg_Not_Zero)
+                        return false
+                    }
+                }
+                else  {
+                    showErrorMessage(nil, ErrorMsg_GreaterThan_MaxRate)
+                    return false
+                }
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_Format)
+                return false
+            }
+            
+        default: break
+        }
+        
+        return true
     }
     
     // MARK: - ChooseTypeDelegate
@@ -142,15 +216,18 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
     
     // MARK: - UITextFieldDelegate
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        currentTextField = textField
         if textField == m_tfDuration {
-            // UIPickerView
-            let pickerView = UIPickerView(frame: CGRect(x:0, y:self.view.frame.height-PickView_Height, width:self.view.frame.width, height:PickView_Height))
-            pickerView.dataSource = self
-            pickerView.delegate = self
-            pickerView.backgroundColor = .white
-            pickerView.selectRow(0, inComponent: 0, animated: false)
-            textField.inputView = pickerView
+            if currentTextField != textField {
+                currentTextField?.resignFirstResponder()
+                currentTextField = textField
+            }
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            RegularSavingCalculation_MonthList.forEach{ title in actSheet.addButton(withTitle: title) }
+            actSheet.show(in: view)
+            return false
+        }
+        else {
+            currentTextField = textField
         }
   
         // ToolBar
@@ -162,7 +239,13 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
         let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
+        titleLabel.textColor = .black
+        titleLabel.text = Choose_Title
+        titleLabel.textAlignment = .center
+        let titleButton = UIBarButtonItem(customView: titleLabel)
+        
+        toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         textField.inputAccessoryView = toolBar
         return true
@@ -170,16 +253,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-        if textField == m_tfRate {
-            let formatter = NumberFormatter()
-            if let rate = formatter.number(from: newString), CGFloat(rate) <= RegularSavingCalculation_MaxRate {
-                return true
-            }
-            else {
-                return newString.isEmpty
-            }
-        }
-        else if textField == m_tfAmount {
+        if textField == m_tfAmount {
             if newString.characters.count > RegularSavingCalculation_MaxLength {
                 return false
             }
@@ -203,17 +277,10 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
         currentTextField = nil
     }
     
-    // MARK: - UIPickerViewDataSource
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return RegularSavingCalculation_MonthList.count
-    }
-    
-    // MARK - UIPickerViewDelegate
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return RegularSavingCalculation_MonthList[row]
+    // MARK: - UIActionSheetDelegate
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
+        if buttonIndex != actionSheet.cancelButtonIndex {
+            m_tfDuration.text = actionSheet.buttonTitle(at: buttonIndex)
+        }
     }
 }
