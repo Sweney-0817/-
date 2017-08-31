@@ -253,32 +253,33 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     @IBAction func m_btnSendClick(_ sender: Any) {
         var errorMessage = ""
         if checkAccountList == nil {
-            errorMessage.append("\(ErrorMsg_Choose_CheckAccount)\n")
+            showErrorMessage(nil, ErrorMsg_Choose_CheckAccount)
+            return
         }
         if (m_tfCheckNumber.text?.isEmpty)! {
-            errorMessage.append("\(ErrorMsg_Enter_CheckNumber)\n")
+            showErrorMessage(nil, ErrorMsg_Enter_CheckNumber)
+            return
         }
         if m_DDType?.m_lbFirstRowContent.text == CheckLoseApply_TypeList[0] {
             if (m_tfCheckAmount.text?.isEmpty)! {
-                errorMessage.append("\(ErrorMsg_Enter_CheckAmount)\n")
+                showErrorMessage(nil, ErrorMsg_Enter_CheckAmount)
+                return
             }
             if m_CheckDate?.getContentByType(.First) == Choose_Title {
-                errorMessage.append("\(ErrorMsg_Choose_InvoicDate)\n")
+                showErrorMessage(nil, ErrorMsg_Choose_InvoicDate)
+                return
             }
             if accountList == nil {
-                errorMessage.append("\(ErrorMsg_GetList_OutAccount)\n")
+                showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
+                return
             }
             if m_FeeAccount?.getContentByType(.First) == Choose_Title {
-                errorMessage.append("\(ErrorMsg_Choose_OutAccount)\n")
+                showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
+                return
             }
         }
         
-        if errorMessage.isEmpty {
-            checkImageConfirm(password, transactionId)
-        }
-        else {
-            showErrorMessage(errorMessage, nil)
-        }
+        checkImageConfirm(password, transactionId)
     }
     
     // MARK: - ConnectionUtilityDelegate
@@ -339,7 +340,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
                 }
             }
             else {
-                showErrorMessage(ErrorMsg_Image_ConfirmFaild, nil)
+                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
             
         case "LOSE0301", "LOSE0302":

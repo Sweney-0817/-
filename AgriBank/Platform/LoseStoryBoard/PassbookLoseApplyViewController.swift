@@ -145,7 +145,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
                 postRequest("LOSE/LOSE0101", "LOSE0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04001","Operate":"setLoseAcnt","TransactionId":transactionId,"REFNO":accountList?[accountIndex!].accountNO ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
-                showErrorMessage(ErrorMsg_Image_ConfirmFaild, nil)
+                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
             
         case "LOSE0101":
@@ -177,7 +177,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
             checkImageConfirm(password, transactionId)
         }
         else {
-            showErrorMessage(ErrorMsg_Choose_SavingAccount, nil)
+            showErrorMessage(nil, ErrorMsg_Choose_SavingAccount)
         }
     }
 }

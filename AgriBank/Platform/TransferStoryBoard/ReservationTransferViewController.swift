@@ -204,36 +204,36 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     }
     
     private func InputIsCorrect() -> Bool {
-        var errorMessage = ""
         if accountList == nil {
-            errorMessage.append("\(ErrorMsg_GetList_OutAccount)\n")
-        }
-        if accountIndex == nil {
-            errorMessage.append("\(ErrorMsg_Choose_OutAccount)\n")
-        }
-        if dateLabel.text == ReservationTransfer_Choose_Type {
-            errorMessage.append("\(ErrorMsg_Transfer_Date)\n")
-        }
-        if agreedAccountList == nil {
-            errorMessage.append("\(ErrorMsg_GetList_InAgreedAccount)\n")
-        }
-        if inAccountIndex == nil {
-            errorMessage.append("\(ErrorMsg_Choose_InAccount)\n")
-        }
-        if (transAmountTextfield.text?.isEmpty)! {
-            errorMessage.append("\(ErrorMsg_Enter_TransAmount)\n")
-        }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
-            errorMessage.append("\(ErrorMsg_Illegal_Character)\n")
-        }
-        
-        if errorMessage.isEmpty {
-            return true
-        }
-        else {
-            showErrorMessage(nil, errorMessage)
+            showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
             return false
         }
+        if accountIndex == nil {
+            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
+            return false
+        }
+        if dateLabel.text == ReservationTransfer_Choose_Type {
+            showErrorMessage(nil, ErrorMsg_Transfer_Date)
+            return false
+        }
+        if agreedAccountList == nil {
+            showErrorMessage(nil, ErrorMsg_GetList_InAgreedAccount)
+            return false
+        }
+        if inAccountIndex == nil {
+            showErrorMessage(nil, ErrorMsg_Choose_InAccount)
+            return false
+        }
+        if (transAmountTextfield.text?.isEmpty)! {
+            showErrorMessage(nil, ErrorMsg_Enter_TransAmount)
+            return false
+        }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+            return false
+        }
+        
+        return true
     }
     
     // MARK: - ConnectionUtilityDelegate

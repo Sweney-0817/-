@@ -185,7 +185,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                 }
             }
             else {
-                showErrorMessage("Memo狀態不明", nil)
+                showErrorMessage(nil, "Memo狀態不明")
             }
         }
     }
@@ -300,7 +300,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
     // MARK: - StoryBoard Touch Event
     @IBAction func clickMoreButton(_ sender: Any) {
         if accountIndex == nil {
-            showErrorMessage(ErrorMsg_Choose_OutAccount, nil)
+            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
         }
         else {
             performSegue(withIdentifier: LoanPrincipalInterest_Detail_Segue, sender: nil)

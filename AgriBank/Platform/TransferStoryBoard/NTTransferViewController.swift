@@ -205,40 +205,41 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     private func InputIsCorrect() -> Bool {
         var errorMessage = ""
         if accountList == nil {
-            errorMessage.append("\(ErrorMsg_GetList_OutAccount)\n")
+            showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
+            return false
         }
         if accountIndex == nil {
-            errorMessage.append("\(ErrorMsg_Choose_OutAccount)\n")
+            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
+            return false
         }
         
         if isPredesignated {
             if agreedAccountList == nil {
-                errorMessage.append("\(ErrorMsg_GetList_InAgreedAccount)\n")
+                showErrorMessage(nil, ErrorMsg_GetList_InAgreedAccount)
+                return false
             }
             if inAccountIndex == nil {
-                errorMessage.append("\(ErrorMsg_Choose_InAccount)\n")
+                showErrorMessage(nil, ErrorMsg_Choose_InAccount)
+                return false
             }
             if (transAmountTextfield.text?.isEmpty)! {
-                errorMessage.append("\(ErrorMsg_Enter_TransAmount)\n")
+                showErrorMessage(nil, ErrorMsg_Enter_TransAmount)
+                return false
             }
             if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
-                errorMessage.append("\(ErrorMsg_Illegal_Character)\n")
+                showErrorMessage(nil, ErrorMsg_Illegal_Character)
+                return false
             }
             if !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {
-                errorMessage.append("\(ErrorMsg_Invalid_Email)\n")
+                showErrorMessage(nil, ErrorMsg_Invalid_Email)
+                return false
             }
         }
         else {
             
         }
         
-        if errorMessage.isEmpty {
-            return true
-        }
-        else {
-            showErrorMessage(errorMessage, nil)
-            return false
-        }
+        return true
     }
     
     // MARK: - StoryBoard Touch Event

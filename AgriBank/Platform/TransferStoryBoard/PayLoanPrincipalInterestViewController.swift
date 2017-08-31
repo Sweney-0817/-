@@ -69,7 +69,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
     // MARK: - StoryBoard Touch Event
     @IBAction func clickSendBtn(_ sender: Any) {
         if (topDropView?.getContentByType(.First).isEmpty)! {
-            showErrorMessage(ErrorMsg_Choose_OutAccount, nil)
+            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
         }
         else {
             setLoading(true)
@@ -153,7 +153,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
                 enterConfirmResultController(true, dataConfirm, true)
             }
             else {
-                showErrorMessage(ErrorMsg_IsNot_TransTime, nil)
+                showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
             }
             
         default: super.didRecvdResponse(description, response)

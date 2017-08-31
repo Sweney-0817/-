@@ -215,7 +215,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                     }
                 }
                 else {
-                    showErrorMessage(ErrorMsg_Choose_DepositType, nil)
+                    showErrorMessage(nil, ErrorMsg_Choose_DepositType)
                 }
                 break
                 
@@ -240,7 +240,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                     }
                 }
                 else {
-                    showErrorMessage(errorMessage, nil)
+                    showErrorMessage(nil, errorMessage)
                 }
                 break
                 
@@ -358,7 +358,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                 enterConfirmResultController(true, dataConfirm, true)
             }
             else {
-                showErrorMessage(ErrorMsg_IsNot_TransTime, nil)
+                showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
             }
             
         default: super.didRecvdResponse(description, response)
@@ -420,33 +420,34 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
     private func InputIsCorrect() -> Bool {
         var errorMessage = ""
         if accountList == nil {
-            errorMessage.append("\(ErrorMsg_GetList_OutAccount)\n")
-        }
-        if (topDropView?.getContentByType(.First).isEmpty)! {
-             errorMessage.append("\(ErrorMsg_Choose_DepositAccount)\n")
-        }
-        if curDepositTypeIndex == nil {
-            errorMessage.append("\(ErrorMsg_Choose_DepositType)\n")
-        }
-        if curRateTypeIndex == nil {
-            errorMessage.append("\(ErrorMsg_Choose_RateType)\n")
-        }
-        if curPeriodIndex == nil {
-            errorMessage.append("\(ErrorMsg_Choose_TransPeriod)\n")
-        }
-        if autoTransRateTypeIndex == nil {
-            errorMessage.append("\(ErrorMsg_Choose_AutoTransRate)\n")
-        }
-        if (transAmountTextfield.text?.isEmpty)! {
-            errorMessage.append("\(ErrorMsg_Enter_TransSaveAmount)\n")
-        }
-        
-        if errorMessage.isEmpty {
-            return true
-        }
-        else {
-            showErrorMessage(errorMessage, nil)
+            showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
             return false
         }
+        if (topDropView?.getContentByType(.First).isEmpty)! {
+            showErrorMessage(nil, ErrorMsg_Choose_DepositAccount)
+            return false
+        }
+        if curDepositTypeIndex == nil {
+            showErrorMessage(nil, ErrorMsg_Choose_DepositType)
+            return false
+        }
+        if curRateTypeIndex == nil {
+            showErrorMessage(nil, ErrorMsg_Choose_RateType)
+            return false
+        }
+        if curPeriodIndex == nil {
+            showErrorMessage(nil, ErrorMsg_Choose_TransPeriod)
+            return false
+        }
+        if autoTransRateTypeIndex == nil {
+            showErrorMessage(nil, ErrorMsg_Choose_AutoTransRate)
+            return false
+        }
+        if (transAmountTextfield.text?.isEmpty)! {
+            showErrorMessage(nil, ErrorMsg_Enter_TransSaveAmount)
+            return false
+        }
+        
+        return true
     }
 }

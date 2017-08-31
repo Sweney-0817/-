@@ -127,20 +127,16 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnSendClick(_ sender: Any) {
-        var errorMessage = ""
         if accountIndex == nil {
-            errorMessage.append("\(ErrorMsg_Choose_SavingAccount)\n")
+            showErrorMessage(nil, ErrorMsg_Choose_SavingAccount)
+            return
         }
         if (m_tfWebBankPassword.text?.isEmpty)! {
-            errorMessage.append("\(ErrorMsg_Enter_Password)")
+            showErrorMessage(nil, ErrorMsg_Enter_Password)
+            return
         }
     
-        if errorMessage.isEmpty {
-            checkImageConfirm(password, transactionId)
-        }
-        else {
-            showErrorMessage(errorMessage, nil)
-        }
+        checkImageConfirm(password, transactionId)
     }
     
     // MARK: - ConnectionUtilityDelegate
@@ -186,7 +182,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
                 postRequest("LOSE/LOSE0201", "LOSE0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04001","Operate":"setLoseAcnt","TransactionId":transactionId,"ACTNO":accountList?[accountIndex!].accountNO ?? "","PWD":m_tfWebBankPassword.text ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
-                showErrorMessage(ErrorMsg_Image_ConfirmFaild, nil)
+                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
             
         case "LOSE0201":

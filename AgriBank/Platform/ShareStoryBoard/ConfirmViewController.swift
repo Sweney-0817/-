@@ -143,7 +143,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 }
             }
             else {
-                showErrorMessage(ErrorMsg_Image_ConfirmFaild, nil)
+                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
 
         default:

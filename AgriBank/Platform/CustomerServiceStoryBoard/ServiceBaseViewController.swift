@@ -119,14 +119,11 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
             m_DDPlace?.frame = CGRect(x:0, y:0, width:m_vPlace.frame.width, height:(m_DDPlace?.getHeight())!)
             m_vPlace.addSubview(m_DDPlace!)
         }
-        m_vPlace.layer.borderColor = Gray_Color.cgColor
-        m_vPlace.layer.borderWidth = 1
     }
     
     private func setChooseTypeView() {
-        m_vChooseTypeView.setTypeList(ServiceBase_TypeList, setDelegate: self)
-        m_vChooseTypeView.layer.borderColor = Gray_Color.cgColor
-        m_vChooseTypeView.layer.borderWidth = 1
+        let width = m_vChooseTypeView.frame.width / CGFloat(ServiceBase_TypeList.count)
+        m_vChooseTypeView.setTypeList(ServiceBase_TypeList, setDelegate: self, nil, width)
     }
     
     private func setDataTableView() {
@@ -200,21 +197,20 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         }
         
         if cityList.count != 0 {
-            let action = UIActionSheet()
-            action.delegate = self
-            for city in cityList  {
-                action.addButton(withTitle: city)
-            }
-            action.show(in: view)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            cityList.forEach{city in actSheet.addButton(withTitle: city)}
+            actSheet.show(in: view)
         }
     }
     
     // MARK: - UIActionSheetDelegate
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
-        m_strSearchRange = actionSheet.buttonTitle(at: buttonIndex)!
-        initDataTitleForType()
-        m_DDPlace?.setOneRow((m_DDPlace?.m_lbFirstRowTitle.text)!, actionSheet.buttonTitle(at: buttonIndex)!)
-        m_tvData.reloadData()
+        if actionSheet.cancelButtonIndex != buttonIndex {
+            m_strSearchRange = actionSheet.buttonTitle(at: buttonIndex)!
+            initDataTitleForType()
+            m_DDPlace?.setOneRow((m_DDPlace?.m_lbFirstRowTitle.text)!, actionSheet.buttonTitle(at: buttonIndex)!)
+            m_tvData.reloadData()
+        }
     }
     
     // MARK: - ChooseTypeDelegate

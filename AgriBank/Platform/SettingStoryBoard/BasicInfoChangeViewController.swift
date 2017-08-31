@@ -34,19 +34,19 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
     // MARK: - Private
     private func InputIsCorrect() -> Bool {
         if emailTextfield.text!.isEmpty && mobliePhoneTextfield.text!.isEmpty && telePhoneTextfield.text!.isEmpty && teleAreaCodeTextfield.text!.isEmpty && postalCodeTextfield.text!.isEmpty && addressTextfield.text!.isEmpty {
-            showErrorMessage(ErrorMsg_NeedChangeOne, nil)
+            showErrorMessage(nil, ErrorMsg_NeedChangeOne)
             return false
         }
         if (telePhoneTextfield.text!.isEmpty && !teleAreaCodeTextfield.text!.isEmpty) || (!telePhoneTextfield.text!.isEmpty && teleAreaCodeTextfield.text!.isEmpty) {
-            showErrorMessage(ErrorMsg_Telephone, nil)
+            showErrorMessage(nil, ErrorMsg_Telephone)
             return false
         }
         if (postalCodeTextfield.text!.isEmpty && !addressTextfield.text!.isEmpty) || (!postalCodeTextfield.text!.isEmpty && addressTextfield.text!.isEmpty) {
-            showErrorMessage(ErrorMsg_Address, nil)
+            showErrorMessage(nil, ErrorMsg_Address)
             return false
         }
         if !emailTextfield.text!.isEmpty && !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {
-            showErrorMessage(ErrorMsg_Invalid_Email, nil)
+            showErrorMessage(nil, ErrorMsg_Invalid_Email)
             return false
         }
         
