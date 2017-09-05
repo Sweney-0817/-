@@ -66,32 +66,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - StoryBoard Touch Event
-    @IBAction func clickSendBtn(_ sender: Any) {
-        if (topDropView?.getContentByType(.First).isEmpty)! {
-            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
-        }
-        else {
-            setLoading(true)
-            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
-        }
-    }
-
-    // MARK: - ThreeRowDropDownViewDelegate
-    func clickThreeRowDropDownView(_ sender: ThreeRowDropDownView) {
-        if accountList != nil {
-            let actSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
-            for index in accountList! {
-                actSheet.addButton(withTitle: index.accountNO)
-            }
-            actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
-            actSheet.show(in: view)
-        }
-    }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
+    override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "ACCT0101":
             if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
@@ -107,11 +82,11 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
                 }
             }
             else {
-                super.didRecvdResponse(description, response)
+                super.didResponse(description, response)
             }
             
         case "COMM0701":
-//            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
+            //            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
             if let data = response.object(forKey: "Data") as? [String:Any], let date = data["CurrentDate"] as? String {
                 let outAccount = topDropView?.getContentByType(.First) ?? ""
                 let inAccount = self.inAccount ?? ""
@@ -156,7 +131,28 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
                 showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
             }
             
-        default: super.didRecvdResponse(description, response)
+        default: super.didResponse(description, response)
+        }
+    }
+    
+    // MARK: - StoryBoard Touch Event
+    @IBAction func clickSendBtn(_ sender: Any) {
+        if (topDropView?.getContentByType(.First).isEmpty)! {
+            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
+        }
+        else {
+            setLoading(true)
+            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
+        }
+    }
+
+    // MARK: - ThreeRowDropDownViewDelegate
+    func clickThreeRowDropDownView(_ sender: ThreeRowDropDownView) {
+        if accountList != nil {
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
+            actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
+            actSheet.show(in: view)
         }
     }
     

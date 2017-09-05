@@ -38,6 +38,18 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
         controller.SetConrirmIsSuccess(confirmIsSuccess)
     }
     
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case "COMM0103":
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
+                confirmIsSuccess = true
+            }
+            performSegue(withIdentifier: UserFirstChangeIDPwd_Seque, sender: nil)
+            
+        default: super.didResponse(description, response)
+        }
+    }
+    
     // MARK: - StoryBoard Touch Event
     @IBAction func clickCheckBtn(_ sender: Any) {
         setLoading(true)
@@ -48,19 +60,5 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        switch description {
-        case "COMM0103":
-            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
-                confirmIsSuccess = true
-            }
-            performSegue(withIdentifier: UserFirstChangeIDPwd_Seque, sender: nil)
-            
-        default: super.didRecvdResponse(description, response)
-        }
     }
 }

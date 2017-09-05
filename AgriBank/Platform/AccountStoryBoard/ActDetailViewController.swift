@@ -24,6 +24,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     @IBOutlet weak var theDayButton: UIButton!
     @IBOutlet weak var weekDayButton: UIButton!
     @IBOutlet weak var customizeDayButton: UIButton!
+    @IBOutlet weak var dateTypeLabel: UILabel!
     private var categoryList = [String:[AccountStruct]]() // Key: 電文(ACCT0101)response的"ACTTYPE"
     private var categoryType = [String:String]() // Key: ActOverviewType.description() value: 電文(ACCT0101)response的"ACTTYPE"
     private var currentType:String? = nil        // 目前選擇的帳戶Type
@@ -65,6 +66,21 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         
         setLoading(true)
         getTransactionID("02041", TransactionID_Description)
+        
+        // 規格要求------------------------------------------------------------------------------
+        let date = Date()
+        let componenets = Calendar.current.dateComponents([.year, .month, .day], from: date)
+        if let day = componenets.day, let month = componenets.month, let year = componenets.year {
+            endDate = "\(year)/\(month)/\(day)"
+        }
+        
+        let newDate = Calendar.current.date(byAdding: .day, value: -7, to: date) ?? date
+        let startComponenets = Calendar.current.dateComponents([.year, .month, .day], from: newDate)
+        if let day = startComponenets.day, let month = startComponenets.month, let year = startComponenets.year {
+            startDate = "\(year)/\(month)/\(day)"
+        }
+        dateTypeLabel.text = weekDayButton.titleLabel?.text
+        dateLabel.text = startDate + (endDate != "" ? " - \(endDate)" : "")
     }
 
     override func didReceiveMemoryWarning() {
@@ -372,85 +388,8 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         }
         return cell
     }
-
-    // MARK: - ChooseTypeDelegate
-    func clickChooseTypeBtn(_ name:String) {
-        currentType = name
-        chooseAccount = nil
-        (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, Choose_Title)
-        resultList = nil
-        startDate = ""
-        endDate = ""
-        dateLabel.text = ""
-        tableView.reloadData()
-    }
     
-    // MARK: - StoryBoadr Touch Event
-    @IBAction func clickDateBtn(_ sender: Any) {
-        let btn = (sender as! UIButton)
-        switch btn {
-        case theDayButton:
-            let componenets = Calendar.current.dateComponents([.year, .month, .day], from: Date())
-            if let day = componenets.day, let month = componenets.month, let year = componenets.year {
-                startDate = "\(year)/\(month)/\(day)"
-            }
-            endDate = ""
-            PostGetAcntInfo()
-            dateLabel.text = startDate + (endDate != "" ? "- \(endDate)" : "")
-            
-        case weekDayButton:
-            let date = Date()
-            let componenets = Calendar.current.dateComponents([.year, .month, .day], from: date)
-            if let day = componenets.day, let month = componenets.month, let year = componenets.year {
-                endDate = "\(year)/\(month)/\(day)"
-            }
-            
-            let newDate = Calendar.current.date(byAdding: .day, value: -7, to: date) ?? date
-            let startComponenets = Calendar.current.dateComponents([.year, .month, .day], from: newDate)
-            if let day = startComponenets.day, let month = startComponenets.month, let year = startComponenets.year {
-                startDate = "\(year)/\(month)/\(day)"
-            }
-            PostGetAcntInfo()
-            dateLabel.text = startDate + (endDate != "" ? " - \(endDate)" : "")
-            
-        case customizeDayButton:
-            if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-                dateView.frame = view.frame
-                dateView.frame.origin = .zero
-                dateView.showTwoDatePickerView(true) { start, end in
-                    self.startDate = "\(start.year)/\(start.month)/\(start.day)"
-                    self.endDate = "\(end.year)/\(end.month)/\(end.day)"
-                    self.dateLabel.text = self.startDate + (self.endDate != "" ? " - \(self.endDate)" : "")
-                    self.PostGetAcntInfo()
-                }
-                view.addSubview(dateView)
-            }
-            
-        default: break
-        }
-    }
-    
-    // MARK: - UITableViewDelegate
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        currentIndex = indexPath.row
-        performSegue(withIdentifier: ActDetailView_ShowDetail_Segue, sender: nil)
-    }
-    
-    // MARK: - OneRowDropDownViewDelegate
-    func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
-        if currentType != nil {
-            let act = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
-            if let type = categoryType[currentType!],  let list = categoryList[type] {
-                for info in list {
-                    act.addButton(withTitle: info.accountNO)
-                }
-            }
-            act.show(in: view)
-        }
-    }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
+    override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
@@ -458,9 +397,9 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
-                super.didRecvdResponse(description, response)
+                super.didResponse(description, response)
             }
-        
+            
         case "ACCT0101":
             if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 typeList = [String]()
@@ -526,7 +465,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     if chooseAccount != nil {
                         (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount!)
                         clickDateBtn(weekDayButton)
-                        PostGetAcntInfo()
+                        postGetAcntInfo()
                     }
                     else {
                         setLoading(false)
@@ -538,7 +477,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 tableView.reloadData()
             }
             else {
-                super.didRecvdResponse(description, response)
+                super.didResponse(description, response)
             }
             
         case "ACIF0201":
@@ -548,7 +487,85 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 tableView.reloadData()
             }
             
-        default: super.didRecvdResponse(description, response)
+        default: super.didResponse(description, response)
+        }
+    }
+
+    // MARK: - ChooseTypeDelegate
+    func clickChooseTypeBtn(_ name:String) {
+        currentType = name
+        chooseAccount = nil
+        (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, Choose_Title)
+        resultList = nil
+        tableView.reloadData()
+    }
+    
+    // MARK: - StoryBoadr Touch Event
+    @IBAction func clickDateBtn(_ sender: Any) {
+        if (chooseAccountView.subviews.first as! OneRowDropDownView).getContentByType(.First) == Choose_Title {
+            showErrorMessage(nil, Choose_Title+(currentType ?? "")+ActDetailView_ShowAccount_Title)
+            return
+        }
+        let btn = (sender as! UIButton)
+        dateTypeLabel.text = btn.titleLabel?.text
+        switch btn {
+        case theDayButton:
+            let componenets = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            if let day = componenets.day, let month = componenets.month, let year = componenets.year {
+                startDate = "\(year)/\(month)/\(day)"
+            }
+            endDate = ""
+            postGetAcntInfo()
+            dateLabel.text = startDate + (endDate != "" ? "- \(endDate)" : "")
+            
+        case weekDayButton:
+            let date = Date()
+            let componenets = Calendar.current.dateComponents([.year, .month, .day], from: date)
+            if let day = componenets.day, let month = componenets.month, let year = componenets.year {
+                endDate = "\(year)/\(month)/\(day)"
+            }
+            
+            let newDate = Calendar.current.date(byAdding: .day, value: -7, to: date) ?? date
+            let startComponenets = Calendar.current.dateComponents([.year, .month, .day], from: newDate)
+            if let day = startComponenets.day, let month = startComponenets.month, let year = startComponenets.year {
+                startDate = "\(year)/\(month)/\(day)"
+            }
+            postGetAcntInfo()
+            dateLabel.text = startDate + (endDate != "" ? " - \(endDate)" : "")
+            
+        case customizeDayButton:
+            if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
+                dateView.frame = view.frame
+                dateView.frame.origin = .zero
+                dateView.showTwoDatePickerView(true) { start, end in
+                    self.startDate = "\(start.year)/\(start.month)/\(start.day)"
+                    self.endDate = "\(end.year)/\(end.month)/\(end.day)"
+                    self.dateLabel.text = self.startDate + (self.endDate != "" ? " - \(self.endDate)" : "")
+                    self.postGetAcntInfo()
+                }
+                view.addSubview(dateView)
+            }
+            
+        default: break
+        }
+    }
+    
+    // MARK: - UITableViewDelegate
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        currentIndex = indexPath.row
+        performSegue(withIdentifier: ActDetailView_ShowDetail_Segue, sender: nil)
+    }
+    
+    // MARK: - OneRowDropDownViewDelegate
+    func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
+        if currentType != nil {
+            let act = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            if let type = categoryType[currentType!], let list = categoryList[type] {
+                for info in list {
+                    act.addButton(withTitle: info.accountNO)
+                }
+            }
+            act.show(in: view)
         }
     }
     
@@ -561,13 +578,13 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 clickDateBtn(weekDayButton)
             }
             if chooseAccount != nil {
-                PostGetAcntInfo()
+                postGetAcntInfo()
             }
         }
     }
     
     // MARK: - Private
-    private func PostGetAcntInfo() {
+    private func postGetAcntInfo() {
         if currentType != nil && chooseAccount != nil, let type = categoryType[currentType!] {
             setLoading(true)
             postRequest("ACIF/ACIF0201", "ACIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02041","Operate":"getAcntInfo","TransactionId":transactionId,"ACTTYPE":type,"ACTNO":chooseAccount!,"TXSDAY":startDate,"TXEDAY":endDate], true), AuthorizationManage.manage.getHttpHead(true))

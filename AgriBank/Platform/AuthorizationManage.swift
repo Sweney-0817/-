@@ -203,7 +203,7 @@ class AuthorizationManage {
             
         case .Menu_Type:
             if userInfo?.Token == nil {
-                list = [.FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_DeviceBinding]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_DeviceBinding]
             }
             else {
                 list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding]

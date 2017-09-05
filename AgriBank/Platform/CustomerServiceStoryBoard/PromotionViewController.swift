@@ -54,6 +54,27 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
         super.didReceiveMemoryWarning()
     }
     
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case "INFO0101":
+            if let data = response.object(forKey: "Data") as? [String:Any], let list = data["AllPromo"] as? [[String:Any]] {
+                for index in 0..<list.count {
+                    let dic = list[index]
+                    if let city = dic["CC_CityName"] as? String, let promotion = dic["LocalPromo"] as? [[String:String]] {
+                        var pList = [PromotionStruct]()
+                        for info in promotion {
+                            pList.append( PromotionStruct.init( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "" ) )
+                        }
+                        promotionList[city] = pList
+                        cityList.append(city)
+                    }
+                }
+            }
+            
+        default: super.didResponse(description, response)
+        }
+    }
+    
     // MARK: - Private
     private func goDetail() {
         performSegue(withIdentifier: "goDetail", sender: nil)
@@ -72,8 +93,6 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
             m_DDPlace?.frame = CGRect(x:0, y:0, width:m_vPlace.frame.width, height:(m_DDPlace?.getHeight())!)
             m_vPlace.addSubview(m_DDPlace!)
         }
-        m_vPlace.layer.borderColor = Gray_Color.cgColor
-        m_vPlace.layer.borderWidth = 1
     }
 
     private func setDataTableView() {
@@ -82,19 +101,18 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
 
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
-        let action = UIActionSheet()
-        action.delegate = self
-        for city in cityList  {
-            action.addButton(withTitle: city)
-        }
+        let action = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+        cityList.forEach{city in action.addButton(withTitle: city)}
         action.show(in: self.view)
     }
     
     // MARK: - UIActionSheetDelegate
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
-        m_DDPlace?.setOneRow((m_DDPlace?.m_lbFirstRowTitle.text)!, actionSheet.buttonTitle(at: buttonIndex)!)
-        chooseCity = actionSheet.buttonTitle(at: buttonIndex) ?? ""
-        m_tvData.reloadData()
+        if actionSheet.cancelButtonIndex != buttonIndex {
+            m_DDPlace?.setOneRow((m_DDPlace?.m_lbFirstRowTitle.text)!, actionSheet.buttonTitle(at: buttonIndex)!)
+            chooseCity = actionSheet.buttonTitle(at: buttonIndex) ?? ""
+            m_tvData.reloadData()
+        }
     }
 
     // MARK: - UITableViewDelegate
@@ -122,28 +140,5 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
         }
         cell.selectionStyle = .none
         return cell
-    }
-
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        switch description {
-        case "INFO0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let list = data["AllPromo"] as? [[String:Any]] {
-                for index in 0..<list.count {
-                    let dic = list[index]
-                    if let city = dic["CC_CityName"] as? String, let promotion = dic["LocalPromo"] as? [[String:String]] {
-                        var pList = [PromotionStruct]()
-                        for info in promotion {
-                           pList.append( PromotionStruct.init( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "" ) )
-                        }
-                        promotionList[city] = pList
-                        cityList.append(city)
-                    }
-                }
-            }
-            
-        default: super.didRecvdResponse(description, response)
-        }
     }
 }

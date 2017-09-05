@@ -9,39 +9,55 @@
 import UIKit
 
 let AnnounceNews_Repeat_Time:TimeInterval = 5
+let AnnounceNews_Cell_Identify = "newsCell"
 
 protocol AnnounceNewsDelegate {
-    func clickNesw(_ index:Int)
+    func clickNews(_ index:Int)
 }
 
 class AnnounceNews: UIView, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var newsTableView: UITableView!
-    var list:[String]? = nil
-    var delegate:AnnounceNewsDelegate? = nil
+    private var list:[String]? = nil
+    private var delegate:AnnounceNewsDelegate? = nil
+    private var curTimer:Timer? = nil
     
+    // MARK: - Public
     func setContentList(_ list:[String], _ delegate:AnnounceNewsDelegate? = nil) {
         self.list = list
-        newsTableView.separatorStyle = .none
         newsTableView.reloadData()
-        Timer.scheduledTimer(timeInterval: AnnounceNews_Repeat_Time, target: self, selector: #selector(scrollNewsView(_:)), userInfo: nil, repeats: true)
+        if curTimer == nil {
+            curTimer = Timer.scheduledTimer(timeInterval: AnnounceNews_Repeat_Time, target: self, selector: #selector(scrollNewsView(_:)), userInfo: nil, repeats: true)
+        }
         self.delegate = delegate
     }
     
     func scrollNewsView(_ theTimer:Timer) {
-        if list?.count != 0 {
+        if list != nil && (list?.count)! > 1 {
             let lastIndexPath = newsTableView.indexPathsForVisibleRows?.last
             let scrollIndexPath = IndexPath(row:((lastIndexPath?.row)!+1 < (list?.count)! ? (lastIndexPath?.row)!+1 : 0), section: 0)
             newsTableView.scrollToRow(at: scrollIndexPath, at: .top, animated: (scrollIndexPath.row == 0 ? false: true))
         }
         else {
-            theTimer.invalidate()
+            curTimer?.invalidate()
+            curTimer = nil
         }
     }
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.clickNesw(indexPath.row)
+        delegate?.clickNews(indexPath.row)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: AnnounceNews_Cell_Identify)
+        if cell == nil {
+            cell = UITableViewCell(style: .value1, reuseIdentifier: AnnounceNews_Cell_Identify)
+            cell?.backgroundColor = .clear
+            cell?.selectionStyle = .none
+        }
+        cell?.textLabel?.attributedText = NSAttributedString(string: list?[indexPath.row] ?? "", attributes: [NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.white])
+        return cell!
     }
     
     // MARK: - UITableViewDataSource
@@ -61,14 +77,6 @@ class AnnounceNews: UIView, UITableViewDelegate, UITableViewDataSource {
         else {
             return 0
         }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .value1, reuseIdentifier: "newsCell")
-        cell.textLabel?.attributedText = NSAttributedString(string: list?[indexPath.row] ?? "", attributes: [NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.white])
-        cell.backgroundColor = .clear
-        cell.selectionStyle = .none
-        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -35,6 +35,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var imageConfirmView: UIView!
     @IBOutlet weak var lockButton: UIButton!
+    
     private var request:ConnectionUtility? = nil
     private var list = [[String:[String]]]()
     private var bankCode = [String:String]()

@@ -123,6 +123,84 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
         }
     }
     
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                setLoading(true)
+                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "ACCT0101":
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
+                for category in array {
+                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Loan_Type {
+                        accountList = [AccountStruct]()
+                        for actInfo in result {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                            }
+                        }
+                    }
+                }
+                
+                if inputAccount != nil {
+                    for index in 0..<(accountList?.count)! {
+                        if let info = accountList?[index], info.accountNO == inputAccount! {
+                            accountIndex = index
+                            topDropView?.setOneRow(LoanPrincipalInterest_Accout_Title,info.accountNO)
+                            break
+                        }
+                    }
+                    if accountIndex != nil {
+                        setLoading(true)
+                        postRequest("TRAN/TRAN0601", "TRAN0601-0", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"getList","TransactionId":transactionId,"REFNO":topDropView?.getContentByType(.First) ?? "","PRDCNT":"0"], true), AuthorizationManage.manage.getHttpHead(true)) // PRDCNT:繳息期數=>0-為查回全部,1-為可繳交第一期
+                    }
+                    inputAccount = nil
+                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "TRAN0601-0":
+            if let data = response.object(forKey: "Data") as? [String:Any] {
+                result = data
+                if let APAMT = result?["APAMT"] as? String {
+                    loanAmountLabel.text = APAMT
+                }
+                if let ACTBAL = result?["ACTBAL"] as? String {
+                    currentAmountLabel.text = ACTBAL
+                }
+                if let TOTAL = result?["TOTAL"] as? String {
+                    needPayAmountLabel.text = TOTAL
+                }
+                if let Memo = result?["Memo"] as? String {
+                    memoStatus = Memo
+                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            tableView.reloadData()
+            
+        case "TRAN0601-1":
+            if let data = response.object(forKey: "Data") as? [String:Any] {
+                oneResult = data
+                performSegue(withIdentifier: LoanPrincipalInterest_PayLoan_Segue, sender: nil)
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        default: super.didResponse(description, response)
+        }
+    }
+    
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let array = result?["Result"] as? [[String:String]] {
@@ -193,92 +271,12 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
             for index in accountList! {
                 actSheet.addButton(withTitle: index.accountNO)
             }
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
-        }
-    }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        switch description {
-        case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
-                transactionId = tranId
-                setLoading(true)
-                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
-                for category in array {
-                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Loan_Type {
-                        accountList = [AccountStruct]()
-                        for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
-                                accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
-                            }
-                        }
-                    }
-                }
-                
-                if inputAccount != nil {
-                    for index in 0..<(accountList?.count)! {
-                        if let info = accountList?[index], info.accountNO == inputAccount! {
-                            accountIndex = index
-                            topDropView?.setOneRow(LoanPrincipalInterest_Accout_Title,info.accountNO)
-                            break
-                        }
-                    }
-                    if accountIndex != nil {
-                        setLoading(true)
-                        postRequest("TRAN/TRAN0601", "TRAN0601-0", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"getList","TransactionId":transactionId,"REFNO":topDropView?.getContentByType(.First) ?? "","PRDCNT":"0"], true), AuthorizationManage.manage.getHttpHead(true)) // PRDCNT:繳息期數=>0-為查回全部,1-為可繳交第一期
-                    }
-                    inputAccount = nil
-                }
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        case "TRAN0601-0":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
-                result = data
-                if let APAMT = result?["APAMT"] as? String {
-                    loanAmountLabel.text = APAMT
-                }
-                if let ACTBAL = result?["ACTBAL"] as? String {
-                    currentAmountLabel.text = ACTBAL
-                }
-                if let TOTAL = result?["TOTAL"] as? String {
-                    needPayAmountLabel.text = TOTAL
-                }
-                if let Memo = result?["Memo"] as? String {
-                    memoStatus = Memo
-                }
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            tableView.reloadData()
-            
-        case "TRAN0601-1":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
-                oneResult = data
-                performSegue(withIdentifier: LoanPrincipalInterest_PayLoan_Segue, sender: nil)
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        default: super.didRecvdResponse(description, response)
         }
     }
     

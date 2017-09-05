@@ -104,6 +104,65 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         }
     }
     
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case "INFO0301":
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["No"] as? [[String:String]] {
+                aroundMeList.removeAll()
+                for info in array {
+                    if let name = info["Name"], let address = info["Address"], let tel = info["Tel"], let fax = info["Fax"], let distance = info["Distance"], let type = info["Type"], let longitude = info["Longitude"], let latitude = info["Latitude"] {
+                        aroundMeList.append(ServiceBaseStruct(name, address, tel, fax, distance, type, CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
+                    }
+                }
+                initDataTitleForType()
+            }
+            
+        case "INFO0302":
+            if let data = response.object(forKey: "Data") as? [String:Any] {
+                unitList.removeAll()
+                unitInfoList.removeAll()
+                if let unit = data["Unit"] as? [[String:String]] {
+                    for info in unit {
+                        if let city = info["CC_CityName"] {
+                            if unitList.index(of: city) == nil {
+                                unitList.append(city)
+                            }
+                            if let name = info["CUM_FullBankChineseName"], let address = info["CUM_Address"], let tel = info["CUM_Telephone"], let fax = info["CUM_Fax"], let longitude = info["CUM_Longitude"], let latitude = info["CUM_Latitude"] {
+                                if var array = unitInfoList[city] {
+                                    array.append(ServiceBaseStruct(name, address, tel, fax, "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
+                                }
+                                else {
+                                    unitInfoList[city] = [ServiceBaseStruct(name, address, tel, fax, "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0))]
+                                }
+                            }
+                        }
+                    }
+                }
+                if let ATM = data["Unit"] as? [[String:String]]  {
+                    ATMList.removeAll()
+                    ATMInfoList.removeAll()
+                    for info in ATM {
+                        if let city = info["CC_CityName"] {
+                            if ATMList.index(of: city) == nil {
+                                ATMList.append(city)
+                            }
+                            if let name = info["CAM_ATMName"], let address = info["CAM_Address"],let longitude = info["CAM_Longitude"], let latitude = info["CAM_Latitude"] {
+                                if var array = ATMInfoList[city] {
+                                    array.append(ServiceBaseStruct(name, address, "", "", "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
+                                }
+                                else {
+                                    ATMInfoList[city] = [ServiceBaseStruct(name, address, "", "", "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0))]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+        default: super.didResponse(description, response)
+        }
+    }
+    
     // MARK: - Private
     private func setAllSubView() {
         setDDPlace()
@@ -122,7 +181,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     }
     
     private func setChooseTypeView() {
-        let width = m_vChooseTypeView.frame.width / CGFloat(ServiceBase_TypeList.count)
+        let width = view.frame.width / CGFloat(ServiceBase_TypeList.count)
         m_vChooseTypeView.setTypeList(ServiceBase_TypeList, setDelegate: self, nil, width)
     }
     
@@ -244,67 +303,6 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         }
         cell.selectionStyle = .none
         return cell
-    }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        switch description {
-        case "INFO0301":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["No"] as? [[String:String]] {
-                aroundMeList.removeAll()
-                for info in array {
-                    if let name = info["Name"], let address = info["Address"], let tel = info["Tel"], let fax = info["Fax"], let distance = info["Distance"], let type = info["Type"], let longitude = info["Longitude"], let latitude = info["Latitude"] {
-                        aroundMeList.append(ServiceBaseStruct(name, address, tel, fax, distance, type, CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
-                    }
-                }
-                initDataTitleForType()
-            }
-            
-        case "INFO0302":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
-                unitList.removeAll()
-                unitInfoList.removeAll()
-                if let unit = data["Unit"] as? [[String:String]] {
-                    for info in unit {
-                        if let city = info["CC_CityName"] {
-                            if unitList.index(of: city) == nil {
-                                unitList.append(city)
-                            }
-                            if let name = info["CUM_FullBankChineseName"], let address = info["CUM_Address"], let tel = info["CUM_Telephone"], let fax = info["CUM_Fax"], let longitude = info["CUM_Longitude"], let latitude = info["CUM_Latitude"] {
-                                if var array = unitInfoList[city] {
-                                    array.append(ServiceBaseStruct(name, address, tel, fax, "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
-                                }
-                                else {
-                                    unitInfoList[city] = [ServiceBaseStruct(name, address, tel, fax, "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0))]
-                                }
-                            }
-                        }
-                    }
-                }
-                if let ATM = data["Unit"] as? [[String:String]]  {
-                    ATMList.removeAll()
-                    ATMInfoList.removeAll()
-                    for info in ATM {
-                        if let city = info["CC_CityName"] {
-                            if ATMList.index(of: city) == nil {
-                                ATMList.append(city)
-                            }
-                            if let name = info["CAM_ATMName"], let address = info["CAM_Address"],let longitude = info["CAM_Longitude"], let latitude = info["CAM_Latitude"] {
-                                if var array = ATMInfoList[city] {
-                                    array.append(ServiceBaseStruct(name, address, "", "", "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
-                                }
-                                else {
-                                    ATMInfoList[city] = [ServiceBaseStruct(name, address, "", "", "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0))]
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-        default: super.didRecvdResponse(description, response)
-        }
     }
     
     // MARK: - CLLocationManagerDelegate

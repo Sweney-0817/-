@@ -30,9 +30,10 @@ class SideMenuViewController: UIViewController {
     private var isRightMenuShow = true
     private var moveEndX:CGFloat = 0
     private let animateTime = 0.5
-    private var tapGesture:UITapGestureRecognizer? = nil
     private let SideMenu_shadowOpacity = Float(0.5)
     private let SideMenu_shadowRadius = CGFloat(20)
+    private var closeBtn:UIButton? = nil
+//    private var tapGesture:UITapGestureRecognizer? = nil
     
     
     // MARK: - Override
@@ -102,9 +103,15 @@ class SideMenuViewController: UIViewController {
                     self.leftViewController?.didMove(toParentViewController: self)
                 }
                 self.currentMenuState = .Expand
-                if self.tapGesture == nil {
-                    self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.HandleTapGseture))
-                    self.centerViewController?.view.addGestureRecognizer(self.tapGesture!)
+//                if self.tapGesture == nil {
+//                    self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.HandleTapGseture))
+//                    self.centerViewController?.view.addGestureRecognizer(self.tapGesture!)
+//                }
+                if self.closeBtn == nil {
+                    self.closeBtn = UIButton(frame: (self.centerViewController?.view.bounds)!)
+                    self.closeBtn?.backgroundColor = .clear
+                    self.closeBtn?.addTarget(self, action: #selector(self.clickCloseBtn), for: .touchUpInside)
+                    self.centerViewController?.view.addSubview(self.closeBtn!)
                 }
             }
         })
@@ -125,9 +132,13 @@ class SideMenuViewController: UIViewController {
                 }
                 self.currentMenuState = .Hide
                 self.centerViewController?.view.layer.shadowOpacity = 0
-                if self.tapGesture != nil {
-                    self.centerViewController?.view.removeGestureRecognizer(self.tapGesture!)
-                    self.tapGesture = nil
+//                if self.tapGesture != nil {
+//                    self.centerViewController?.view.removeGestureRecognizer(self.tapGesture!)
+//                    self.tapGesture = nil
+//                }
+                if self.closeBtn != nil {
+                    self.closeBtn?.removeFromSuperview()
+                    self.closeBtn = nil
                 }
             }
         })
@@ -228,8 +239,14 @@ class SideMenuViewController: UIViewController {
         }
     }
     
-    func HandleTapGseture(_ sender: UITapGestureRecognizer) {
-        if currentMenuState == .Expand && sender.state == .ended {
+//    func HandleTapGseture(_ sender: UITapGestureRecognizer) {
+//        if currentMenuState == .Expand && sender.state == .ended {
+//            HideSideMenu(isRightMenuShow)
+//        }
+//    }
+    
+    func clickCloseBtn(_ sender:Any) {
+        if currentMenuState == .Expand {
             HideSideMenu(isRightMenuShow)
         }
     }

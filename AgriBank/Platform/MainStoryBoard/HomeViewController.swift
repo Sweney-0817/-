@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, AnnounceNewsDelegate, UIAlertViewDelegate {
+class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, AnnounceNewsDelegate {
     @IBOutlet weak var newsView: UIView!
     @IBOutlet weak var bannerView: UIView!
     @IBOutlet weak var loginStatusLabel: UILabel!
@@ -30,8 +30,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         let news = getUIByID(.UIID_AnnounceNews) as! AnnounceNews
         news.frame = newsView.frame
         news.frame.origin = .zero
-        news.tag = ViewTag.View_AnnounceNews.rawValue
-        news.delegate = self
         newsView.addSubview(news)
         
         let banner = getUIByID(.UIID_Banner) as! BannerView
@@ -69,6 +67,89 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         }
     }
 
+    override func didResponse(_ description: String, _ response: NSDictionary) {
+        switch description {
+        case "COMM0101", "COMM0102":
+            super.didResponse(description, response)
+            featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
+            updateLoginStatus()
+            
+        case "COMM0201":
+            var bannerList = [BannerStructure]()
+            if let data:[String:Any] = response.object(forKey: "Data") as? [String:Any] {
+                if let list:[[String:String]] = data["Result"] as? [[String:String]] {
+                    for banner in list {
+                        bannerList.append(BannerStructure(imageURL: banner["picUrl"]!, link: banner["lnkUrl"]!))
+                    }
+                    (bannerView.subviews.first as! BannerView).setContentList(bannerList)
+                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "COMM0404":
+            if let data = response.object(forKey: "Data") as? [String:Any], let url = data["url"] as? String {
+                postRequest("", "LogoImage", nil, nil, url, false, true)
+                getAnnounceNewsInfo()
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "COMM0901": break
+            //            if let data = response.object(forKey: "Data") as? [String : Any] {
+            //                if let forcedChange = data["forcedChange"] as? String { //是否強制換版
+            //
+            //                }
+            //                if let isNew = data["isNew"] as? String { // 是否有更新版本
+            //
+            //                }
+            //                if let newVersion = data["newVersion"] as? String { //最新版號
+            //
+            //                }
+            //            }
+            //            else {
+            //                super.didResponse(description, response)
+            //            }
+            
+        case "INFO0201":
+            if let data = response.object(forKey: "Data") as? [String : Any], let list = data["CB_List"] as? [[String:Any]] {
+                if AuthorizationManage.manage.IsLoginSuccess() {
+                    bankNewsList?.removeAll()
+                    bankNewsList = list
+                }
+                else {
+                    centerNewsList?.removeAll()
+                    centerNewsList = list
+                }
+                var newsList = [String]()
+                for dic in list {
+                    newsList.append("\(dic["CB_Title"] ?? "")")
+                }
+                (newsView.subviews.first as! AnnounceNews).setContentList(newsList, self)
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "LogoImage":
+            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
+                logoImageView.image = responseImage
+                logoImage = responseImage
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "COMM0102":
+            logoImage = UIImage(named: ImageName.DefaultLogo.rawValue)
+            super.didResponse(description, response)
+            
+        default: super.didResponse(description, response)
+        }
+    }
+    
     // MARK: - Pubilc
     func pushFeatureController(_ ID:PlatformFeatureID, _ animated:Bool) {
         let controller = getControllerByID(ID)
@@ -184,98 +265,13 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         enterFeatureByID(ID, true)
     }
     
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description: String, _ response: NSDictionary) {
-        switch description {
-        case "COMM0101", "COMM0102":
-            super.didRecvdResponse(description, response)
-            featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
-            updateLoginStatus()
-            
-        case "COMM0201":
-            var bannerList = [BannerStructure]()
-            if let data:[String:Any] = response.object(forKey: "Data") as? [String:Any] {
-                if let list:[[String:String]] = data["Result"] as? [[String:String]] {
-                    for banner in list {
-                        bannerList.append(BannerStructure(imageURL: banner["picUrl"]!, link: banner["lnkUrl"]!))
-                    }
-                    (bannerView.subviews.first as! BannerView).SetContentList(bannerList)
-                }
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-        
-        case "COMM0404":
-            if let data = response.object(forKey: "Data") as? [String:Any], let url = data["url"] as? String {
-                postRequest("", "LogoImage", nil, nil, url, false, true)
-                getAnnounceNewsInfo()
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        case "COMM0901": break
-//            if let data = response.object(forKey: "Data") as? [String : Any] {
-//                if let forcedChange = data["forcedChange"] as? String { //是否強制換版
-//                    
-//                }
-//                if let isNew = data["isNew"] as? String { // 是否有更新版本
-//                    
-//                }
-//                if let newVersion = data["newVersion"] as? String { //最新版號
-//                    
-//                }
-//            }
-//            else {
-//                super.didRecvdResponse(description, response)
-//            }
-            
-        case "INFO0201":
-            if let data = response.object(forKey: "Data") as? [String : Any], let list = data["CB_List"] as? [[String:Any]], let
-                news = newsView.viewWithTag(ViewTag.View_AnnounceNews.rawValue) as? AnnounceNews {
-                if AuthorizationManage.manage.IsLoginSuccess() {
-                    bankNewsList?.removeAll()
-                    bankNewsList = list
-                }
-                else {
-                    centerNewsList?.removeAll()
-                    centerNewsList = list
-                }
-                var newsList = [String]()
-                for dic in list {
-                    newsList.append("\(dic["CB_Title"] ?? "")")
-                }
-                news.setContentList(newsList, self)
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        case "LogoImage":
-            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
-                logoImageView.image = responseImage
-                logoImage = responseImage
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        case "COMM0102":
-            logoImage = UIImage(named: ImageName.DefaultLogo.rawValue)
-            super.didRecvdResponse(description, response)
-            
-        default: super.didRecvdResponse(description, response)
-        }
-    }
-    
     // MARK: - AnnounceNewsDelegate
-    func clickNesw(_ index:Int) {
+    func clickNews(_ index:Int) {
         enterFeatureByID(.FeatureID_News, true)
     }
     
     // MARK: - UIAlertViewDelegate
-    func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
+    override func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
         if buttonIndex != alertView.cancelButtonIndex {
             postLogout()
         }

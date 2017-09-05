@@ -54,6 +54,21 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
         navigationController?.navigationBar.topItem?.title = ReservationTransferDetailTitle
     }
     
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case "COMM0701": break
+            //            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
+            //            }
+            //            else {
+            //                cancelButton.backgroundColor = Disable_Color
+            //                cancelButton.isEnabled = false
+            //            }
+            
+        default: super.didResponse(description, response)
+        }
+        
+    }
+    
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return list?.count ?? 0
@@ -84,21 +99,5 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
         dataConfirm.list?.append([Response_Key:"登錄序號",Response_Value:input?.serialNumber ?? ""])
         enterConfirmResultController(true, dataConfirm, true)
     }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        switch description {
-        case "COMM0701": break
-//            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
-//            }
-//            else {
-//                cancelButton.backgroundColor = Disable_Color
-//                cancelButton.isEnabled = false
-//            }
-            
-        default: super.didRecvdResponse(description, response)
-        }
-        
-    }
+
 }

@@ -21,6 +21,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     private var password = ""
     private var imageConfirmView:ImageConfirmView? = nil
     private var checkRequest:RequestStruct? = nil
+    private var curTextfield:UITextField? = nil
     
     // MARK: - Public
     func setData(_ data:ConfirmResultStruct) {
@@ -58,6 +59,46 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case "COMM0501":
+            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
+                imageConfirmView?.m_ivShow.image = responseImage
+            }
+            
+        case "COMM0502":
+            if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
+                if data?.checkRequest != nil {
+                    setLoading(true)
+                    postRequest((data?.checkRequest?.strMethod)!, (data?.checkRequest?.strSessionDescription)!, data?.checkRequest?.httpBody, data?.checkRequest?.loginHttpHead, data?.checkRequest?.strURL, (data?.checkRequest?.needCertificate)!, (data?.checkRequest?.isImage)!)
+                }
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
+                getImageConfirm()
+            }
+            
+        default:
+            if data?.checkRequest != nil && description == (data?.checkRequest?.strSessionDescription)! {
+                if let responseData = response.object(forKey: "Data") as? [[String:String]] {
+                    data?.list = responseData
+                }
+                else {
+                    data?.list?.removeAll()
+                }
+                if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
+                    data?.title = Transaction_Successful_Title
+                    data?.image = ImageName.CowSuccess.rawValue
+                }
+                else {
+                    data?.title = Transaction_Faild_Title
+                    data?.image = ImageName.CowFailure.rawValue
+                }
+                performSegue(withIdentifier: Confirm_Segue, sender: nil)
+            }
+        }
     }
     
     // MARK: - UITableViewDelegate
@@ -119,51 +160,21 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         password = input
     }
     
-    func ImageConfirmTextfieldBeginEditing(_ textfield:UITextField) {}
+    func ImageConfirmTextfieldBeginEditing(_ textfield:UITextField) {
+        curTextfield = textfield
+    }
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickCheckBtn(_ sender: Any) {
+        curTextfield?.resignFirstResponder()
         checkImageConfirm(password, transactionId)
     }
     
     // MARK: - ConnectionUtilityDelegate
     override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         setLoading(false)
-        switch description {
-        case "COMM0501":
-            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
-                imageConfirmView?.m_ivShow.image = responseImage
-            }
-            
-        case "COMM0502":
-            if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
-                if data?.checkRequest != nil {
-                    setLoading(true)
-                    postRequest((data?.checkRequest?.strMethod)!, (data?.checkRequest?.strSessionDescription)!, data?.checkRequest?.httpBody, data?.checkRequest?.loginHttpHead, data?.checkRequest?.strURL, (data?.checkRequest?.needCertificate)!, (data?.checkRequest?.isImage)!)
-                }
-            }
-            else {
-                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
-            }
-
-        default:
-            if data?.checkRequest != nil && description == (data?.checkRequest?.strSessionDescription)! {
-                if let responseData = response.object(forKey: "Data") as? [[String:String]] {
-                    data?.list = responseData
-                }
-                else {
-                    data?.list?.removeAll()
-                }
-                if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
-                    data?.title = Transaction_Successful_Title
-                    data?.image = ImageName.CowSuccess.rawValue
-                }
-                else {
-                    data?.title = Transaction_Faild_Title
-                    data?.image = ImageName.CowFailure.rawValue
-                }
-                performSegue(withIdentifier: Confirm_Segue, sender: nil)
-            }
-        }
+        
+        
+        
     }
 }

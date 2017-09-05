@@ -94,7 +94,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
     }
     
     private func setChooseTypeView() {
-        let width = m_vChooseTypeView.frame.width / CGFloat(RegularSavingCalculation_TypeList.count)
+        let width = view.frame.width / CGFloat(RegularSavingCalculation_TypeList.count)
         m_vChooseTypeView.setTypeList(RegularSavingCalculation_TypeList, setDelegate: self, nil, width)
     }
     

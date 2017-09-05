@@ -36,6 +36,61 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
         // Dispose of any resources that can be recreated.
     }
     
+    override func didResponse(_ description: String, _ response: NSDictionary) {
+        switch description {
+        case "MANG0201":
+            m_Data1.removeAll()
+            if let data = response.object(forKey: "Data") as? [String:Any] {
+                if let list = data["Result"] as? [[String:Any]] {
+                    for info in list {
+                        if let name = info["FC_Name"] as? String, let buy = info["CashToBuy"] as? Double, let sole = info["CashIsSold"] as? Double {
+                            m_Data1.append( NTRationStruct(name, String(buy), String(sole)) )
+                        }
+                    }
+                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            m_tvData.reloadData()
+            
+        case "COMM0402":
+            m_PickerData.removeAll()
+            if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
+                let cCode = (SecurityUtility.utility.readFileByKey(SetKey: File_CityCode_Key, setDecryptKey: AES_Key) as? String) ?? ""
+                let bCode = (SecurityUtility.utility.readFileByKey(SetKey: File_BankCode_Key, setDecryptKey: AES_Key) as? String) ?? ""
+                var cCity:String? = nil
+                var cBank:String? = nil
+                for dic in array {
+                    var bankList = [String]()
+                    if let city = dic["hsienName"] as? String, let cityID = dic["hsienCode"] as? String, let list = dic["bankList"] as? [[String:Any]] {
+                        cCity = (cityID == cCode) ? city : cCity
+                        for bank in list {
+                            if let name = bank["bankName"] as? String {
+                                bankList.append(name)
+                                if let code = bank["bankCode"] as? String {
+                                    bankCode["\(city)\(name)"] = code
+                                    cBank = (code == bCode) ? name : cBank
+                                }
+                            }
+                        }
+                        m_PickerData.append([city:bankList])
+                    }
+                }
+                if cCity != nil && cBank != nil {
+                    m_DDPlace?.setOneRow(ExchangeRate_Bank_Title, cCity!+" "+cBank!)
+                    setLoading(true)
+                    postRequest("Mang/MANG0201", "MANG0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"06002","Operate":"queryData","BR_CODE":"\(bCode)"], false), AuthorizationManage.manage.getHttpHead(false))
+                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        default: super.didResponse(description, response)
+        }
+    }
+    
     // MARK: -Private
     private func setAllSubView() {
         setDDPlace()
@@ -178,62 +233,4 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
             pickerView.reloadComponent(1)
         }
     }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description: String, _ response: NSDictionary) {
-        setLoading(false)
-        switch description {
-        case "MANG0201":
-            m_Data1.removeAll()
-            if let data = response.object(forKey: "Data") as? [String:Any] {
-                if let list = data["Result"] as? [[String:Any]] {
-                    for info in list {
-                        if let name = info["FC_Name"] as? String, let buy = info["CashToBuy"] as? Double, let sole = info["CashIsSold"] as? Double {
-                            m_Data1.append( NTRationStruct(name, String(buy), String(sole)) )
-                        }
-                    }
-                }
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            m_tvData.reloadData()
-            
-        case "COMM0402":
-            m_PickerData.removeAll()
-            if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
-                let cCode = (SecurityUtility.utility.readFileByKey(SetKey: File_CityCode_Key, setDecryptKey: AES_Key) as? String) ?? ""
-                let bCode = (SecurityUtility.utility.readFileByKey(SetKey: File_BankCode_Key, setDecryptKey: AES_Key) as? String) ?? ""
-                var cCity:String? = nil
-                var cBank:String? = nil
-                for dic in array {
-                    var bankList = [String]()
-                    if let city = dic["hsienName"] as? String, let cityID = dic["hsienCode"] as? String, let list = dic["bankList"] as? [[String:Any]] {
-                        cCity = (cityID == cCode) ? city : cCity
-                        for bank in list {
-                            if let name = bank["bankName"] as? String {
-                                bankList.append(name)
-                                if let code = bank["bankCode"] as? String {
-                                    bankCode["\(city)\(name)"] = code
-                                    cBank = (code == bCode) ? name : cBank
-                                }
-                            }
-                        }
-                        m_PickerData.append([city:bankList])
-                    }
-                }
-                if cCity != nil && cBank != nil {
-                    m_DDPlace?.setOneRow(ExchangeRate_Bank_Title, cCity!+" "+cBank!)
-                    setLoading(true)
-                    postRequest("Mang/MANG0201", "MANG0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"06002","Operate":"queryData","BR_CODE":"\(bCode)"], false), AuthorizationManage.manage.getHttpHead(false))
-                }
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        default: super.didRecvdResponse(description, response)
-        }
-    }
-
 }

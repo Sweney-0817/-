@@ -102,18 +102,18 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aJc-ku-UDT">
                                 <rect key="frame" x="0.0" y="142" width="375" height="100"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="近一週(交易日)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pLq-sc-gl1">
-                                        <rect key="frame" x="15" y="13" width="125" height="25.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pLq-sc-gl1">
+                                        <rect key="frame" x="15" y="13" width="80" height="25.5"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="26" id="Dq1-Fq-Gxa"/>
-                                            <constraint firstAttribute="width" constant="125" id="Lsj-zs-4n0"/>
+                                            <constraint firstAttribute="width" constant="80" id="Lsj-zs-4n0"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="wxb-xw-U3s">
-                                        <rect key="frame" x="140" y="13" width="235" height="25.5"/>
+                                        <rect key="frame" x="95" y="13" width="280" height="25.5"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -206,6 +206,7 @@
                         <outlet property="chooseTypeView" destination="Z1A-iY-vDq" id="Ixv-8D-ICB"/>
                         <outlet property="customizeDayButton" destination="Nee-zo-IhX" id="wBu-rO-LZz"/>
                         <outlet property="dateLabel" destination="wxb-xw-U3s" id="FIh-iK-qtG"/>
+                        <outlet property="dateTypeLabel" destination="pLq-sc-gl1" id="jhP-Uv-5cb"/>
                         <outlet property="tableView" destination="Mga-JL-J95" id="O23-qh-awg"/>
                         <outlet property="theDayButton" destination="6LF-5p-OAZ" id="Og9-bx-gLY"/>
                         <outlet property="transDayView" destination="aJc-ku-UDT" id="eF0-6j-FS6"/>

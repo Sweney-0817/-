@@ -43,7 +43,7 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
     }
     
     func clickPersonalImage(_ cancelTitle:String ,_ otherTitle:[PhotoActionSheetTitle]) {
-        let actSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: cancelTitle, destructiveButtonTitle: nil)
+        let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: cancelTitle, destructiveButtonTitle: nil)
         otherTitle.forEach{ title in actSheet.addButton(withTitle: title.simpleDescription()) }
         actSheet.tag = ViewTag.ActionSheet_Photo.rawValue
         actSheet.show(in: view)

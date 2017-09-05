@@ -38,7 +38,7 @@ enum PlatformFeatureID: Int {
     case FeatureID_CustomerService = 160000         // 客戶服務
     case FeatureID_Promotion = 160100               // 農漁會優惠產品
     case FeatureID_News = 160200                    // 最新消息
-    case FeatureID_ServiceBase = 160300             // 服務據點
+    case FeatureID_ServiceBase = 160300             // 農漁會據點
     case FeatureID_PersonalMessage = 160400         // 個人訊息
     case FeatureID_PersopnalSetting = 170000        // 個人設定
     case FeatureID_BasicInfoChange = 170100         // 基本資料變更
@@ -194,7 +194,7 @@ enum UIID: Int {
     case UIID_LoanPrincipalInterestCell // LoanPrincipalInterestCell class in CustomizeCell.swift
     case UIID_PromotionCell             // PromotionCell for農漁會優惠產品
     case UIID_NewsCell                  // NewsCell for最新消息、個人訊息
-    case UIID_ServiceBaseCell           // ServiceBaseCell for服務據點
+    case UIID_ServiceBaseCell           // ServiceBaseCell for農漁會據點
     case UIID_DatePickerView          // DatePickerView class
     
     func NibName() -> String? {
@@ -253,7 +253,6 @@ enum ViewTag: Int {
     case View_Status                        // 狀態欄
     case View_DatePickerBackground          // 日期Picker Background
     case View_Loading                       // 讀取頁面
-    case View_AnnounceNews                  // 訊息跑馬燈
     case View_StartDatePickerView           // 起始日期Picker
     case View_EndDatePickerView             // 截止日期Picker
     case View_AccountActionSheet            // 帳號列表ActionSheet
@@ -353,6 +352,7 @@ let AgriBank_Type = Int(1)
 let AgriBank_AppID = "FFICMBank"
 let AgriBank_TradeMark = "Apple"
 let AgriBank_LoginMode = Int(1)
+let AgriBank_ForcedLoginMode = Int(2)
 let AgriBank_InfoDictionary = Bundle.main.infoDictionary ?? ["CFBundleShortVersionString":""]
 let AgriBank_Version:String = (AgriBank_InfoDictionary["CFBundleShortVersionString"] as? String) ?? ""
 let AgriBank_SystemVersion = UIDevice.current.systemVersion

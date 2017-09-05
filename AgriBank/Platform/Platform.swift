@@ -137,7 +137,7 @@ class Platform {
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "最新消息")
         informationList[.FeatureID_News] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "服務據點")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "農漁會據點")
         informationList[.FeatureID_ServiceBase] = feature
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "個人訊息")

@@ -22,7 +22,7 @@ let Color_NavigationBar = UIColor(colorLiteralRed: 46/255, green: 134/255, blue:
 let Loading_Weight = 100
 let Loading_Height = 100
 
-class BaseViewController: UIViewController, LoginDelegate {
+class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     var request:ConnectionUtility? = nil
     var needShowBackBarItem:Bool = true
     var transactionId = ""                      // 交易編號
@@ -115,20 +115,20 @@ class BaseViewController: UIViewController, LoginDelegate {
         }
         else {
             if AuthorizationManage.manage.CanEnterFeature(ID) { // 判斷是否需要登入
+                var canEnter = true
                 switch ID {
                 case .FeatureID_TaxPayment, .FeatureID_BillPayment:
-                    if !SecurityUtility.utility.isJailBroken() {
-                        
-                    }
-                    else {
+                    if SecurityUtility.utility.isJailBroken() {
                         showErrorMessage("此功能無法在JB下使用", nil)
+                        canEnter = false
                     }
                     
-                default:
-                    if let con = navigationController?.viewControllers.first {
-                        if con is HomeViewController {
-                            (con as! HomeViewController).pushFeatureController(ID, animated)
-                        }
+                default: break
+                }
+                
+                if canEnter, let con = navigationController?.viewControllers.first {
+                    if con is HomeViewController {
+                        (con as! HomeViewController).pushFeatureController(ID, animated)
                     }
                 }
             }
@@ -163,7 +163,7 @@ class BaseViewController: UIViewController, LoginDelegate {
     func setLoading(_ isLoading:Bool) {
         if isLoading {
             if view.viewWithTag(ViewTag.View_Loading.rawValue) == nil {
-                let loadingView = UIView(frame: view.frame)
+                let loadingView = UIView(frame: view.bounds)
                 loadingView.tag = ViewTag.View_Loading.rawValue
                 loadingView.backgroundColor = Loading_Background_Color
                 
@@ -187,9 +187,9 @@ class BaseViewController: UIViewController, LoginDelegate {
         }
     }
     
-    func showErrorMessage(_ inputTitle:String?, _ message:String?) {
+    func showErrorMessage(_ inputTitle:String?, _ message:String?, _ delegate:Any? = nil) {
         let title = inputTitle != nil ? inputTitle! : UIAlert_Default_Title
-        let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:UIAlert_Confirm_Title)
+        let alert = UIAlertView(title: title, message: message, delegate: delegate, cancelButtonTitle:UIAlert_Confirm_Title)
         alert.show()
     }
     
@@ -218,6 +218,11 @@ class BaseViewController: UIViewController, LoginDelegate {
     func clickLoginCloseBtn() {
         loginView?.removeFromSuperview()
         loginView = nil
+        curFeatureID = nil
+        if touchTap != nil {
+            view.removeGestureRecognizer(touchTap!)
+            touchTap = nil
+        }
     }
     
     // MARK: - UIBarButtonItem Selector
@@ -266,6 +271,11 @@ class BaseViewController: UIViewController, LoginDelegate {
     func dismissKeyboard() {
         view.endEditing(true)
     }
+    
+    // - UIAlertViewDelegate
+    func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
+        navigationController?.popToRootViewController(animated: true)
+    }
 }
 
 // MARK: - 電文發送 接收
@@ -311,22 +321,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
         postRequest("Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    // MARK: - ConnectionUtilityDelegate
-    func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        var showReturnMsg = false
-        setLoading(false)
+    func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
-        case "COMM0501":
-            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
-                loginView?.setImageConfirm(responseImage)
-            }
-            if let ID = response[RESPONSE_VARIFYID_KEY] as? String {
-                headVarifyID = ID
-            }
-            else {
-                showReturnMsg = true
-            }
-            
         case "COMM0403":
             var bankList = [[String:[String]]]()
             var bankCode = [String:String]()
@@ -348,23 +344,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     }
                 }
             }
-            else {
-                showReturnMsg = true
-            }
             loginView?.setInitialList(bankList, bankCode, cityCode, self)
-            
-        case "COMM0502":
-            if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
-                if let info = AuthorizationManage.manage.GetLoginInfo() {
-                    let idMd5 = SecurityUtility.utility.MD5(string: info.id)
-                    let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
-                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
-                }
-            }
-            else {
-                getImageConfirm()
-                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
-            }
             
         case "COMM0101":
             if let data = response.object(forKey: "Data") as? [String : Any] {
@@ -386,6 +366,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 loginView?.saveDataInFile()
                 loginView?.removeFromSuperview()
                 loginView = nil
+                if touchTap != nil {
+                    view.removeGestureRecognizer(touchTap!)
+                    touchTap = nil
+                }
                 if curFeatureID != nil {
                     enterFeatureByID(curFeatureID!, true)
                     curFeatureID = nil
@@ -402,20 +386,68 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     }
                 }
             }
-            else {
-                showReturnMsg = true
-            }
             
         case "COMM0102":
             AuthorizationManage.manage.SetResponseLoginInfo(nil, nil)
             
-        default: showReturnMsg = true
+        default: break
         }
-        
-        if showReturnMsg {
-            if let returnMsg = response.object(forKey: "ReturnMsg") as? String, let returnCode = response.object(forKey: "ReturnCode") as? String  {
-                let message = "ReturnMsg:\(returnMsg) ReturnCode:\(returnCode)"
-                showErrorMessage(nil, message)
+    }
+    
+    // MARK: - ConnectionUtilityDelegate
+    func didRecvdResponse(_ description:String, _ response: NSDictionary) {
+        setLoading(false)
+        switch description {
+        case "COMM0501":
+            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
+                loginView?.setImageConfirm(responseImage)
+            }
+            if let ID = response[RESPONSE_VARIFYID_KEY] as? String {
+                headVarifyID = ID
+            }
+            
+        case "COMM0502":
+            if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
+                if let info = AuthorizationManage.manage.GetLoginInfo() {
+                    let idMd5 = SecurityUtility.utility.MD5(string: info.id)
+                    let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
+                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+            }
+            else {
+                getImageConfirm()
+                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
+            }
+            
+        default:
+            if let returnCode = response.object(forKey: "ReturnCode") as? String {
+                if returnCode == ReturnCode_Success {
+                    didResponse(description, response)
+                }
+                else if returnCode == "E_COMM0101_05" {
+                    if let info = AuthorizationManage.manage.GetLoginInfo() {
+                        let idMd5 = SecurityUtility.utility.MD5(string: info.id)
+                        let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
+                        postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                    }
+                }
+                else {
+                    if let type = response.object(forKey: "ActionType") as? String {
+                        switch type {
+                        case "showMsg":
+                            if let returnMsg = response.object(forKey: "ReturnMsg") as? String {
+                                showErrorMessage(nil, returnMsg)
+                            }
+                            
+                        case "backHome":
+                            if let returnMsg = response.object(forKey: "ReturnMsg") as? String {
+                                showErrorMessage(nil, returnMsg, self)
+                            }
+                       
+                        default: break
+                        }
+                    }
+                }
             }
         }
     }

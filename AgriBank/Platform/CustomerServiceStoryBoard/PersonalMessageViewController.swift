@@ -36,6 +36,24 @@ class PersonalMessageViewController: BaseViewController, UITableViewDelegate, UI
         personalMessageDetailViewController.setData(m_Data[m_iSelectedIndex])
     }
     
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case "COMM0303":
+            if let data = response.object(forKey: "Data") as? [String:Any], let list = data["Result"] as? [[String:Any]] {
+                m_Data.removeAll()
+                for dic in list {
+                    let msg = (dic["msg"] as? String) ?? ""
+                    let pushDate = (dic["pushDate"] as? String) ?? ""
+                    m_Data.append(PromotionStruct(msg, pushDate, "", ""))
+                }
+                m_tvData.reloadData()
+            }
+            
+        default: super.didResponse(description, response)
+            
+        }
+    }
+    
     // MARK: - Private
     private func goDetail() {
         performSegue(withIdentifier: PersonalMessage_Segue, sender: nil)
@@ -69,25 +87,5 @@ class PersonalMessageViewController: BaseViewController, UITableViewDelegate, UI
         cell.setData(m_Data[indexPath.row].title!, PersonalMessage_PushTime_Title, m_Data[indexPath.row].date!)
         cell.selectionStyle = .none
         return cell
-    }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        switch description {
-        case "COMM0303":
-            if let data = response.object(forKey: "Data") as? [String:Any], let list = data["Result"] as? [[String:Any]] {
-                m_Data.removeAll()
-                for dic in list {
-                    let msg = (dic["msg"] as? String) ?? ""
-                    let pushDate = (dic["pushDate"] as? String) ?? ""
-                    m_Data.append(PromotionStruct(msg, pushDate, "", ""))
-                }
-                m_tvData.reloadData()
-            }
-            
-        default: super.didRecvdResponse(description, response)
-            
-        }
     }
 }

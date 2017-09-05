@@ -72,56 +72,8 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
         let controller = segue.destination as! BasicInfoResultViewController
         controller.SetList(resultList)
     }
-
-    // MARK: - StoryBoard Touch Event
-    @IBAction func clickChangeBtn(_ sender: Any) {
-        if InputIsCorrect() {
-            setLoading(true)
-            let email:String = emailTextfield.text!.isEmpty ? emailLabel.text! : emailTextfield.text!
-            let mobliePhone:String = mobliePhoneTextfield.text!.isEmpty ? mobilePhoneLabel.text! : mobliePhoneTextfield.text!
-            let areaCode:String = teleAreaCodeTextfield.text!.isEmpty ?  teleAreaCode : teleAreaCodeTextfield.text!
-            let phone:String = telePhoneTextfield.text!.isEmpty ? telePhone : telePhoneTextfield.text!
-            let code:String = postalCodeTextfield.text!.isEmpty ? postalCode : postalCodeTextfield.text!
-            let ADR2:String = addressTextfield.text!.isEmpty ? address : addressTextfield.text!
-            postRequest("Usif/USIF0102", "USIF0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08001","Operate":"dataConfirm","TransactionId":transactionId,"FUNCD":funcd,"EMAIL":email,"EMAILFG":emailFG,"MPHONE ":mobliePhone,"AREA1":areaCode,"TELNO1":phone,"ZIPCD2":code,"ADR2":ADR2], true), AuthorizationManage.manage.getHttpHead(true))
-        }
-    }
     
-    // MARK: - UITextFieldDelegate
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        currentTextField = textField
-        if textField.keyboardType == .numberPad {
-            // ToolBar
-            let toolBar = UIToolbar()
-            toolBar.barTintColor = ToolBar_barTintColor
-            toolBar.tintColor = ToolBar_tintColor
-            toolBar.sizeToFit()
-            // Adding Button ToolBar
-            let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
-            let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-            let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
-            titleLabel.textColor = .black
-            titleLabel.text = Choose_Title
-            titleLabel.textAlignment = .center
-            let titleButton = UIBarButtonItem(customView: titleLabel)
-            
-            toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
-            toolBar.isUserInteractionEnabled = true
-            textField.inputAccessoryView = toolBar
-        }
-
-        return true
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
+    override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "USIF0101":
             if let data = response.object(forKey: "Data") as? [String:Any] {
@@ -167,7 +119,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
                 }
             }
             else {
-                super.didRecvdResponse(description, response)
+                super.didResponse(description, response)
             }
             
         case TransactionID_Description:
@@ -177,20 +129,66 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
                 postRequest("Usif/USIF0101", "USIF0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08001","Operate":"queryData","TransactionId":tranId], false), AuthorizationManage.manage.getHttpHead(false))
             }
             else {
-                super.didRecvdResponse(description, response)
+                super.didResponse(description, response)
             }
-        
+            
         case "USIF0102":
             if let data = response.object(forKey: "Data") as? [[String:String]] {
                 resultList = data
                 performSegue(withIdentifier: GoBaseInfoChangeResult_Segue, sender: nil)
             }
             else {
-                super.didRecvdResponse(description, response)
+                super.didResponse(description, response)
             }
             
-        default: super.didRecvdResponse(description, response)
+        default: super.didResponse(description, response)
         }
+    }
+
+    // MARK: - StoryBoard Touch Event
+    @IBAction func clickChangeBtn(_ sender: Any) {
+        if InputIsCorrect() {
+            setLoading(true)
+            let email:String = emailTextfield.text!.isEmpty ? emailLabel.text! : emailTextfield.text!
+            let mobliePhone:String = mobliePhoneTextfield.text!.isEmpty ? mobilePhoneLabel.text! : mobliePhoneTextfield.text!
+            let areaCode:String = teleAreaCodeTextfield.text!.isEmpty ?  teleAreaCode : teleAreaCodeTextfield.text!
+            let phone:String = telePhoneTextfield.text!.isEmpty ? telePhone : telePhoneTextfield.text!
+            let code:String = postalCodeTextfield.text!.isEmpty ? postalCode : postalCodeTextfield.text!
+            let ADR2:String = addressTextfield.text!.isEmpty ? address : addressTextfield.text!
+            postRequest("Usif/USIF0102", "USIF0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08001","Operate":"dataConfirm","TransactionId":transactionId,"FUNCD":funcd,"EMAIL":email,"EMAILFG":emailFG,"MPHONE ":mobliePhone,"AREA1":areaCode,"TELNO1":phone,"ZIPCD2":code,"ADR2":ADR2], true), AuthorizationManage.manage.getHttpHead(true))
+        }
+    }
+    
+    // MARK: - UITextFieldDelegate
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        currentTextField = textField
+        if textField.keyboardType == .numberPad {
+            // ToolBar
+            let toolBar = UIToolbar()
+            toolBar.barTintColor = ToolBar_barTintColor
+            toolBar.tintColor = ToolBar_tintColor
+            toolBar.sizeToFit()
+            // Adding Button ToolBar
+            let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
+            let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
+            let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
+            titleLabel.textColor = .black
+            titleLabel.text = Choose_Title
+            titleLabel.textAlignment = .center
+            let titleButton = UIBarButtonItem(customView: titleLabel)
+            
+            toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
+            toolBar.isUserInteractionEnabled = true
+            textField.inputAccessoryView = toolBar
+        }
+
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     // MARK: - selector

@@ -61,6 +61,38 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case "USIF0201":
+            if response.object(forKey: "Data") != nil {
+                confirmIsSuccess = true
+                performSegue(withIdentifier: UserChangeIDPwd_Seque, sender: nil)
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "USIF0301":
+            if response.object(forKey: "Data") != nil {
+                confirmIsSuccess = true
+                performSegue(withIdentifier: UserChangeIDPwd_Seque, sender: nil)
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case TransactionID_Description:
+            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        default: super.didResponse(description, response)
+        }
+    }
+    
     // MARK: - StoryBoard Touch Event
     @IBAction func clickChangeBtn(_ sender: Any) {
         if InputIsCorrect() {
@@ -98,37 +130,4 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
         return true
     }
     
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        switch description {
-        case "USIF0201":
-            if response.object(forKey: "Data") != nil {
-                confirmIsSuccess = true
-                performSegue(withIdentifier: UserChangeIDPwd_Seque, sender: nil)
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-        
-        case "USIF0301":
-            if response.object(forKey: "Data") != nil {
-                confirmIsSuccess = true
-                performSegue(withIdentifier: UserChangeIDPwd_Seque, sender: nil)
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
-                transactionId = tranId
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-    
-        default: super.didRecvdResponse(description, response)
-        }
-    }
 }

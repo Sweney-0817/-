@@ -30,12 +30,6 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
         }
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        let webContentViewController = segue.destination as! WebContentViewController
-        webContentViewController.setData((m_curData?[m_iSelectedIndex])!)
-    }
-
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,11 +37,46 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
         setAllSubView()
         initDataForType(News_TypeList.first!)
         setShadowView(m_vChooseTypeView)
-        m_vChooseTypeView.setButtonStatus(News_TypeList[1], AuthorizationManage.manage.IsLoginSuccess())
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        let webContentViewController = segue.destination as! WebContentViewController
+        webContentViewController.setData((m_curData?[m_iSelectedIndex])!)
+    }
+    
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case "COMM0101":
+            super.didResponse(description, response)
+            if AuthorizationManage.manage.IsLoginSuccess(),let loginInfo = AuthorizationManage.manage.GetLoginInfo() {
+                var body = [String:Any]()
+                body = ["WorkCode":"07041","Operate":"getListInfo","CB_Type":Int(1),"CB_CUM_BankCode":loginInfo.bankCode]
+                setLoading(true)
+                postRequest("Info/INFO0201", "INFO0201", AuthorizationManage.manage.converInputToHttpBody(body, false), AuthorizationManage.manage.getHttpHead(false))
+            }
+            
+        case "INFO0201":
+            m_Data2.removeAll()
+            if let data = response.object(forKey: "Data") as? [String : Any], let list = data["CB_List"] as? [[String:Any]] {
+                for index in list {
+                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String {
+                        m_Data2.append(PromotionStruct(title, date, "", url))
+                    }
+                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            m_curData = m_Data2
+            m_tvData.reloadData()
+            
+        default: super.didResponse(description, response)
+        }
     }
     
     // MARK: - Private
@@ -61,7 +90,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     }
     
     private func setChooseTypeView() {
-        m_vChooseTypeView.setTypeList(News_TypeList, setDelegate: self, nil, view.frame.width/2)
+        m_vChooseTypeView.setTypeList(News_TypeList, setDelegate: self, 0, view.frame.width/2)
     }
 
     private func setDataTableView() {
@@ -80,7 +109,12 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
 
     // MARK: - ChooseTypeDelegate
     func clickChooseTypeBtn(_ name:String) {
-        initDataForType(name)
+        if name == News_TypeList[1] && !AuthorizationManage.manage.IsLoginSuccess() {
+            showLoginView()
+        }
+        else {
+            initDataForType(name)
+        }
     }
     
     // MARK: - UITableViewDelegate
@@ -95,7 +129,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return m_curData!.count;
+        return m_curData!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -103,5 +137,11 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
         cell.setData((m_curData?[indexPath.row].title!)!, News_ShowDate, (m_curData?[indexPath.row].date!)!)
         cell.selectionStyle = .none
         return cell
+    }
+    
+    // MARK: - LoginDelegate
+    override func clickLoginCloseBtn() {
+        setChooseTypeView()
+        super.clickLoginCloseBtn()
     }
 }

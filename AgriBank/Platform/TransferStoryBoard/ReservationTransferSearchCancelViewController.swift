@@ -134,6 +134,48 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         // Dispose of any resources that can be recreated.
     }
     
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                setLoading(true)
+                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "ACCT0101":
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+                for category in array {
+                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
+                        accountList = [AccountStruct]()
+                        for actInfo in result {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "TRAN0301":
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:String]] {
+                resultList = array
+                tableView.reloadData()
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        default: super.didResponse(description, response)
+        }
+    }
+    
     // MARK: - StoryBoard Touch Event
     @IBAction func clickSpecificDateBtn(_ sender: Any) {
         specificDateBtn.setTitleColor(.white, for: .normal)
@@ -157,10 +199,8 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if sender == chooseAccountDorpView {
             if accountList != nil {
-                let actSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
-                for index in accountList! {
-                    actSheet.addButton(withTitle: index.accountNO)
-                }
+                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
                 actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
                 actSheet.show(in: view)
             }
@@ -217,50 +257,6 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         curResultIndex = indexPath.row
         performSegue(withIdentifier: ReservationTransferSearchCancel_Segue, sender: nil)
-    }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        switch description {
-        case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
-                transactionId = tranId
-                setLoading(true)
-                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
-                for category in array {
-                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
-                        accountList = [AccountStruct]()
-                        for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
-                                accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        case "TRAN0301":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:String]] {
-                resultList = array
-                tableView.reloadData()
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        default: super.didRecvdResponse(description, response)
-        }
     }
     
     // MARK: - UIActionSheetDelegate

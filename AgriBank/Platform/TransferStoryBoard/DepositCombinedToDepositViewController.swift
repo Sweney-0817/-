@@ -103,6 +103,119 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
         // Dispose of any resources that can be recreated.
     }
     
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                setLoading(true)
+                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "ACCT0101":
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+                for category in array {
+                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Deposit_Type {
+                        accountList = [AccountStruct]()
+                        for actInfo in result {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                            }
+                        }
+                    }
+                }
+                
+                if let info = AuthorizationManage.manage.GetLoginInfo() {
+                    setLoading(true)
+                    postRequest("TRAN/TRAN0402", "TRAN0402", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData","TransactionId":transactionId,"BR_CODE":info.bankCode], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "TRAN0402":
+            if let data = response.object(forKey: "Data") as? [String:Any] {
+                if let AUTTRN = data["AUTTRN"] as? [[String:Any]] {
+                    responseExpireSaveList = AUTTRN
+                    if responseExpireSaveList.count > 0, let name = responseExpireSaveList[0]["Name"] as? String {
+                        expireSaveType1.text = name
+                    }
+                    else {
+                        expireSaveType1.isHidden = true
+                    }
+                    if responseExpireSaveList.count > 1, let name = responseExpireSaveList[1]["Name"] as? String {
+                        expireSaveType2.text = name
+                    }
+                    else {
+                        expireSaveType2.isHidden = true
+                    }
+                }
+                if let Result = data["Result"] as? [[String:Any]] {
+                    responseDepositList = Result
+                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "COMM0701":
+            //            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
+            if let data = response.object(forKey: "Data") as? [String:Any], let date = data["CurrentDate"] as? String {
+                let TACTNO = topDropView?.getContentByType(.First) ?? ""
+                let TYPE = responseDepositList[curDepositTypeIndex!]["Type"] ?? ""
+                let PRDCD = periodDropView?.getContentByType(.First) ?? ""
+                var IRTID = ""
+                if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]], let irtid = Detail[curRateTypeIndex!]["IRTID"] as? [String:String], let Value = irtid["Value"] {
+                    IRTID = Value
+                }
+                var AUTTRN = ""
+                var AIRTID = ""
+                var index:Int? = nil
+                if isExpireSaveType1 {
+                    if responseExpireSaveList.count > 0 {
+                        index = 0
+                    }
+                }
+                else {
+                    if responseExpireSaveList.count > 1 {
+                        index = 1
+                    }
+                }
+                if index != nil {
+                    if let Value = responseExpireSaveList[index!]["Value"] as? String {
+                        AUTTRN = Value
+                    }
+                    if let array = responseExpireSaveList[index!]["AIRTID"] as? [[String:Any]], let Value = array[autoTransRateTypeIndex!]["Value"] as? String {
+                        AIRTID = Value
+                    }
+                }
+                let TXAMT = transAmountTextfield.text ?? ""
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                
+                var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+                dataConfirm.list?.append([Response_Key: "綜合存款帳號", Response_Value:TACTNO])
+                dataConfirm.list?.append([Response_Key: "餘額", Response_Value:topDropView?.getContentByType(.Third) ?? ""])
+                dataConfirm.list?.append([Response_Key: "存款種類", Response_Value:depositTypeDropView?.getContentByType(.First) ?? ""])
+                dataConfirm.list?.append([Response_Key: "轉存期別", Response_Value:periodDropView?.getContentByType(.First) ?? ""])
+                dataConfirm.list?.append([Response_Key: "利率方式", Response_Value:rateTypeDropView?.getContentByType(.First) ?? ""])
+                dataConfirm.list?.append([Response_Key: "目前利率", Response_Value:currentRateLabel.text ?? ""])
+                dataConfirm.list?.append([Response_Key: "轉存金額", Response_Value:transAmountTextfield.text ?? ""])
+                dataConfirm.list?.append([Response_Key: "到期續存", Response_Value:isExpireSaveType1 ? DepositCombinedToDeposit_ExpireSaveType1 : DepositCombinedToDeposit_ExpireSaveType2])
+                dataConfirm.list?.append([Response_Key: "自動轉期利率", Response_Value:autoTransRateTypeDropView?.getContentByType(.First) ?? ""])
+                enterConfirmResultController(true, dataConfirm, true)
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
+            }
+            
+        default: super.didResponse(description, response)
+        }
+    }
+    
     // MARK: - StoryBoard Touch Event
     @IBAction func clickDepositBtn(_ sender: Any) {
         let btn = sender as? UIButton
@@ -153,10 +266,8 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
     // MARK: - ThreeRowDropDownViewDelegate
     func clickThreeRowDropDownView(_ sender: ThreeRowDropDownView) {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
-            for index in accountList! {
-                actSheet.addButton(withTitle: index.accountNO)
-            }
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
         }
@@ -178,7 +289,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             }
             if index != nil {
                 if let array = responseExpireSaveList[index!]["AIRTID"] as? [[String:Any]] {
-                    let actSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                    let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
                     for info in array {
                         if let Name = info["Name"] as? String {
                             actSheet.addButton(withTitle: Name)
@@ -192,7 +303,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
         else {
             switch sender {
             case depositTypeDropView!: // "存款種類"
-                let actSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
                 for info in responseDepositList {
                     if let Name = info["Name"] as? String {
                         actSheet.addButton(withTitle: Name)
@@ -204,7 +315,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             case rateTypeDropView!: // "利率方式"
                 if curDepositTypeIndex != nil {
                     if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]] {
-                        let actSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                        let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
                         for info in Detail {
                             if let IRTID = info["IRTID"] as? [String:String], let Name = IRTID["Name"] {
                                 actSheet.addButton(withTitle: Name)
@@ -229,7 +340,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                 }
                 if errorMessage.isEmpty {
                     if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]], let DetailRate = Detail[curRateTypeIndex!]["DetailRate"] as? [[String:String]] {
-                        let actSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                        let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
                         for info in DetailRate {
                             if let PRDCD = info["PRDCD"] {
                                 actSheet.addButton(withTitle: PRDCD)
@@ -247,121 +358,6 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             default: break
             }
             
-        }
-    }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        switch description {
-        case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
-                transactionId = tranId
-                setLoading(true)
-                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
-                for category in array {
-                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Deposit_Type {
-                        accountList = [AccountStruct]()
-                        for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
-                                accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
-                            }
-                        }
-                    }
-                }
-                
-                if let info = AuthorizationManage.manage.GetLoginInfo() {
-                    setLoading(true)
-                    postRequest("TRAN/TRAN0402", "TRAN0402", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData","TransactionId":transactionId,"BR_CODE":info.bankCode], true), AuthorizationManage.manage.getHttpHead(true))
-                }
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        case "TRAN0402":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
-                if let AUTTRN = data["AUTTRN"] as? [[String:Any]] {
-                    responseExpireSaveList = AUTTRN
-                    if responseExpireSaveList.count > 0, let name = responseExpireSaveList[0]["Name"] as? String {
-                        expireSaveType1.text = name
-                    }
-                    else {
-                        expireSaveType1.isHidden = true
-                    }
-                    if responseExpireSaveList.count > 1, let name = responseExpireSaveList[1]["Name"] as? String {
-                        expireSaveType2.text = name
-                    }
-                    else {
-                        expireSaveType2.isHidden = true
-                    }
-                }
-                if let Result = data["Result"] as? [[String:Any]] {
-                    responseDepositList = Result
-                }
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-        
-        case "COMM0701":
-//            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
-            if let data = response.object(forKey: "Data") as? [String:Any], let date = data["CurrentDate"] as? String {
-                let TACTNO = topDropView?.getContentByType(.First) ?? ""
-                let TYPE = responseDepositList[curDepositTypeIndex!]["Type"] ?? ""
-                let PRDCD = periodDropView?.getContentByType(.First) ?? ""
-                var IRTID = ""
-                if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]], let irtid = Detail[curRateTypeIndex!]["IRTID"] as? [String:String], let Value = irtid["Value"] {
-                    IRTID = Value
-                }
-                var AUTTRN = ""
-                var AIRTID = ""
-                var index:Int? = nil
-                if isExpireSaveType1 {
-                    if responseExpireSaveList.count > 0 {
-                        index = 0
-                    }
-                }
-                else {
-                    if responseExpireSaveList.count > 1 {
-                        index = 1
-                    }
-                }
-                if index != nil {
-                    if let Value = responseExpireSaveList[index!]["Value"] as? String {
-                        AUTTRN = Value
-                    }
-                    if let array = responseExpireSaveList[index!]["AIRTID"] as? [[String:Any]], let Value = array[autoTransRateTypeIndex!]["Value"] as? String {
-                        AIRTID = Value
-                    }
-                }
-                let TXAMT = transAmountTextfield.text ?? ""
-                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
-                
-                var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
-                dataConfirm.list?.append([Response_Key: "綜合存款帳號", Response_Value:TACTNO])
-                dataConfirm.list?.append([Response_Key: "餘額", Response_Value:topDropView?.getContentByType(.Third) ?? ""])
-                dataConfirm.list?.append([Response_Key: "存款種類", Response_Value:depositTypeDropView?.getContentByType(.First) ?? ""])
-                dataConfirm.list?.append([Response_Key: "轉存期別", Response_Value:periodDropView?.getContentByType(.First) ?? ""])
-                dataConfirm.list?.append([Response_Key: "利率方式", Response_Value:rateTypeDropView?.getContentByType(.First) ?? ""])
-                dataConfirm.list?.append([Response_Key: "目前利率", Response_Value:currentRateLabel.text ?? ""])
-                dataConfirm.list?.append([Response_Key: "轉存金額", Response_Value:transAmountTextfield.text ?? ""])
-                dataConfirm.list?.append([Response_Key: "到期續存", Response_Value:isExpireSaveType1 ? DepositCombinedToDeposit_ExpireSaveType1 : DepositCombinedToDeposit_ExpireSaveType2])
-                dataConfirm.list?.append([Response_Key: "自動轉期利率", Response_Value:autoTransRateTypeDropView?.getContentByType(.First) ?? ""])
-                enterConfirmResultController(true, dataConfirm, true)
-            }
-            else {
-                showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
-            }
-            
-        default: super.didRecvdResponse(description, response)
         }
     }
     
@@ -418,7 +414,6 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
     
     // MARK: - Private
     private func InputIsCorrect() -> Bool {
-        var errorMessage = ""
         if accountList == nil {
             showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
             return false

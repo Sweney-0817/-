@@ -47,7 +47,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     private var pushByclickExpandBtn = false            // 判斷是否從cell觸發 進功能畫面
     
     // MARK: - Private
-    private func GetTypeByInputString(_ input:String) -> ActOverviewType? {
+    private func getTypeByInputString(_ input:String) -> ActOverviewType? {
         var type:ActOverviewType? = nil
         switch input {
         case ActOverviewType.Type1.description(): type = .Type1
@@ -78,7 +78,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         super.prepare(for: segue, sender: sender)
         let controller = segue.destination as! ShowDetailViewController
         var list = [[String:String]]()
-        let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
+        let type = currentType == .Type0 ? (getTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
         switch type {
         case .Type1:
             if let ACTNO = resultList["ACTNO"] as? String {
@@ -313,10 +313,8 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         
         controller.setList("\(type.description())往來明細", list)
     }
-
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
+    
+    override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
@@ -324,7 +322,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"1"], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
-                super.didRecvdResponse(description, response)
+                super.didResponse(description, response)
             }
             
         case "ACCT0101":
@@ -386,7 +384,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 }
             }
             else {
-                super.didRecvdResponse(description, response)
+                super.didResponse(description, response)
             }
             
         case "ACIF0101":
@@ -395,10 +393,10 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 performSegue(withIdentifier: ActOverview_ShowDetail_Segue, sender: nil)
             }
             else {
-                super.didRecvdResponse(description, response)
+                super.didResponse(description, response)
             }
             
-        default: super.didRecvdResponse(description, response)
+        default: super.didResponse(description, response)
         }
     }
     
@@ -413,7 +411,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             }
         }
         else {
-            if let index = ActOverview_TypeList.index(of: name), let type = GetTypeByInputString(name) {
+            if let index = ActOverview_TypeList.index(of: name), let type = getTypeByInputString(name) {
                 typeListIndex = index
                 if currentType != type {
                     currentType = type
@@ -453,7 +451,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             cell.detail1Label.text = array[indexPath.row].accountNO
             cell.detail2Label.text = array[indexPath.row].currency
             cell.detail3Label.text = String(array[indexPath.row].balance)
-            if let cellType = GetTypeByInputString(ActOverview_TypeList[index]) {
+            if let cellType = getTypeByInputString(ActOverview_TypeList[index]) {
                 cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == Account_EnableTrans,true))
             }
         }
@@ -489,7 +487,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         else {
             typeListIndex = ActOverview_TypeList.index(of: currentType.description()) ?? 0
         }
-        let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
+        let type = currentType == .Type0 ? (getTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
         switch type {
         case .Type1:
             chooseAccount = value[ActOverview_CellTitleList.first!]
@@ -522,7 +520,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         else {
             typeListIndex = ActOverview_TypeList.index(of: currentType.description()) ?? 0
         }
-        let type = currentType == .Type0 ? (GetTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
+        let type = currentType == .Type0 ? (getTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
         switch type {
         case .Type1:
             chooseAccount = value[ActOverview_CellTitleList.first!]

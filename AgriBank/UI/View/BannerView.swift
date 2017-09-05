@@ -25,7 +25,7 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
     var imageList = [Int:UIImage]()
     var request:ConnectionUtility? = nil
     
-    func SetContentList(_ list: [BannerStructure]?)  {
+    func setContentList(_ list: [BannerStructure]?)  {
         contentList = list
         contentView.subviews.forEach{view in view.removeFromSuperview()}
         addImageView()

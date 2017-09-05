@@ -48,6 +48,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         setLoading(true)
         getTransactionID("04003", TransactionID_Description)
         addObserverToKeyBoard()
+        addGestureForKeyBoard()
     }
     
     override func didReceiveMemoryWarning() {
@@ -58,6 +59,88 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     override func keyboardWillShow(_ notification: NSNotification) {
         if m_DDType?.getContentByType(.First) == CheckLoseApply_TypeList[0] && curTextfield != m_tfCheckNumber && curTextfield != m_tfCheckAmount {
             super.keyboardWillShow(notification)
+        }
+    }
+    
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                setLoading(true)
+                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "ACCT0101":
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
+                for category in array {
+                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]] {
+                        if type == Account_Saving_Type {
+                            accountList = [AccountStruct]()
+                            for actInfo in result {
+                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                    accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                                }
+                            }
+                        }
+                        else if type == Account_Check_Type {
+                            checkAccountList = [AccountStruct]()
+                            for actInfo in result {
+                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                    checkAccountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                getImageConfirm(transactionId)
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "COMM0501":
+            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
+                m_ImageConfirmView?.m_ivShow.image = responseImage
+            }
+            
+        case "COMM0502":
+            if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
+                if m_DDType?.m_lbFirstRowContent.text == CheckLoseApply_TypeList[0] {
+                    postRequest("LOSE/LOSE0301", "LOSE0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"0403","Operate":"setLoseCheck1","TransactionId":transactionId,"Type":"11","REFNO":m_DDAccount?.getContentByType(.First) ?? "","CKNO":m_tfCheckNumber.text ?? "","TXAMT":m_tfCheckAmount.text ?? "","MACTNO":m_FeeAccount?.getContentByType(.First) ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+                else {
+                    postRequest("LOSE/LOSE0302", "LOSE0302", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"0403","Operate":"setLoseCheck2","TransactionId":transactionId,"Type":"13","REFNO":m_DDAccount?.getContentByType(.First) ?? "","CKNO":m_tfCheckNumber.text ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
+            }
+            
+        case "LOSE0301", "LOSE0302":
+            var result = ConfirmResultStruct()
+            result.resultBtnName = "繼續交易"
+            if let data = response.object(forKey:"Data") as? [String:String] {
+                result.list = [[String:String]]()
+                result.list?.append([Response_Key:"交易時間",Response_Value:data["TXTIME"] ?? ""])
+                result.list?.append([Response_Key:"掛失日期",Response_Value:data["TXDAY"] ?? ""])
+            }
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
+                result.title = Transaction_Successful_Title
+                result.image = ImageName.CowSuccess.rawValue
+                result.memo = CheckLoseApply_Memo
+            }
+            else {
+                result.title = Transaction_Faild_Title
+                result.image = ImageName.CowFailure.rawValue
+            }
+            enterConfirmResultController(false, result, true)
+            
+        default: super.didResponse(description, response)
         }
     }
     
@@ -162,6 +245,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
 
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
+        view.endEditing(true)
         m_curDropDownView = sender
         if m_curDropDownView == m_CheckDate {
             if let datePicker = getUIByID(.UIID_DatePickerView) as? DatePickerView {
@@ -188,10 +272,8 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
                 }
             }
             
-            let action = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
-            for title in list {
-                action.addButton(withTitle: title)
-            }
+            let action = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            list.forEach{title in action.addButton(withTitle: title)}
             action.show(in: self.view)
         }
     }
@@ -251,7 +333,6 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnSendClick(_ sender: Any) {
-        var errorMessage = ""
         if checkAccountList == nil {
             showErrorMessage(nil, ErrorMsg_Choose_CheckAccount)
             return
@@ -280,90 +361,6 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         }
         
         checkImageConfirm(password, transactionId)
-    }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        switch description {
-        case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
-                transactionId = tranId
-                setLoading(true)
-                postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-        
-        case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
-                for category in array {
-                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]] {
-                        if type == Account_Saving_Type {
-                            accountList = [AccountStruct]()
-                            for actInfo in result {
-                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
-                                    accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
-                                }
-                            }
-                        }
-                        else if type == Account_Check_Type {
-                            checkAccountList = [AccountStruct]()
-                            for actInfo in result {
-                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
-                                    checkAccountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                getImageConfirm(transactionId)
-            }
-            else {
-                super.didRecvdResponse(description, response)
-            }
-            
-        case "COMM0501":
-            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
-                m_ImageConfirmView?.m_ivShow.image = responseImage
-            }
-            
-        case "COMM0502":
-            if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
-                if m_DDType?.m_lbFirstRowContent.text == CheckLoseApply_TypeList[0] {
-                    postRequest("LOSE/LOSE0301", "LOSE0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"0403","Operate":"setLoseCheck1","TransactionId":transactionId,"Type":"11","REFNO":m_DDAccount?.getContentByType(.First) ?? "","CKNO":m_tfCheckNumber.text ?? "","TXAMT":m_tfCheckAmount.text ?? "","MACTNO":m_FeeAccount?.getContentByType(.First) ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
-                }
-                else {
-                    postRequest("LOSE/LOSE0302", "LOSE0302", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"0403","Operate":"setLoseCheck2","TransactionId":transactionId,"Type":"13","REFNO":m_DDAccount?.getContentByType(.First) ?? "","CKNO":m_tfCheckNumber.text ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
-                }
-            }
-            else {
-                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
-            }
-            
-        case "LOSE0301", "LOSE0302":
-            var result = ConfirmResultStruct()
-            result.resultBtnName = "繼續交易"
-            if let data = response.object(forKey:"Data") as? [String:String] {
-                result.list = [[String:String]]()
-                result.list?.append([Response_Key:"交易時間",Response_Value:data["TXTIME"] ?? ""])
-                result.list?.append([Response_Key:"掛失日期",Response_Value:data["TXDAY"] ?? ""])
-            }
-            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
-                result.title = Transaction_Successful_Title
-                result.image = ImageName.CowSuccess.rawValue
-                result.memo = CheckLoseApply_Memo
-            }
-            else {
-                result.title = Transaction_Faild_Title
-                result.image = ImageName.CowFailure.rawValue
-            }
-            enterConfirmResultController(false, result, true)
-        
-        default: super.didRecvdResponse(description, response)
-        }
     }
     
     // MARK: - Selector
