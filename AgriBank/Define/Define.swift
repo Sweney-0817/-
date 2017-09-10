@@ -168,6 +168,18 @@ struct ConfirmResultStruct {
     var checkRequest:RequestStruct? = nil
 }
 
+struct ConfirmOTPStruct {
+    var image:String = ""
+    var title:String = ""
+    var list:[[String:String]]? = nil
+    var memo:String = ""
+    var confirmBtnName = ""
+    var resultBtnName = ""
+    var checkRequest:RequestStruct? = nil
+    var httpBodyList:[String:Any]? = nil
+    var task:VTask? = nil
+}
+
 // MARK: - UIID
 enum UIID: Int {
     case UIID_Banner                  // BannerView class
@@ -347,6 +359,7 @@ let UIAlert_Default_Title = "注意"
 let UIAlert_Cancel_Title = "取消"
 let UIAlert_Confirm_Title = "確定"
 let Choose_Title = "請選擇"
+let Enter_Title = "請輸入"
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "FFICMBank"
@@ -440,3 +453,6 @@ let ErrorMsg_GreaterThan_MaxRate = "存款年利率不得大於18%"
 let ErrorMsg_Choose_SaveDuration = "請選擇存款期限"
 let ErrorMsg_Format = "格式不符"
 let ErrorMsg_Not_Zero = "不得於0"
+let ErrorMsg_Choose_PayDate = "請選擇繳費期間"
+let ErrorMsg_IsJailBroken = "此功能無法在JB下使用"
+let ErrorMsg_No_TaskId = "無法取得TaskID"

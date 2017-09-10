@@ -265,7 +265,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         }
     }
     
-    private func InputIsCorrect() -> Bool {
+    private func inputIsCorrect() -> Bool {
         if accountList == nil {
             showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
             return false
@@ -372,7 +372,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     }
     
     @IBAction func clickSendBtn(_ sender: Any) {
-        if InputIsCorrect() {
+        if inputIsCorrect() {
             if isPredesignated {
                 let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0101", strSessionDescription: "TRAN0101", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":showBankAccountDropView?.getContentByType(.Second) ?? "","INBANK":showBankAccountDropView?.getContentByType(.First) ?? "","TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
                 

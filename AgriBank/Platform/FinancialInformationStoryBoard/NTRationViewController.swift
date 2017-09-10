@@ -57,7 +57,6 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - ConnectionUtilityDelegate
     override func didResponse(_ description: String, _ response: NSDictionary) {
         switch description {
         case "MANG0101":

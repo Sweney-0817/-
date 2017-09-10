@@ -5,3 +5,4 @@
 #import "NSString+AESCrypt.h"
 #import "VPImageCropperViewController.h"
 #import <CommonCrypto/CommonCrypto.h>
+#import "VaktenManager.h"

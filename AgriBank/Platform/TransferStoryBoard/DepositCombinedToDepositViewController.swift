@@ -234,7 +234,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
     }
     
     @IBAction func clickSendBtn(_ sender: Any) {
-        if InputIsCorrect() {
+        if inputIsCorrect() {
             setLoading(true)
             postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
         }
@@ -413,7 +413,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
     }
     
     // MARK: - Private
-    private func InputIsCorrect() -> Bool {
+    private func inputIsCorrect() -> Bool {
         if accountList == nil {
             showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
             return false

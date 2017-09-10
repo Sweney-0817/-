@@ -74,6 +74,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         if touchTap != nil {
             view.removeGestureRecognizer(touchTap!)
+            touchTap = nil
         }
     }
     
@@ -118,9 +119,21 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                 var canEnter = true
                 switch ID {
                 case .FeatureID_TaxPayment, .FeatureID_BillPayment:
+                    canEnter = false
                     if SecurityUtility.utility.isJailBroken() {
-                        showErrorMessage("此功能無法在JB下使用", nil)
-                        canEnter = false
+                        showErrorMessage(ErrorMsg_IsJailBroken, nil)
+                    }
+                    else {
+                        var workCode = ""
+                        if ID == .FeatureID_TaxPayment {
+                            workCode = "05001"
+                        }
+                        else if ID == .FeatureID_BillPayment {
+                            workCode = "05002"
+                        }
+                        setLoading(true)
+                        getTransactionID(workCode, TransactionID_Description)
+                        curFeatureID = ID
                     }
                     
                 default: break
@@ -145,7 +158,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         view.layer.shadowColor = UIColor.black.cgColor
     }
     
-    func enterConfirmResultController(_ isConfirm:Bool,_ data:ConfirmResultStruct,_ animated:Bool) {
+    func enterConfirmResultController(_ isConfirm:Bool, _ data:ConfirmResultStruct, _ animated:Bool) {
         if isConfirm {
             let controller = getControllerByID(.FeatureID_Confirm)
             (controller as! ConfirmViewController).transactionId = transactionId
@@ -158,6 +171,13 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             (controller as! ResultViewController).setData(data)
             navigationController?.pushViewController(controller, animated: animated)
         }
+    }
+    
+    func enterConfirmOTPController(_ data:ConfirmOTPStruct, _ animated:Bool) {
+        let controller = getControllerByID(.FeatureID_Confirm)
+        (controller as! ConfirmViewController).transactionId = transactionId
+        (controller as! ConfirmViewController).setDataNeedOTP(data)
+        navigationController?.pushViewController(controller, animated: animated)
     }
     
     func setLoading(_ isLoading:Bool) {
@@ -390,6 +410,17 @@ extension BaseViewController: ConnectionUtilityDelegate {
         case "COMM0102":
             AuthorizationManage.manage.SetResponseLoginInfo(nil, nil)
             
+        case TransactionID_Description:
+            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                if let con = navigationController?.viewControllers.first {
+                    if con is HomeViewController {
+                        (con as! HomeViewController).transactionId = tranId
+                        (con as! HomeViewController).pushFeatureController(curFeatureID!, true)
+                    }
+                }
+            }
+            curFeatureID = nil
+            
         default: break
         }
     }
@@ -418,6 +449,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 getImageConfirm()
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
+            
+        case "COMM0801","USIF0102","PAY0107","PAY0103":
+            didResponse(description, response)
             
         default:
             if let returnCode = response.object(forKey: "ReturnCode") as? String {

@@ -13,8 +13,8 @@ let PersonalMessage_PushTime_Title = "推播時間"
 
 class PersonalMessageViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var m_tvData: UITableView!
-    var m_iSelectedIndex = -1
-    var m_Data: [PromotionStruct] = [PromotionStruct]()
+    private var m_iSelectedIndex = -1
+    private var m_Data: [PromotionStruct] = [PromotionStruct]()
 
     // MARK: - Override
     override func viewDidLoad() {

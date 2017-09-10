@@ -32,7 +32,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnCalculateClick(_ sender: Any) {
         // 參照 https://ebank.naffic.org.tw/ibank/Login/A001_3
-        if InputIsCorrect() {
+        if inputIsCorrect() {
             let sum = Double( m_tfAmount.text ?? "0" ) ?? 0
             let rate = (Double( m_tfRate.text ?? "0" ) ?? 0) / Double(12) / Double(100)
             switch currentType {
@@ -140,7 +140,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
         clearData()
     }
     
-    private func InputIsCorrect() -> Bool {
+    private func inputIsCorrect() -> Bool {
         if (m_tfAmount.text?.isEmpty)! {
             showErrorMessage(nil, ErrorMsg_Enter_SaveAmount)
             return false

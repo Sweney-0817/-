@@ -115,7 +115,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickSendBtn(_ sender: Any) {
-        if InputIsCorrect() {
+        if inputIsCorrect() {
             let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0201", strSessionDescription: "TRAN0201", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03002","Operate":"dataConfirm","TransactionId":transactionId,"ACTNO":topDropView?.getContentByType(.First) ?? "","TRACTNO":showBankAccountDropView?.getContentByType(.Second) ?? "","TRBANK":showBankAccountDropView?.getContentByType(.First) ?? "","AMOUNT":transAmountTextfield.text!,"DSCPTX":memoTextfield.text!,"DD":(isFixedDate ? chooseDay:"00"),"RVDAY":(isFixedDate ? "00000000":"\(chooseYear)\(chooseMonth)\(chooseDay)")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
             
             var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
@@ -243,7 +243,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         }
     }
     
-    private func InputIsCorrect() -> Bool {
+    private func inputIsCorrect() -> Bool {
         if accountList == nil {
             showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
             return false

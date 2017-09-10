@@ -10,14 +10,20 @@ import UIKit
 
 class BasicInfoResultViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var titleView: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: UIView!
-    var list:[[String:String]]? = nil
+    private var list:[[String:String]]? = nil
+    private var isSuccess = false
+    private var titleStatus = ""
+    private var memo:String? = nil
     
     // MARK: - Public
-    func SetList(_ list:[[String:String]]?) {
+    func setInitial(_ list:[[String:String]]?, _ isSuccess:Bool, _ title:String, _ memo:String? = nil) {
         self.list = list
+        self.isSuccess = isSuccess
+        self.titleStatus = title
+        self.memo = memo
     }
     
     // MARK: - Override
@@ -28,7 +34,9 @@ class BasicInfoResultViewController: BaseViewController, UITableViewDataSource, 
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
         tableView.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
-        titleView.text = list != nil ? Change_Successful_Title : Change_Faild_Title
+
+        titleLabel.text = titleStatus
+        imageView.image = isSuccess ? UIImage(named: ImageName.CowSuccess.rawValue) : UIImage(named: ImageName.CowFailure.rawValue)
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,11 +55,31 @@ class BasicInfoResultViewController: BaseViewController, UITableViewDataSource, 
         return height
     }
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if memo == nil {
+            return 0
+        }
+        else {
+            return MemoView.GetStringHeightByWidthAndFontSize(memo!, tableView.frame.width)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if memo == nil {
+            return nil
+        }
+        else {
+            let footer = getUIByID(.UIID_MemoView) as! MemoView
+            footer.set(memo!)
+            return footer
+        }
+    }
+    
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (list?.count)!
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
         cell.set(list?[indexPath.row][Response_Key] ?? "", list?[indexPath.row][Response_Value] ?? "")

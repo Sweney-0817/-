@@ -30,7 +30,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     }
     
     // MARK: - Private
-    private func InputIsCorrect() -> Bool {
+    private func inputIsCorrect() -> Bool {
         if sourceTextfield.text == nil || newTextfield.text == nil || againTextfield.text == nil || transactionId.isEmpty {
             return false
         }
@@ -95,7 +95,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickChangeBtn(_ sender: Any) {
-        if InputIsCorrect() {
+        if inputIsCorrect() {
             if !isChangePassword {
                 postRequest("Usif/USIF0201", "USIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08002","Operate":"dataConfirm","TransactionId":transactionId,"ID":sourceTextfield.text ?? "","NewID":newTextfield.text ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }

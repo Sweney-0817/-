@@ -12,7 +12,7 @@ class PersonalMessageDetailViewController: BaseViewController {
     @IBOutlet weak var m_lbTitle: UILabel!
     @IBOutlet weak var m_lbDate: UILabel!
     @IBOutlet weak var m_tfContent: UITextField!
-    var m_Data: PromotionStruct? = nil
+    private var m_Data: PromotionStruct? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()

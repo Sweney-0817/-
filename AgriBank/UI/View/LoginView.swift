@@ -151,7 +151,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         textField.inputView = pickerView
     }
     
-    private func InputIsCorrect() -> String? {
+    private func inputIsCorrect() -> String? {
         if (locationTextfield.text?.isEmpty)! {
             return ErrorMsg_Choose_CityBank
         }
@@ -179,7 +179,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     }
     
     @IBAction func clickLoginBtn(_ sender: Any) {
-        if let message = InputIsCorrect() {
+        if let message = inputIsCorrect() {
             let alert = UIAlertView(title: UIAlert_Default_Title, message: message, delegate: nil, cancelButtonTitle:UIAlert_Confirm_Title)
             alert.show()
         }

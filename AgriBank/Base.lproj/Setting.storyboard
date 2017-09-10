@@ -751,7 +751,7 @@
                                 <rect key="frame" x="15" y="272" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 <connections>
                                     <outlet property="delegate" destination="kDh-Ul-Jft" id="gsv-gl-jid"/>
                                 </connections>
@@ -786,6 +786,15 @@
                                     <constraint firstAttribute="trailing" secondItem="5DK-yk-ufH" secondAttribute="trailing" constant="15" id="xQH-KZ-QiA"/>
                                 </constraints>
                             </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="r9H-80-GbK">
+                                <rect key="frame" x="0.0" y="20" width="375" height="60"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="kDh-Ul-Jft" id="c3J-Uh-iic"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -801,15 +810,18 @@
                             <constraint firstItem="cD1-pC-uzA" firstAttribute="top" secondItem="37T-x2-qM2" secondAttribute="bottom" constant="60" id="HD7-Bh-jxd"/>
                             <constraint firstItem="jLJ-tI-Y2k" firstAttribute="top" secondItem="cD1-pC-uzA" secondAttribute="bottom" constant="8" id="IEv-P8-GeH"/>
                             <constraint firstItem="GBF-Nq-HcX" firstAttribute="top" secondItem="Dob-AY-W88" secondAttribute="bottom" constant="8" id="NTP-De-ccv"/>
+                            <constraint firstItem="r9H-80-GbK" firstAttribute="leading" secondItem="hy4-Rm-oaQ" secondAttribute="leading" id="Paa-RS-I3c"/>
                             <constraint firstItem="HzY-c6-96g" firstAttribute="top" secondItem="o3j-RB-zgF" secondAttribute="bottom" constant="60" id="Qnt-2s-FaL"/>
                             <constraint firstAttribute="trailing" secondItem="HzY-c6-96g" secondAttribute="trailing" id="Qv0-9P-Xfg"/>
                             <constraint firstItem="GBF-Nq-HcX" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" constant="15" id="Rc5-pA-JlM"/>
                             <constraint firstItem="Zh9-y8-HMf" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" id="SrV-Dh-Ko3"/>
                             <constraint firstItem="hy4-Rm-oaQ" firstAttribute="top" secondItem="Jnu-Ig-YPU" secondAttribute="bottom" id="U3t-vP-0dm"/>
                             <constraint firstItem="6Vc-yC-edR" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" constant="15" id="Vlf-Tf-aeJ"/>
+                            <constraint firstItem="r9H-80-GbK" firstAttribute="top" secondItem="hy4-Rm-oaQ" secondAttribute="top" id="VoL-g8-0oO"/>
                             <constraint firstAttribute="trailing" secondItem="o3j-RB-zgF" secondAttribute="trailing" id="WMG-2p-ymZ"/>
                             <constraint firstItem="6Vc-yC-edR" firstAttribute="top" secondItem="o3j-RB-zgF" secondAttribute="bottom" constant="8" id="WeT-bC-k3O"/>
                             <constraint firstItem="nKt-yB-iBo" firstAttribute="top" secondItem="37T-x2-qM2" secondAttribute="bottom" constant="8" id="Ye9-ny-9Jc"/>
+                            <constraint firstItem="r9H-80-GbK" firstAttribute="width" secondItem="hy4-Rm-oaQ" secondAttribute="width" id="ZWD-YU-L3r"/>
                             <constraint firstAttribute="trailing" secondItem="Dob-AY-W88" secondAttribute="trailing" id="bJb-d6-xky"/>
                             <constraint firstItem="Dob-AY-W88" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" id="cPm-OF-SOf"/>
                             <constraint firstAttribute="trailing" secondItem="hy4-Rm-oaQ" secondAttribute="trailing" id="d8D-Xs-OVe"/>
@@ -817,6 +829,7 @@
                             <constraint firstItem="Dob-AY-W88" firstAttribute="top" secondItem="cD1-pC-uzA" secondAttribute="bottom" constant="60" id="h6J-Eh-m8o"/>
                             <constraint firstItem="Dob-AY-W88" firstAttribute="top" secondItem="jLJ-tI-Y2k" secondAttribute="bottom" constant="8" id="jY6-hi-oxg"/>
                             <constraint firstItem="HzY-c6-96g" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" id="lgb-b1-xN2"/>
+                            <constraint firstItem="r9H-80-GbK" firstAttribute="height" secondItem="hy4-Rm-oaQ" secondAttribute="height" id="mZM-SD-g7T"/>
                             <constraint firstItem="37T-x2-qM2" firstAttribute="top" secondItem="hy4-Rm-oaQ" secondAttribute="bottom" id="o1h-KO-IdN"/>
                             <constraint firstItem="o3j-RB-zgF" firstAttribute="leading" secondItem="USx-lm-HHi" secondAttribute="leading" id="occ-Yj-PoJ"/>
                             <constraint firstItem="o3j-RB-zgF" firstAttribute="top" secondItem="Dob-AY-W88" secondAttribute="bottom" constant="60" id="poN-sb-sdq"/>
@@ -833,6 +846,7 @@
                         <outlet property="checkCodeTextfield" destination="6Vc-yC-edR" id="JBS-1t-qjH"/>
                         <outlet property="identifyTextfield" destination="nKt-yB-iBo" id="Xti-30-zO6"/>
                         <outlet property="passwordTextfield" destination="GBF-Nq-HcX" id="GWX-sa-0zX"/>
+                        <outlet property="topTextfield" destination="r9H-80-GbK" id="jaT-FU-ABf"/>
                         <outlet property="topView" destination="hy4-Rm-oaQ" id="oHE-oT-68s"/>
                         <outlet property="userCodeTextfield" destination="jLJ-tI-Y2k" id="YHa-4F-tZH"/>
                         <segue destination="fNw-Sc-TOs" kind="show" identifier="GoDeviceBindingResult" id="t9D-LU-j1P"/>
@@ -1047,7 +1061,7 @@
                         <viewControllerLayoutGuide type="bottom" id="QZt-JZ-ezP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="CIM-ML-LxX">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="669"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UM6-Cw-rpM">
@@ -1062,7 +1076,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNx-jA-x8M">
-                                        <rect key="frame" x="188.5" y="150" width="0.0" height="50"/>
+                                        <rect key="frame" x="187.5" y="150" width="0.0" height="50"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1089,7 +1103,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ddn-R2-aFF">
-                                <rect key="frame" x="0.0" y="225" width="375" height="384"/>
+                                <rect key="frame" x="0.0" y="225" width="375" height="382"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="fNw-Sc-TOs" id="VKF-tk-6dp"/>
@@ -1097,7 +1111,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7VS-B1-WeU">
-                                <rect key="frame" x="0.0" y="609" width="375" height="60"/>
+                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09A-Tl-vuX">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
@@ -1138,7 +1152,7 @@
                         <outlet property="bottomView" destination="7VS-B1-WeU" id="rcF-zC-VKl"/>
                         <outlet property="imageView" destination="Lce-SA-r3y" id="H0g-76-A4I"/>
                         <outlet property="tableView" destination="Ddn-R2-aFF" id="ooU-h8-2ss"/>
-                        <outlet property="titleView" destination="YNx-jA-x8M" id="eV2-4a-EOl"/>
+                        <outlet property="titleLabel" destination="YNx-jA-x8M" id="teK-Ha-Kmm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OJv-xE-A6Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1249,6 +1263,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="sQ1-kh-MDu"/>
-        <segue reference="O0l-NN-0zP"/>
+        <segue reference="t9D-LU-j1P"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -30,9 +30,10 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
     private var telePhone = ""    // 原電話號碼
     private var postalCode = ""   // 原郵遞區號
     private var address = ""      // 原聯絡地址
+    private var changeSuccess = false
     
     // MARK: - Private
-    private func InputIsCorrect() -> Bool {
+    private func inputIsCorrect() -> Bool {
         if emailTextfield.text!.isEmpty && mobliePhoneTextfield.text!.isEmpty && telePhoneTextfield.text!.isEmpty && teleAreaCodeTextfield.text!.isEmpty && postalCodeTextfield.text!.isEmpty && addressTextfield.text!.isEmpty {
             showErrorMessage(nil, ErrorMsg_NeedChangeOne)
             return false
@@ -70,7 +71,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let controller = segue.destination as! BasicInfoResultViewController
-        controller.SetList(resultList)
+        controller.setInitial(resultList, changeSuccess, changeSuccess ? Change_Successful_Title : Change_Faild_Title, nil)
     }
     
     override func didResponse(_ description:String, _ response: NSDictionary) {
@@ -126,13 +127,16 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 setLoading(true)
-                postRequest("Usif/USIF0101", "USIF0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08001","Operate":"queryData","TransactionId":tranId], false), AuthorizationManage.manage.getHttpHead(false))
+                postRequest("Usif/USIF0101", "USIF0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08001","Operate":"queryData","TransactionId":tranId], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
                 super.didResponse(description, response)
             }
             
         case "USIF0102":
+            if let returnCode = response.object(forKey: "ReturnCode") as? String, returnCode == ReturnCode_Success {
+                changeSuccess = true
+            }
             if let data = response.object(forKey: "Data") as? [[String:String]] {
                 resultList = data
                 performSegue(withIdentifier: GoBaseInfoChangeResult_Segue, sender: nil)
@@ -147,7 +151,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
 
     // MARK: - StoryBoard Touch Event
     @IBAction func clickChangeBtn(_ sender: Any) {
-        if InputIsCorrect() {
+        if inputIsCorrect() {
             setLoading(true)
             let email:String = emailTextfield.text!.isEmpty ? emailLabel.text! : emailTextfield.text!
             let mobliePhone:String = mobliePhoneTextfield.text!.isEmpty ? mobilePhoneLabel.text! : mobliePhoneTextfield.text!
