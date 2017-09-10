@@ -22,6 +22,7 @@ let Color_NavigationBar = UIColor(colorLiteralRed: 46/255, green: 134/255, blue:
 let Loading_Weight = 100
 let Loading_Height = 100
 
+
 class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     var request:ConnectionUtility? = nil
     var needShowBackBarItem:Bool = true
@@ -30,6 +31,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     var loginView:LoginView? = nil              // 登入頁面
     var curFeatureID:PlatformFeatureID? = nil   // 目前要登入的功能ID
     var touchTap:UITapGestureRecognizer? = nil  // 手勢: 用來關閉Textfield
+    var tempTransactionId = ""                  // 暫存「繳費」「繳稅」的transactionId
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -382,18 +384,23 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     info.Balance = balance
                 }
                 AuthorizationManage.manage.SetResponseLoginInfo(info, nil)
+                
                 registerAPNSToken()
+                
                 loginView?.saveDataInFile()
                 loginView?.removeFromSuperview()
                 loginView = nil
+                
                 if touchTap != nil {
                     view.removeGestureRecognizer(touchTap!)
                     touchTap = nil
                 }
+                
                 if curFeatureID != nil {
                     enterFeatureByID(curFeatureID!, true)
                     curFeatureID = nil
                 }
+                
                 if let status = data["STATUS"] as? String {
                     // 帳戶狀態  (1.沒過期，2已過期，需要強制變更，3.已過期，不需要強制變更，4.首登，5.此ID已無有效帳戶)
                     switch status {
@@ -412,14 +419,34 @@ extension BaseViewController: ConnectionUtilityDelegate {
             
         case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
-                if let con = navigationController?.viewControllers.first {
-                    if con is HomeViewController {
-                        (con as! HomeViewController).transactionId = tranId
-                        (con as! HomeViewController).pushFeatureController(curFeatureID!, true)
+                tempTransactionId = tranId
+                VaktenManager.sharedInstance().authenticateOperation(withSessionID: tranId) { resultCode in
+                    if VIsSuccessful(resultCode) {
+                        var workCode = ""
+                        if self.curFeatureID! == .FeatureID_TaxPayment {
+                            workCode = "05001"
+                        }
+                        else if self.curFeatureID! == .FeatureID_BillPayment {
+                            workCode = "05002"
+                        }
+                        self.setLoading(true)
+                        self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":Kepasco_userIP], true), AuthorizationManage.manage.getHttpHead(true))
+                    }
+                    else {
+                        self.showErrorMessage(nil, "驗證失敗")
                     }
                 }
             }
+            
+        case "COMM0802":
+            if let con = navigationController?.viewControllers.first {
+                if con is HomeViewController {
+                    (con as! HomeViewController).tempTransactionId = tempTransactionId
+                    (con as! HomeViewController).pushFeatureController(curFeatureID!, true)
+                }
+            }
             curFeatureID = nil
+            tempTransactionId = ""
             
         default: break
         }

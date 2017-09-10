@@ -115,14 +115,14 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         topView.layer.borderColor = Gray_Color.cgColor
 
         showBankAccountDropView = getUIByID(.UIID_TwoRowDropDownView) as? TwoRowDropDownView
-        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, "")
+        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, Choose_Title, NTTransfer_InAccount, "")
         showBankAccountDropView?.frame = showBankAccountView.frame
         showBankAccountDropView?.frame.origin = .zero
         showBankAccountDropView?.delegate = self
         showBankAccountView.addSubview(showBankAccountDropView!)
         
         showBankDorpView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-        showBankDorpView?.setOneRow(NTTransfer_BankCode, "")
+        showBankDorpView?.setOneRow(NTTransfer_BankCode, Choose_Title)
         showBankDorpView?.frame = showBankView.frame
         showBankDorpView?.frame.origin = .zero
         showBankDorpView?.delegate = self
@@ -202,6 +202,24 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             }
             else {
                 super.didResponse(description, response)
+            }
+            
+        case "COMM0802":
+            showNonPredesignated()
+            
+        case "TRAN0103":
+            if let data = response.object(forKey: "Data") as? [String:Any], let Id = data["taskId"] as? String {
+                VaktenManager.sharedInstance().getTasksOperation{ resultCode, tasks  in
+                    if VIsSuccessful(resultCode) && tasks != nil {
+                        self.transNonPredesignated(tasks!, Id)
+                    }
+                    else {
+                        self.showErrorMessage(nil, "Load task failed. Error(\(resultCode))")
+                    }
+                }
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_No_TaskId)
             }
             
         default: super.didResponse(description, response)
@@ -284,24 +302,83 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 showErrorMessage(nil, ErrorMsg_Choose_InAccount)
                 return false
             }
-            if (transAmountTextfield.text?.isEmpty)! {
-                showErrorMessage(nil, ErrorMsg_Enter_TransAmount)
-                return false
-            }
-            if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
-                showErrorMessage(nil, ErrorMsg_Illegal_Character)
-                return false
-            }
-            if !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {
-                showErrorMessage(nil, ErrorMsg_Invalid_Email)
-                return false
-            }
         }
         else {
-            
+            if isCustomizeAct {
+                if (showBankDorpView?.getContentByType(.First).isEmpty)! {
+                    showErrorMessage(nil, "\(Choose_Title)\((showBankDorpView?.m_lbFirstRowTitle.text)!)")
+                    return false
+                }
+                if (enterAccountTextfield.text?.isEmpty)! {
+                    showErrorMessage(nil, "\(Enter_Title)\(enterAccountTextfield.placeholder!)")
+                    return false
+                }
+            }
+            else {
+                if inAccountIndex == nil {
+                    showErrorMessage(nil, ErrorMsg_Choose_InAccount)
+                    return false
+                }
+            }
+        }
+        if (transAmountTextfield.text?.isEmpty)! {
+            showErrorMessage(nil, ErrorMsg_Enter_TransAmount)
+            return false
+        }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+            return false
+        }
+        if !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {
+            showErrorMessage(nil, ErrorMsg_Invalid_Email)
+            return false
         }
         
         return true
+    }
+    
+    private func showNonPredesignated() {
+        SetBtnColor(false)
+        chooseActTypeView.isHidden = false
+        chooseActTypeHeight.constant = sChooseActTypeHeight
+        gapHeight.constant = sGapHeight
+        if isCustomizeAct {
+            showBankAccountView.isHidden = true
+            showBankAccountHeight.constant = 0
+            enterAccountView.isHidden = false
+            enterAccountHeight.constant = sEnterAccountHeight
+        }
+        else {
+            enterAccountView.isHidden = true
+            enterAccountHeight.constant = 0
+            showBankAccountView.isHidden = false
+            showBankAccountHeight.constant = sShowBankAccountHeight
+        }
+        bankNameIndex = nil
+        showBankDorpView?.setOneRow(NTTransfer_BankCode, Choose_Title)
+        inAccountIndex = nil
+        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, Choose_Title, NTTransfer_InAccount, "")
+        accountTypeSegCon.selectedSegmentIndex = 0
+    }
+    
+    private func transNonPredesignated(_ taskList:[Any], _ taskID:String) {
+        var inAccount = ""
+        var inBank = ""
+        if isCustomizeAct {
+            inAccount = enterAccountTextfield.text ?? ""
+            inBank = showBankDorpView?.getContentByType(.First) ?? ""
+        }
+        else {
+            inAccount = showBankAccountDropView?.getContentByType(.Second) ?? ""
+            inBank = showBankAccountDropView?.getContentByType(.First) ?? ""
+        }
+        self.postRequest("TRAN/TRAN0103", "TRAN0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":inAccount,"INBANK":inBank,"TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!], true), AuthorizationManage.manage.getHttpHead(true))
+        
+        let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0103", strSessionDescription: "TRAN0103", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+        
+        let dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: nil, memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":inAccount,"INBANK":inBank,"TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!],task: nil)
+        
+        enterConfirmOTPController(dataConfirm, true)
     }
     
     // MARK: - StoryBoard Touch Event
@@ -315,35 +392,23 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         showBankAccountView.isHidden = false
         showBankAccountHeight.constant = sShowBankAccountHeight
         inAccountIndex = nil
-        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, "")
+        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, Choose_Title, NTTransfer_InAccount, "")
     }
  
     @IBAction func clickNonPredesignatedBtn(_ sender: Any) { // 非約定轉帳
         if !SecurityUtility.utility.isJailBroken() {
-            SetBtnColor(false)
-            chooseActTypeView.isHidden = false
-            chooseActTypeHeight.constant = sChooseActTypeHeight
-            gapHeight.constant = sGapHeight
-            if isCustomizeAct {
-                showBankAccountView.isHidden = true
-                showBankAccountHeight.constant = 0
-                enterAccountView.isHidden = false
-                enterAccountHeight.constant = sEnterAccountHeight
+            VaktenManager.sharedInstance().authenticateOperation(withSessionID: transactionId) { resultCode in
+                if VIsSuccessful(resultCode) {
+                    self.setLoading(true)
+                    self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":Kepasco_userIP], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+                else {
+                    self.showErrorMessage(nil, "驗證失敗")
+                }
             }
-            else {
-                enterAccountView.isHidden = true
-                enterAccountHeight.constant = 0
-                showBankAccountView.isHidden = false
-                showBankAccountHeight.constant = sShowBankAccountHeight
-            }
-            bankNameIndex = nil
-            showBankDorpView?.setOneRow(NTTransfer_BankCode, "")
-            inAccountIndex = nil
-            showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, "")
-            accountTypeSegCon.selectedSegmentIndex = 0
         }
         else {
-            
+            showErrorMessage(ErrorMsg_IsJailBroken, nil)
         }
     }
 
@@ -357,7 +422,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             enterAccountView.isHidden = false
             enterAccountHeight.constant = sEnterAccountHeight
             bankNameIndex = nil
-            showBankDorpView?.setOneRow(NTTransfer_BankCode, "")
+            showBankDorpView?.setOneRow(NTTransfer_BankCode, Choose_Title)
             enterAccountTextfield.text = ""
             
         default: // 常用帳號
@@ -367,7 +432,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             showBankAccountView.isHidden = false
             showBankAccountHeight.constant = sShowBankAccountHeight
             inAccountIndex = nil
-            showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, "")
+            showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, Choose_Title, NTTransfer_InAccount, "")
         }
     }
     
@@ -383,10 +448,22 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 dataConfirm.list?.append([Response_Key: "轉帳金額", Response_Value:transAmountTextfield.text!])
                 dataConfirm.list?.append([Response_Key: "備註/交易備記", Response_Value:memoTextfield.text!])
                 dataConfirm.list?.append([Response_Key: "受款人E-mail", Response_Value:emailTextfield.text!])
+                
                 enterConfirmResultController(true, dataConfirm, true)
             }
             else {
-                
+                self.setLoading(true)
+                var inAccount = ""
+                var inBank = ""
+                if isCustomizeAct {
+                    inAccount = enterAccountTextfield.text ?? ""
+                    inBank = showBankDorpView?.getContentByType(.First) ?? ""
+                }
+                else {
+                    inAccount = showBankAccountDropView?.getContentByType(.Second) ?? ""
+                    inBank = showBankAccountDropView?.getContentByType(.First) ?? ""
+                }
+                self.postRequest("TRAN/TRAN0103", "TRAN0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":inAccount,"INBANK":inBank,"TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!], true), AuthorizationManage.manage.getHttpHead(true))
             }
         }
     }

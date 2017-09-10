@@ -179,12 +179,12 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             (controller as! NewsViewController).SetNewsList(centerNews, bankNews)
             
         case .FeatureID_TaxPayment:
-            (controller as! TaxPaymentViewController).transactionId = transactionId
-            transactionId = ""
+            (controller as! TaxPaymentViewController).transactionId = tempTransactionId
+            tempTransactionId = ""
             
         case .FeatureID_BillPayment:
-            (controller as! BillPaymentViewController).transactionId = transactionId
-            transactionId = ""
+            (controller as! BillPaymentViewController).transactionId = tempTransactionId
+            tempTransactionId = ""
             
         default: break
         }
