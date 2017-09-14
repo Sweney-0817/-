@@ -39,6 +39,7 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
         // Do any additional setup after loading the view.
         tableView.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
         setShadowView(bottomView)
+        cancelButton.layer.cornerRadius = Layer_BorderRadius
         
         setLoading(true)
         postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
@@ -56,13 +57,11 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
     
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
-        case "COMM0701": break
-            //            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
-            //            }
-            //            else {
-            //                cancelButton.backgroundColor = Disable_Color
-            //                cancelButton.isEnabled = false
-            //            }
+        case "COMM0701":
+            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
+                cancelButton.setBackgroundImage(UIImage(named: ImageName.ButtonLarge.rawValue), for: .normal)
+                cancelButton.isEnabled = true
+            }
             
         default: super.didResponse(description, response)
         }

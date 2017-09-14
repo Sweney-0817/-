@@ -213,12 +213,4 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         curTextfield?.resignFirstResponder()
         checkImageConfirm(password, transactionId)
     }
-    
-    // MARK: - ConnectionUtilityDelegate
-    override func didRecvdResponse(_ description:String, _ response: NSDictionary) {
-        setLoading(false)
-        
-        
-        
-    }
 }

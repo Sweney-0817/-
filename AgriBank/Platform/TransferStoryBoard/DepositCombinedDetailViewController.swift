@@ -13,6 +13,7 @@ let DepositCombinedDetail_Memo = "本交易受理時間 : 為各營業單位之�
 
 class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var terminationBtn: UIButton!
     private var list:[[String:String]]? = nil
     private var account:String? = nil
     
@@ -27,6 +28,10 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         tableView.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
+        terminationBtn.layer.cornerRadius = Layer_BorderRadius
+        
+        setLoading(true)
+        postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,6 +44,17 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
         navigationController?.navigationBar.topItem?.title = DepositCombinedDetail_Title
     }
     
+    override func didResponse(_ description: String, _ response: NSDictionary) {
+        switch description {
+        case "COMM0701":
+            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
+                terminationBtn.setBackgroundImage(UIImage(named: ImageName.ButtonLarge.rawValue), for: .normal)
+                terminationBtn.isEnabled = true
+            }
+            
+        default: super.didResponse(description, response)
+        }
+    }
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return list?.count ?? 0

@@ -102,7 +102,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -263,7 +263,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
             enterConfirmOTPController(dataConfirm, true)
         }
         else {
-            let confirmRequest = RequestStruct(strMethod: "PAY/PAY0105", strSessionDescription: "PAY0106", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+            let confirmRequest = RequestStruct(strMethod: "PAY/PAY0105", strSessionDescription: "PAY0105", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
             
             let dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: nil, memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","BILLNO":m_tfInput1.text!,"DATELINE":endDate,"TXAMT":m_tfInput3.text!,"taskId":taskID,"otp":""],task: nil)
             

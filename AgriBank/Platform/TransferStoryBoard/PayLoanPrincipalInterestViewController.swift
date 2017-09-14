@@ -74,7 +74,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -86,8 +86,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
             }
             
         case "COMM0701":
-            //            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
-            if let data = response.object(forKey: "Data") as? [String:Any], let date = data["CurrentDate"] as? String {
+            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
                 let outAccount = topDropView?.getContentByType(.First) ?? ""
                 let inAccount = self.inAccount ?? ""
                 var APAMT = ""
@@ -137,8 +136,8 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickSendBtn(_ sender: Any) {
-        if (topDropView?.getContentByType(.First).isEmpty)! {
-            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
+        if topDropView?.getContentByType(.First) == Choose_Title {
+            showErrorMessage(nil, "\(Choose_Title)\(topDropView?.m_lbFirstRowTitle.text ?? "")")
         }
         else {
             setLoading(true)

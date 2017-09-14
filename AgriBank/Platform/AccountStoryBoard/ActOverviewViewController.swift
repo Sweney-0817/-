@@ -369,7 +369,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                         
                         if addType {
                             for actInfo in result {
-                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int {
+                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                     categoryList[type]?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                                 }
                             }

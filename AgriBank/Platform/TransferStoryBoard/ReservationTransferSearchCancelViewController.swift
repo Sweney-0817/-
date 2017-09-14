@@ -22,7 +22,6 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     private var chooseAccountDorpView:OneRowDropDownView? = nil
     private var loginIntervalDropView:OneRowDropDownView? = nil
     private var accountList:[AccountStruct]? = nil      // 帳號列表
-    private var accountIndex:Int? = nil                 // 目前選擇轉出帳號
     private var startDate = ""
     private var endDate = ""
     private var isSpecific = true
@@ -152,7 +151,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -204,25 +203,33 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
                 actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
                 actSheet.show(in: view)
             }
+            else {
+                showErrorMessage(nil, "\(Choose_Title)\(chooseAccountDorpView?.m_lbFirstRowTitle.text ?? "")")
+            }
         }
         else {
-            if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-                dateView.frame = view.frame
-                dateView.frame.origin = .zero
-                dateView.showTwoDatePickerView(isSpecific) { startDate, endDate in
-                    if self.isSpecific {
-                        self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.year)/\(startDate.month)/\(startDate.day) - \(endDate.year)/\(endDate.month)/\(endDate.day)")
-                        self.startDate = "\(startDate.year)\(startDate.month)\(startDate.day)"
-                        self.endDate = "\(endDate.year)\(endDate.month)\(endDate.day)"
+            if chooseAccountDorpView?.getContentByType(.First) != Choose_Title {
+                if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
+                    dateView.frame = view.frame
+                    dateView.frame.origin = .zero
+                    dateView.showTwoDatePickerView(isSpecific) { startDate, endDate in
+                        if self.isSpecific {
+                            self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.year)/\(startDate.month)/\(startDate.day) - \(endDate.year)/\(endDate.month)/\(endDate.day)")
+                            self.startDate = "\(startDate.year)\(startDate.month)\(startDate.day)"
+                            self.endDate = "\(endDate.year)\(endDate.month)\(endDate.day)"
+                        }
+                        else {
+                            self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.day) - \(endDate.day)")
+                            self.startDate = startDate.day.replacingOccurrences(of: "日", with: "")
+                            self.endDate = endDate.day.replacingOccurrences(of: "日", with: "")
+                        }
+                        self.getReservationTransferDetail()
                     }
-                    else {
-                        self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.day) - \(endDate.day)")
-                        self.startDate = startDate.day.replacingOccurrences(of: "日", with: "")
-                        self.endDate = endDate.day.replacingOccurrences(of: "日", with: "")
-                    }
-                    self.getReservationTransferDetail()
+                    view.addSubview(dateView)
                 }
-                view.addSubview(dateView)
+            }
+            else {
+                showErrorMessage(nil, "\(Choose_Title)\(chooseAccountDorpView?.m_lbFirstRowTitle.text ?? "")")
             }
         }
     }
@@ -264,8 +271,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         if buttonIndex != actionSheet.cancelButtonIndex {
             switch actionSheet.tag {
             case ViewTag.View_AccountActionSheet.rawValue:
-                accountIndex = buttonIndex-1
-                if let info = accountList?[accountIndex!] {
+                if let info = accountList?[buttonIndex-1] {
                     chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, info.accountNO)
                     getReservationTransferDetail()
                 }
@@ -277,7 +283,6 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     
     // MARK: - Private
     private func cleanAllDate() {
-        accountIndex = nil
         chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, Choose_Title)
         startDate = ""
         endDate = ""
@@ -286,8 +291,8 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         tableView.reloadData()
     }
     
-    func getReservationTransferDetail() {
-        if accountIndex != nil && !startDate.isEmpty && !endDate.isEmpty {
+    private func getReservationTransferDetail() {
+        if chooseAccountDorpView?.getContentByType(.First) != Choose_Title && !startDate.isEmpty && !endDate.isEmpty {
             setLoading(true)
             postRequest("TRAN/TRAN0301", "TRAN0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"getList","TransactionId":transactionId,"ACTNO":chooseAccountDorpView?.getContentByType(.First) ?? "","KIND":isSpecific ? "1":"2","RVDAY":isSpecific ? startDate:"00000000","RVDAY2":isSpecific ? endDate:"00000000","IDD1":isSpecific ? "00":startDate,"IDD2":isSpecific ? "00":endDate], true), AuthorizationManage.manage.getHttpHead(true))
         }

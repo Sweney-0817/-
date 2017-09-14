@@ -18,7 +18,7 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
     private var navigationBarTitle:String? = nil
     var addList = [PlatformFeatureID]()
     
-    // MARK: Life cycle
+    // MARK: Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

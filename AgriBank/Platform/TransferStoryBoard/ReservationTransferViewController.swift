@@ -61,6 +61,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         setShadowView(bottomView)
         
         addObserverToKeyBoard()
+        addGestureForKeyBoard()
         
         setLoading(true)
         getTransactionID("03002", TransactionID_Description)
@@ -89,7 +90,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -201,6 +202,9 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
         }
+        else {
+            showErrorMessage(nil, "\(Get_Null_Title)\(topDropView?.m_lbFirstRowTitle.text ?? "")")
+        }
     }
     
     // MARK: - TwoRowDropDownViewDelegate
@@ -215,7 +219,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             }
         }
         else {
-            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
+            showErrorMessage(nil, "\(Choose_Title)\(topDropView?.m_lbFirstRowTitle.text ?? "")")
         }
     }
     
@@ -235,37 +239,36 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
             for info in agreedAccountList! {
                 if let account = info["TRAC"] as? String, let bankCode = info["BKNO"] as? String {
-                    actSheet.addButton(withTitle: "\(account) \(bankCode)")
+                    actSheet.addButton(withTitle: "(\(bankCode)) \(account)")
                 }
             }
             actSheet.tag = ViewTag.View_InAccountActionSheet.rawValue
             actSheet.show(in: view)
         }
+        else {
+            showErrorMessage(nil, "\(Get_Null_Title)\(showBankAccountDropView?.m_lbSecondRowTitle.text ?? "")")
+        }
     }
     
     private func inputIsCorrect() -> Bool {
-        if accountList == nil {
-            showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
-            return false
-        }
         if accountIndex == nil {
-            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
+            showErrorMessage(nil, "\(Choose_Title)\(topDropView?.m_lbFirstRowTitle.text ?? "")")
             return false
         }
         if dateLabel.text == ReservationTransfer_Choose_Type {
             showErrorMessage(nil, ErrorMsg_Transfer_Date)
             return false
         }
-        if agreedAccountList == nil {
-            showErrorMessage(nil, ErrorMsg_GetList_InAgreedAccount)
-            return false
-        }
         if inAccountIndex == nil {
-            showErrorMessage(nil, ErrorMsg_Choose_InAccount)
+            showErrorMessage(nil, "\(Choose_Title)\(showBankAccountDropView?.m_lbSecondRowTitle.text ?? "")")
             return false
         }
         if (transAmountTextfield.text?.isEmpty)! {
-            showErrorMessage(nil, ErrorMsg_Enter_TransAmount)
+            showErrorMessage(nil, "\(Enter_Title)\(transAmountTextfield.placeholder ?? "")")
+            return false
+        }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(transAmountTextfield.text!) {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }
         if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {

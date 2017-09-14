@@ -105,7 +105,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
             }
             
         case "COMM0801":
-            if let returnCode = response.object(forKey: "ReturnCode") as? String, returnCode == ReturnCode_Success {
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
                 VaktenManager.sharedInstance().associationOperation(withAssociationCode: checkCodeTextfield.text ?? "") { resultCode in
                     if VIsSuccessful(resultCode) {
                         self.bindingSuccess = true
@@ -249,6 +249,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
                 }
                 else {
                     self.showErrorMessage(nil, "驗證失敗")
+                    self.setLoading(false)
                 }
             }
         }

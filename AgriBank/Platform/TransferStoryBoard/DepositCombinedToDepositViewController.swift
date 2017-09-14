@@ -121,7 +121,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Deposit_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -163,8 +163,8 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             }
             
         case "COMM0701":
-            //            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
-            if let data = response.object(forKey: "Data") as? [String:Any], let date = data["CurrentDate"] as? String {
+            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
+            
                 let TACTNO = topDropView?.getContentByType(.First) ?? ""
                 let TYPE = responseDepositList[curDepositTypeIndex!]["Type"] ?? ""
                 let PRDCD = periodDropView?.getContentByType(.First) ?? ""
@@ -271,6 +271,9 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
         }
+        else {
+            showErrorMessage(nil, "\(Get_Null_Title)\(topDropView?.m_lbFirstRowTitle.text ?? "")")
+        }
     }
     
     // MARK: - OneRowDropDownViewDelegate
@@ -299,6 +302,9 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                     actSheet.show(in: view)
                 }
             }
+            else {
+                showErrorMessage(nil, "\(Get_Null_Title)\(autoTransRateTypeDropView?.m_lbFirstRowTitle.text ?? "")")
+            }
         }
         else {
             switch sender {
@@ -326,32 +332,29 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                     }
                 }
                 else {
-                    showErrorMessage(nil, ErrorMsg_Choose_DepositType)
+                    showErrorMessage(nil, "\(Choose_Title)\(depositTypeDropView?.m_lbFirstRowTitle.text ?? "")")
                 }
                 break
                 
             case periodDropView!: // "轉存期別"
-                var errorMessage = ""
                 if curDepositTypeIndex == nil {
-                    errorMessage.append("\(ErrorMsg_Choose_DepositType)\n")
+                    showErrorMessage(nil, "\(Choose_Title)\(depositTypeDropView?.m_lbFirstRowTitle.text ?? "")")
+                    break
                 }
                 if curRateTypeIndex == nil {
-                    errorMessage.append("\(ErrorMsg_Choose_RateType)\n")
+                    showErrorMessage(nil, "\(Choose_Title)\(rateTypeDropView?.m_lbFirstRowTitle.text ?? "")")
+                    break
                 }
-                if errorMessage.isEmpty {
-                    if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]], let DetailRate = Detail[curRateTypeIndex!]["DetailRate"] as? [[String:String]] {
-                        let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
-                        for info in DetailRate {
-                            if let PRDCD = info["PRDCD"] {
-                                actSheet.addButton(withTitle: PRDCD)
-                            }
+                
+                if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]], let DetailRate = Detail[curRateTypeIndex!]["DetailRate"] as? [[String:String]] {
+                    let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                    for info in DetailRate {
+                        if let PRDCD = info["PRDCD"] {
+                            actSheet.addButton(withTitle: PRDCD)
                         }
-                        actSheet.tag = ViewTag.View_TransPeriodActionSheet.rawValue
-                        actSheet.show(in: view)
                     }
-                }
-                else {
-                    showErrorMessage(nil, errorMessage)
+                    actSheet.tag = ViewTag.View_TransPeriodActionSheet.rawValue
+                    actSheet.show(in: view)
                 }
                 break
                 
@@ -414,32 +417,32 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
     
     // MARK: - Private
     private func inputIsCorrect() -> Bool {
-        if accountList == nil {
-            showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
-            return false
-        }
-        if (topDropView?.getContentByType(.First).isEmpty)! {
-            showErrorMessage(nil, ErrorMsg_Choose_DepositAccount)
+        if topDropView?.getContentByType(.First) == Choose_Title {
+            showErrorMessage(nil, "\(Choose_Title)\(topDropView?.m_lbFirstRowTitle.text ?? "")")
             return false
         }
         if curDepositTypeIndex == nil {
-            showErrorMessage(nil, ErrorMsg_Choose_DepositType)
+            showErrorMessage(nil, "\(Choose_Title)\(depositTypeDropView?.m_lbFirstRowTitle.text ?? "")")
             return false
         }
         if curRateTypeIndex == nil {
-            showErrorMessage(nil, ErrorMsg_Choose_RateType)
+            showErrorMessage(nil, "\(Choose_Title)\(rateTypeDropView?.m_lbFirstRowTitle.text ?? "")")
             return false
         }
         if curPeriodIndex == nil {
-            showErrorMessage(nil, ErrorMsg_Choose_TransPeriod)
+            showErrorMessage(nil, "\(Choose_Title)\(periodDropView?.m_lbFirstRowTitle.text ?? "")")
             return false
         }
         if autoTransRateTypeIndex == nil {
-            showErrorMessage(nil, ErrorMsg_Choose_AutoTransRate)
+            showErrorMessage(nil, "\(Choose_Title)\(autoTransRateTypeDropView?.m_lbFirstRowTitle.text ?? "")")
             return false
         }
         if (transAmountTextfield.text?.isEmpty)! {
-            showErrorMessage(nil, ErrorMsg_Enter_TransSaveAmount)
+            showErrorMessage(nil, "\(Enter_Title)\(transAmountTextfield.placeholder ?? "")")
+            return false
+        }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(transAmountTextfield.text!) {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }
         

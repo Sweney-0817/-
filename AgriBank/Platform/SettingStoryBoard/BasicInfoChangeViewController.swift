@@ -134,7 +134,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
             }
             
         case "USIF0102":
-            if let returnCode = response.object(forKey: "ReturnCode") as? String, returnCode == ReturnCode_Success {
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
                 changeSuccess = true
             }
             if let data = response.object(forKey: "Data") as? [[String:String]] {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-let Login_Account_Length = 10
+//let Login_Account_Length = 10
 let Login_ID_Length = 16
 let Login_Password_Length = 10
 
@@ -156,18 +156,22 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
             return ErrorMsg_Choose_CityBank
         }
         if (accountTextfield.text?.isEmpty)! {
-            return ErrorMsg_Enter_Identify
+            return "\(Enter_Title)\(accountTextfield.placeholder ?? "")"
         }
-        else {
-            if !DetermineUtility.utility.isValidIdentify(accountTextfield.text!) {
-                return ErrorMsg_Error_Identify
-            }
+        if !DetermineUtility.utility.isValidIdentify(accountTextfield.text!) {
+            return ErrorMsg_Error_Identify
         }
         if (idTextfield.text?.isEmpty)! {
-            return ErrorMsg_Enter_UserID
+            return "\(Enter_Title)\(idTextfield.placeholder ?? "")"
+        }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(idTextfield.text!) {
+            return ErrorMsg_Illegal_Character
         }
         if (passwordTextfield.text?.isEmpty)! {
-            return ErrorMsg_Enter_UserPassword
+            return "\(Enter_Title)\(passwordTextfield.placeholder ?? "")"
+        }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(passwordTextfield.text!) {
+            return ErrorMsg_Illegal_Character
         }
         
         return nil
@@ -246,27 +250,31 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         if DetermineUtility.utility.checkStringContainIllegalCharacter( newString ) {
             return false
         }
-        
-        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
-        var maxLength = 0
-        switch textField {
-        case accountTextfield:
-            maxLength = Login_Account_Length
-            
-        case idTextfield:
-            maxLength = Login_ID_Length
-            
-        case passwordTextfield:
-            maxLength = Login_Password_Length
-        
-        default: break
-        }
-        
-        if newLength <= maxLength {
+        if textField == accountTextfield {
             return true
         }
         else {
-            return false
+            let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+            var maxLength = 0
+            switch textField {
+//          case accountTextfield:
+//              maxLength = Login_Account_Length
+                
+            case idTextfield:
+                maxLength = Login_ID_Length
+                
+            case passwordTextfield:
+                maxLength = Login_Password_Length
+                
+            default: break
+            }
+            
+            if newLength <= maxLength {
+                return true
+            }
+            else {
+                return false
+            }
         }
     }
     

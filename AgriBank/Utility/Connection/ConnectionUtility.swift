@@ -102,11 +102,15 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
                     if let value = (task.response as! HTTPURLResponse).allHeaderFields[AnyHashable(AuthorizationManage_HttpHead_VarifyId)] {
                         resultList[RESPONSE_VARIFYID_KEY] = value
                     }
+                    resultList[ReturnCode_Key] = ReturnCode_Success
                     self.delegate?.didRecvdResponse(session.sessionDescription!, resultList as NSDictionary)
                 }
                 else if self.downloadType == .ImageConfirmResult {
+                    var resultList = [String:Any]()
+                    resultList[ReturnCode_Key] = ReturnCode_Success
                     if let flag = String(data: self.responseData as Data, encoding: .utf8) {
-                        self.delegate?.didRecvdResponse(session.sessionDescription!, [RESPONSE_IMAGE_CONFIRM_RESULT_KEY:flag])
+                        resultList[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] = flag
+                        self.delegate?.didRecvdResponse(session.sessionDescription!, resultList as NSDictionary)
                     }
                 }
             }

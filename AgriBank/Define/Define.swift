@@ -49,7 +49,6 @@ enum PlatformFeatureID: Int {
     case FeatureID_DeviceBinding = 180100           // 設備綁定
     case FeatureID_Edit = 990300                    // 新增/編輯
     
-    
     func StoryBoardID() -> String {
         switch self {
         case .FeatureID_Home:
@@ -360,6 +359,7 @@ let UIAlert_Cancel_Title = "取消"
 let UIAlert_Confirm_Title = "確定"
 let Choose_Title = "請選擇"
 let Enter_Title = "請輸入"
+let Get_Null_Title = "無法取得"
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "FFICMBank"
@@ -374,6 +374,7 @@ let AgriBank_Platform = "1"
 let AgriBank_DeviceID = UIDevice.current.identifierForVendor!.uuidString
 let AgriBank_AppUid = AgriBank_DeviceID + Bundle.main.bundleIdentifier!
 let AgriBank_Auth = "ED57C853AC9744D58B8A9B3F527D0940"
+let AgriBank_TimeOut:TimeInterval = 10
 
 
 // MARK: - Cell定義
@@ -390,8 +391,8 @@ enum CellStatus {
 struct AccountStruct {
     var accountNO = ""
     var currency = ""
-    var balance:Double = 0
-    var status:Int = 0
+    var balance = ""
+    var status = ""
 }
 
 // MARK: - 電文定義
@@ -400,7 +401,7 @@ let ReturnCode_Success = "OK"
 let ReturnCode_Key = "ReturnCode"
 let Response_Key = "Key"
 let Response_Value = "Value"
-let Account_EnableTrans:Int = 2     // 此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
+let Account_EnableTrans = "2"       // 此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
 let Can_Transaction_Status:Int = 1  // 是否可進行交易 0:不可交易 1:可交易
 let Account_Saving_Type = "P"       // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Check_Type = "K"        // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
@@ -418,42 +419,31 @@ enum DropDownType:Int {
 
 // MARK: - 錯誤訊息
 let ErrorMsg_Image_ConfirmFaild = "圖形驗證碼錯誤"
-let ErrorMsg_Choose_OutAccount = "請先選擇轉出帳戶"
-let ErrorMsg_GetList_OutAccount = "無法取得轉出帳戶"
-let ErrorMsg_GetList_InAgreedAccount = "無法取得轉入的約定帳戶"
-let ErrorMsg_Choose_InAccount = "請選擇轉入帳號"
-let ErrorMsg_Enter_TransAmount = "請輸入轉帳金額"
 let ErrorMsg_Illegal_Character = "不得輸入非法字元"
 let ErrorMsg_Invalid_Email = "E-mail格式不合"
-let ErrorMsg_Transfer_Date = "請選擇轉出日期"
 let ErrorMsg_Choose_Date = "起始日不可大於截止日"
-let ErrorMsg_Choose_SavingAccount = "請選擇存摺帳號"
-let ErrorMsg_Enter_Password = "請輸入網銀密碼"
-let ErrorMsg_Choose_CheckAccount = "請選擇支票帳號"
-let ErrorMsg_Enter_CheckNumber = "請輸入票據號碼"
-let ErrorMsg_Enter_CheckAmount = "請輸入票面金額"
-let ErrorMsg_Choose_InvoicDate = "請選擇發票日"
-let ErrorMsg_Choose_DepositType = "請選擇存款種類"
-let ErrorMsg_Choose_RateType = "請選擇利率方式"
-let ErrorMsg_Choose_DepositAccount = "請選擇綜存帳戶"
-let ErrorMsg_Choose_TransPeriod = "請選擇轉存期別"
-let ErrorMsg_Choose_AutoTransRate = "請選擇自動轉期利率"
-let ErrorMsg_Enter_TransSaveAmount = "請輸入轉存金額"
 let ErrorMsg_IsNot_TransTime = "目前非營業時間"
-let ErrorMsg_NeedChangeOne = "至少需修改一項"
-let ErrorMsg_Telephone = "「新區碼」及「新聯絡電話」必須一起修改"
-let ErrorMsg_Address = "「新郵遞區號」及「新聯絡地址」必須一起修改"
-let ErrorMsg_Choose_CityBank = "請選擇地區"
-let ErrorMsg_Enter_Identify = "請輸入身份證字號"
 let ErrorMsg_Error_Identify = "身份證字號格式錯誤"
-let ErrorMsg_Enter_UserID = "請輸入使用者代碼"
-let ErrorMsg_Enter_UserPassword = "請輸入使用者密碼"
-let ErrorMsg_Enter_SaveAmount = "請輸入存款金額"
-let ErrorMsg_Enter_SaveRate = "請輸入存款年利率"
-let ErrorMsg_GreaterThan_MaxRate = "存款年利率不得大於18%"
-let ErrorMsg_Choose_SaveDuration = "請選擇存款期限"
 let ErrorMsg_Format = "格式不符"
-let ErrorMsg_Not_Zero = "不得於0"
-let ErrorMsg_Choose_PayDate = "請選擇繳費期間"
 let ErrorMsg_IsJailBroken = "此功能無法在JB下使用"
 let ErrorMsg_No_TaskId = "無法取得TaskID"
+
+let ErrorMsg_GetList_InAgreedAccount = "無法取得約定轉入帳戶"   // 用入「即時轉帳」
+let ErrorMsg_GetList_InCommonAccount = "無法取得常用轉入帳戶"   // 用入「即時轉帳」
+let ErrorMsg_Choose_InAccount = "請選擇轉入帳號"               // 用入「即時轉帳」
+
+let ErrorMsg_Transfer_Date = "請選擇轉出日期"                  // 用入「預約轉帳」
+
+let ErrorMsg_NeedChangeOne = "至少需修改一項"                  // 用於「個人基本資料變更」
+let ErrorMsg_Telephone = "「新區碼」及「新聯絡電話」必須一起修改"   //  用於「個人基本資料變更」
+let ErrorMsg_Address = "「新郵遞區號」及「新聯絡地址」必須一起修改"  //   用於「個人基本資料變更」
+let ErrorMsg_Choose_CityBank = "請選擇地區"                   // 用於「登入」
+
+let ErrorMsg_Enter_SaveAmount = "請輸入存款金額"               // 用於「定期儲蓄試算」
+let ErrorMsg_Enter_SaveRate = "請輸入存款年利率"                // 用於「定期儲蓄試算」
+let ErrorMsg_GreaterThan_MaxRate = "存款年利率不得大於18%"      // 用於「定期儲蓄試算」
+let ErrorMsg_Choose_SaveDuration = "請選擇存款期限"            // 用於「定期儲蓄試算」
+
+let ErrorMsg_Not_Zero = "不得於0"                            // 用於「定期儲蓄試算」
+let ErrorMsg_Choose_PayDate = "請選擇繳費期間"                // 用於「繳稅」
+

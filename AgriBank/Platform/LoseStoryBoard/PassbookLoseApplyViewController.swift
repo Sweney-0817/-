@@ -54,7 +54,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -131,6 +131,13 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
         m_vImageConfirmView.layer.borderColor = Gray_Color.cgColor
         m_vImageConfirmView.layer.borderWidth = 1
     }
+    
+    private func inputIsCorrect() -> Bool {
+        if accountIndex == nil {
+            showErrorMessage(nil, "\(Choose_Title)\(m_OneRow?.m_lbFirstRowTitle.text ?? "")")
+        }
+        return true
+    }
 
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
@@ -170,11 +177,8 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnSendClick(_ sender: Any) {
-        if accountIndex != nil {
+        if inputIsCorrect() {
             checkImageConfirm(password, transactionId)
-        }
-        else {
-            showErrorMessage(nil, ErrorMsg_Choose_SavingAccount)
         }
     }
 }

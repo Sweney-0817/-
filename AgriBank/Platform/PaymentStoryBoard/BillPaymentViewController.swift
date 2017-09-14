@@ -102,7 +102,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -204,7 +204,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
             for info in commonAccountList! {
                 if let account = info["ACTNO"] as? String, let bankCode = info["IN_BR_CODE"] as? String {
-                    actSheet.addButton(withTitle: "\(account) \(bankCode)")
+                    actSheet.addButton(withTitle: "(\(bankCode)) \(account)")
                 }
             }
             actSheet.tag = ViewTag.View_InAccountActionSheet.rawValue

@@ -445,7 +445,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                         
                         if addType {
                             for actInfo in result {
-                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                     categoryList[type]?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                                 }
                             }
@@ -481,7 +481,6 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             }
             
         case "ACIF0201":
-            setLoading(false)
             if let data = response.object(forKey: "Data") as? [String:Any], let result = data["Result"] as? [[String:Any]] {
                 resultList = result
                 tableView.reloadData()
@@ -587,7 +586,8 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     private func postGetAcntInfo() {
         if currentType != nil && chooseAccount != nil, let type = categoryType[currentType!] {
             setLoading(true)
-            postRequest("ACIF/ACIF0201", "ACIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02041","Operate":"getAcntInfo","TransactionId":transactionId,"ACTTYPE":type,"ACTNO":chooseAccount!,"TXSDAY":startDate,"TXEDAY":endDate], true), AuthorizationManage.manage.getHttpHead(true))
+            let date = endDate.isEmpty ? startDate : endDate
+            postRequest("ACIF/ACIF0201", "ACIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02041","Operate":"getAcntInfo","TransactionId":transactionId,"ACTTYPE":type,"ACTNO":chooseAccount!,"TXSDAY":startDate.replacingOccurrences(of: "/", with: ""),"TXEDAY":date.replacingOccurrences(of: "/", with: "")], true), AuthorizationManage.manage.getHttpHead(true))
         }
     }
     

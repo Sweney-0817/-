@@ -20,7 +20,6 @@ let AuthorizationManage_CIDListKey = ["a25dq":"hs3rwPsoYknnCCWjqIX57RgRflYGhKO1t
                                       "dw67m":"KkfD6l0TqI50ix7uBPjKC52XrZhuJFVoAHWR4B1TFUo=",
                                       "ez98f":"hIb8YaYT2ooLiU2q39k/O5s8W0VO0BdGesGbDZISGiY="]
 
-
 struct ResponseLoginInfo {
     var CNAME:String? = nil         // 用戶名稱
     var Token:String? = nil         // Token

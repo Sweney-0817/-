@@ -141,7 +141,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Loan_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -298,7 +298,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
     // MARK: - StoryBoard Touch Event
     @IBAction func clickMoreButton(_ sender: Any) {
         if accountIndex == nil {
-            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
+            showErrorMessage(nil, "\(Choose_Title)\(topDropView?.m_lbFirstRowTitle.text ?? "")")
         }
         else {
             performSegue(withIdentifier: LoanPrincipalInterest_Detail_Segue, sender: nil)

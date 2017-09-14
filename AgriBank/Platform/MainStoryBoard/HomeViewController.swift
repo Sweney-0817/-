@@ -98,20 +98,20 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             }
             
         case "COMM0901": break
-            //            if let data = response.object(forKey: "Data") as? [String : Any] {
-            //                if let forcedChange = data["forcedChange"] as? String { //是否強制換版
-            //
-            //                }
-            //                if let isNew = data["isNew"] as? String { // 是否有更新版本
-            //
-            //                }
-            //                if let newVersion = data["newVersion"] as? String { //最新版號
-            //
-            //                }
-            //            }
-            //            else {
-            //                super.didResponse(description, response)
-            //            }
+//            if let data = response.object(forKey: "Data") as? [String : Any] {
+//                if let forcedChange = data["forcedChange"] as? String { //是否強制換版
+//
+//                }
+//                if let isNew = data["isNew"] as? String { // 是否有更新版本
+//
+//                }
+//                if let newVersion = data["newVersion"] as? String { //最新版號
+//
+//                }
+//            }
+//            else {
+//                super.didResponse(description, response)
+//            }
             
         case "INFO0201":
             if let data = response.object(forKey: "Data") as? [String : Any], let list = data["CB_List"] as? [[String:Any]] {
@@ -243,7 +243,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         postRequest("Comm/COMM0901", "COMM0901", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01001","Operate":"queryData","version":AgriBank_Version,"platform":AgriBank_Platform], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
-    private func getBannerInfo() { // 廣告Banner電文
+    private func getBannerInfo() {   // 廣告Banner電文
         postRequest("Comm/COMM0201", "COMM0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01021","Operate":"getList"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     

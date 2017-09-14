@@ -57,7 +57,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -141,6 +141,18 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
         m_vImageConfirmView.layer.borderWidth = 1
     }
     
+    private func inputIsCorrect() -> Bool {
+        if accountIndex == nil {
+            showErrorMessage(nil, "\(Choose_Title)\(m_OneRow?.m_lbFirstRowTitle.text ?? "")")
+            return false
+        }
+        if (m_tfWebBankPassword.text?.isEmpty)! {
+            showErrorMessage(nil, "\(Enter_Title)\(m_tfWebBankPassword.placeholder ?? "")")
+            return false
+        }
+        return true
+    }
+    
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if accountList != nil {
@@ -193,15 +205,8 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnSendClick(_ sender: Any) {
-        if accountIndex == nil {
-            showErrorMessage(nil, ErrorMsg_Choose_SavingAccount)
-            return
+        if inputIsCorrect() {
+            checkImageConfirm(password, transactionId)
         }
-        if (m_tfWebBankPassword.text?.isEmpty)! {
-            showErrorMessage(nil, ErrorMsg_Enter_Password)
-            return
-        }
-    
-        checkImageConfirm(password, transactionId)
     }
 }

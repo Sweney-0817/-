@@ -9,6 +9,7 @@
 import UIKit
 
 let ExchangeRate_Bank_Title = "農會"
+let ExchangeRate_Cell_Height:CGFloat = 60
 
 class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var m_vPlace: UIView!
@@ -148,13 +149,15 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
     
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
-        textFieldShouldBeginEditing(m_tfPicker)
-        m_tfPicker.becomeFirstResponder()
+        if m_Data1.count > 0 {
+            textFieldShouldBeginEditing(m_tfPicker)
+            m_tfPicker.becomeFirstResponder()
+        }
     }
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return ExchangeRate_Cell_Height
     }
     
     // MARK: - UITableViewDataSource
@@ -205,7 +208,7 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if (component == 0) {
+        if component == 0 {
             return m_PickerData.count
         }
         else {

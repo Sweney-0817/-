@@ -11,7 +11,7 @@ import UIKit
 
 #if DEBUG
 let URL_PROTOCOL = "http"
-let URL_DOMAIN = "52.187.113.27/FFICMAPI/api"
+let URL_DOMAIN = "52.187.113.27/FFICMAPIFORMAL/api"
 #else
 let URL_PROTOCOL = "https"
 let URL_DOMAIN = ""
@@ -312,19 +312,19 @@ extension BaseViewController: ConnectionUtilityDelegate {
             getRequest("Comm/COMM0501", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
         }
         else {
-            let componenets = Calendar.current.dateComponents([.month, .day, .hour, .minute, .second], from: Date())
-            if let day = componenets.day, let month = componenets.month, let minute = componenets.minute, let second = componenets.second, let hour = componenets.hour {
-                headVarifyID = "\(month)\(day)\(hour)\(minute)\(second)"
-                getRequest("Comm/COMM0501?varifyId=\(headVarifyID)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
-            }
-//            getRequest("Comm/COMM0501?varifyId=\(varifyID!)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
+//            let componenets = Calendar.current.dateComponents([.month, .day, .hour, .minute, .second], from: Date())
+//            if let day = componenets.day, let month = componenets.month, let minute = componenets.minute, let second = componenets.second, let hour = componenets.hour {
+//                headVarifyID = "\(month)\(day)\(hour)\(minute)\(second)"
+//                getRequest("Comm/COMM0501?varifyId=\(headVarifyID)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
+//            }
+            getRequest("Comm/COMM0501?varifyId=\(varifyID!)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
         }
     }
     
     func checkImageConfirm(_ passWord:String, _ varifyID:String? = nil) { // 驗證圖形驗證碼
         setLoading(true)
-//        let ID = varifyID == nil ? headVarifyID : varifyID!
-        let ID = headVarifyID
+        let ID = varifyID == nil ? headVarifyID : varifyID!
+//        let ID = headVarifyID
         getRequest("Comm/COMM0502?varifyId=\(ID)&captchaCode=\(passWord)", "COMM0502", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirmResult)
     }
     
@@ -345,6 +345,27 @@ extension BaseViewController: ConnectionUtilityDelegate {
     
     func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
+        case "COMM0501":
+            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
+                loginView?.setImageConfirm(responseImage)
+            }
+            if let ID = response[RESPONSE_VARIFYID_KEY] as? String {
+                headVarifyID = ID
+            }
+            
+        case "COMM0502":
+            if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
+                if let info = AuthorizationManage.manage.GetLoginInfo() {
+                    let idMd5 = SecurityUtility.utility.MD5(string: info.id)
+                    let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
+                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+            }
+            else {
+                getImageConfirm()
+                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
+            }
+            
         case "COMM0403":
             var bankList = [[String:[String]]]()
             var bankCode = [String:String]()
@@ -412,6 +433,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     default: break
                     }
                 }
+                
+                (UIApplication.shared.delegate as! AppDelegate).notificationAllEvent()
             }
             
         case "COMM0102":
@@ -456,32 +479,14 @@ extension BaseViewController: ConnectionUtilityDelegate {
     func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         setLoading(false)
         switch description {
-        case "COMM0501":
-            if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
-                loginView?.setImageConfirm(responseImage)
-            }
-            if let ID = response[RESPONSE_VARIFYID_KEY] as? String {
-                headVarifyID = ID
-            }
-            
-        case "COMM0502":
-            if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
-                if let info = AuthorizationManage.manage.GetLoginInfo() {
-                    let idMd5 = SecurityUtility.utility.MD5(string: info.id)
-                    let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
-                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
-                }
-            }
-            else {
-                getImageConfirm()
-                showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
-            }
-            
-        case "COMM0801","USIF0102","PAY0107","PAY0103":
+        case "TRAN0101","TRAN0103","TRAN0201","TRAN0302","TRAN0401","TRAN0502","TRAN0602",
+             "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
+             "PAY0103","PAY0105","PAY0107",
+             "USIF0102","COMM0801":
             didResponse(description, response)
             
         default:
-            if let returnCode = response.object(forKey: "ReturnCode") as? String {
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String {
                 if returnCode == ReturnCode_Success {
                     didResponse(description, response)
                 }

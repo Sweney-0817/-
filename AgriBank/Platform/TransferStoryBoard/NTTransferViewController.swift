@@ -135,6 +135,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         setShadowView(bottomView)
         
         addObserverToKeyBoard()
+        addGestureForKeyBoard()
         
         setLoading(true)
         getTransactionID("03001", TransactionID_Description)
@@ -163,7 +164,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -195,9 +196,13 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             }
             
         case "ACCT0102":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array1 = data["Result"] as? [[String:Any]], let array2 = data["Result2"] as? [[String:Any]] {
-                agreedAccountList = array1
-                commonAccountList = array2
+            if let data = response.object(forKey: "Data") as? [String:Any] {
+                if let array1 = data["Result"] as? [[String:Any]] {
+                    agreedAccountList = array1
+                }
+                if let array2 = data["Result2"] as? [[String:Any]] {
+                    commonAccountList = array2
+                }
                 showInAccountList(isPredesignated)
             }
             else {
@@ -262,11 +267,14 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
                 for info in agreedAccountList! {
                     if let account = info["TRAC"] as? String, let bankCode = info["BKNO"] as? String {
-                        actSheet.addButton(withTitle: "\(account) \(bankCode)")
+                        actSheet.addButton(withTitle: "(\(bankCode)) \(account)")
                     }
                 }
                 actSheet.tag = ViewTag.View_InAccountActionSheet.rawValue
                 actSheet.show(in: view)
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_GetList_InAgreedAccount)
             }
         }
         else {
@@ -274,30 +282,25 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
                 for info in commonAccountList! {
                     if let account = info["ACTNO"] as? String, let bankCode = info["IN_BR_CODE"] as? String {
-                        actSheet.addButton(withTitle: "\(account) \(bankCode)")
+                        actSheet.addButton(withTitle: "(\(bankCode)) \(account)")
                     }
                 }
                 actSheet.tag = ViewTag.View_InAccountActionSheet.rawValue
                 actSheet.show(in: view)
             }
+            else {
+                showErrorMessage(nil, ErrorMsg_GetList_InCommonAccount)
+            }
         }
     }
     
     private func inputIsCorrect() -> Bool {
-        if accountList == nil {
-            showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
-            return false
-        }
         if accountIndex == nil {
-            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
+            showErrorMessage(nil, "\(Choose_Title)\(topDropView?.m_lbFirstRowTitle.text ?? "")")
             return false
         }
         
         if isPredesignated {
-            if agreedAccountList == nil {
-                showErrorMessage(nil, ErrorMsg_GetList_InAgreedAccount)
-                return false
-            }
             if inAccountIndex == nil {
                 showErrorMessage(nil, ErrorMsg_Choose_InAccount)
                 return false
@@ -305,7 +308,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         }
         else {
             if isCustomizeAct {
-                if (showBankDorpView?.getContentByType(.First).isEmpty)! {
+                if showBankDorpView?.getContentByType(.First) == Choose_Title {
                     showErrorMessage(nil, "\(Choose_Title)\((showBankDorpView?.m_lbFirstRowTitle.text)!)")
                     return false
                 }
@@ -322,10 +325,18 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             }
         }
         if (transAmountTextfield.text?.isEmpty)! {
-            showErrorMessage(nil, ErrorMsg_Enter_TransAmount)
+            showErrorMessage(nil, "\(Enter_Title)\(transAmountTextfield.placeholder ?? "")")
+            return false
+        }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(transAmountTextfield.text!) {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }
         if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+            return false
+        }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(emailTextfield.text!) {
             showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }
@@ -396,19 +407,21 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     }
  
     @IBAction func clickNonPredesignatedBtn(_ sender: Any) { // 非約定轉帳
+        setLoading(true)
         if !SecurityUtility.utility.isJailBroken() {
             VaktenManager.sharedInstance().authenticateOperation(withSessionID: transactionId) { resultCode in
                 if VIsSuccessful(resultCode) {
-                    self.setLoading(true)
                     self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":Kepasco_userIP], true), AuthorizationManage.manage.getHttpHead(true))
                 }
                 else {
                     self.showErrorMessage(nil, "驗證失敗")
+                    self.setLoading(false)
                 }
             }
         }
         else {
             showErrorMessage(ErrorMsg_IsJailBroken, nil)
+            setLoading(false)
         }
     }
 
@@ -474,30 +487,6 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         return true
     }
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if textField == transAmountTextfield {
-            // ToolBar
-            let toolBar = UIToolbar()
-            toolBar.barTintColor = ToolBar_barTintColor
-            toolBar.tintColor = ToolBar_tintColor
-            toolBar.sizeToFit()
-            // Adding Button ToolBar
-            let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
-            let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-            let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
-            titleLabel.textColor = .black
-            titleLabel.text = Choose_Title
-            titleLabel.textAlignment = .center
-            let titleButton = UIBarButtonItem(customView: titleLabel)
-            
-            toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
-            toolBar.isUserInteractionEnabled = true
-            textField.inputAccessoryView = toolBar
-        }
-        return true
-    }
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == transAmountTextfield {
             if let amount = Int(transAmountTextfield.text!), amount > NTTransfer_Trans_Max_Amount {
@@ -524,6 +513,9 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
         }
+        else {
+            showErrorMessage(nil, "\(Get_Null_Title)\(sender.m_lbFirstRowTitle.text ?? "")")
+        }
     }
     
     // MARK: - TwoRowDropDownViewDelegate
@@ -531,14 +523,14 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         if accountIndex != nil {
             if agreedAccountList == nil && commonAccountList == nil {
                 setLoading(true)
-                postRequest("ACCT/ACCT0102", "ACCT0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0","ACTNO":accountList?[accountIndex!].accountNO ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("ACCT/ACCT0102", "ACCT0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02002","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0","ACTNO":accountList?[accountIndex!].accountNO ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
                 showInAccountList(isPredesignated)
             }
         }
         else {
-            showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
+            showErrorMessage(nil, "\(Choose_Title)\(topDropView?.m_lbFirstRowTitle.text ?? "")")
         }
     }
     
@@ -585,15 +577,5 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             default: break
             }
         }
-    }
-    
-    // MARK: - Selector
-    func clickCancelBtn(_ sender:Any) {
-        transAmountTextfield.text = ""
-        transAmountTextfield.resignFirstResponder()
-    }
-    
-    func clickDoneBtn(_ sender:Any) {
-        transAmountTextfield.resignFirstResponder()
     }
 }

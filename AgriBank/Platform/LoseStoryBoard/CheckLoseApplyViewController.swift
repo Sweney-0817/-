@@ -81,7 +81,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
                         if type == Account_Saving_Type {
                             accountList = [AccountStruct]()
                             for actInfo in result {
-                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                     accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                                 }
                             }
@@ -89,7 +89,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
                         else if type == Account_Check_Type {
                             checkAccountList = [AccountStruct]()
                             for actInfo in result {
-                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? Double, let ebkfg = actInfo["EBKFG"] as? Int, ebkfg == Account_EnableTrans {
+                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
                                     checkAccountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                                 }
                             }
@@ -242,6 +242,32 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         m_consCheckDateHeight.constant = 60
         m_consFeeAccountHeight.constant = 60
     }
+    
+    private func inputIsCorrect() -> Bool {
+        if m_DDAccount?.getContentByType(.First) == Choose_Title {
+            showErrorMessage(nil, "\(Choose_Title)\(m_DDAccount?.m_lbFirstRowTitle.text ?? "")")
+            return false
+        }
+        if (m_tfCheckNumber.text?.isEmpty)! {
+            showErrorMessage(nil, "\(Enter_Title)\(m_tfCheckNumber.placeholder ?? "")")
+            return false
+        }
+        if m_DDType?.m_lbFirstRowContent.text == CheckLoseApply_TypeList[0] {
+            if (m_tfCheckAmount.text?.isEmpty)! {
+                showErrorMessage(nil, "\(Enter_Title)\(m_tfCheckAmount.placeholder ?? "")")
+                return false
+            }
+            if m_CheckDate?.getContentByType(.First) == Choose_Title {
+                showErrorMessage(nil, "\(Choose_Title)\(m_CheckDate?.m_lbFirstRowTitle.text ?? "")")
+                return false
+            }
+            if m_FeeAccount?.getContentByType(.First) == Choose_Title {
+                showErrorMessage(nil, "\(Choose_Title)\(m_FeeAccount?.m_lbFirstRowTitle.text ?? "")")
+                return false
+            }
+        }
+        return true
+    }
 
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
@@ -258,23 +284,39 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         }
         else {
             var list = [String]()
+            var errorMessage = ""
             if m_curDropDownView == m_DDType {
                 list = CheckLoseApply_TypeList
             }
-            else if m_curDropDownView == m_DDAccount && checkAccountList != nil {
-                for index in checkAccountList! {
-                    list.append(index.accountNO)
+            else if m_curDropDownView == m_DDAccount {
+                if checkAccountList != nil {
+                    for index in checkAccountList! {
+                        list.append(index.accountNO)
+                    }
+                }
+                else {
+                    errorMessage = "\(Get_Null_Title)\(m_DDAccount?.m_lbFirstRowTitle.text ?? "")"
                 }
             }
-            else if m_curDropDownView == m_FeeAccount && accountList != nil {
-                for index in accountList! {
-                    list.append(index.accountNO)
+            else if m_curDropDownView == m_FeeAccount {
+                if accountList != nil {
+                    for index in accountList! {
+                        list.append(index.accountNO)
+                    }
+                }
+                else {
+                    errorMessage = "\(Get_Null_Title)\(m_FeeAccount?.m_lbFirstRowTitle.text ?? "")"
                 }
             }
             
-            let action = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
-            list.forEach{title in action.addButton(withTitle: title)}
-            action.show(in: self.view)
+            if errorMessage.isEmpty {
+                let action = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                list.forEach{title in action.addButton(withTitle: title)}
+                action.show(in: self.view)
+            }
+            else {
+                showErrorMessage(nil, errorMessage)
+            }
         }
     }
     
@@ -333,34 +375,9 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnSendClick(_ sender: Any) {
-        if checkAccountList == nil {
-            showErrorMessage(nil, ErrorMsg_Choose_CheckAccount)
-            return
+        if inputIsCorrect() {
+            checkImageConfirm(password, transactionId)
         }
-        if (m_tfCheckNumber.text?.isEmpty)! {
-            showErrorMessage(nil, ErrorMsg_Enter_CheckNumber)
-            return
-        }
-        if m_DDType?.m_lbFirstRowContent.text == CheckLoseApply_TypeList[0] {
-            if (m_tfCheckAmount.text?.isEmpty)! {
-                showErrorMessage(nil, ErrorMsg_Enter_CheckAmount)
-                return
-            }
-            if m_CheckDate?.getContentByType(.First) == Choose_Title {
-                showErrorMessage(nil, ErrorMsg_Choose_InvoicDate)
-                return
-            }
-            if accountList == nil {
-                showErrorMessage(nil, ErrorMsg_GetList_OutAccount)
-                return
-            }
-            if m_FeeAccount?.getContentByType(.First) == Choose_Title {
-                showErrorMessage(nil, ErrorMsg_Choose_OutAccount)
-                return
-            }
-        }
-        
-        checkImageConfirm(password, transactionId)
     }
     
     // MARK: - Selector
