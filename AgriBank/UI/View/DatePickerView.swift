@@ -14,6 +14,11 @@ struct DatePickerStruct {
     var day = ""
 }
 
+struct InputDatePickerStruct {
+    var minDate:Date? = nil
+    var maxDate:Date? = nil
+}
+
 let DatePicker_Specific_Date = ["1日","2日","3日","4日","5日","6日","7日","8日","9日","10日",
                                "11日","12日","13日","14日","15日","16日","17日","18日","19日","20日",
                                "21日","22日","23日","24日","25日","26日","27日","28日","29日","30日","31日"]
@@ -24,7 +29,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     private var isSpecific = true
     
     // MARK: - Public
-    func showTwoDatePickerView(_ isSpecific:Bool, getTwoDate: ((DatePickerStruct,DatePickerStruct)->())?) {
+    func showTwoDatePickerView(_ isSpecific:Bool, _ inputDate1:InputDatePickerStruct?, _ inputDate2:InputDatePickerStruct?, getTwoDate: ((DatePickerStruct,DatePickerStruct)->())?) {
         self.getTwoDate = getTwoDate
         self.isSpecific = isSpecific
         self.backgroundColor = Disable_Color
@@ -54,6 +59,10 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         if isSpecific {
             (startDatePicker as! UIDatePicker).datePickerMode = .date
             (startDatePicker as! UIDatePicker).locale = Locale(identifier: "zh_CN")
+            if inputDate1 != nil {
+                (startDatePicker as! UIDatePicker).minimumDate = inputDate1!.minDate
+                (startDatePicker as! UIDatePicker).maximumDate = inputDate1!.maxDate
+            }
         }
         else {
             (startDatePicker as! UIPickerView).dataSource = self
@@ -76,6 +85,10 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         if isSpecific {
             (endDatePicker as! UIDatePicker).datePickerMode = .date
             (endDatePicker as! UIDatePicker).locale = Locale(identifier: "zh_CN")
+            if inputDate2 != nil {
+                (endDatePicker as! UIDatePicker).minimumDate = inputDate2!.minDate
+                (endDatePicker as! UIDatePicker).maximumDate = inputDate2!.maxDate
+            }
         }
         else {
             (endDatePicker as! UIPickerView).dataSource = self
@@ -94,7 +107,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         addSubview(button)
     }
     
-    func showOneDatePickerView(_ isSpecific:Bool, getOneDate: ((DatePickerStruct)->())?) {
+    func showOneDatePickerView(_ isSpecific:Bool, _ inputDate:InputDatePickerStruct?, getOneDate: ((DatePickerStruct)->())?) {
         self.getOneDate = getOneDate
         self.isSpecific = isSpecific
         self.backgroundColor = Disable_Color
@@ -119,6 +132,10 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         if isSpecific {
             (startDatePicker as! UIDatePicker).datePickerMode = .date
             (startDatePicker as! UIDatePicker).locale = Locale(identifier: "zh_CN")
+            if inputDate != nil {
+                (startDatePicker as! UIDatePicker).minimumDate = inputDate!.minDate
+                (startDatePicker as! UIDatePicker).maximumDate = inputDate!.maxDate
+            }
         }
         else {
             (startDatePicker as! UIPickerView).dataSource = self

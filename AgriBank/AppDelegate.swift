@@ -10,10 +10,11 @@ import UIKit
 import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate, UNUserNotificationCenterDelegate, UIAlertViewDelegate {
 
     var window: UIWindow?
-
+    var logoutTimer:Timer? = nil
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // 連線暫存檔清除
         SecurityUtility.utility.removeConnectCatche()
@@ -27,26 +28,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         statusView.tag = ViewTag.View_Status.rawValue
         window?.addSubview(statusView)
         // APNS註冊
-//        if #available(iOS 10.0, *) {
-//            let center = UNUserNotificationCenter.current()
-//            center.delegate = self
-//            center.requestAuthorization(options: [.sound,.alert], completionHandler: { (granted, error) in
-//                if granted {
-//                    center.getNotificationSettings(completionHandler: { (setting) in
-//                        print(setting)
-//                    })
-//                }
-//                else {
-//                    print("使用者不允許 註冊失敗")
-//                }
-//            })
-//        }
-//        else {
-//            if application.responds(to: #selector(getter: UIApplication.isRegisteredForRemoteNotifications)) {
-//                application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .sound], categories: nil))
-//            }
-//        }
-//        postRegisterToken("testtest")
+        if #available(iOS 10.0, *) {
+            let center = UNUserNotificationCenter.current()
+            center.delegate = self
+            center.requestAuthorization(options: [.sound,.alert], completionHandler: { (granted, error) in
+                if granted {
+                    center.getNotificationSettings(completionHandler: { (setting) in
+                        
+                    })
+                }
+                else {
+                    let alert = UIAlertView(title: UIAlert_Default_Title, message: "您未同意開啟接收推播訊息", delegate: nil, cancelButtonTitle:UIAlert_Confirm_Title)
+                    alert.show()
+                }
+            })
+        }
+        else {
+            if application.responds(to: #selector(getter: UIApplication.isRegisteredForRemoteNotifications)) {
+                application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .sound], categories: nil))
+            }
+        }
+        UIApplication.shared.registerForRemoteNotifications()
         return true
     }
 
@@ -73,29 +75,67 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     }
     
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
+        
     }
     
-    func RegisterAPNSToken(_ token:String) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let token = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         AuthorizationManage.manage.SetAPNSToken(token)
+    }
+
+    func timeOut() {
         if AuthorizationManage.manage.IsLoginSuccess() {
-            let request = ConnectionUtility()
-            request.requestData(self, "\(REQUEST_URL)/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":"","uid":"1234567","model":"1234567","auth":"123456789","appId":AgriBank_AppID,"version":AgriBank_Version,"token":token,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(false), false)
+            let alert = UIAlertView(title: UIAlert_Default_Title, message: "待機時間過長即將退出", delegate: self, cancelButtonTitle: UIAlert_Confirm_Title)
+            alert.show()
+        }
+        logoutTimer?.invalidate()
+    }
+    
+    func notificationAllEvent() {
+        if AuthorizationManage.manage.IsLoginSuccess() {
+            logoutTimer = Timer.scheduledTimer(timeInterval: AgriBank_TimeOut, target: self, selector: #selector(timeOut), userInfo: nil, repeats: false)
+            NotificationCenter.default.addObserver(forName: nil, object: nil, queue: nil) { notification in
+                if notification.name.rawValue == "_UIWindowSystemGestureStateChangedNotification" {
+                    self.logoutTimer?.invalidate()
+                    self.logoutTimer = Timer.scheduledTimer(timeInterval: AgriBank_TimeOut, target: self, selector: #selector(self.timeOut), userInfo: nil, repeats: false)
+                }
+            }
         }
     }
     
     // MARK: - UNUserNotificationCenterDelegate
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
+    }
+    
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
     }
 
     // MARK: - ConnectionUtilityDelegate
     func didRecvdResponse(_ description: String, _ response: NSDictionary) {
-        
+        switch description {
+        case "COMM0102":
+            AuthorizationManage.manage.SetResponseLoginInfo(nil, nil)
+            let center = ((window?.rootViewController as! SideMenuViewController).getController(.center) as! UINavigationController)
+            center.popToRootViewController(animated: true)
+            (center.viewControllers.first as! HomeViewController).updateLoginStatus()
+            (window?.rootViewController as! SideMenuViewController).ShowSideMenu(false)
+            
+        default: break
+        }
     }
     
     func didFailedWithError(_ error: Error) {
-        
+        let alert = UIAlertView(title: UIAlert_Default_Title, message: error.localizedDescription, delegate: nil, cancelButtonTitle:UIAlert_Confirm_Title)
+        alert.show()
+    }
+    
+    // MARK: - UIAlertViewDelegate
+    func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
+        let request = ConnectionUtility()
+        request.requestData(self, "\(REQUEST_URL)/Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(false))
+        logoutTimer?.invalidate()
     }
 }
 

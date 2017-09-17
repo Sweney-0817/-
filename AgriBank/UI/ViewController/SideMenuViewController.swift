@@ -12,6 +12,12 @@ protocol SideMenuViewDelegate {
     func willShowViewController(center: UIViewController?) -> Void
 }
 
+enum SideMenuType {
+    case left
+    case center
+    case right
+}
+
 class SideMenuViewController: UIViewController {
     
     private enum MenuState {
@@ -82,6 +88,19 @@ class SideMenuViewController: UIViewController {
             
         default:
             break
+        }
+    }
+    
+    func getController(_ type:SideMenuType) -> Any? {
+        switch type {
+        case .center:
+            return centerViewController
+            
+        case .left:
+            return leftViewController
+            
+        case .right:
+            return rightViewController
         }
     }
     

@@ -190,9 +190,8 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         }
         navigationController?.pushViewController(controller, animated: animated)
     }
-    
-    // MARK: - Private
-    private func updateLoginStatus() {
+
+    func updateLoginStatus() {
         if AuthorizationManage.manage.IsLoginSuccess() {
             if let info = AuthorizationManage.manage.GetLoginInfo() {
                 loginImageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)

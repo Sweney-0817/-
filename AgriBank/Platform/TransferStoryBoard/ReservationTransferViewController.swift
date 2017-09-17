@@ -134,7 +134,10 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         isFixedDate = false
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
             dateView.frame = view.frame
-            dateView.showOneDatePickerView(true) { start in
+            var component = Calendar.current.dateComponents([.day], from: Date())
+            component.day = component.day!+1
+            let startDate = InputDatePickerStruct(minDate: component.date, maxDate: nil)
+            dateView.showOneDatePickerView(true, startDate) { start in
                 self.chooseDay = start.day
                 self.chooseMonth = start.month
                 self.chooseYear = start.year
@@ -152,7 +155,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         isFixedDate = true
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
             dateView.frame = view.frame
-            dateView.showOneDatePickerView(false) { start in
+            dateView.showOneDatePickerView(false, nil) { start in
                 let date = start.day
                 self.chooseDay = date.replacingOccurrences(of: "日", with: "")
                 let detailDate = NSString(string:"固定每月 \(date) 轉出")

@@ -335,7 +335,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
     
     func registerAPNSToken() { // 註冊推播Token
         if AuthorizationManage.manage.GetAPNSToken() != nil {
-            postRequest("Comm/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":AgriBank_AppUid,"uid":AgriBank_DeviceID,"model":AgriBank_DeviceType,"auth":AgriBank_Auth,"appId":AgriBank_AppID,"version":AgriBank_Version,"token":AuthorizationManage.manage.GetAPNSToken()!,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(false))
+            postRequest("Comm/COMM0301", "COMM0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01031","Operate":"commitTxn","appUid":AgriBank_AppUid,"uid":AgriBank_DeviceID,"model":AgriBank_DeviceType,"appId":AgriBank_AppID,"version":AgriBank_Version,"token":AuthorizationManage.manage.GetAPNSToken()!,"systemVersion":AgriBank_SystemVersion,"codeName":AgriBank_DeviceType,"tradeMark":AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
         }
     }
     
@@ -358,6 +358,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 if let info = AuthorizationManage.manage.GetLoginInfo() {
                     let idMd5 = SecurityUtility.utility.MD5(string: info.id)
                     let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
+                    setLoading(true)
                     postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
                 }
             }
@@ -405,9 +406,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     info.Balance = balance
                 }
                 AuthorizationManage.manage.SetResponseLoginInfo(info, nil)
-                
-                registerAPNSToken()
-                
+            
                 loginView?.saveDataInFile()
                 loginView?.removeFromSuperview()
                 loginView = nil
@@ -417,15 +416,13 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     touchTap = nil
                 }
                 
-                if curFeatureID != nil {
-                    enterFeatureByID(curFeatureID!, true)
-                    curFeatureID = nil
-                }
-                
                 if let status = data["STATUS"] as? String {
                     // 帳戶狀態  (1.沒過期，2已過期，需要強制變更，3.已過期，不需要強制變更，4.首登，5.此ID已無有效帳戶)
                     switch status {
-                    case "1": break
+                    case "1":
+                        if curFeatureID != nil {
+                            enterFeatureByID(curFeatureID!, true)
+                        }
                     case "2": break
                     case "3": break
                     case "4": enterFeatureByID(.FeatureID_FirstLoginChange, true)
@@ -434,6 +431,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     }
                 }
                 
+                curFeatureID = nil
+                registerAPNSToken()
                 (UIApplication.shared.delegate as! AppDelegate).notificationAllEvent()
             }
             
@@ -470,6 +469,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
             }
             curFeatureID = nil
             tempTransactionId = ""
+            
+        case "COMM0301":
+            print(response)
             
         default: break
         }

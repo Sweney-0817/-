@@ -282,7 +282,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
             if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
                 dateView.frame = view.frame
                 dateView.frame.origin = .zero
-                dateView.showOneDatePickerView(true) {  end in
+                dateView.showOneDatePickerView(true, nil) {  end in
                     self.endDate = "\(end.year)\(end.month)\(end.day)"
                     self.m_tfInput2.text = "\(end.year)/\(end.month)/\(end.day)"
                 }

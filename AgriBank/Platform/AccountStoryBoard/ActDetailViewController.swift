@@ -536,7 +536,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
                 dateView.frame = view.frame
                 dateView.frame.origin = .zero
-                dateView.showTwoDatePickerView(true) { start, end in
+                dateView.showTwoDatePickerView(true, nil, nil) { start, end in
                     self.startDate = "\(start.year)/\(start.month)/\(start.day)"
                     self.endDate = "\(end.year)/\(end.month)/\(end.day)"
                     self.dateLabel.text = self.startDate + (self.endDate != "" ? " - \(self.endDate)" : "")

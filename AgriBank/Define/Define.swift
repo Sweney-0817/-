@@ -362,7 +362,7 @@ let Enter_Title = "請輸入"
 let Get_Null_Title = "無法取得"
 
 let AgriBank_Type = Int(1)
-let AgriBank_AppID = "FFICMBank"
+let AgriBank_AppID = "agriBank_iOS"
 let AgriBank_TradeMark = "Apple"
 let AgriBank_LoginMode = Int(1)
 let AgriBank_ForcedLoginMode = Int(2)
@@ -372,10 +372,8 @@ let AgriBank_SystemVersion = UIDevice.current.systemVersion
 let AgriBank_DeviceType = UIDevice.current.model
 let AgriBank_Platform = "1"
 let AgriBank_DeviceID = UIDevice.current.identifierForVendor!.uuidString
-let AgriBank_AppUid = AgriBank_DeviceID + Bundle.main.bundleIdentifier!
-let AgriBank_Auth = "ED57C853AC9744D58B8A9B3F527D0940"
+let AgriBank_AppUid = Bundle.main.bundleIdentifier ?? ""
 let AgriBank_TimeOut:TimeInterval = 10
-
 
 // MARK: - Cell定義
 let Separator_Height = CGFloat(1)
