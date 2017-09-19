@@ -11,18 +11,34 @@ import UIKit
 class WebContentViewController: BaseViewController {
     @IBOutlet weak var m_lbTitle: UILabel!
     @IBOutlet weak var m_wvContent: UIWebView!
-    var m_Data: PromotionStruct? = nil
+    private var m_Data:PromotionStruct? = nil
+    private var contentData:Data? = nil
     
+    // MARK: - Public
+    func setData(_ data:PromotionStruct, _ contentData:Data? = nil) {
+        self.m_Data = data
+        self.contentData = contentData
+    }
+    
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         m_lbTitle.text = m_Data?.title
-        let req:URLRequest = URLRequest(url: URL(string: (m_Data?.url)!)!)
-        m_wvContent.loadRequest(req)
-    }
-
-    func setData(_ data:PromotionStruct) {
-        self.m_Data = data
+//        if contentData == nil {
+//            let req:URLRequest = URLRequest(url: URL(string: (m_Data?.url)!)!)
+//            m_wvContent.loadRequest(req)
+//        }
+//        else {
+//            m_wvContent.load(contentData!, mimeType: "text/html", textEncodingName: "UTF-8", baseURL:URL(string: (m_Data?.url)!)!)
+//            m_wvContent.loadHTMLString(String(data: contentData!, encoding: .utf8)!, baseURL: nil)
+            var request:URLRequest = URLRequest(url: URL(string: (m_Data?.url)!)!)
+            let dicHttpHead = AuthorizationManage.manage.getHttpHead(false)
+            for (key, value) in dicHttpHead {
+                request.addValue(value , forHTTPHeaderField: key)
+            }
+            m_wvContent.loadRequest(request)
+//        }
     }
 
     override func didReceiveMemoryWarning() {

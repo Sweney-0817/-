@@ -13,12 +13,12 @@ let Login_ID_Length = 16
 let Login_Password_Length = 10
 
 struct LoginStrcture {
-    var bankCode = ""
-    var account = ""
-    var id = ""
-    var password = ""
-    var imgPassword = ""
-    var cityCode = ""
+    var bankCode = ""       // 農漁會代碼
+    var account = ""        // 身分證
+    var id = ""             // 使用者代碼
+    var password = ""       // 使用者密碼
+    var imgPassword = ""    // 圖形驗證碼
+    var cityCode = ""       // 縣市代碼
 }
 
 protocol LoginDelegate {
@@ -36,13 +36,14 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     @IBOutlet weak var imageConfirmView: UIView!
     @IBOutlet weak var lockButton: UIButton!
     
+    var delegate:LoginDelegate? = nil
+    
     private var request:ConnectionUtility? = nil
     private var list = [[String:[String]]]()
     private var bankCode = [String:String]()
     private var cityCode = [String:String]()
     private var isLocker = false
     private var currentTextField:UITextField? = nil
-    private var delegate:LoginDelegate? = nil
     private var loginInfo = LoginStrcture()
     private var imgConfirm:ImageConfirmView? = nil
     private var curAccount:String? = nil
@@ -69,11 +70,10 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     }
     
     // MARK: - Public
-    func setInitialList(_ list:[[String:[String]]], _ bankCode:[String:String], _ cityCode:[String:String], _ delegate:LoginDelegate) {
+    func setInitialList(_ list:[[String:[String]]], _ bankCode:[String:String], _ cityCode:[String:String]) {
         self.list = list
         self.bankCode = bankCode
         self.cityCode = cityCode
-        self.delegate = delegate
     
         if let cCode = SecurityUtility.utility.readFileByKey(SetKey: File_CityCode_Key, setDecryptKey: AES_Key) as? String, let bCode = SecurityUtility.utility.readFileByKey(SetKey: File_BankCode_Key, setDecryptKey: AES_Key) as? String {
             var city = ""

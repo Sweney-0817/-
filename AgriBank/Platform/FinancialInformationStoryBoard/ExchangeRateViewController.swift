@@ -44,9 +44,19 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
             if let data = response.object(forKey: "Data") as? [String:Any] {
                 if let list = data["Result"] as? [[String:Any]] {
                     for info in list {
-                        if let name = info["FC_Name"] as? String, let buy = info["CashToBuy"] as? Double, let sole = info["CashIsSold"] as? Double {
-                            m_Data1.append( NTRationStruct(name, String(buy), String(sole)) )
+                        var FC_Name = "-"
+                        if let temp = info["FC_Name"] as? String {
+                            FC_Name = temp
                         }
+                        var CashToBuy = "-"
+                        if let temp = info["CashToBuy"] as? String {
+                            CashToBuy = temp
+                        }
+                        var CashIsSold = "-"
+                        if let temp = info["CashIsSold"] as? String {
+                            CashIsSold = temp
+                        }
+                        m_Data1.append( NTRationStruct(FC_Name, CashToBuy, CashIsSold) )
                     }
                 }
             }
@@ -117,6 +127,9 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
     }
     
     private func setPicker() {
+        if m_PickerData.count <= 0 {
+            return
+        }
         m_tfPicker.delegate = self
         m_vPlace.addSubview(m_tfPicker)
         
@@ -149,7 +162,7 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
     
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
-        if m_Data1.count > 0 {
+        if m_PickerData.count > 0 {
             textFieldShouldBeginEditing(m_tfPicker)
             m_tfPicker.becomeFirstResponder()
         }

@@ -29,13 +29,32 @@ struct ResponseLoginInfo {
 
 class AuthorizationManage {
     static let manage = AuthorizationManage()
-    private let featureList:[PlatformFeatureID:Bool]? = nil
-    private var userInfo:ResponseLoginInfo? = nil       // 登入成功後回傳的資訊
-    private var loginInfo:LoginStrcture? = nil          // 使用者登入的資訊
-    private var apnsToken:String? = nil                 // APNS回傳的token
+    private var authList:[PlatformFeatureID]? = nil      // 功能授權資料
+    private var userInfo:ResponseLoginInfo? = nil        // 登入成功後回傳的資訊
+    private var loginInfo:LoginStrcture? = nil           // 使用者登入的資訊
+    private var apnsToken:String? = nil                  // APNS回傳的token
+    private var canNTAgreedTransfer = false              // 是否可以約轉
+    private var canNTNonAgreedTransfer = false           // 是否可以非約轉
+    private var needReAddList = [PlatformFeatureID:Int]()// 使用者加入的功能，但功能授權未開啟
     
-    func SetResponseLoginInfo(_ info:ResponseLoginInfo?, _ authList:[[String:String]]?) {
+    func SetResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info
+        if list != nil {
+            authList = [PlatformFeatureID]()
+            for index in list! {
+                if let ID = index["TransactionId"], let pID = getPlatformIDByAuthID(ID) {
+                    if ID == "T04" {
+                        canNTAgreedTransfer = true
+                    }
+                    if ID == "T05" {
+                        canNTNonAgreedTransfer = true
+                    }
+                    if authList?.index(of: pID) == nil {
+                        authList?.append(pID)
+                    }
+                }
+            }
+        }
     }
     
     func getResponseLoginInfo() -> ResponseLoginInfo? {
@@ -61,15 +80,19 @@ class AuthorizationManage {
     func IsLoginSuccess() -> Bool {
         return userInfo?.Token != nil
     }
+    
+    func checkCanNTTransfer(_ isNotAgreedTrans:Bool) -> Bool {
+        return isNotAgreedTrans ? canNTNonAgreedTransfer : canNTAgreedTransfer
+    }
 
     func getHttpHead(_ isNeedCID:Bool) -> [String:String] {
         var head = AuthorizationManage_HttpHead_Default
         head[AuthorizationManage_HttpHead_Token] = userInfo?.Token ?? ""
     
         if isNeedCID {
-//            let random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
-//            head[AuthorizationManage_HttpHead_CID] = [String](AuthorizationManage_CIDListKey.keys)[random]
-            head[AuthorizationManage_HttpHead_CID] = "a25dq"
+            let random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
+            head[AuthorizationManage_HttpHead_CID] = [String](AuthorizationManage_CIDListKey.keys)[random]
+//            head[AuthorizationManage_HttpHead_CID] = "a25dq"
         }
         return head
     }
@@ -83,9 +106,9 @@ class AuthorizationManage {
         do {
             httpBody = try JSONSerialization.data(withJSONObject: input, options: .prettyPrinted)
             if needEncrypt {
-//                let random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
-//                let encryptID = [String](AuthorizationManage_CIDListKey.keys)[random]
-                let encryptID = "a25dq"
+                let random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
+                let encryptID = [String](AuthorizationManage_CIDListKey.keys)[random]
+//                let encryptID = "a25dq"
                 if let encrypt = String(data: httpBody!, encoding: .utf8)?.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: " ", with: ""), let key = AuthorizationManage_CIDListKey[encryptID] {
                     // 中台需求: " + body + "
                     let encryptString = "\"" + SecurityUtility.utility.AES256Encrypt( encrypt, key ) + "\""
@@ -112,26 +135,61 @@ class AuthorizationManage {
         return canEnter
     }
     
-    func IsOpen(_ ID:PlatformFeatureID) -> Bool {
-        if let bIS = featureList?[ID] {
-            return bIS
-        }
-        return false
-    }
-    
     func SetAuthorization() {
         // 中台 <-轉換-> 功能代碼
+    }
+    
+    func getPlatformIDByAuthID(_ ID:String) -> PlatformFeatureID? {
+        switch ID {
+        case "T01": return PlatformFeatureID.FeatureID_AccountOverView
+        case "T02": return PlatformFeatureID.FeatureID_AccountDetailView
+        case "T03": return PlatformFeatureID.FeatureID_NTAccountTransfer
+        case "T04": return PlatformFeatureID.FeatureID_NTTransfer               // 約轉
+        case "T05": return PlatformFeatureID.FeatureID_NTTransfer               // 非約轉
+        case "T06": return PlatformFeatureID.FeatureID_ReservationTransfer
+        case "T07": return PlatformFeatureID.FeatureID_ReservationTransferSearchCancel
+        case "T08": return PlatformFeatureID.FeatureID_DepositCombinedToDeposit
+        case "T09": return PlatformFeatureID.FeatureID_DepositCombinedToDepositSearch
+        case "T10": return PlatformFeatureID.FeatureID_LoanPrincipalInterest
+        case "T11": return PlatformFeatureID.FeatureID_LoseApply
+        case "T12": return PlatformFeatureID.FeatureID_PassbookLoseApply
+        case "T13": return PlatformFeatureID.FeatureID_DebitCardLoseApply
+        case "T14": return PlatformFeatureID.FeatureID_CheckLoseApply
+        case "T15": return PlatformFeatureID.FeatureID_Payment
+        case "T16": return PlatformFeatureID.FeatureID_TaxPayment
+        case "T17": return PlatformFeatureID.FeatureID_BillPayment
+        case "T18": return PlatformFeatureID.FeatureID_FinancialInformation
+        case "T19": return PlatformFeatureID.FeatureID_NTRation
+        case "T20": return PlatformFeatureID.FeatureID_ExchangeRate
+        case "T21": return PlatformFeatureID.FeatureID_RegularSavingCalculation
+        case "T22": return PlatformFeatureID.FeatureID_CustomerService
+        case "T23": return PlatformFeatureID.FeatureID_Promotion
+        case "T24": return PlatformFeatureID.FeatureID_News
+        case "T25": return PlatformFeatureID.FeatureID_ServiceBase
+        case "T26": return PlatformFeatureID.FeatureID_PersonalMessage
+        case "T27": return PlatformFeatureID.FeatureID_PersopnalSetting
+        case "T28": return PlatformFeatureID.FeatureID_BasicInfoChange
+        case "T29": return PlatformFeatureID.FeatureID_UserNameChange
+        case "T30": return PlatformFeatureID.FeatureID_UserPwdChange
+        case "T31": return PlatformFeatureID.FeatureID_MessageSwitch
+        case "T32": return PlatformFeatureID.FeatureID_SetAvatar
+        case "T33": return PlatformFeatureID.FeatureID_DeviceBinding
+        default: return nil
+        }
     }
     
     func SaveIDListInFile(_ addList:[PlatformFeatureID]) {
         var IDList = [String]()
         addList.forEach{ ID in IDList.append(ID.rawValue.description) }
         let ID = IDList.joined(separator: AuthorizationManage_IDList_Separator)
-        if userInfo?.Token != nil {
-            SecurityUtility.utility.writeFileByKey(ID, SetKey: File_IDList_Key)
+        if IsLoginSuccess() {
+            if loginInfo != nil {
+                let key = SecurityUtility.utility.AES256Encrypt("\(loginInfo!.bankCode)\(loginInfo!.account)", AES_Key)
+                SecurityUtility.utility.writeFileByKey(ID, SetKey: key)
+            }
         }
         else {
-            SecurityUtility.utility.writeFileByKey(ID, SetKey: File_NoLogin_IDList_key)
+            SecurityUtility.utility.writeFileByKey(ID, SetKey: File_IDList_Key)
         }
     }
     
@@ -142,7 +200,7 @@ class AuthorizationManage {
             list = [.FeatureID_Edit]
             
         case .Default_Type:
-            if userInfo?.Token != nil {
+            if IsLoginSuccess() {
                 list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase]
             }
             else {
@@ -150,27 +208,31 @@ class AuthorizationManage {
             }
             
         case .User_Type:
-            if userInfo?.Token != nil {
-                if let IDString = SecurityUtility.utility.readFileByKey(SetKey: File_IDList_Key) {
-                    if !(IDString as! String).isEmpty {
-                        let IDStringList = (IDString as! String).components(separatedBy: AuthorizationManage_IDList_Separator)
-                        list = [PlatformFeatureID]()
-                        let editList = GetPlatformList(.Edit_Type)
-                        IDStringList.forEach { ID in
-                            let featureID = PlatformFeatureID(rawValue: Int(ID)!)!
-                            let info = Platform.plat.getFeatureInfoByID(featureID)
-                            if editList?.index(of: featureID) != nil || editList?.index(of: (info?.belong ?? featureID)) != nil {
-                                list?.append( PlatformFeatureID(rawValue: Int(ID)!)! )
+            needReAddList.removeAll()
+            if IsLoginSuccess() {
+                if loginInfo != nil {
+                    let key = SecurityUtility.utility.AES256Encrypt("\(loginInfo!.bankCode)\(loginInfo!.account)", AES_Key)
+                    if let IDString = SecurityUtility.utility.readFileByKey(SetKey: key) {
+                        if !(IDString as! String).isEmpty {
+                            let IDStringList = (IDString as! String).components(separatedBy: AuthorizationManage_IDList_Separator)
+                            list = [PlatformFeatureID]()
+                            let editList = GetPlatformList(.Edit_Type)
+                            IDStringList.forEach { ID in
+                                let featureID = PlatformFeatureID(rawValue: Int(ID)!)!
+                                let info = Platform.plat.getFeatureInfoByID(featureID)
+                                if editList?.index(of: featureID) != nil || editList?.index(of: (info?.belong ?? featureID)) != nil {
+                                    list?.append( PlatformFeatureID(rawValue: Int(ID)!)! )
+                                }
                             }
                         }
-                    }
-                    else {
-                        list = [PlatformFeatureID]()
+                        else {
+                            list = [PlatformFeatureID]()
+                        }
                     }
                 }
             }
             else {
-                if let IDString = SecurityUtility.utility.readFileByKey(SetKey: File_NoLogin_IDList_key) {
+                if let IDString = SecurityUtility.utility.readFileByKey(SetKey: File_IDList_Key) {
                     if !(IDString as! String).isEmpty {
                         let IDStringList = (IDString as! String).components(separatedBy: AuthorizationManage_IDList_Separator)
                         list = [PlatformFeatureID]()
@@ -201,7 +263,7 @@ class AuthorizationManage {
             
             
         case .Menu_Type:
-            if userInfo?.Token == nil {
+            if IsLoginSuccess() {
                 list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_DeviceBinding]
             }
             else {
@@ -209,6 +271,20 @@ class AuthorizationManage {
             }
         }
         
+        if list != nil && IsLoginSuccess() {
+            let sList = list!
+            list?.removeAll()
+            for ID in sList {
+                if authList?.index(of: ID) != nil {
+                    list?.append(ID)
+                }
+                else {
+                    if type == .User_Type {
+                        needReAddList[ID] = sList.index(of: ID)!
+                    }
+                }
+            }
+        }
         return list
     }
 }

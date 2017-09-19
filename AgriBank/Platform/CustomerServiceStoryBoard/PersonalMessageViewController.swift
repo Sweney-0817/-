@@ -44,7 +44,7 @@ class PersonalMessageViewController: BaseViewController, UITableViewDelegate, UI
                 for dic in list {
                     let msg = (dic["msg"] as? String) ?? ""
                     let pushDate = (dic["pushDate"] as? String) ?? ""
-                    m_Data.append(PromotionStruct(msg, pushDate, "", ""))
+                    m_Data.append(PromotionStruct(msg, pushDate, "", "", ""))
                 }
                 m_tvData.reloadData()
             }

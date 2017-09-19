@@ -18,7 +18,7 @@ enum PlatformFeatureID: Int {
     case FeatureID_AccountOverView = 100100         // 帳戶總覽
     case FeatureID_AccountDetailView = 110100       // 帳戶往來明細
     case FeatureID_NTAccountTransfer = 120000       // 臺幣帳戶交易
-    case FeatureID_NTTransfer = 120100              // 即時轉帳
+    case FeatureID_NTTransfer = 120100              // 即時轉帳 
     case FeatureID_ReservationTransfer = 120200     // 預約轉帳
     case FeatureID_ReservationTransferSearchCancel = 120300 // 預約轉帳查詢取消
     case FeatureID_DepositCombinedToDeposit = 120400        // 綜存戶轉定存
@@ -289,6 +289,7 @@ enum AuthorizationType: Int {
 let RESPONSE_IMAGE_KEY = "Image"
 let RESPONSE_VARIFYID_KEY = "varifyId"
 let RESPONSE_IMAGE_CONFIRM_RESULT_KEY = "ImageConfirmResult"
+let RESPONSE_Data_KEY = "Data"
 let Http_Post_Method = "POST"
 let Http_Get_Method = "GET"
 
@@ -297,6 +298,7 @@ enum DownloadType: Int {
     case Image
     case ImageConfirm
     case ImageConfirmResult
+    case Data
 }
 
 struct RequestStruct {
@@ -373,7 +375,7 @@ let AgriBank_DeviceType = UIDevice.current.model
 let AgriBank_Platform = "1"
 let AgriBank_DeviceID = UIDevice.current.identifierForVendor!.uuidString
 let AgriBank_AppUid = Bundle.main.bundleIdentifier ?? ""
-let AgriBank_TimeOut:TimeInterval = 10
+let AgriBank_TimeOut:TimeInterval = 300
 
 // MARK: - Cell定義
 let Separator_Height = CGFloat(1)

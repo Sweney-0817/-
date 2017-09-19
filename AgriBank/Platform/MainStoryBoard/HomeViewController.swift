@@ -164,7 +164,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 centerNews = [PromotionStruct]()
                 for index in centerNewsList! {
                     if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String {
-                        centerNews?.append(PromotionStruct(title, date, "", url))
+                        centerNews?.append(PromotionStruct(title, date, "", url, ""))
                     }
                 }
             }
@@ -172,7 +172,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 bankNews = [PromotionStruct]()
                 for index in bankNewsList! {
                     if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String {
-                        bankNews?.append(PromotionStruct(title, date, "", url))
+                        bankNews?.append(PromotionStruct(title, date, "", url, ""))
                     }
                 }
             }

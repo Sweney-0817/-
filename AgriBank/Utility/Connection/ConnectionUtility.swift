@@ -8,7 +8,7 @@
 
 import Foundation
 
-let REQUEST_TIME_OUT:TimeInterval = 10  // Time out
+let REQUEST_TIME_OUT:TimeInterval = 60  // Time out
 let CERTIFICATE_NAME = ""               // 憑證名稱
 let CERTIFICATE_TYPE = "cer"            // 憑證副檔名
 
@@ -38,7 +38,7 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
         session.sessionDescription = strTag
         
         switch downloadType {
-        case .Json, .ImageConfirm, .ImageConfirmResult:
+        case .Json, .ImageConfirm, .ImageConfirmResult, .Data:
             var request = URLRequest(url:URL(string:strURL)!, cachePolicy:.reloadIgnoringLocalCacheData, timeoutInterval:REQUEST_TIME_OUT)
             request.httpMethod = isPostMethod ? Http_Post_Method : Http_Get_Method
             if httpBody != nil {
@@ -113,6 +113,12 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
                         self.delegate?.didRecvdResponse(session.sessionDescription!, resultList as NSDictionary)
                     }
                 }
+                else if self.downloadType == .Data {
+                    var resultList = [String:Any]()
+                    resultList[ReturnCode_Key] = ReturnCode_Success
+                    resultList[RESPONSE_Data_KEY] = self.responseData as Data
+                    self.delegate?.didRecvdResponse(session.sessionDescription!, resultList as NSDictionary)
+                }
             }
         }
     }
@@ -120,8 +126,12 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
     // MARK: - URLSessionDownloadTask
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         DispatchQueue.main.async {
-            if let data = try? Data(contentsOf: location), let image = UIImage(data: data) {
-                self.delegate?.didRecvdResponse(session.sessionDescription!, [RESPONSE_IMAGE_KEY:image])
+            if let data = try? Data(contentsOf: location) {
+                if self.downloadType == .Image {
+                    if let image = UIImage(data: data) {
+                       self.delegate?.didRecvdResponse(session.sessionDescription!, [RESPONSE_IMAGE_KEY:image])
+                    }
+                }
             }
         }
     }

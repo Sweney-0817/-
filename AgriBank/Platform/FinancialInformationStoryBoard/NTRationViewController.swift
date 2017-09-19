@@ -65,24 +65,64 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
             m_Data3.removeAll()
             m_Data4.removeAll()
             if let data = response.object(forKey: "Data") as? [String:Any] {
-                if let list = data["SurviveRateList"] as? [[String:String]] {
+                if let list = data["SurviveRateList"] as? [[String:Any]] {
                     for info in list {
-                        m_Data1.append( NTRationStruct(info["SurviveType"] ?? "", "", info["SurviveRate"] ?? "") )
+                        var SurviveType = "-"
+                        if let temp = info["SurviveType"] as? String {
+                            SurviveType = temp
+                        }
+                        var SurviveRate = "-"
+                        if let temp = info["SurviveRate"] as? String {
+                            SurviveRate = temp
+                        }
+                        m_Data1.append( NTRationStruct(SurviveType, "", SurviveRate) )
                     }
                 }
-                if let list = data["TDRateList"] as? [[String:String]] {
+                if let list = data["TDRateList"] as? [[String:Any]] {
                     for info in list {
-                        m_Data2.append( NTRationStruct(info["TDType"] ?? "", info["TDFixRate"] ?? "", info["TDChangeRate"] ?? "") )
+                        var TDType = "-"
+                        if let temp = info["TDType"] as? String {
+                            TDType = temp
+                        }
+                        var TDFixRate = "-"
+                        if let temp = info["TDFixRate"] as? String {
+                            TDFixRate = temp
+                        }
+                        var TDChangeRate = "-"
+                        if let temp = info["TDChangeRate"] as? String {
+                            TDChangeRate = temp
+                        }
+                        m_Data2.append( NTRationStruct(TDType, TDFixRate, TDChangeRate) )
                     }
                 }
-                if let list = data["RSRateList"] as? [[String:String]] {
+                if let list = data["RSRateList"] as? [[String:Any]] {
                     for info in list {
-                        m_Data3.append( NTRationStruct(info["RSType"] ?? "", info["RSFixRate"] ?? "", info["RSChangeRate"] ?? "") )
+                        var RSType = "-"
+                        if let temp = info["RSType"] as? String {
+                            RSType = temp
+                        }
+                        var RSFixRate = "-"
+                        if let temp = info["RSFixRate"] as? String {
+                            RSFixRate = temp
+                        }
+                        var RSChangeRate = "-"
+                        if let temp = info["RSChangeRate"] as? String {
+                            RSChangeRate = temp
+                        }
+                        m_Data3.append( NTRationStruct(RSType, RSFixRate, RSChangeRate) )
                     }
                 }
-                if let list = data["OTRateList"] as? [[String:String]] {
+                if let list = data["OTRateList"] as? [[String:Any]] {
                     for info in list {
-                        m_Data4.append( NTRationStruct(info["OTType"] ?? "", "", info["OTRate"] ?? "") )
+                        var OTType = "-"
+                        if let temp = info["OTType"] as? String {
+                            OTType = temp
+                        }
+                        var OTRate = "-"
+                        if let temp = info["OTRate"] as? String {
+                            OTRate = temp
+                        }
+                        m_Data4.append( NTRationStruct(OTType, "", OTRate) )
                     }
                 }
             }
@@ -160,6 +200,9 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     }
     
     private func setPicker() {
+        if m_PickerData.count == 0 {
+            return
+        }
         m_tfPicker.delegate = self
         m_vPlace.addSubview(m_tfPicker)
 

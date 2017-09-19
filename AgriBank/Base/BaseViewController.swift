@@ -11,7 +11,9 @@ import UIKit
 
 #if DEBUG
 let URL_PROTOCOL = "http"
-let URL_DOMAIN = "52.187.113.27/FFICMAPIFORMAL/api"
+//let URL_DOMAIN = "52.187.113.27/FFICMAPIFORMAL/api"
+//let URL_DOMAIN = "52.187.113.27/FFICMAPI/api"
+let URL_DOMAIN = "172.16.132.52/APP/api"
 #else
 let URL_PROTOCOL = "https"
 let URL_DOMAIN = ""
@@ -190,7 +192,8 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                 loadingView.backgroundColor = Loading_Background_Color
                 
                 let backgroundView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: Loading_Weight, height: Loading_Height)))
-                backgroundView.backgroundColor = .white
+                backgroundView.backgroundColor = Gray_Color
+                backgroundView.layer.cornerRadius = Layer_BorderRadius
                 backgroundView.center = loadingView.center
                 loadingView.addSubview(backgroundView)
                 
@@ -219,6 +222,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         if loginView == nil {
             loginView = getUIByID(.UIID_Login) as? LoginView
             loginView?.frame = view.frame
+            loginView?.delegate = self
             getCanLoginBankInfo()
             getImageConfirm()
             view.addSubview(loginView!)
@@ -316,8 +320,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
 //            if let day = componenets.day, let month = componenets.month, let minute = componenets.minute, let second = componenets.second, let hour = componenets.hour {
 //                headVarifyID = "\(month)\(day)\(hour)\(minute)\(second)"
 //                getRequest("Comm/COMM0501?varifyId=\(headVarifyID)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
-//            }
-            getRequest("Comm/COMM0501?varifyId=\(varifyID!)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
+//           }
+           getRequest("Comm/COMM0501?varifyId=\(varifyID!)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
         }
     }
     
@@ -371,7 +375,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
             var bankList = [[String:[String]]]()
             var bankCode = [String:String]()
             var cityCode = [String:String]()
-            if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
                 for dic in array {
                     var bankNameList = [String]()
                     if let city = dic["hsienName"] as? String, let cityID = dic["hsienCode"] as? String, let list = dic["bankList"] as? [[String:Any]] {
@@ -388,11 +392,12 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     }
                 }
             }
-            loginView?.setInitialList(bankList, bankCode, cityCode, self)
+            loginView?.setInitialList(bankList, bankCode, cityCode)
             
         case "COMM0101":
-            if let data = response.object(forKey: "Data") as? [String : Any] {
+            if let data = response.object(forKey: "Data") as? [String:Any] {
                 var info = ResponseLoginInfo()
+                var authList:[[String:String]]? = nil
                 if let name = data["CNAME"] as? String {
                     info.CNAME = name
                 }
@@ -405,7 +410,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 if let balance = data["TotalBalance"] as? Double {
                     info.Balance = balance
                 }
-                AuthorizationManage.manage.SetResponseLoginInfo(info, nil)
+                if let Auth = data["Auth"] as? [String: Any], let list = Auth["AuthList"] as? [[String:String]] {
+                    authList = list
+                }
+                AuthorizationManage.manage.SetResponseLoginInfo(info, authList)
             
                 loginView?.saveDataInFile()
                 loginView?.removeFromSuperview()
@@ -484,7 +492,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
         case "TRAN0101","TRAN0103","TRAN0201","TRAN0302","TRAN0401","TRAN0502","TRAN0602",
              "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
              "PAY0103","PAY0105","PAY0107",
-             "USIF0102","COMM0801":
+             "USIF0102",
+             "COMM0801":
             didResponse(description, response)
             
         default:
@@ -516,6 +525,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         }
                     }
                 }
+            }
+            else {
+                showErrorMessage(nil, String(describing: response))
             }
         }
     }

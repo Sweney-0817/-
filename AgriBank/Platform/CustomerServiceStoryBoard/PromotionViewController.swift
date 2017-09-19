@@ -13,15 +13,19 @@ struct PromotionStruct {
     var date:String? = nil
     var place:String? = nil
     var url:String? = nil
-    init (_ title:String, _ date:String, _ place:String, _ url:String) {
+    var ID:String? = nil
+    init (_ title:String, _ date:String, _ place:String, _ url:String, _ ID:String) {
         self.title = title
         self.date = date
         self.place = place
         self.url = url
+        self.ID = ID
     }
 }
 
 let Promotion_Seivice_Title = "提供單位"
+let Promotion_Segue = "goDetail"
+
 class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var m_vPlace: UIView!
     @IBOutlet weak var m_tvData: UITableView!
@@ -30,15 +34,7 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
     private var promotionList = [String:[PromotionStruct]]()
     private var cityList = [String]()
     private var chooseCity = ""
-    
-    // MARK: - Public
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        let webContentViewController = segue.destination as! WebContentViewController
-        if let list = promotionList[chooseCity] {
-            webContentViewController.setData(list[m_iSelectedIndex])
-        }
-    }
+    private var webContent:Data? = nil
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -63,7 +59,7 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
                     if let city = dic["CC_CityName"] as? String, let promotion = dic["LocalPromo"] as? [[String:String]] {
                         var pList = [PromotionStruct]()
                         for info in promotion {
-                            pList.append( PromotionStruct.init( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "" ) )
+                            pList.append( PromotionStruct.init( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "", info["CMI_ID"] ?? "" ) )
                         }
                         promotionList[city] = pList
                         cityList.append(city)
@@ -71,22 +67,32 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
                 }
             }
             
+        case "INFO0102":
+            if let data = response.object(forKey: RESPONSE_Data_KEY) as? Data {
+                webContent = data
+                performSegue(withIdentifier: Promotion_Segue, sender: nil)
+            }
+            
         default: super.didResponse(description, response)
         }
     }
     
-    // MARK: - Private
-    private func goDetail() {
-        performSegue(withIdentifier: "goDetail", sender: nil)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        let webContentViewController = segue.destination as! WebContentViewController
+        if let list = promotionList[chooseCity] {
+            webContentViewController.setData(list[m_iSelectedIndex], webContent)
+        }
     }
-
+    
+    // MARK: - Private
     private func setAllSubView() {
         setDDPlace()
         setDataTableView()
     }
 
     private func setDDPlace() {
-        if (m_DDPlace == nil) {
+        if m_DDPlace == nil {
             m_DDPlace = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDPlace?.delegate = self
             m_DDPlace?.setOneRow(Promotion_Seivice_Title, Choose_Title)
@@ -122,7 +128,11 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         m_iSelectedIndex = indexPath.row
-        goDetail()
+        if let list = promotionList[chooseCity], let ID = list[m_iSelectedIndex].ID {
+            setLoading(true)
+            getRequest("Info/INFO0102?CMIID=\(ID)", "INFO0102", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .Data)
+        }
+//        performSegue(withIdentifier: Promotion_Segue, sender: nil)
     }
 
     // MARK: - UITableViewDataSource

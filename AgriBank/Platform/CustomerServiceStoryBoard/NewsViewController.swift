@@ -65,7 +65,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
             if let data = response.object(forKey: "Data") as? [String : Any], let list = data["CB_List"] as? [[String:Any]] {
                 for index in list {
                     if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String {
-                        m_Data2.append(PromotionStruct(title, date, "", url))
+                        m_Data2.append(PromotionStruct(title, date, "", url, ""))
                     }
                 }
             }
