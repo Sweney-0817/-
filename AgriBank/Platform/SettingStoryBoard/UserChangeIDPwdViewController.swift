@@ -17,7 +17,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var againTextfield: TextField!
     @IBOutlet weak var bottomView: UIView!
     private var isChangePassword = false
-    private var confirmIsSuccess = false
+    private var errorMessage = ""
     
     // MARK: - Public
     func SetIsChangePassword() {
@@ -26,7 +26,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let controller = segue.destination as! UserChangeIDPwdResultViewController
-        controller.SetConrirmIsSuccess(confirmIsSuccess)
+        controller.setErrorMessage(errorMessage)
     }
     
     // MARK: - Private
@@ -47,12 +47,16 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
         setLoading(true)
         if !isChangePassword {
             getTransactionID("08002", TransactionID_Description)
+            
         }
         else {
             getTransactionID("08003", TransactionID_Description)
             sourceTextfield.placeholder = "原使用者密碼"
+            sourceTextfield.isSecureTextEntry = true
             newTextfield.placeholder = "新使用者密碼"
+            newTextfield.isSecureTextEntry = true
             againTextfield.placeholder = "再次輸入新使用者密碼"
+            againTextfield.isSecureTextEntry = true
         }
     }
 
@@ -63,23 +67,13 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
-        case "USIF0201":
-            if response.object(forKey: "Data") != nil {
-                confirmIsSuccess = true
-                performSegue(withIdentifier: UserChangeIDPwd_Seque, sender: nil)
+        case "USIF0201", "USIF0301":
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode != ReturnCode_Success {
+                if let message = response.object(forKey: "ReturnMsg") as? String {
+                    errorMessage = message
+                }
             }
-            else {
-                super.didResponse(description, response)
-            }
-            
-        case "USIF0301":
-            if response.object(forKey: "Data") != nil {
-                confirmIsSuccess = true
-                performSegue(withIdentifier: UserChangeIDPwd_Seque, sender: nil)
-            }
-            else {
-                super.didResponse(description, response)
-            }
+            performSegue(withIdentifier: UserChangeIDPwd_Seque, sender: nil)
             
         case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
@@ -96,11 +90,13 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     // MARK: - StoryBoard Touch Event
     @IBAction func clickChangeBtn(_ sender: Any) {
         if inputIsCorrect() {
+            let idMd5 = SecurityUtility.utility.MD5(string: sourceTextfield.text!)
+            let pdMd5 = SecurityUtility.utility.MD5(string: newTextfield.text!)
             if !isChangePassword {
-                postRequest("Usif/USIF0201", "USIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08002","Operate":"dataConfirm","TransactionId":transactionId,"ID":sourceTextfield.text ?? "","NewID":newTextfield.text ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("Usif/USIF0201", "USIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08002","Operate":"dataConfirm","TransactionId":transactionId,"ID":idMd5,"NewID":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
-                postRequest("Usif/USIF0301", "USIF0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08003","Operate":"dataConfirm","TransactionId":transactionId,"PWD":sourceTextfield.text ?? "","NewPWD":newTextfield.text ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("Usif/USIF0301", "USIF0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08003","Operate":"dataConfirm","TransactionId":transactionId,"PWD":idMd5,"NewPWD":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
             }
         }
     }

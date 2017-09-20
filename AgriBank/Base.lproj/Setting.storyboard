@@ -735,7 +735,7 @@
                                 <rect key="frame" x="15" y="211" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="kDh-Ul-Jft" id="LcJ-2e-Ajv"/>
                                 </connections>
@@ -751,7 +751,7 @@
                                 <rect key="frame" x="15" y="272" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="kDh-Ul-Jft" id="gsv-gl-jid"/>
                                 </connections>
@@ -920,7 +920,7 @@
                                 <rect key="frame" x="15" y="211" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="iYs-6J-J52" id="V6r-Es-u4A"/>
                                 </connections>
@@ -936,7 +936,7 @@
                                 <rect key="frame" x="15" y="272" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="iYs-6J-J52" id="zUg-N5-2qs"/>
                                 </connections>
@@ -982,7 +982,7 @@
                                 <rect key="frame" x="15" y="333" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="iYs-6J-J52" id="fdv-0p-kza"/>
                                 </connections>

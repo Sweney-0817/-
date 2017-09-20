@@ -138,7 +138,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
                         }
                     }
                 }
-                if let ATM = data["Unit"] as? [[String:String]]  {
+                if let ATM = data["ATM"] as? [[String:String]]  {
                     ATMList.removeAll()
                     ATMInfoList.removeAll()
                     for info in ATM {

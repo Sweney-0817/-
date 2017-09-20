@@ -23,6 +23,7 @@ let BarItem_Height_Weight = 30
 let Color_NavigationBar = UIColor(colorLiteralRed: 46/255, green: 134/255, blue: 201/255, alpha: 1)
 let Loading_Weight = 100
 let Loading_Height = 100
+let Base_FirstLogin = "首次登入請變更代號"
 
 
 class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
@@ -298,9 +299,36 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         view.endEditing(true)
     }
     
-    // - UIAlertViewDelegate
+    // MARK: - UIAlertViewDelegate
     func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
-        navigationController?.popToRootViewController(animated: true)
+        switch alertView.tag {
+        case ViewTag.View_ForceLogin.rawValue:
+            if alertView.cancelButtonIndex != buttonIndex {
+                if let info = AuthorizationManage.manage.GetLoginInfo() {
+                    let idMd5 = SecurityUtility.utility.MD5(string: info.id)
+                    let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
+                    setLoading(true)
+                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+            }
+            else {
+                clickLoginCloseBtn()
+            }
+            
+        case ViewTag.View_OptionModifyPassword.rawValue:
+            if alertView.cancelButtonIndex != buttonIndex {
+                if curFeatureID != nil {
+                    enterFeatureByID(curFeatureID!, true)
+                }
+                curFeatureID = nil
+            }
+            else {
+                enterFeatureByID(.FeatureID_UserPwdChange, true)
+            }
+            
+        default: navigationController?.popToRootViewController(animated: true)
+        }
+        
     }
 }
 
@@ -327,8 +355,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
     
     func checkImageConfirm(_ passWord:String, _ varifyID:String? = nil) { // 驗證圖形驗證碼
         setLoading(true)
-        let ID = varifyID == nil ? headVarifyID : varifyID!
 //        let ID = headVarifyID
+        let ID = varifyID == nil ? headVarifyID : varifyID!
         getRequest("Comm/COMM0502?varifyId=\(ID)&captchaCode=\(passWord)", "COMM0502", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirmResult)
     }
     
@@ -413,7 +441,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 if let Auth = data["Auth"] as? [String: Any], let list = Auth["AuthList"] as? [[String:String]] {
                     authList = list
                 }
-                AuthorizationManage.manage.SetResponseLoginInfo(info, authList)
+                AuthorizationManage.manage.setResponseLoginInfo(info, authList)
             
                 loginView?.saveDataInFile()
                 loginView?.removeFromSuperview()
@@ -431,21 +459,35 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         if curFeatureID != nil {
                             enterFeatureByID(curFeatureID!, true)
                         }
-                    case "2": break
-                    case "3": break
-                    case "4": enterFeatureByID(.FeatureID_FirstLoginChange, true)
-                    case "5": break
-                    default: break
+                        curFeatureID = nil
+                        
+                    case "2":
+                        showErrorMessage(nil, "請強制變更密碼")
+                        enterFeatureByID(.FeatureID_UserPwdChange, true)
+                        curFeatureID = nil
+                        
+                    case "3":
+                        let alert = UIAlertView(title: UIAlert_Default_Title, message: "密碼已到期，建議變更密碼", delegate: self, cancelButtonTitle: "下次變更", otherButtonTitles: "執行變更")
+                        alert.tag = ViewTag.View_OptionModifyPassword.rawValue
+                        alert.show()
+                        
+                    case "4":
+                        enterFeatureByID(.FeatureID_FirstLoginChange, true)
+                        showErrorMessage(nil, Base_FirstLogin)
+                        curFeatureID = nil
+                        
+//                    case "5": curFeatureID = nil
+                        
+                    default: curFeatureID = nil
                     }
                 }
                 
-                curFeatureID = nil
-                registerAPNSToken()
+//                registerAPNSToken()
                 (UIApplication.shared.delegate as! AppDelegate).notificationAllEvent()
             }
             
         case "COMM0102":
-            AuthorizationManage.manage.SetResponseLoginInfo(nil, nil)
+            AuthorizationManage.manage.setResponseLoginInfo(nil, nil)
             
         case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
@@ -492,8 +534,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
         case "TRAN0101","TRAN0103","TRAN0201","TRAN0302","TRAN0401","TRAN0502","TRAN0602",
              "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
              "PAY0103","PAY0105","PAY0107",
-             "USIF0102",
-             "COMM0801":
+             "USIF0102","USIF0201","USIF0301",
+             "COMM0102","COMM0801":
             didResponse(description, response)
             
         default:
@@ -502,11 +544,11 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     didResponse(description, response)
                 }
                 else if returnCode == "E_COMM0101_05" {
-                    if let info = AuthorizationManage.manage.GetLoginInfo() {
-                        let idMd5 = SecurityUtility.utility.MD5(string: info.id)
-                        let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
-                        postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
-                    }
+                    let message = (response.object(forKey: "ReturnMsg") as? String) ?? ""
+                    let alert = UIAlertView(title: UIAlert_Default_Title, message: message, delegate: self, cancelButtonTitle: UIAlert_Cancel_Title, otherButtonTitles: UIAlert_Confirm_Title)
+                    alert.tag = ViewTag.View_ForceLogin.rawValue
+                    alert.show()
+                    return
                 }
                 else {
                     if let type = response.object(forKey: "ActionType") as? String {
@@ -523,6 +565,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
                        
                         default: break
                         }
+                    }
+                    
+                    if description == "COMM0101" { // 登入失敗，需要重取圖形驗證碼
+                        getImageConfirm()
                     }
                 }
             }

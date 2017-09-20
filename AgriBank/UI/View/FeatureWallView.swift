@@ -62,22 +62,24 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
     // MARK: - private
     private func setFeatureWall(_ vertical: Int, _ horizontal: Int)  {
         scrollview.subviews.forEach{ view in if view is FeatureWallCellView {view.removeFromSuperview()} }
-        let page = CGFloat( featureIDList.count%(vertical*horizontal) == 0 ? featureIDList.count/(vertical*horizontal) : featureIDList.count/(vertical*horizontal)+1 )
-        scrollview.contentSize = CGSize(width: scrollview.frame.size.width*page, height: scrollview.frame.size.height)
-        if vertical != 0 && horizontal != 0 {
-            let width = scrollview.frame.size.width / CGFloat(vertical)
-            let height = scrollview.frame.size.height / CGFloat(horizontal)
-            for current in 0...featureIDList.count-1 {
-                let position = getXYPositionByIndex(current, vertical, horizontal)
-                let wallCell = Platform.plat.getUIByID(.UIID_FeatureWallCell, self) as! FeatureWallCellView
-                wallCell.frame = CGRect(x: CGFloat(position.x)*width + CGFloat(position.page)*scrollview.frame.size.width, y: CGFloat(position.y)*height, width: width, height: height)
-                if let info = Platform.plat.getFeatureInfoByID(featureIDList[current]) {
-                    wallCell.imageView.image = UIImage(named: String(featureIDList[current].rawValue))
-                    wallCell.titleLabel.text = info.name
-                    wallCell.button.addTarget(self, action: #selector(clickFeatureBtn(_:)), for: .touchUpInside)
-                    wallCell.button.tag = featureIDList[current].rawValue
+        if featureIDList.count > 0 {
+            let page = CGFloat( featureIDList.count%(vertical*horizontal) == 0 ? featureIDList.count/(vertical*horizontal) : featureIDList.count/(vertical*horizontal)+1 )
+            scrollview.contentSize = CGSize(width: scrollview.frame.size.width*page, height: scrollview.frame.size.height)
+            if vertical != 0 && horizontal != 0 {
+                let width = scrollview.frame.size.width / CGFloat(vertical)
+                let height = scrollview.frame.size.height / CGFloat(horizontal)
+                for current in 0...featureIDList.count-1 {
+                    let position = getXYPositionByIndex(current, vertical, horizontal)
+                    let wallCell = Platform.plat.getUIByID(.UIID_FeatureWallCell, self) as! FeatureWallCellView
+                    wallCell.frame = CGRect(x: CGFloat(position.x)*width + CGFloat(position.page)*scrollview.frame.size.width, y: CGFloat(position.y)*height, width: width, height: height)
+                    if let info = Platform.plat.getFeatureInfoByID(featureIDList[current]) {
+                        wallCell.imageView.image = UIImage(named: String(featureIDList[current].rawValue))
+                        wallCell.titleLabel.text = info.name
+                        wallCell.button.addTarget(self, action: #selector(clickFeatureBtn(_:)), for: .touchUpInside)
+                        wallCell.button.tag = featureIDList[current].rawValue
+                    }
+                    scrollview.addSubview(wallCell)
                 }
-                scrollview.addSubview(wallCell)
             }
         }
     }

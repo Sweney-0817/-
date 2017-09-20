@@ -124,19 +124,23 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         case "LOSE0301", "LOSE0302":
             var result = ConfirmResultStruct()
             result.resultBtnName = "繼續交易"
-            if let data = response.object(forKey:"Data") as? [String:String] {
-                result.list = [[String:String]]()
-                result.list?.append([Response_Key:"交易時間",Response_Value:data["TXTIME"] ?? ""])
-                result.list?.append([Response_Key:"掛失日期",Response_Value:data["TXDAY"] ?? ""])
-            }
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
-                result.title = Transaction_Successful_Title
+                result.title = Lose_Successful_Title
                 result.image = ImageName.CowSuccess.rawValue
                 result.memo = CheckLoseApply_Memo
+                if let data = response.object(forKey:"Data") as? [String:String] {
+                    result.list = [[String:String]]()
+                    result.list?.append([Response_Key:"交易時間",Response_Value:data["TXTIME"] ?? ""])
+                    result.list?.append([Response_Key:"掛失日期",Response_Value:data["TXDAY"] ?? ""])
+                }
             }
             else {
-                result.title = Transaction_Faild_Title
+                result.title = Lose_Faild_Title
                 result.image = ImageName.CowFailure.rawValue
+                if let message = response.object(forKey:"ReturnMsg") as? String {
+                    result.list = [[String:String]]()
+                    result.list?.append([Response_Key:Error_Title,Response_Value:message])
+                }
             }
             enterConfirmResultController(false, result, true)
             
@@ -339,24 +343,6 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     // MARK: - UITextFieldDelegate
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         curTextfield = textField
-        // ToolBar
-        let toolBar = UIToolbar()
-        toolBar.barTintColor = ToolBar_barTintColor
-        toolBar.tintColor = ToolBar_tintColor
-        toolBar.sizeToFit()
-        // Adding Button ToolBar
-        let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
-        titleLabel.textColor = .black
-        titleLabel.text = Choose_Title
-        titleLabel.textAlignment = .center
-        let titleButton = UIBarButtonItem(customView: titleLabel)
-        
-        toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
-        toolBar.isUserInteractionEnabled = true
-        textField.inputAccessoryView = toolBar
         return true
     }
 
@@ -378,15 +364,5 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         if inputIsCorrect() {
             checkImageConfirm(password, transactionId)
         }
-    }
-    
-    // MARK: - Selector
-    func clickCancelBtn(_ sender:Any) {
-        curTextfield?.text = ""
-        curTextfield?.resignFirstResponder()
-    }
-    
-    func clickDoneBtn(_ sender:Any) {
-        curTextfield?.resignFirstResponder()
     }
 }

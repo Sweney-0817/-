@@ -12,11 +12,11 @@ class UserChangeIDPwdResultViewController: BaseViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var bottomView: UIView!
-    private var isSuccess = false
+    private var errorMessage = ""
     
     // MARK: - Public
-    func SetConrirmIsSuccess(_ isSuccess:Bool) {
-        self.isSuccess = isSuccess
+    func setErrorMessage(_ errorMessage:String) {
+        self.errorMessage = errorMessage
     }
     
     // MARK: - Override
@@ -26,8 +26,8 @@ class UserChangeIDPwdResultViewController: BaseViewController {
         navigationItem.setHidesBackButton(true, animated:true);
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
-        titleLabel.text = isSuccess ? Change_Successful_Title : Change_Faild_Title
-        imageView.image = isSuccess ? UIImage(named: ImageName.CowSuccess.rawValue) : UIImage(named: ImageName.CowFailure.rawValue)
+        titleLabel.text = errorMessage.isEmpty ? Change_Successful_Title : Change_Faild_Title
+        imageView.image = errorMessage.isEmpty ? UIImage(named: ImageName.CowSuccess.rawValue) : UIImage(named: ImageName.CowFailure.rawValue)
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,8 +35,18 @@ class UserChangeIDPwdResultViewController: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        super.didResponse(description, response)
+        enterFeatureByID(.FeatureID_Home, true)
+    }
+    
     // MARK: - StoryBoard Touch Event
     @IBAction func clickConfirmBtn(_ sender: Any) {
-        enterFeatureByID(.FeatureID_Home, true)
+        if errorMessage.isEmpty {
+            postLogout()
+        }
+        else {
+            enterFeatureByID(.FeatureID_Home, true)
+        }
     }
 }

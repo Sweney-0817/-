@@ -116,7 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     func didRecvdResponse(_ description: String, _ response: NSDictionary) {
         switch description {
         case "COMM0102":
-            AuthorizationManage.manage.SetResponseLoginInfo(nil, nil)
+            AuthorizationManage.manage.setResponseLoginInfo(nil, nil)
             let center = ((window?.rootViewController as! SideMenuViewController).getController(.center) as! UINavigationController)
             center.popToRootViewController(animated: true)
             (center.viewControllers.first as! HomeViewController).updateLoginStatus()

@@ -97,22 +97,29 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 super.didResponse(description, response)
             }
             
-        case "COMM0901": break
-//            if let data = response.object(forKey: "Data") as? [String : Any] {
-//                if let forcedChange = data["forcedChange"] as? String { //是否強制換版
-//
-//                }
-//                if let isNew = data["isNew"] as? String { // 是否有更新版本
-//
-//                }
+        case "COMM0901":
+            if let data = response.object(forKey: "Data") as? [String : Any] {
+                if let forcedChange = data["forcedChange"] as? String { //是否強制換版
+                    if forcedChange == "Y" {
+                        showErrorMessage(nil, "需要強制換版")
+                    }
+                }
+                if let isNew = data["isNew"] as? String { // 是否有更新版本
+                    if isNew == "Y" {
+                        showErrorMessage(nil, "有更新版本")
+                    }
+                }
 //                if let newVersion = data["newVersion"] as? String { //最新版號
 //
 //                }
-//            }
-//            else {
-//                super.didResponse(description, response)
-//            }
-            
+//                if let showLaunchAppMsg = data["showLaunchAppMsg"] as? String { //App啟動時是否顯示金管會要求訊息
+//                    
+//                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+        
         case "INFO0201":
             if let data = response.object(forKey: "Data") as? [String : Any], let list = data["CB_List"] as? [[String:Any]] {
                 if AuthorizationManage.manage.IsLoginSuccess() {
@@ -137,9 +144,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
                 logoImageView.image = responseImage
                 logoImage = responseImage
-            }
-            else {
-                super.didResponse(description, response)
             }
             
         case "COMM0102":
@@ -258,6 +262,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         }
         else {
             let alert = UIAlertView(title: LogOut_Title, message: "", delegate: self, cancelButtonTitle: UIAlert_Cancel_Title, otherButtonTitles: UIAlert_Confirm_Title)
+            alert.tag = ViewTag.View_LogOut.rawValue
             alert.show()
         }
     }
@@ -278,8 +283,13 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     
     // MARK: - UIAlertViewDelegate
     override func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
-        if buttonIndex != alertView.cancelButtonIndex {
-            postLogout()
+        switch alertView.tag {
+        case ViewTag.View_LogOut.rawValue:
+            if buttonIndex != alertView.cancelButtonIndex {
+                postLogout()
+            }
+            
+        default: super.alertView(alertView, clickedButtonAt: buttonIndex)
         }
     }
 }

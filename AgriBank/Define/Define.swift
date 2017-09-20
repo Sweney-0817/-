@@ -273,6 +273,9 @@ enum ViewTag: Int {
     case View_DepositTypeActionSheet        // 綜存戶轉定存-存款種類
     case View_RateTypeActionSheet           // 綜存戶轉定存-利率方式
     case View_TransPeriodActionSheet        // 綜存戶轉定存-轉存期別
+    case View_ForceLogin                    // 強制登入
+    case View_OptionModifyPassword          // 密碼已到期，建議變更密碼
+    case View_LogOut                        // 登出
 }
 
 // MARK: - AuthorizationManager
@@ -362,6 +365,9 @@ let UIAlert_Confirm_Title = "確定"
 let Choose_Title = "請選擇"
 let Enter_Title = "請輸入"
 let Get_Null_Title = "無法取得"
+let Error_Title = "錯誤訊息"
+let Lose_Successful_Title = "掛失成功"
+let Lose_Faild_Title = "掛失失敗"
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "agriBank_iOS"

@@ -86,19 +86,23 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
         case "LOSE0201":
             var result = ConfirmResultStruct()
             result.resultBtnName = "繼續交易"
-            if let data = response.object(forKey:"Data") as? [String:String] {
-                result.list = [[String:String]]()
-                result.list?.append([Response_Key:"交易時間",Response_Value:data["TXTIME"] ?? ""])
-                result.list?.append([Response_Key:"掛失日期",Response_Value:data["TXDAY"] ?? ""])
-            }
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
-                result.title = Transaction_Successful_Title
+                result.title = Lose_Successful_Title
                 result.image = ImageName.CowSuccess.rawValue
                 result.memo = DebitCardLoseApply_Memo
+                if let data = response.object(forKey:"Data") as? [String:String] {
+                    result.list = [[String:String]]()
+                    result.list?.append([Response_Key:"交易時間",Response_Value:data["TXTIME"] ?? ""])
+                    result.list?.append([Response_Key:"掛失日期",Response_Value:data["TXDAY"] ?? ""])
+                }
             }
             else {
-                result.title = Transaction_Faild_Title
+                result.title = Lose_Faild_Title
                 result.image = ImageName.CowFailure.rawValue
+                if let message = response.object(forKey:"ReturnMsg") as? String {
+                    result.list = [[String:String]]()
+                    result.list?.append([Response_Key:Error_Title,Response_Value:message])
+                }
             }
             enterConfirmResultController(false, result, true)
             

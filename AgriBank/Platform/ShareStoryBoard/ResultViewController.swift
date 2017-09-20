@@ -80,7 +80,11 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (data?.list?.count)!;
+        if data?.list?.count != nil {
+            return (data?.list?.count)!
+        }
+        
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

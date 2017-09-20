@@ -19,6 +19,7 @@ let AuthorizationManage_CIDListKey = ["a25dq":"hs3rwPsoYknnCCWjqIX57RgRflYGhKO1t
                                       "cni24":"gvpZZ70O8Tks20vMcGUEi2IiKDPk74gUhz9cndSIBTA=",
                                       "dw67m":"KkfD6l0TqI50ix7uBPjKC52XrZhuJFVoAHWR4B1TFUo=",
                                       "ez98f":"hIb8YaYT2ooLiU2q39k/O5s8W0VO0BdGesGbDZISGiY="]
+let AuthorizationManage_Random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
 
 struct ResponseLoginInfo {
     var CNAME:String? = nil         // 用戶名稱
@@ -37,7 +38,7 @@ class AuthorizationManage {
     private var canNTNonAgreedTransfer = false           // 是否可以非約轉
     private var needReAddList = [PlatformFeatureID:Int]()// 使用者加入的功能，但功能授權未開啟
     
-    func SetResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
+    func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info
         if list != nil {
             authList = [PlatformFeatureID]()
@@ -52,6 +53,7 @@ class AuthorizationManage {
                     if authList?.index(of: pID) == nil {
                         authList?.append(pID)
                     }
+                    authList?.append(.FeatureID_Edit) // 新增/編輯
                 }
             }
         }
@@ -90,9 +92,7 @@ class AuthorizationManage {
         head[AuthorizationManage_HttpHead_Token] = userInfo?.Token ?? ""
     
         if isNeedCID {
-            let random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
-            head[AuthorizationManage_HttpHead_CID] = [String](AuthorizationManage_CIDListKey.keys)[random]
-//            head[AuthorizationManage_HttpHead_CID] = "a25dq"
+            head[AuthorizationManage_HttpHead_CID] = [String](AuthorizationManage_CIDListKey.keys)[AuthorizationManage_Random]
         }
         return head
     }
@@ -106,9 +106,7 @@ class AuthorizationManage {
         do {
             httpBody = try JSONSerialization.data(withJSONObject: input, options: .prettyPrinted)
             if needEncrypt {
-                let random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
-                let encryptID = [String](AuthorizationManage_CIDListKey.keys)[random]
-//                let encryptID = "a25dq"
+                let encryptID = [String](AuthorizationManage_CIDListKey.keys)[AuthorizationManage_Random]
                 if let encrypt = String(data: httpBody!, encoding: .utf8)?.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: " ", with: ""), let key = AuthorizationManage_CIDListKey[encryptID] {
                     // 中台需求: " + body + "
                     let encryptString = "\"" + SecurityUtility.utility.AES256Encrypt( encrypt, key ) + "\""
@@ -133,10 +131,6 @@ class AuthorizationManage {
             canEnter = userInfo?.Token != nil ? true : false
         }
         return canEnter
-    }
-    
-    func SetAuthorization() {
-        // 中台 <-轉換-> 功能代碼
     }
     
     func getPlatformIDByAuthID(_ ID:String) -> PlatformFeatureID? {
@@ -263,7 +257,7 @@ class AuthorizationManage {
             
             
         case .Menu_Type:
-            if IsLoginSuccess() {
+            if !IsLoginSuccess() {
                 list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_DeviceBinding]
             }
             else {
@@ -285,6 +279,7 @@ class AuthorizationManage {
                 }
             }
         }
+        
         return list
     }
 }
