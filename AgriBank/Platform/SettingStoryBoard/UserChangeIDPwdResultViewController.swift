@@ -28,6 +28,7 @@ class UserChangeIDPwdResultViewController: BaseViewController {
         setShadowView(bottomView)
         titleLabel.text = errorMessage.isEmpty ? Change_Successful_Title : Change_Faild_Title
         imageView.image = errorMessage.isEmpty ? UIImage(named: ImageName.CowSuccess.rawValue) : UIImage(named: ImageName.CowFailure.rawValue)
+        
     }
 
     override func didReceiveMemoryWarning() {

@@ -27,21 +27,11 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
         self.curLocation = curLocation
     }
 
-    // MARK: - Private
-    private func setAllSubView() {
-        setDataTableView()
-    }
-    
-    private func setDataTableView() {
-        m_tvData.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
-        m_tvData.allowsSelection = false
-    }
-    
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setAllSubView()
+        m_tvData.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,10 +45,13 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as? ResultCell {
-            if cell.m_lbData.text == telePhone {
-                m_btnCallOutClick(callPhoneButton)
-            }
+//        if let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as? ResultCell {
+//            if cell.m_lbTitle.text == telePhone {
+//                m_btnCallOutClick(callPhoneButton)
+//            }
+//        }
+        if indexPath.row == 2 {
+            m_btnCallOutClick(callPhoneButton)
         }
     }
     
@@ -70,6 +63,7 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
         cell.titleWeight.constant = ServiceBaseDetail_Cell_Title_Weight
+        cell.selectionStyle = .none
         cell.set((data?[indexPath.row][Response_Key]!)!, (data?[indexPath.row][Response_Value]!)!)
         return cell
     }

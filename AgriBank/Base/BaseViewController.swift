@@ -23,8 +23,6 @@ let BarItem_Height_Weight = 30
 let Color_NavigationBar = UIColor(colorLiteralRed: 46/255, green: 134/255, blue: 201/255, alpha: 1)
 let Loading_Weight = 100
 let Loading_Height = 100
-let Base_FirstLogin = "首次登入請變更代號"
-
 
 class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     var request:ConnectionUtility? = nil
@@ -317,14 +315,22 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             
         case ViewTag.View_OptionModifyPassword.rawValue:
             if alertView.cancelButtonIndex != buttonIndex {
+                AuthorizationManage.manage.setLoginStatus(true)
                 if curFeatureID != nil {
                     enterFeatureByID(curFeatureID!, true)
                 }
-                curFeatureID = nil
             }
             else {
+                AuthorizationManage.manage.setLoginStatus(false)
                 enterFeatureByID(.FeatureID_UserPwdChange, true)
+                if let con = navigationController?.viewControllers.first {
+                    if con is HomeViewController {
+                        navigationController?.popToRootViewController(animated: true)
+                        (con as! HomeViewController).pushFeatureController(.FeatureID_UserPwdChange, true)
+                    }
+                }
             }
+            curFeatureID = nil
             
         default: navigationController?.popToRootViewController(animated: true)
         }
@@ -442,7 +448,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     authList = list
                 }
                 AuthorizationManage.manage.setResponseLoginInfo(info, authList)
-            
+                
                 loginView?.saveDataInFile()
                 loginView?.removeFromSuperview()
                 loginView = nil
@@ -456,6 +462,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     // 帳戶狀態  (1.沒過期，2已過期，需要強制變更，3.已過期，不需要強制變更，4.首登，5.此ID已無有效帳戶)
                     switch status {
                     case "1":
+                        AuthorizationManage.manage.setLoginStatus(true)
                         if curFeatureID != nil {
                             enterFeatureByID(curFeatureID!, true)
                         }
@@ -463,7 +470,12 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         
                     case "2":
                         showErrorMessage(nil, "請強制變更密碼")
-                        enterFeatureByID(.FeatureID_UserPwdChange, true)
+                        if let con = navigationController?.viewControllers.first {
+                            if con is HomeViewController {
+                                navigationController?.popToRootViewController(animated: true)
+                                (con as! HomeViewController).pushFeatureController(.FeatureID_UserPwdChange, true)
+                            }
+                        }
                         curFeatureID = nil
                         
                     case "3":
@@ -472,8 +484,13 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         alert.show()
                         
                     case "4":
-                        enterFeatureByID(.FeatureID_FirstLoginChange, true)
-                        showErrorMessage(nil, Base_FirstLogin)
+                        showErrorMessage(nil, "首次登入請變更代號")
+                        if let con = navigationController?.viewControllers.first {
+                            if con is HomeViewController {
+                                navigationController?.popToRootViewController(animated: true)
+                                (con as! HomeViewController).pushFeatureController(.FeatureID_FirstLoginChange, true)
+                            }
+                        }
                         curFeatureID = nil
                         
 //                    case "5": curFeatureID = nil
@@ -481,13 +498,12 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     default: curFeatureID = nil
                     }
                 }
-                
 //                registerAPNSToken()
                 (UIApplication.shared.delegate as! AppDelegate).notificationAllEvent()
             }
             
         case "COMM0102":
-            AuthorizationManage.manage.setResponseLoginInfo(nil, nil)
+            AuthorizationManage.manage.setLoginStatus(false)
             
         case TransactionID_Description:
             if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
@@ -531,6 +547,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
     func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         setLoading(false)
         switch description {
+        /*  有到「確認」or「結果」的電文都不需判斷ReturnCode  */
         case "TRAN0101","TRAN0103","TRAN0201","TRAN0302","TRAN0401","TRAN0502","TRAN0602",
              "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
              "PAY0103","PAY0105","PAY0107",
@@ -566,8 +583,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         default: break
                         }
                     }
-                    
-                    if description == "COMM0101" { // 登入失敗，需要重取圖形驗證碼
+                    /*  登入失敗，需要重取圖形驗證碼 */
+                    if description == "COMM0101" {
                         getImageConfirm()
                     }
                 }

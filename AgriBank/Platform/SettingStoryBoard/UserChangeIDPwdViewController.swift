@@ -58,6 +58,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
             againTextfield.placeholder = "再次輸入新使用者密碼"
             againTextfield.isSecureTextEntry = true
         }
+        addGestureForKeyBoard()
     }
 
     override func didReceiveMemoryWarning() {

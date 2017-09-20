@@ -51,7 +51,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
         navigationController?.navigationBar.isHidden = true
         if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
             statusView.isHidden = true
@@ -90,7 +89,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             
         case "COMM0404":
             if let data = response.object(forKey: "Data") as? [String:Any], let url = data["url"] as? String {
-                postRequest("", "LogoImage", nil, nil, url, false, true)
+                postRequest("", LogoImage_Description, nil, nil, url, false, true)
                 getAnnounceNewsInfo()
             }
             else {
@@ -140,7 +139,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 super.didResponse(description, response)
             }
             
-        case "LogoImage":
+        case LogoImage_Description:
             if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
                 logoImageView.image = responseImage
                 logoImage = responseImage
@@ -196,6 +195,8 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     }
 
     func updateLoginStatus() {
+        featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
+        var list:[[String:Any]]? = nil
         if AuthorizationManage.manage.IsLoginSuccess() {
             if let info = AuthorizationManage.manage.GetLoginInfo() {
                 loginImageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
@@ -215,14 +216,25 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             else {
                 getBankLogoInfo()
             }
+            list = bankNewsList
         }
         else {
             loginImageView.image = UIImage(named: ImageName.Login.rawValue)
             logoImage = nil
+            logoImageView.image = UIImage(named: ImageName.DefaultLogo.rawValue)
             loginImageView.layer.cornerRadius = 0
             loginImageView.layer.masksToBounds = false
             loginStatusLabel.text = NoLogin_Title
             accountBalanceLabel.text = "-"
+            list = centerNewsList
+        }
+        
+        if list != nil {
+            var newsList = [String]()
+            for dic in list! {
+                newsList.append("\(dic["CB_Title"] ?? "")")
+            }
+            (newsView.subviews.first as! AnnounceNews).setContentList(newsList, self)
         }
     }
     

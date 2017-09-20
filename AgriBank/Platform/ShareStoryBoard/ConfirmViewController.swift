@@ -104,19 +104,20 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
             
         default:
             if data?.checkRequest != nil && description == (data?.checkRequest?.strSessionDescription)! {
-                if let responseData = response.object(forKey: "Data") as? [[String:String]] {
-                    data?.list = responseData
-                }
-                else {
-                    data?.list?.removeAll()
-                }
                 if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
+                    if let responseData = response.object(forKey: "Data") as? [[String:String]] {
+                        data?.list = responseData
+                    }
                     data?.title = Transaction_Successful_Title
                     data?.image = ImageName.CowSuccess.rawValue
                 }
                 else {
                     data?.title = Transaction_Faild_Title
                     data?.image = ImageName.CowFailure.rawValue
+                    if let message = response.object(forKey:"ReturnMsg") as? String {
+                        data?.list = [[String:String]]()
+                        data?.list?.append([Response_Key:Error_Title,Response_Value:message])
+                    }
                 }
                 performSegue(withIdentifier: Confirm_Segue, sender: nil)
             }

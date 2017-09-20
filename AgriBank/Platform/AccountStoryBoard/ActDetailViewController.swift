@@ -71,13 +71,13 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         let date = Date()
         let componenets = Calendar.current.dateComponents([.year, .month, .day], from: date)
         if let day = componenets.day, let month = componenets.month, let year = componenets.year {
-            endDate = "\(year)/\(month)/\(String(format: "%02d", day))"
+            endDate = "\(year)/\(String(format: "%02d", month))/\(String(format: "%02d", day))"
         }
         
         let newDate = Calendar.current.date(byAdding: .day, value: -7, to: date) ?? date
         let startComponenets = Calendar.current.dateComponents([.year, .month, .day], from: newDate)
         if let day = startComponenets.day, let month = startComponenets.month, let year = startComponenets.year {
-            startDate = "\(year)/\(month)/\(String(format: "%02d", day))"
+            startDate = "\(year)/\(String(format: "%02d", month))/\(String(format: "%02d", day))"
         }
         dateTypeLabel.text = weekDayButton.titleLabel?.text
         dateLabel.text = startDate + (endDate != "" ? " - \(endDate)" : "")

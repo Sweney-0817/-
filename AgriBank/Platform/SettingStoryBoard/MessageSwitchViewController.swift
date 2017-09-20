@@ -72,7 +72,7 @@ class MessageSwitchViewController: BaseViewController {
     @IBAction func clickSwitch(_ sender: Any) {
         if settingStatus {
             setLoading(true)
-            postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"commitTxn","TransactionId":transactionId,"action":messageSwitch.isOn ? "1" : "0"], true), AuthorizationManage.manage.getHttpHead(true))
+            postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":transactionId,"action":messageSwitch.isOn ? "1" : "0"], true), AuthorizationManage.manage.getHttpHead(true))
         }
         else {
             UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)

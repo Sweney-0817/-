@@ -83,21 +83,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         AuthorizationManage.manage.SetAPNSToken(token)
     }
 
-    func timeOut() {
-        if AuthorizationManage.manage.IsLoginSuccess() {
-            let alert = UIAlertView(title: UIAlert_Default_Title, message: "待機時間過長即將退出", delegate: self, cancelButtonTitle: UIAlert_Confirm_Title)
-            alert.show()
+    func timeOut(_ sender:Timer) {
+        if sender == logoutTimer {
+            if AuthorizationManage.manage.IsLoginSuccess() {
+                let alert = UIAlertView(title: UIAlert_Default_Title, message: "待機時間過長即將退出", delegate: self, cancelButtonTitle: UIAlert_Confirm_Title)
+                alert.show()
+            }
+            logoutTimer?.invalidate()
         }
-        logoutTimer?.invalidate()
     }
     
     func notificationAllEvent() {
         if AuthorizationManage.manage.IsLoginSuccess() {
-            logoutTimer = Timer.scheduledTimer(timeInterval: AgriBank_TimeOut, target: self, selector: #selector(timeOut), userInfo: nil, repeats: false)
+            logoutTimer = Timer.scheduledTimer(timeInterval: AgriBank_TimeOut, target: self, selector: #selector(timeOut(_:)), userInfo: nil, repeats: false)
             NotificationCenter.default.addObserver(forName: nil, object: nil, queue: nil) { notification in
                 if notification.name.rawValue == "_UIWindowSystemGestureStateChangedNotification" {
                     self.logoutTimer?.invalidate()
-                    self.logoutTimer = Timer.scheduledTimer(timeInterval: AgriBank_TimeOut, target: self, selector: #selector(self.timeOut), userInfo: nil, repeats: false)
+                    self.logoutTimer = Timer.scheduledTimer(timeInterval: AgriBank_TimeOut, target: self, selector: #selector(self.timeOut(_:)), userInfo: nil, repeats: false)
                 }
             }
         }
@@ -116,7 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     func didRecvdResponse(_ description: String, _ response: NSDictionary) {
         switch description {
         case "COMM0102":
-            AuthorizationManage.manage.setResponseLoginInfo(nil, nil)
+            AuthorizationManage.manage.setLoginStatus(false)
             let center = ((window?.rootViewController as! SideMenuViewController).getController(.center) as! UINavigationController)
             center.popToRootViewController(animated: true)
             (center.viewControllers.first as! HomeViewController).updateLoginStatus()

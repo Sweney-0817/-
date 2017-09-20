@@ -62,6 +62,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
         setLoading(true)
         getTransactionID("08001", TransactionID_Description)
         addObserverToKeyBoard()
+        addGestureForKeyBoard()
     }
 
     override func didReceiveMemoryWarning() {

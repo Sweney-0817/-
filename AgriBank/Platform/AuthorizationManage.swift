@@ -37,6 +37,7 @@ class AuthorizationManage {
     private var canNTAgreedTransfer = false              // 是否可以約轉
     private var canNTNonAgreedTransfer = false           // 是否可以非約轉
     private var needReAddList = [PlatformFeatureID:Int]()// 使用者加入的功能，但功能授權未開啟
+    private var isLoginSuccess = false                   // 判斷是否登入成功
     
     func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info
@@ -80,7 +81,14 @@ class AuthorizationManage {
     }
     
     func IsLoginSuccess() -> Bool {
-        return userInfo?.Token != nil
+        return isLoginSuccess
+    }
+    
+    func setLoginStatus(_ status:Bool) {
+        isLoginSuccess = status
+        if status == false {
+            AuthorizationManage.manage.setResponseLoginInfo(nil, nil)
+        }
     }
     
     func checkCanNTTransfer(_ isNotAgreedTrans:Bool) -> Bool {
@@ -128,7 +136,7 @@ class AuthorizationManage {
             canEnter = true
             
         default:
-            canEnter = userInfo?.Token != nil ? true : false
+            canEnter = AuthorizationManage.manage.IsLoginSuccess()
         }
         return canEnter
     }

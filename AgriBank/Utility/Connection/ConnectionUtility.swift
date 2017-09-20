@@ -110,8 +110,8 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
                     resultList[ReturnCode_Key] = ReturnCode_Success
                     if let flag = String(data: self.responseData as Data, encoding: .utf8) {
                         resultList[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] = flag
-                        self.delegate?.didRecvdResponse(session.sessionDescription!, resultList as NSDictionary)
                     }
+                    self.delegate?.didRecvdResponse(session.sessionDescription!, resultList as NSDictionary)
                 }
                 else if self.downloadType == .Data {
                     var resultList = [String:Any]()
@@ -128,9 +128,12 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
         DispatchQueue.main.async {
             if let data = try? Data(contentsOf: location) {
                 if self.downloadType == .Image {
+                    var resultList = [String:Any]()
+                    resultList[ReturnCode_Key] = ReturnCode_Success
                     if let image = UIImage(data: data) {
-                       self.delegate?.didRecvdResponse(session.sessionDescription!, [RESPONSE_IMAGE_KEY:image])
+                        resultList[RESPONSE_IMAGE_KEY] = image
                     }
+                    self.delegate?.didRecvdResponse(session.sessionDescription!, resultList as NSDictionary)
                 }
             }
         }

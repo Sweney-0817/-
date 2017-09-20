@@ -15,10 +15,10 @@ let News_ShowDate = "發佈日期:"
 class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var m_vChooseTypeView: ChooseTypeView!
     @IBOutlet weak var m_tvData: UITableView!
-    var m_iSelectedIndex = -1
-    var m_Data1: [PromotionStruct] = [PromotionStruct]()
-    var m_Data2: [PromotionStruct] = [PromotionStruct]()
-    var m_curData: [PromotionStruct]? = nil
+    private var m_iSelectedIndex = -1
+    private var m_Data1:[PromotionStruct] = [PromotionStruct]()
+    private var m_Data2:[PromotionStruct] = [PromotionStruct]()
+    private var m_curData:[PromotionStruct]? = nil
 
     // MARK: - Public
     func SetNewsList(_ center:[PromotionStruct]?, _ bank:[PromotionStruct]?) {
@@ -35,7 +35,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
         super.viewDidLoad()
 
         setAllSubView()
-        initDataForType(News_TypeList.first!)
+        initDataForType(AuthorizationManage.manage.IsLoginSuccess() ? News_TypeList[1]:News_TypeList[0])
         setShadowView(m_vChooseTypeView)
     }
     

@@ -134,9 +134,9 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         isFixedDate = false
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
             dateView.frame = view.frame
-            var component = Calendar.current.dateComponents([.day], from: Date())
+            var component = Calendar.current.dateComponents([.day,.year,.month], from: Date())
             component.day = component.day!+1
-            let startDate = InputDatePickerStruct(minDate: component.date, maxDate: nil)
+            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: component), maxDate: nil)
             dateView.showOneDatePickerView(true, startDate) { start in
                 self.chooseDay = start.day
                 self.chooseMonth = start.month
@@ -170,30 +170,6 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     // MARK: - UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        return true
-    }
-    
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if textField == transAmountTextfield {
-            // ToolBar
-            let toolBar = UIToolbar()
-            toolBar.barTintColor = ToolBar_barTintColor
-            toolBar.tintColor = ToolBar_tintColor
-            toolBar.sizeToFit()
-            // Adding Button ToolBar
-            let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
-            let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-            let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
-            titleLabel.textColor = .black
-            titleLabel.text = Choose_Title
-            titleLabel.textAlignment = .center
-            let titleButton = UIBarButtonItem(customView: titleLabel)
-            
-            toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
-            toolBar.isUserInteractionEnabled = true
-            textField.inputAccessoryView = toolBar
-        }
         return true
     }
     
