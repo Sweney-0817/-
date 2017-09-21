@@ -233,11 +233,12 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     @IBAction func clickBindingBtn(_ sender: Any) {
         if inputIsCorrect() {
             setLoading(true)
-            VaktenManager.sharedInstance().authenticateOperation(withSessionID: UUID().uuidString) { resultCode in
+            let id = UUID().uuidString
+            VaktenManager.sharedInstance().authenticateOperation(withSessionID: id) { resultCode in
                 if VIsSuccessful(resultCode) {
                     let bankCode = self.bankCode[self.topDropView?.getContentByType(.First).replacingOccurrences(of: " ", with: "") ?? ""] ?? ""
                     let pd = SecurityUtility.utility.MD5(string: self.passwordTextfield.text!)
-                    self.postRequest("COMM/COMM0801", "COMM0801", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08011","Operate":"queryData","BR_CODE":bankCode,"ID_DATA":self.identifyTextfield.text!,"USER_ID":self.userCodeTextfield.text!,"PWD":pd,"ASSOCIATIONCODE":self.checkCodeTextfield.text!], true), AuthorizationManage.manage.getHttpHead(true))
+                    self.postRequest("COMM/COMM0801", "COMM0801", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08011","Operate":"queryData","BR_CODE":bankCode,"ID_DATA":self.identifyTextfield.text!,"USER_ID":self.userCodeTextfield.text!,"PWD":pd,"ASSOCIATIONCODE":self.checkCodeTextfield.text!,"SessionId":id], true), AuthorizationManage.manage.getHttpHead(true))
                 }
                 else {
                     self.showErrorMessage(nil, ErrorMsg_Verification_Faild)
