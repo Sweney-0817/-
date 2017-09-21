@@ -317,7 +317,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"1"], true), AuthorizationManage.manage.getHttpHead(true))
             }
@@ -326,7 +326,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             }
             
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]] {
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]] {
                         var addType = false
@@ -388,7 +388,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             }
             
         case "ACIF0101":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 resultList = data
                 performSegue(withIdentifier: ActOverview_ShowDetail_Segue, sender: nil)
             }
@@ -449,7 +449,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         let index = currentType == .Type0 ? (ActOverview_TypeList.index(of: typeList[indexPath.section+1]) ??  0) : typeListIndex
         if let type = categoryType[ActOverview_TypeList[index]], let array = categoryList[type] {
             cell.detail1Label.text = array[indexPath.row].accountNO
-            cell.detail2Label.text = array[indexPath.row].currency
+            cell.detail2Label.text = (array[indexPath.row].currency == Currency_TWD) ? Currency_TWD_Title : array[indexPath.row].currency
             cell.detail3Label.text = String(array[indexPath.row].balance)
             if let cellType = getTypeByInputString(ActOverview_TypeList[index]) {
                 cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == Account_EnableTrans,true))

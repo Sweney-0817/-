@@ -107,7 +107,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "INFO0301":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["No"] as? [[String:String]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["No"] as? [[String:String]] {
                 aroundMeList.removeAll()
                 for info in array {
                     if let name = info["Name"], let address = info["Address"], let tel = info["Tel"], let fax = info["Fax"], let distance = info["Distance"], let type = info["Type"], let longitude = info["Longitude"], let latitude = info["Latitude"] {
@@ -118,7 +118,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
             }
             
         case "INFO0302":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 unitList.removeAll()
                 unitInfoList.removeAll()
                 if let unit = data["Unit"] as? [[String:String]] {
@@ -256,7 +256,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         }
         
         if cityList.count != 0 {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             cityList.forEach{city in actSheet.addButton(withTitle: city)}
             actSheet.show(in: view)
         }

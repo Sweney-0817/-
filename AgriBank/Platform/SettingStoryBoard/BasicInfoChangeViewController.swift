@@ -78,7 +78,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "USIF0101":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 if let email = data["EMAIL"] as? String {
                     emailLabel.text = email
                 }
@@ -125,7 +125,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
             }
             
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("Usif/USIF0101", "USIF0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08001","Operate":"queryData","TransactionId":tranId], true), AuthorizationManage.manage.getHttpHead(true))
@@ -138,7 +138,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
                 changeSuccess = true
             }
-            if let data = response.object(forKey: "Data") as? [[String:String]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [[String:String]] {
                 resultList = data
                 performSegue(withIdentifier: GoBaseInfoChangeResult_Segue, sender: nil)
             }
@@ -174,9 +174,9 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
             toolBar.tintColor = ToolBar_tintColor
             toolBar.sizeToFit()
             // Adding Button ToolBar
-            let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
+            let doneButton = UIBarButtonItem(title: Determine_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
             let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
+            let cancelButton = UIBarButtonItem(title: Cancel_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
             let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
             titleLabel.textColor = .black
             titleLabel.text = Choose_Title

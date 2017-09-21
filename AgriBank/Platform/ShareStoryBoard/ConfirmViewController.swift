@@ -88,11 +88,11 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                                 self.postRequest((self.dataOTP?.checkRequest?.strMethod)!, (self.dataOTP?.checkRequest?.strSessionDescription)!, self.dataOTP?.checkRequest?.httpBody, self.dataOTP?.checkRequest?.loginHttpHead, self.dataOTP?.checkRequest?.strURL, (self.data?.checkRequest?.needCertificate)!, (self.dataOTP?.checkRequest?.isImage)!)
                             }
                             else {
-                                self.showErrorMessage(nil, "generateGeoOTPCode faild")
+                                self.showErrorMessage(nil, "\(ErrorMsg_GenerateOTP_Faild) \((otp?.resultCode)!)")
                             }
                         }
                         else {
-                            self.showErrorMessage(nil, "signTaskOperation faild")
+                            self.showErrorMessage(nil, "\(ErrorMsg_SignTask_Faild) \(resultCode)")
                         }
                     }
                 }
@@ -105,7 +105,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         default:
             if data?.checkRequest != nil && description == (data?.checkRequest?.strSessionDescription)! {
                 if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
-                    if let responseData = response.object(forKey: "Data") as? [[String:String]] {
+                    if let responseData = response.object(forKey: ReturnData_Key) as? [[String:String]] {
                         data?.list = responseData
                     }
                     data?.title = Transaction_Successful_Title
@@ -114,7 +114,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 else {
                     data?.title = Transaction_Faild_Title
                     data?.image = ImageName.CowFailure.rawValue
-                    if let message = response.object(forKey:"ReturnMsg") as? String {
+                    if let message = response.object(forKey:ReturnMessage_Key) as? String {
                         data?.list = [[String:String]]()
                         data?.list?.append([Response_Key:Error_Title,Response_Value:message])
                     }
@@ -140,7 +140,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                     self.navigationController?.popViewController(animated: true)
                 }
                 else {
-                    self.showErrorMessage(nil, "cancelTaskOperation faild")
+                    self.showErrorMessage(nil, "\(ErrorMsg_CancelTask_Faild) \(resultCode)")
                 }
             }
         }

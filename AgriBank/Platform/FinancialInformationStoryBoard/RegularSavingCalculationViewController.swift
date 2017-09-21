@@ -221,7 +221,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
                 currentTextField?.resignFirstResponder()
                 currentTextField = textField
             }
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             RegularSavingCalculation_MonthList.forEach{ title in actSheet.addButton(withTitle: title) }
             actSheet.show(in: view)
             return false
@@ -230,24 +230,6 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
             currentTextField = textField
         }
   
-//        // ToolBar
-//        let toolBar = UIToolbar()
-//        toolBar.barTintColor = ToolBar_barTintColor
-//        toolBar.tintColor = ToolBar_tintColor
-//        toolBar.sizeToFit()
-//        // Adding Button ToolBar
-//        let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
-//        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-//        let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-//        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
-//        titleLabel.textColor = .black
-//        titleLabel.text = Choose_Title
-//        titleLabel.textAlignment = .center
-//        let titleButton = UIBarButtonItem(customView: titleLabel)
-//        
-//        toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
-//        toolBar.isUserInteractionEnabled = true
-//        textField.inputAccessoryView = toolBar
         return true
     }
     
@@ -260,22 +242,6 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
         }
         return true
     }
-    
-//    // MARK: - Selector
-//    func clickDoneBtn(_ sender:Any) {
-//        if currentTextField == m_tfDuration {
-//            let pickerView = m_tfDuration.inputView as! UIPickerView
-//            currentTextField?.text = RegularSavingCalculation_MonthList[pickerView.selectedRow(inComponent: 0)]
-//        }
-//        currentTextField?.resignFirstResponder()
-//        currentTextField = nil
-//    }
-//    
-//    func clickCancelBtn(_ sender:Any) {
-//        currentTextField?.text = ""
-//        currentTextField?.resignFirstResponder()
-//        currentTextField = nil
-//    }
     
     // MARK: - UIActionSheetDelegate
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {

@@ -106,7 +106,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
@@ -116,7 +116,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             }
             
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Deposit_Type {
                         accountList = [AccountStruct]()
@@ -138,7 +138,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             }
             
         case "TRAN0402":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 if let AUTTRN = data["AUTTRN"] as? [[String:Any]] {
                     responseExpireSaveList = AUTTRN
                     if responseExpireSaveList.count > 0, let name = responseExpireSaveList[0]["Name"] as? String {
@@ -163,7 +163,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             }
             
         case "COMM0701":
-            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
             
                 let TACTNO = topDropView?.getContentByType(.First) ?? ""
                 let TYPE = responseDepositList[curDepositTypeIndex!]["Type"] ?? ""
@@ -248,9 +248,9 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
         toolBar.tintColor = ToolBar_tintColor
         toolBar.sizeToFit()
         // Adding Button ToolBar
-        let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
+        let doneButton = UIBarButtonItem(title: Determine_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
+        let cancelButton = UIBarButtonItem(title: Cancel_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
         titleLabel.textColor = .black
         titleLabel.text = Choose_Title
@@ -266,7 +266,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
     // MARK: - ThreeRowDropDownViewDelegate
     func clickThreeRowDropDownView(_ sender: ThreeRowDropDownView) {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
@@ -292,7 +292,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             }
             if index != nil {
                 if let array = responseExpireSaveList[index!]["AIRTID"] as? [[String:Any]] {
-                    let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                    let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
                     for info in array {
                         if let Name = info["Name"] as? String {
                             actSheet.addButton(withTitle: Name)
@@ -309,7 +309,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
         else {
             switch sender {
             case depositTypeDropView!: // "存款種類"
-                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
                 for info in responseDepositList {
                     if let Name = info["Name"] as? String {
                         actSheet.addButton(withTitle: Name)
@@ -321,7 +321,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             case rateTypeDropView!: // "利率方式"
                 if curDepositTypeIndex != nil {
                     if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]] {
-                        let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                        let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
                         for info in Detail {
                             if let IRTID = info["IRTID"] as? [String:String], let Name = IRTID["Name"] {
                                 actSheet.addButton(withTitle: Name)
@@ -347,7 +347,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                 }
                 
                 if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]], let DetailRate = Detail[curRateTypeIndex!]["DetailRate"] as? [[String:String]] {
-                    let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                    let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
                     for info in DetailRate {
                         if let PRDCD = info["PRDCD"] {
                             actSheet.addButton(withTitle: PRDCD)
@@ -380,7 +380,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             switch actionSheet.tag {
             case ViewTag.View_AccountActionSheet.rawValue:
                 if let info = accountList?[buttonIndex-1] {
-                    topDropView?.setThreeRow(DepositCombinedToDeposit_Account_Title, info.accountNO, DepositCombinedToDeposit_Currency_Title, info.currency, DepositCombinedToDeposit_Balance_Title, String(info.balance))
+                    topDropView?.setThreeRow(DepositCombinedToDeposit_Account_Title, info.accountNO, DepositCombinedToDeposit_Currency_Title, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), DepositCombinedToDeposit_Balance_Title, String(info.balance))
                 }
                 
             case ViewTag.View_ExpireSaveActionSheet.rawValue:

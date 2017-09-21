@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
                     })
                 }
                 else {
-                    let alert = UIAlertView(title: UIAlert_Default_Title, message: "您未同意開啟接收推播訊息", delegate: nil, cancelButtonTitle:UIAlert_Confirm_Title)
+                    let alert = UIAlertView(title: UIAlert_Default_Title, message: "您未同意開啟接收推播訊息", delegate: nil, cancelButtonTitle:Determine_Title)
                     alert.show()
                 }
             })
@@ -86,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     func timeOut(_ sender:Timer) {
         if sender == logoutTimer {
             if AuthorizationManage.manage.IsLoginSuccess() {
-                let alert = UIAlertView(title: UIAlert_Default_Title, message: "待機時間過長即將退出", delegate: self, cancelButtonTitle: UIAlert_Confirm_Title)
+                let alert = UIAlertView(title: UIAlert_Default_Title, message: "待機時間過長即將退出", delegate: self, cancelButtonTitle: Determine_Title)
                 alert.show()
             }
             logoutTimer?.invalidate()
@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     }
     
     func didFailedWithError(_ error: Error) {
-        let alert = UIAlertView(title: UIAlert_Default_Title, message: error.localizedDescription, delegate: nil, cancelButtonTitle:UIAlert_Confirm_Title)
+        let alert = UIAlertView(title: UIAlert_Default_Title, message: error.localizedDescription, delegate: nil, cancelButtonTitle:Determine_Title)
         alert.show()
     }
     

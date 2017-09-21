@@ -47,7 +47,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
         setShadowView(bottomVIew)
         addGestureForKeyBoard()
         
-        self.getCanLoginBankInfo()
+        getCanLoginBankInfo()
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,7 +63,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "COMM0403":
-            if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String : Any], let array = data["Result"] as? [[String:Any]] {
                 for dic in array {
                     var bankNameList = [String]()
                     if let city = dic["hsienName"] as? String, let cityID = dic["hsienCode"] as? String, let list = dic["bankList"] as? [[String:Any]] {
@@ -105,16 +105,11 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
             }
             
         case "COMM0801":
-            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
-                VaktenManager.sharedInstance().associationOperation(withAssociationCode: checkCodeTextfield.text ?? "") { resultCode in
-                    if VIsSuccessful(resultCode) {
-                        self.bindingSuccess = true
-                    }
-                    self.performSegue(withIdentifier: DeviceBindingResult_Segue, sender: self)
+            VaktenManager.sharedInstance().associationOperation(withAssociationCode: checkCodeTextfield.text ?? "") { resultCode in
+                if VIsSuccessful(resultCode) {
+                    self.bindingSuccess = true
                 }
-            }
-            else {
-                super.didResponse(description, response)
+                self.performSegue(withIdentifier: DeviceBindingResult_Segue, sender: self)
             }
             
         default: break
@@ -138,9 +133,9 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
         toolBar.tintColor = ToolBar_tintColor
         toolBar.sizeToFit()
         // Adding Button ToolBar
-        let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
+        let doneButton = UIBarButtonItem(title: Determine_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
+        let cancelButton = UIBarButtonItem(title: Cancel_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
         titleLabel.textColor = .black
         titleLabel.text = Choose_Title
@@ -197,6 +192,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField == topTextfield {
             addPickerView(textField)
+            textField.tintColor = .clear
         }
         return true
     }
@@ -236,24 +232,19 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     // MARK: - StoryBoard Touch Event
     @IBAction func clickBindingBtn(_ sender: Any) {
         if inputIsCorrect() {
-            let id = transactionId.isEmpty ? UUID().uuidString : transactionId
             setLoading(true)
-            VaktenManager.sharedInstance().authenticateOperation(withSessionID: id) { resultCode in
+            VaktenManager.sharedInstance().authenticateOperation(withSessionID: UUID().uuidString) { resultCode in
                 if VIsSuccessful(resultCode) {
                     let bankCode = self.bankCode[self.topDropView?.getContentByType(.First).replacingOccurrences(of: " ", with: "") ?? ""] ?? ""
-                    let id = self.identifyTextfield.text ?? ""
-                    let ud = self.userCodeTextfield.text ?? ""
-                    let pd = self.passwordTextfield.text ?? ""
-                    let cd = self.checkCodeTextfield.text ?? ""
-                    self.postRequest("COMM/COMM0801", "COMM0801", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08011","Operate":"queryData","BR_CODE":bankCode,"ID_DATA":id,"USER_ID":ud,"PWD":pd,"ASSOCIATIONCODE":cd], true), AuthorizationManage.manage.getHttpHead(true))
+                    let pd = SecurityUtility.utility.MD5(string: self.passwordTextfield.text!)
+                    self.postRequest("COMM/COMM0801", "COMM0801", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08011","Operate":"queryData","BR_CODE":bankCode,"ID_DATA":self.identifyTextfield.text!,"USER_ID":self.userCodeTextfield.text!,"PWD":pd,"ASSOCIATIONCODE":self.checkCodeTextfield.text!], true), AuthorizationManage.manage.getHttpHead(true))
                 }
                 else {
-                    self.showErrorMessage(nil, "驗證失敗")
+                    self.showErrorMessage(nil, ErrorMsg_Verification_Faild)
                     self.setLoading(false)
                 }
             }
         }
-        
     }
     
     // MARK: - UIPickerViewDataSource

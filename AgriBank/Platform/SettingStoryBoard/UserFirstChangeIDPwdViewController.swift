@@ -43,7 +43,7 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
         switch description {
         case "COMM0103":
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode != ReturnCode_Success {
-                if let message = response.object(forKey: "ReturnMsg") as? String {
+                if let message = response.object(forKey: ReturnMessage_Key) as? String {
                     errorMessage = message
                 }
             }

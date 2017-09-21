@@ -75,7 +75,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             
         case "COMM0201":
             var bannerList = [BannerStructure]()
-            if let data:[String:Any] = response.object(forKey: "Data") as? [String:Any] {
+            if let data:[String:Any] = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 if let list:[[String:String]] = data["Result"] as? [[String:String]] {
                     for banner in list {
                         bannerList.append(BannerStructure(imageURL: banner["picUrl"]!, link: banner["lnkUrl"]!))
@@ -88,7 +88,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             }
             
         case "COMM0404":
-            if let data = response.object(forKey: "Data") as? [String:Any], let url = data["url"] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let url = data["url"] as? String {
                 postRequest("", LogoImage_Description, nil, nil, url, false, true)
                 getAnnounceNewsInfo()
             }
@@ -97,7 +97,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             }
             
         case "COMM0901":
-            if let data = response.object(forKey: "Data") as? [String : Any] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String : Any] {
                 if let forcedChange = data["forcedChange"] as? String { //是否強制換版
                     if forcedChange == "Y" {
                         showErrorMessage(nil, "需要強制換版")
@@ -120,7 +120,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             }
         
         case "INFO0201":
-            if let data = response.object(forKey: "Data") as? [String : Any], let list = data["CB_List"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String : Any], let list = data["CB_List"] as? [[String:Any]] {
                 if AuthorizationManage.manage.IsLoginSuccess() {
                     bankNewsList?.removeAll()
                     bankNewsList = list
@@ -273,7 +273,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             showLoginView()
         }
         else {
-            let alert = UIAlertView(title: LogOut_Title, message: "", delegate: self, cancelButtonTitle: UIAlert_Cancel_Title, otherButtonTitles: UIAlert_Confirm_Title)
+            let alert = UIAlertView(title: LogOut_Title, message: "", delegate: self, cancelButtonTitle: Cancel_Title, otherButtonTitles: Determine_Title)
             alert.tag = ViewTag.View_LogOut.rawValue
             alert.show()
         }

@@ -263,7 +263,6 @@ enum ViewTag: Int {
     case ActionSheet_Photo = 99             // 頭像設定
     case View_Status                        // 狀態欄
     case View_DatePickerBackground          // 日期Picker Background
-    case View_Loading                       // 讀取頁面
     case View_StartDatePickerView           // 起始日期Picker
     case View_EndDatePickerView             // 截止日期Picker
     case View_AccountActionSheet            // 帳號列表ActionSheet
@@ -276,6 +275,7 @@ enum ViewTag: Int {
     case View_ForceLogin                    // 強制登入
     case View_OptionModifyPassword          // 密碼已到期，建議變更密碼
     case View_LogOut                        // 登出
+    case View_AlertActionType               // ReturnCode 電文response: ActionType = backHome
 }
 
 // MARK: - AuthorizationManager
@@ -337,6 +337,7 @@ let ToolBar_tintColor = UIColor.blue
 let ToolBar_barTintColor = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
 let ToolBar_Title_Weight:CGFloat = 100
 let PickView_Height:CGFloat = 200
+let NavigationBar_Color = UIColor(colorLiteralRed: 46/255, green: 134/255, blue: 201/255, alpha: 1)
 
 // MARK: - 字串定義
 let SystemCell_Identify = "System_Cell"
@@ -352,23 +353,21 @@ let LogoImage_Description = "LogoImage"
 let Login_Title = "登出"
 let NoLogin_Title  = "登入"
 let LogOut_Title = "確定是否登出"
-let ToolBar_DoneButton_Title = "確定"
-let ToolBar_CancelButton_Title = "取消"
+let Determine_Title = "確定"
+let Cancel_Title = "取消"
 let Transaction_Successful_Title = "交易成功"
 let Transaction_Faild_Title = "交易失敗"
 let Change_Successful_Title = "變更成功"
 let Change_Faild_Title = "變更失敗"
-let UIActionSheet_Cancel_Title = "取消"
 let Check_Transaction_Title = "請確認本次交易資訊"
 let UIAlert_Default_Title = "注意"
-let UIAlert_Cancel_Title = "取消"
-let UIAlert_Confirm_Title = "確定"
 let Choose_Title = "請選擇"
 let Enter_Title = "請輸入"
 let Get_Null_Title = "無法取得"
 let Error_Title = "錯誤訊息"
 let Lose_Successful_Title = "掛失成功"
 let Lose_Faild_Title = "掛失失敗"
+let Currency_TWD_Title = "新臺幣"
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "agriBank_iOS"
@@ -406,8 +405,11 @@ struct AccountStruct {
 let ImageConfirm_Success = "true"
 let ReturnCode_Success = "OK"
 let ReturnCode_Key = "ReturnCode"
+let ReturnMessage_Key = "ReturnMsg"
+let ReturnData_Key = "Data"
 let Response_Key = "Key"
 let Response_Value = "Value"
+let Currency_TWD = "00"             // 幣別代碼 00:台幣
 let Account_EnableTrans = "2"       // 此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
 let Can_Transaction_Status:Int = 1  // 是否可進行交易 0:不可交易 1:可交易
 let Account_Saving_Type = "P"       // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
@@ -415,7 +417,6 @@ let Account_Check_Type = "K"        // 帳號類別 活存：P , 支存：K , �
 let Account_Deposit_Type = "M"      // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Loan_Type = "L"         // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Kepasco_userIP = ""
-
 
 // MARK: - DropDownType
 enum DropDownType:Int {
@@ -434,23 +435,34 @@ let ErrorMsg_Error_Identify = "身份證字號格式錯誤"
 let ErrorMsg_Format = "格式不符"
 let ErrorMsg_IsJailBroken = "此功能無法在JB下使用"
 let ErrorMsg_No_TaskId = "無法取得TaskID"
-
-let ErrorMsg_GetList_InAgreedAccount = "無法取得約定轉入帳戶"   // 用入「即時轉帳」
-let ErrorMsg_GetList_InCommonAccount = "無法取得常用轉入帳戶"   // 用入「即時轉帳」
-let ErrorMsg_Choose_InAccount = "請選擇轉入帳號"               // 用入「即時轉帳」
-
-let ErrorMsg_Transfer_Date = "請選擇轉出日期"                  // 用入「預約轉帳」
-
-let ErrorMsg_NeedChangeOne = "至少需修改一項"                  // 用於「個人基本資料變更」
-let ErrorMsg_Telephone = "「新區碼」及「新聯絡電話」必須一起修改"   //  用於「個人基本資料變更」
-let ErrorMsg_Address = "「新郵遞區號」及「新聯絡地址」必須一起修改"  //   用於「個人基本資料變更」
-let ErrorMsg_Choose_CityBank = "請選擇地區"                   // 用於「登入」
-
-let ErrorMsg_Enter_SaveAmount = "請輸入存款金額"               // 用於「定期儲蓄試算」
-let ErrorMsg_Enter_SaveRate = "請輸入存款年利率"                // 用於「定期儲蓄試算」
-let ErrorMsg_GreaterThan_MaxRate = "存款年利率不得大於18%"      // 用於「定期儲蓄試算」
-let ErrorMsg_Choose_SaveDuration = "請選擇存款期限"            // 用於「定期儲蓄試算」
-
-let ErrorMsg_Not_Zero = "不得於0"                            // 用於「定期儲蓄試算」
-let ErrorMsg_Choose_PayDate = "請選擇繳費期間"                // 用於「繳稅」
-
+/*  用於「即時轉帳」 */
+let ErrorMsg_GetList_InAgreedAccount = "無法取得約定轉入帳戶"
+let ErrorMsg_GetList_InCommonAccount = "無法取得常用轉入帳戶"
+let ErrorMsg_Choose_InAccount = "請選擇轉入帳號"
+/*  用於「預約轉帳」 */
+let ErrorMsg_Transfer_Date = "請選擇轉出日期"
+/*  用於「個人基本資料變更」 */
+let ErrorMsg_NeedChangeOne = "至少需修改一項"
+let ErrorMsg_Telephone = "「新區碼」及「新聯絡電話」必須一起修改"
+let ErrorMsg_Address = "「新郵遞區號」及「新聯絡地址」必須一起修改"
+/*  用於「登入」 */
+let ErrorMsg_Choose_CityBank = "請選擇地區"
+/*  用於「定期儲蓄試算」 */
+let ErrorMsg_Enter_SaveAmount = "請輸入存款金額"
+let ErrorMsg_Enter_SaveRate = "請輸入存款年利率"
+let ErrorMsg_GreaterThan_MaxRate = "存款年利率不得大於18%"
+let ErrorMsg_Choose_SaveDuration = "請選擇存款期限"
+/*  用於「定期儲蓄試算」 */
+let ErrorMsg_Not_Zero = "不得於0"
+/*  用於「繳稅」 */
+let ErrorMsg_Choose_PayDate = "請選擇繳費期間"
+/*  用於keyPasco */
+let ErrorMsg_Verification_Faild = "驗證失敗"
+let ErrorMsg_GetTasks_Faild = "Load task failed"
+let ErrorMsg_GenerateOTP_Faild = "generateGeoOTPCode faild"
+let ErrorMsg_SignTask_Faild = "signTaskOperation faild"
+let ErrorMsg_CancelTask_Faild = "cancelTaskOperation faild"
+/* 用於「登入」 */
+let ErrorMsg_First_Login = "首次登入請變更代號"
+let ErrorMsg_Force_ChangePassword = "請強制變更密碼"
+let ErrorMsg_Suggest_ChangePassword = "密碼已到期，建議變更密碼"

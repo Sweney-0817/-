@@ -18,15 +18,16 @@ let URL_DOMAIN = "172.16.132.52/APP/api"
 let URL_PROTOCOL = "https"
 let URL_DOMAIN = ""
 #endif
+
 let REQUEST_URL = "\(URL_PROTOCOL)://\(URL_DOMAIN)"
 let BarItem_Height_Weight = 30
-let Color_NavigationBar = UIColor(colorLiteralRed: 46/255, green: 134/255, blue: 201/255, alpha: 1)
 let Loading_Weight = 100
 let Loading_Height = 100
 
 class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
-    var request:ConnectionUtility? = nil
-    var needShowBackBarItem:Bool = true
+    var request:ConnectionUtility? = nil        // 連線元件
+    var needShowBackBarItem:Bool = true         // 是否需要顯示返回鍵
+    var loadingView:UIView? = nil               // Loading畫面
     var transactionId = ""                      // 交易編號
     var headVarifyID = ""                       // 圖形驗證碼的「交易編號」
     var loginView:LoginView? = nil              // 登入頁面
@@ -57,8 +58,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             navigationItem.setHidesBackButton(true, animated:false);
         }
         
-        navigationController?.navigationBar.barTintColor = Color_NavigationBar
-        
+        navigationController?.navigationBar.barTintColor = NavigationBar_Color
     }
     
     override func didReceiveMemoryWarning() {
@@ -185,35 +185,39 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     
     func setLoading(_ isLoading:Bool) {
         if isLoading {
-            if view.viewWithTag(ViewTag.View_Loading.rawValue) == nil {
-                let loadingView = UIView(frame: view.bounds)
-                loadingView.tag = ViewTag.View_Loading.rawValue
-                loadingView.backgroundColor = Loading_Background_Color
+            if loadingView == nil {
+                loadingView = UIView(frame: view.bounds)
+                loadingView?.backgroundColor = Loading_Background_Color
                 
                 let backgroundView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: Loading_Weight, height: Loading_Height)))
                 backgroundView.backgroundColor = Gray_Color
                 backgroundView.layer.cornerRadius = Layer_BorderRadius
-                backgroundView.center = loadingView.center
-                loadingView.addSubview(backgroundView)
+                backgroundView.center = loadingView!.center
+                loadingView?.addSubview(backgroundView)
                 
                 let loading = UIActivityIndicatorView(activityIndicatorStyle: .gray)
                 loading.startAnimating()
-                loading.center = loadingView.center
-                loadingView.addSubview(loading)
-                
-                view.addSubview(loadingView)
+                loading.center = loadingView!.center
+                loadingView?.addSubview(loading)
+    
+//                view.addSubview(loadingView)
+                UIApplication.shared.keyWindow?.addSubview(loadingView!)
             }
         }
         else {
-            if let loadingView = view.viewWithTag(ViewTag.View_Loading.rawValue) {
-                loadingView.removeFromSuperview()
+//            if let loadingView = view.viewWithTag(ViewTag.View_Loading.rawValue) {
+//                loadingView.removeFromSuperview()
+//            }
+            if loadingView != nil {
+                loadingView?.removeFromSuperview()
+                loadingView = nil
             }
         }
     }
     
     func showErrorMessage(_ inputTitle:String?, _ message:String?, _ delegate:Any? = nil) {
         let title = inputTitle != nil ? inputTitle! : UIAlert_Default_Title
-        let alert = UIAlertView(title: title, message: message, delegate: delegate, cancelButtonTitle:UIAlert_Confirm_Title)
+        let alert = UIAlertView(title: title, message: message, delegate: delegate, cancelButtonTitle:Determine_Title)
         alert.show()
     }
     
@@ -332,6 +336,9 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             }
             curFeatureID = nil
             
+        case ViewTag.View_AlertActionType.rawValue:
+            navigationController?.popToRootViewController(animated: true)
+            
         default: navigationController?.popToRootViewController(animated: true)
         }
         
@@ -409,7 +416,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
             var bankList = [[String:[String]]]()
             var bankCode = [String:String]()
             var cityCode = [String:String]()
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]] {
                 for dic in array {
                     var bankNameList = [String]()
                     if let city = dic["hsienName"] as? String, let cityID = dic["hsienCode"] as? String, let list = dic["bankList"] as? [[String:Any]] {
@@ -429,7 +436,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
             loginView?.setInitialList(bankList, bankCode, cityCode)
             
         case "COMM0101":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 var info = ResponseLoginInfo()
                 var authList:[[String:String]]? = nil
                 if let name = data["CNAME"] as? String {
@@ -469,7 +476,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         curFeatureID = nil
                         
                     case "2":
-                        showErrorMessage(nil, "請強制變更密碼")
+                        showErrorMessage(nil, ErrorMsg_Force_ChangePassword)
                         if let con = navigationController?.viewControllers.first {
                             if con is HomeViewController {
                                 navigationController?.popToRootViewController(animated: true)
@@ -479,12 +486,12 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         curFeatureID = nil
                         
                     case "3":
-                        let alert = UIAlertView(title: UIAlert_Default_Title, message: "密碼已到期，建議變更密碼", delegate: self, cancelButtonTitle: "下次變更", otherButtonTitles: "執行變更")
+                        let alert = UIAlertView(title: UIAlert_Default_Title, message: ErrorMsg_Suggest_ChangePassword, delegate: self, cancelButtonTitle: "下次變更", otherButtonTitles: "執行變更")
                         alert.tag = ViewTag.View_OptionModifyPassword.rawValue
                         alert.show()
                         
                     case "4":
-                        showErrorMessage(nil, "首次登入請變更代號")
+                        showErrorMessage(nil, ErrorMsg_First_Login)
                         if let con = navigationController?.viewControllers.first {
                             if con is HomeViewController {
                                 navigationController?.popToRootViewController(animated: true)
@@ -506,7 +513,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
             AuthorizationManage.manage.setLoginStatus(false)
             
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 tempTransactionId = tranId
                 VaktenManager.sharedInstance().authenticateOperation(withSessionID: tranId) { resultCode in
                     if VIsSuccessful(resultCode) {
@@ -521,7 +528,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":Kepasco_userIP], true), AuthorizationManage.manage.getHttpHead(true))
                     }
                     else {
-                        self.showErrorMessage(nil, "驗證失敗")
+                        self.showErrorMessage(nil, ErrorMsg_Verification_Faild)
                     }
                 }
             }
@@ -547,12 +554,12 @@ extension BaseViewController: ConnectionUtilityDelegate {
     func didRecvdResponse(_ description:String, _ response: NSDictionary) {
         setLoading(false)
         switch description {
-        /*  有到「確認」or「結果」的電文都不需判斷ReturnCode  */
+        /*  有到「結果頁」的電文都不需判斷ReturnCode  */
         case "TRAN0101","TRAN0103","TRAN0201","TRAN0302","TRAN0401","TRAN0502","TRAN0602",
              "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
              "PAY0103","PAY0105","PAY0107",
              "USIF0102","USIF0201","USIF0301",
-             "COMM0102","COMM0801":
+             "COMM0102":
             didResponse(description, response)
             
         default:
@@ -561,8 +568,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     didResponse(description, response)
                 }
                 else if returnCode == "E_COMM0101_05" {
-                    let message = (response.object(forKey: "ReturnMsg") as? String) ?? ""
-                    let alert = UIAlertView(title: UIAlert_Default_Title, message: message, delegate: self, cancelButtonTitle: UIAlert_Cancel_Title, otherButtonTitles: UIAlert_Confirm_Title)
+                    let message = (response.object(forKey: ReturnMessage_Key) as? String) ?? ""
+                    let alert = UIAlertView(title: UIAlert_Default_Title, message: message, delegate: self, cancelButtonTitle: Cancel_Title, otherButtonTitles: Determine_Title)
                     alert.tag = ViewTag.View_ForceLogin.rawValue
                     alert.show()
                     return
@@ -571,13 +578,18 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     if let type = response.object(forKey: "ActionType") as? String {
                         switch type {
                         case "showMsg":
-                            if let returnMsg = response.object(forKey: "ReturnMsg") as? String {
+                            if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
                                 showErrorMessage(nil, returnMsg)
                             }
                             
                         case "backHome":
-                            if let returnMsg = response.object(forKey: "ReturnMsg") as? String {
-                                showErrorMessage(nil, returnMsg, self)
+                            if returnCode == "E_HEADER_04" || returnCode == "E_HEADER_05" {
+                                AuthorizationManage.manage.setLoginStatus(false)
+                            }
+                            if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
+                                let alert = UIAlertView(title: UIAlert_Default_Title, message: returnMsg, delegate: self, cancelButtonTitle: Cancel_Title)
+                                alert.tag = ViewTag.View_AlertActionType.rawValue
+                                alert.show()
                             }
                        
                         default: break

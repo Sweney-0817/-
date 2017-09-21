@@ -42,7 +42,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
@@ -52,7 +52,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
             }
             
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]] {
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
@@ -90,7 +90,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
                 result.title = Lose_Successful_Title
                 result.image = ImageName.CowSuccess.rawValue
                 result.memo = DebitCardLoseApply_Memo
-                if let data = response.object(forKey:"Data") as? [String:String] {
+                if let data = response.object(forKey:ReturnData_Key) as? [String:String] {
                     result.list = [[String:String]]()
                     result.list?.append([Response_Key:"交易時間",Response_Value:data["TXTIME"] ?? ""])
                     result.list?.append([Response_Key:"掛失日期",Response_Value:data["TXDAY"] ?? ""])
@@ -99,7 +99,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
             else {
                 result.title = Lose_Faild_Title
                 result.image = ImageName.CowFailure.rawValue
-                if let message = response.object(forKey:"ReturnMsg") as? String {
+                if let message = response.object(forKey:ReturnMessage_Key) as? String {
                     result.list = [[String:String]]()
                     result.list?.append([Response_Key:Error_Title,Response_Value:message])
                 }
@@ -160,7 +160,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)

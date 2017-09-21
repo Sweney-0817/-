@@ -11,7 +11,7 @@
 static VaktenManager *sharedInstance;
 
 //static NSString *const kDefaultKAPI = @"https://118.163.101.205:16790/";
-static NSString *const kDefaultKAPI = @"http://172.16.132.52/OTP/api";
+static NSString *const kDefaultKAPI = @"http://172.16.132.52/OTP";
 static NSString *const kCustomerID = @"agribank.com.tw";
 
 static NSString *const kAppLable = @"AGRIBANK-APPLICATION";

@@ -97,7 +97,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
@@ -115,7 +115,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             showOutAccountList()
             
         case "ACCT0102":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array2 = data["Result2"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array2 = data["Result2"] as? [[String:Any]] {
                 commonAccountList = array2
                 showCommonAccountList()
             }
@@ -124,7 +124,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             }
             
         case "COMM0401":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:String]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:String]] {
                 bankNameList = array
                 showBankNameList()
             }
@@ -133,13 +133,13 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             }
             
         case "PAY0106":
-            if let data = response.object(forKey: "Data") as? [String:Any], let Id = data["taskId"] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let Id = data["taskId"] as? String {
                 VaktenManager.sharedInstance().getTasksOperation{ resultCode, tasks  in
                     if VIsSuccessful(resultCode) && tasks != nil {
                         self.payBill(tasks!, Id)
                     }
                     else {
-                        self.showErrorMessage(nil, "Load task failed. Error(\(resultCode))")
+                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode)")
                     }
                 }
             }
@@ -177,7 +177,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     
     private func showOutAccountList() {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for index in accountList! {
                 actSheet.addButton(withTitle: index.accountNO)
             }
@@ -188,7 +188,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     
     private func showBankNameList() {
         if bankNameList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for index in bankNameList! {
                 if let name = index["bankName"], let code = index["bankCode"] {
                     actSheet.addButton(withTitle: "\(code) \(name)")
@@ -201,7 +201,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     
     private func showCommonAccountList() {
         if commonAccountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for info in commonAccountList! {
                 if let account = info["ACTNO"] as? String, let bankCode = info["IN_BR_CODE"] as? String {
                     actSheet.addButton(withTitle: "(\(bankCode)) \(account)")

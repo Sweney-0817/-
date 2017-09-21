@@ -82,7 +82,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {            
         case "PAY0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let result = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:Any]] {
                 for dic in result {
                     if let type = dic["ACTTYPE"] as? String, let code = dic["ACTTYPECODE"] as? String, let item = dic["ITEM"] as? [[String:String]] {
                         typeCodeList.append(["ACTTYPE":type,"ACTTYPECODE":code])
@@ -97,7 +97,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
             postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
             
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
@@ -114,13 +114,13 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
             }
             
         case "PAY0102","PAY0104":
-            if let data = response.object(forKey: "Data") as? [String:Any], let Id = data["taskId"] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let Id = data["taskId"] as? String {
                 VaktenManager.sharedInstance().getTasksOperation{ resultCode, tasks  in
                     if VIsSuccessful(resultCode) && tasks != nil {
                         self.payTax(tasks!, Id)
                     }
                     else {
-                        self.showErrorMessage(nil, "Load task failed. Error(\(resultCode))")
+                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode)")
                     }
                 }
             }
@@ -205,7 +205,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
         }
         
         m_curDropDownView = sender
-        let actionSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle:nil)
+        let actionSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle:nil)
         if m_curDropDownView == m_DDType {
             typeCodeList.forEach{ title in actionSheet.addButton(withTitle: title["ACTTYPE"] ?? "")}
         }

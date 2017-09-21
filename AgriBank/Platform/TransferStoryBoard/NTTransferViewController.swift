@@ -61,7 +61,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             for index in 0..<(accountList?.count)! {
                 if let info = accountList?[index], info.accountNO == account! {
                     accountIndex = index
-                    topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, info.currency, NTTransfer_Balance, String(info.balance))
+                    topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance))
                     break
                 }
             }
@@ -149,7 +149,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
@@ -159,7 +159,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             }
             
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
@@ -175,7 +175,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                     for index in 0..<(accountList?.count)! {
                         if let info = accountList?[index], info.accountNO == inputAccount! {
                             accountIndex = index
-                            topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, info.currency, NTTransfer_Balance, String(info.balance))
+                            topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance))
                             break
                         }
                     }
@@ -187,7 +187,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             }
             
         case "COMM0401":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:String]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:String]] {
                 bankNameList = array
                 showBankList()
             }
@@ -196,7 +196,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             }
             
         case "ACCT0102":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 if let array1 = data["Result"] as? [[String:Any]] {
                     agreedAccountList = array1
                 }
@@ -213,13 +213,13 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             showNonPredesignated()
             
         case "TRAN0103":
-            if let data = response.object(forKey: "Data") as? [String:Any], let Id = data["taskId"] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let Id = data["taskId"] as? String {
                 VaktenManager.sharedInstance().getTasksOperation{ resultCode, tasks  in
                     if VIsSuccessful(resultCode) && tasks != nil {
                         self.transNonPredesignated(tasks!, Id)
                     }
                     else {
-                        self.showErrorMessage(nil, "Load task failed. Error(\(resultCode))")
+                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode)")
                     }
                 }
             }
@@ -250,7 +250,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     
     private func showBankList() {
         if bankNameList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for index in bankNameList! {
                 if let name = index["bankName"], let code = index["bankCode"] {
                     actSheet.addButton(withTitle: "\(code) \(name)")
@@ -264,7 +264,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     private func showInAccountList(_ isAgreedAccount:Bool) {
         if isAgreedAccount {
             if agreedAccountList != nil {
-                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
                 for info in agreedAccountList! {
                     if let account = info["TRAC"] as? String, let bankCode = info["BKNO"] as? String {
                         actSheet.addButton(withTitle: "(\(bankCode)) \(account)")
@@ -279,7 +279,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         }
         else {
             if commonAccountList != nil {
-                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
                 for info in commonAccountList! {
                     if let account = info["ACTNO"] as? String, let bankCode = info["IN_BR_CODE"] as? String {
                         actSheet.addButton(withTitle: "(\(bankCode)) \(account)")
@@ -414,7 +414,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                     self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":Kepasco_userIP], true), AuthorizationManage.manage.getHttpHead(true))
                 }
                 else {
-                    self.showErrorMessage(nil, "驗證失敗")
+                    self.showErrorMessage(nil, ErrorMsg_Verification_Faild)
                     self.setLoading(false)
                 }
             }
@@ -506,7 +506,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     // MARK: - ThreeRowDropDownViewDelegate
     func clickThreeRowDropDownView(_ sender: ThreeRowDropDownView) {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for index in accountList! {
                 actSheet.addButton(withTitle: index.accountNO)
             }
@@ -558,7 +558,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             case ViewTag.View_AccountActionSheet.rawValue:
                 accountIndex = buttonIndex-1
                 if let info = accountList?[accountIndex!] {
-                    topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, info.currency, NTTransfer_Balance, String(info.balance) )
+                    topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance) )
                 }
                 
             case ViewTag.View_InAccountActionSheet.rawValue:

@@ -70,14 +70,14 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
         switch description {
         case "USIF0201", "USIF0301":
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode != ReturnCode_Success {
-                if let message = response.object(forKey: "ReturnMsg") as? String {
+                if let message = response.object(forKey: ReturnMessage_Key) as? String {
                     errorMessage = message
                 }
             }
             performSegue(withIdentifier: UserChangeIDPwd_Seque, sender: nil)
             
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
             }
             else {

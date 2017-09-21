@@ -75,7 +75,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
@@ -85,7 +85,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             }
             
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
@@ -102,7 +102,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             }
             
         case "ACCT0102":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array1 = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array1 = data["Result"] as? [[String:Any]] {
                 agreedAccountList = array1
                 showInAccountList()
             }
@@ -176,7 +176,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     // MARK: - ThreeRowDropDownViewDelegate
     func clickThreeRowDropDownView(_ sender: ThreeRowDropDownView) {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
@@ -215,7 +215,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     // MARK: - Private
     private func showInAccountList() {
         if agreedAccountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for info in agreedAccountList! {
                 if let account = info["TRAC"] as? String, let bankCode = info["BKNO"] as? String {
                     actSheet.addButton(withTitle: "(\(bankCode)) \(account)")
@@ -265,7 +265,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             case ViewTag.View_AccountActionSheet.rawValue:
                 accountIndex = buttonIndex-1
                 if let info = accountList?[accountIndex!] {
-                    topDropView?.setThreeRow(ReservationTransfer_OutAccount, info.accountNO, ReservationTransfer_Currency, info.currency, ReservationTransfer_Balance, String(info.balance) )
+                    topDropView?.setThreeRow(ReservationTransfer_OutAccount, info.accountNO, ReservationTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), ReservationTransfer_Balance, String(info.balance) )
                     inAccountIndex = nil
                     showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, "")
                     transAmountTextfield.text = ""

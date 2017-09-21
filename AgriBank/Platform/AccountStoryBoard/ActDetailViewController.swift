@@ -392,7 +392,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
             }
@@ -401,7 +401,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             }
             
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 typeList = [String]()
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]] {
@@ -481,7 +481,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             }
             
         case "ACIF0201":
-            if let data = response.object(forKey: "Data") as? [String:Any], let result = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:Any]] {
                 resultList = result
                 tableView.reloadData()
             }
@@ -558,7 +558,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if currentType != nil {
-            let act = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let act = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             if let type = categoryType[currentType!], let list = categoryList[type] {
                 for info in list {
                     act.addButton(withTitle: info.accountNO)

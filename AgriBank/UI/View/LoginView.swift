@@ -11,6 +11,8 @@ import UIKit
 //let Login_Account_Length = 10
 let Login_ID_Length = 16
 let Login_Password_Length = 10
+let Login_Mask_Range = NSRange(location: 4, length: 3)
+let Login_Mask = "***"
 
 struct LoginStrcture {
     var bankCode = ""       // 農漁會代碼
@@ -29,15 +31,13 @@ protocol LoginDelegate {
 
 class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, ImageConfirmViewDelegate {
     @IBOutlet weak var locationTextfield: UITextField!
-    @IBOutlet weak var accountTextfield: UITextField!
-    @IBOutlet weak var idTextfield: UITextField!
-    @IBOutlet weak var passwordTextfield: UITextField!
+    @IBOutlet weak var accountTextfield: UITextField!   // 身分證
+    @IBOutlet weak var idTextfield: UITextField!        // 使用者代碼
+    @IBOutlet weak var passwordTextfield: UITextField!  // 使用者密碼
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var imageConfirmView: UIView!
     @IBOutlet weak var lockButton: UIButton!
-    
     var delegate:LoginDelegate? = nil
-    
     private var request:ConnectionUtility? = nil
     private var list = [[String:[String]]]()
     private var bankCode = [String:String]()
@@ -46,7 +46,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     private var currentTextField:UITextField? = nil
     private var loginInfo = LoginStrcture()
     private var imgConfirm:ImageConfirmView? = nil
-    private var curAccount:String? = nil
+    private var sAccount = ""
     
     // MARK: - Override
     override func layoutSubviews() {
@@ -65,7 +65,8 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
             else {
                 lockButton.setBackgroundImage(UIImage(named: ImageName.Unlocker.rawValue), for: .normal)
             }
-            accountTextfield.text = account
+            sAccount = account
+            accountTextfield.text = (account as NSString).replacingCharacters(in: Login_Mask_Range, with: Login_Mask)
         }
     }
     
@@ -136,9 +137,9 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         toolBar.tintColor = ToolBar_tintColor
         toolBar.sizeToFit()
         // Adding Button ToolBar
-        let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
+        let doneButton = UIBarButtonItem(title: Determine_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
+        let cancelButton = UIBarButtonItem(title: Cancel_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
         titleLabel.textColor = .black
         titleLabel.text = Choose_Title
@@ -155,10 +156,13 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         if (locationTextfield.text?.isEmpty)! {
             return ErrorMsg_Choose_CityBank
         }
-        if (accountTextfield.text?.isEmpty)! {
+        if sAccount.isEmpty {
             return "\(Enter_Title)\(accountTextfield.placeholder ?? "")"
         }
-        if !DetermineUtility.utility.isValidIdentify(accountTextfield.text!) {
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(sAccount) {
+            return ErrorMsg_Illegal_Character
+        }
+        if !DetermineUtility.utility.isValidIdentify(sAccount) {
             return ErrorMsg_Error_Identify
         }
         if (idTextfield.text?.isEmpty)! {
@@ -184,13 +188,12 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     
     @IBAction func clickLoginBtn(_ sender: Any) {
         if let message = inputIsCorrect() {
-            let alert = UIAlertView(title: UIAlert_Default_Title, message: message, delegate: nil, cancelButtonTitle:UIAlert_Confirm_Title)
+            let alert = UIAlertView(title: UIAlert_Default_Title, message: message, delegate: nil, cancelButtonTitle:Determine_Title)
             alert.show()
         }
         else {
-            self.endEditing(true)
             loginInfo.bankCode = bankCode[locationTextfield.text?.replacingOccurrences(of: " ", with: "") ?? ""] ?? loginInfo.bankCode
-            loginInfo.account = accountTextfield.text ?? loginInfo.account
+            loginInfo.account = sAccount
             loginInfo.id = idTextfield.text ?? loginInfo.id
             loginInfo.password = passwordTextfield.text ?? loginInfo.password
             let city = locationTextfield.text?.components(separatedBy: " ").first ?? ""
@@ -237,6 +240,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         if textField == locationTextfield {
             if list.count != 0 {
                 addPickerView(textField)
+                textField.tintColor = .clear
             }
             else {
                 return false
@@ -246,11 +250,8 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-        if DetermineUtility.utility.checkStringContainIllegalCharacter( newString ) {
-            return false
-        }
         if textField == accountTextfield {
+            sAccount = (sAccount as NSString).replacingCharacters(in: range, with: string)
             return true
         }
         else {

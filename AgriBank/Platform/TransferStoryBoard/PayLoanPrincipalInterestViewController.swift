@@ -69,7 +69,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
@@ -86,7 +86,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
             }
             
         case "COMM0701":
-            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
                 let outAccount = topDropView?.getContentByType(.First) ?? ""
                 let inAccount = self.inAccount ?? ""
                 var APAMT = ""
@@ -109,8 +109,9 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
                 }
                 let FITIRT = rateLabel.text ?? ""
                 let DFDAYS = breakContractDayLabel.text ?? ""
+                let curDate = date.replacingOccurrences(of: "/", with: "")
                 
-                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0602", strSessionDescription: "TRAN0602", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"commitTxn","TransactionId":transactionId,"PAYACTNO":outAccount,"ACTNOSQNO":inAccount,"APAMT":APAMT,"ACTBAL":ACTBAL,"TOTAL":TOTAL,"TPRIAMT":TPRIAMT,"TINTAMT":TINTAMT,"TODIAMT":TODIAMT,"TDFAMT":TDFAMT,"SINTAMT":SINTAMT,"ACRECAMT":ACRECAMT,"FITIRT":FITIRT,"DFDAYS":DFDAYS,"VLDATE":date], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0602", strSessionDescription: "TRAN0602", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"commitTxn","TransactionId":transactionId,"PAYACTNO":outAccount,"ACTNOSQNO":inAccount,"APAMT":APAMT,"ACTBAL":ACTBAL,"TOTAL":TOTAL,"TPRIAMT":TPRIAMT,"TINTAMT":TINTAMT,"TODIAMT":TODIAMT,"TDFAMT":TDFAMT,"SINTAMT":SINTAMT,"ACRECAMT":ACRECAMT,"FITIRT":FITIRT,"DFDAYS":DFDAYS,"VLDATE":curDate], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
                 
                 var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認繳交", resultBtnName: "繼續交易", checkRequest: confirmRequest)
                 dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:outAccount])
@@ -148,7 +149,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
     // MARK: - ThreeRowDropDownViewDelegate
     func clickThreeRowDropDownView(_ sender: ThreeRowDropDownView) {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
@@ -161,7 +162,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
             switch actionSheet.tag {
             case ViewTag.View_AccountActionSheet.rawValue:
                 if let info = accountList?[buttonIndex-1] {
-                    topDropView?.setThreeRow(PayLoanPrincipalInterest_OutAccount_Title, info.accountNO, PayLoanPrincipalInterest_Currency_Title, info.currency, PayLoanPrincipalInterest_Balance_Title, String(info.balance))
+                    topDropView?.setThreeRow(PayLoanPrincipalInterest_OutAccount_Title, info.accountNO, PayLoanPrincipalInterest_Currency_Title, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), PayLoanPrincipalInterest_Balance_Title, String(info.balance))
                 }
         
             default: break

@@ -64,7 +64,7 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
             m_Data2.removeAll()
             m_Data3.removeAll()
             m_Data4.removeAll()
-            if let data = response.object(forKey: "Data") as? [String:Any] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 if let list = data["SurviveRateList"] as? [[String:Any]] {
                     for info in list {
                         var SurviveType = "-"
@@ -133,7 +133,7 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
             
         case "COMM0402":
             m_PickerData.removeAll()
-            if let data = response.object(forKey: "Data") as? [String : Any], let array = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String : Any], let array = data["Result"] as? [[String:Any]] {
                 let cCode = (SecurityUtility.utility.readFileByKey(SetKey: File_CityCode_Key, setDecryptKey: AES_Key) as? String) ?? ""
                 let bCode = (SecurityUtility.utility.readFileByKey(SetKey: File_BankCode_Key, setDecryptKey: AES_Key) as? String) ?? ""
                 var cCity:String? = nil
@@ -218,9 +218,9 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         toolBar.tintColor = ToolBar_tintColor
         toolBar.sizeToFit()
         // Adding Button ToolBar
-        let doneButton = UIBarButtonItem(title: ToolBar_DoneButton_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
+        let doneButton = UIBarButtonItem(title: Determine_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: ToolBar_CancelButton_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
+        let cancelButton = UIBarButtonItem(title: Cancel_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
         titleLabel.textColor = .black
         titleLabel.text = Choose_Title

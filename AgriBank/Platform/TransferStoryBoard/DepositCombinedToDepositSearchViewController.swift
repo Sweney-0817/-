@@ -60,7 +60,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
@@ -70,7 +70,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
             }
             
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]] {
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Deposit_Type {
                         accountList = [AccountStruct]()
@@ -87,7 +87,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
             }
             
         case "TRAN0501":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:String]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:String]] {
                 result = array
                 tableView.reloadData()
             }
@@ -102,7 +102,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)

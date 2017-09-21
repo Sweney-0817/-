@@ -53,7 +53,7 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "INFO0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let list = data["AllPromo"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let list = data["AllPromo"] as? [[String:Any]] {
                 for index in 0..<list.count {
                     let dic = list[index]
                     if let city = dic["CC_CityName"] as? String, let promotion = dic["LocalPromo"] as? [[String:String]] {
@@ -107,7 +107,7 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
 
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
-        let action = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+        let action = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
         cityList.forEach{city in action.addButton(withTitle: city)}
         action.show(in: self.view)
     }

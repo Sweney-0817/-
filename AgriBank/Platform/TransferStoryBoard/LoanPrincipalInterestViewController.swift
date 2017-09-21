@@ -126,7 +126,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
@@ -136,7 +136,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
             }
             
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]] {
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Loan_Type {
                         accountList = [AccountStruct]()
@@ -168,7 +168,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
             }
             
         case "TRAN0601-0":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 result = data
                 if let APAMT = result?["APAMT"] as? String {
                     loanAmountLabel.text = APAMT
@@ -189,7 +189,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
             tableView.reloadData()
             
         case "TRAN0601-1":
-            if let data = response.object(forKey: "Data") as? [String:Any] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 oneResult = data
                 performSegue(withIdentifier: LoanPrincipalInterest_PayLoan_Segue, sender: nil)
             }
@@ -254,7 +254,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                 default: break
                 }
                 if !message.isEmpty {
-                    let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:UIAlert_Confirm_Title)
+                    let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:Determine_Title)
                     alert.show()
                 }
                 else {
@@ -271,7 +271,7 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for index in accountList! {
                 actSheet.addButton(withTitle: index.accountNO)
             }

@@ -183,6 +183,16 @@ class AuthorizationManage {
     func SaveIDListInFile(_ addList:[PlatformFeatureID]) {
         var IDList = [String]()
         addList.forEach{ ID in IDList.append(ID.rawValue.description) }
+        /*  將使用者原有加入的功能，但因此次沒有授權開啟，所以沒有在list中，所以需要重新加入  */
+        for (key,value) in needReAddList {
+            if value < IDList.count {
+                IDList.insert(key.rawValue.description, at: value)
+            }
+            else {
+                IDList.append(key.rawValue.description)
+            }
+        }
+        
         let ID = IDList.joined(separator: AuthorizationManage_IDList_Separator)
         if IsLoginSuccess() {
             if loginInfo != nil {

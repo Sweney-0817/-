@@ -58,7 +58,7 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "COMM0701":
-            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
                 cancelButton.setBackgroundImage(UIImage(named: ImageName.ButtonLarge.rawValue), for: .normal)
                 cancelButton.isEnabled = true
             }

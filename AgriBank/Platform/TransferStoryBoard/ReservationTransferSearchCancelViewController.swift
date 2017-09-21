@@ -136,7 +136,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
@@ -146,7 +146,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             }
             
         case "ACCT0101":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 for category in array {
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
@@ -163,7 +163,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             }
             
         case "TRAN0301":
-            if let data = response.object(forKey: "Data") as? [String:Any], let array = data["Result"] as? [[String:String]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:String]] {
                 resultList = array
                 tableView.reloadData()
             }
@@ -198,7 +198,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if sender == chooseAccountDorpView {
             if accountList != nil {
-                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: UIActionSheet_Cancel_Title, destructiveButtonTitle: nil)
+                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
                 accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
                 actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
                 actSheet.show(in: view)
@@ -212,10 +212,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
                 if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
                     dateView.frame = view.frame
                     dateView.frame.origin = .zero
-                    var component = Calendar.current.dateComponents([.day,.year,.month], from: Date())
-                    component.day = component.day!+1
-                    let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: component), maxDate: nil)
-                    dateView.showTwoDatePickerView(isSpecific, startDate, nil) { startDate, endDate in
+                    dateView.showTwoDatePickerView(isSpecific, nil, nil) { startDate, endDate in
                         if self.isSpecific {
                             self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.year)/\(startDate.month)/\(startDate.day) - \(endDate.year)/\(endDate.month)/\(endDate.day)")
                             self.startDate = "\(startDate.year)\(startDate.month)\(startDate.day)"

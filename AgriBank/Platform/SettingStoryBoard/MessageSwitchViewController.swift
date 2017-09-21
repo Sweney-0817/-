@@ -37,7 +37,7 @@ class MessageSwitchViewController: BaseViewController {
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
-            if let data = response.object(forKey: "Data") as? [String:Any], let tranId = data["TransactionId"] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data["TransactionId"] as? String {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("Comm/COMM0306", "COMM0306", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"queryData","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
@@ -47,7 +47,7 @@ class MessageSwitchViewController: BaseViewController {
             }
             
         case "COMM0306":
-            if let data = response.object(forKey: "Data") as? [String:Any], let status = data["ReceiveMsgFlag"] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let status = data["ReceiveMsgFlag"] as? String {
                 if status == "0" {
                     messageSwitch.isOn = false
                 }

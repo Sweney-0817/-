@@ -39,7 +39,7 @@ class PersonalMessageViewController: BaseViewController, UITableViewDelegate, UI
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "COMM0303":
-            if let data = response.object(forKey: "Data") as? [String:Any], let list = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let list = data["Result"] as? [[String:Any]] {
                 m_Data.removeAll()
                 for dic in list {
                     let msg = (dic["msg"] as? String) ?? ""
