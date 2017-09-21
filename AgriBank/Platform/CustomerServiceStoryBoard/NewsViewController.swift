@@ -34,9 +34,11 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setAllSubView()
         initDataForType(AuthorizationManage.manage.IsLoginSuccess() ? News_TypeList[1]:News_TypeList[0])
+        m_vChooseTypeView.setTypeList(News_TypeList, setDelegate: self, AuthorizationManage.manage.IsLoginSuccess() ? 1 : 0, view.frame.width/2)
         setShadowView(m_vChooseTypeView)
+        
+        m_tvData.register(UINib(nibName: UIID.UIID_NewsCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_NewsCell.NibName()!)
     }
     
     override func didReceiveMemoryWarning() {
@@ -84,19 +86,6 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
         performSegue(withIdentifier: News_ShowDetail_Seque, sender: nil)
     }
     
-    private func setAllSubView() {
-        setChooseTypeView()
-        setDataTableView()
-    }
-    
-    private func setChooseTypeView() {
-        m_vChooseTypeView.setTypeList(News_TypeList, setDelegate: self, 0, view.frame.width/2)
-    }
-
-    private func setDataTableView() {
-        m_tvData.register(UINib(nibName: UIID.UIID_NewsCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_NewsCell.NibName()!)
-    }
-    
     private func initDataForType(_ type:String) {
         if type == News_TypeList.first! {
             m_curData = m_Data1
@@ -141,7 +130,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     
     // MARK: - LoginDelegate
     override func clickLoginCloseBtn() {
-        setChooseTypeView()
+        m_vChooseTypeView.setTypeList(News_TypeList, setDelegate: self, 0, view.frame.width/2)
         super.clickLoginCloseBtn()
     }
 }
