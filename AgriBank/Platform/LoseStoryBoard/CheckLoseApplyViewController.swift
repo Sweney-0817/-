@@ -45,7 +45,6 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         super.viewDidLoad()
         setAllSubView()
         setShadowView(m_vShadowView)
-        setLoading(true)
         getTransactionID("04003", TransactionID_Description)
         addObserverToKeyBoard()
         addGestureForKeyBoard()

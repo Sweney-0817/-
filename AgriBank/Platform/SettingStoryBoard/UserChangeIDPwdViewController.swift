@@ -44,10 +44,8 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        setLoading(true)
         if !isChangePassword {
             getTransactionID("08002", TransactionID_Description)
-            
         }
         else {
             getTransactionID("08003", TransactionID_Description)

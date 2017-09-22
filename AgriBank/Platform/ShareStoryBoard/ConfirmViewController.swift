@@ -99,11 +99,15 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
             }
             else {
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
-                getImageConfirm()
+                getImageConfirm(transactionId)
             }
             
         default:
-            if data?.checkRequest != nil && description == (data?.checkRequest?.strSessionDescription)! {
+            let checkRequest = isNeedOTP ? dataOTP?.checkRequest : data?.checkRequest
+            if checkRequest != nil && description == checkRequest?.strSessionDescription {
+                if isNeedOTP {
+                    data = ConfirmResultStruct(image: "", title: "", list: nil, memo: "", confirmBtnName: dataOTP?.confirmBtnName ?? "", resultBtnName: dataOTP?.resultBtnName ?? "", checkRequest: nil)
+                }
                 if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
                     if let responseData = response.object(forKey: ReturnData_Key) as? [[String:String]] {
                         data?.list = responseData
@@ -148,42 +152,47 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.row == data?.list?.count) {
+        let list = isNeedOTP ? dataOTP?.list : data?.list
+        if indexPath.row == list?.count {
             return Confirm_ImageConfirm_Cell_Height
         }
         else {
-            let height = ResultCell.GetStringHeightByWidthAndFontSize((data?.list?[indexPath.row][Response_Value]!)!, m_tvData.frame.size.width)
+            let height = ResultCell.GetStringHeightByWidthAndFontSize((list?[indexPath.row][Response_Value])!, m_tvData.frame.size.width)
             return height
         }
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if (data?.memo)!.isEmpty {
+        let memo = isNeedOTP ? dataOTP?.memo : data?.memo
+        if (memo?.isEmpty)! {
             return 0
         }
         else {
-            return MemoView.GetStringHeightByWidthAndFontSize((data?.memo)!, m_tvData.frame.width)
+            return MemoView.GetStringHeightByWidthAndFontSize(memo!, m_tvData.frame.width)
         }
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if (data?.memo)!.isEmpty {
+        let memo = isNeedOTP ? dataOTP?.memo : data?.memo
+        if (memo?.isEmpty)! {
             return nil
         }
         else {
             let footer = getUIByID(.UIID_MemoView) as! MemoView
-            footer.set((data?.memo)!)
+            footer.set(memo!)
             return footer
         }
     }
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (data?.list?.count)!+1
+        let list = isNeedOTP ? dataOTP?.list : data?.list
+        return (list?.count)!+1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == (data?.list?.count)! {
+        let list = isNeedOTP ? dataOTP?.list : data?.list
+        if indexPath.row == (list?.count)! {
             let cell = tableView.dequeueReusableCell(withIdentifier: SystemCell_Identify, for: indexPath)
             imageConfirmView?.frame = CGRect(x:0, y:0, width:cell.contentView.frame.width, height:cell.contentView.frame.height)
             cell.contentView.addSubview(imageConfirmView!)
@@ -191,7 +200,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
-            cell.set((data?.list?[indexPath.row][Response_Key]!)!, (data?.list?[indexPath.row][Response_Value]!)!)
+            cell.set((list?[indexPath.row][Response_Key])!, (list?[indexPath.row][Response_Value])!)
             return cell
         }
     }

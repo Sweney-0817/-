@@ -94,7 +94,6 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
         
         setShadowView(bottomView)
         addObserverToKeyBoard()
-        setLoading(true)
         getTransactionID("03004", TransactionID_Description)
     }
 
@@ -198,12 +197,12 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                 
                 var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
                 dataConfirm.list?.append([Response_Key: "綜合存款帳號", Response_Value:TACTNO])
-                dataConfirm.list?.append([Response_Key: "餘額", Response_Value:topDropView?.getContentByType(.Third) ?? ""])
+                dataConfirm.list?.append([Response_Key: "餘額", Response_Value:topDropView?.getContentByType(.Third).separatorThousand() ?? ""])
                 dataConfirm.list?.append([Response_Key: "存款種類", Response_Value:depositTypeDropView?.getContentByType(.First) ?? ""])
                 dataConfirm.list?.append([Response_Key: "轉存期別", Response_Value:periodDropView?.getContentByType(.First) ?? ""])
                 dataConfirm.list?.append([Response_Key: "利率方式", Response_Value:rateTypeDropView?.getContentByType(.First) ?? ""])
                 dataConfirm.list?.append([Response_Key: "目前利率", Response_Value:currentRateLabel.text ?? ""])
-                dataConfirm.list?.append([Response_Key: "轉存金額", Response_Value:transAmountTextfield.text ?? ""])
+                dataConfirm.list?.append([Response_Key: "轉存金額", Response_Value:transAmountTextfield.text?.separatorThousand() ?? ""])
                 dataConfirm.list?.append([Response_Key: "到期續存", Response_Value:isExpireSaveType1 ? DepositCombinedToDeposit_ExpireSaveType1 : DepositCombinedToDeposit_ExpireSaveType2])
                 dataConfirm.list?.append([Response_Key: "自動轉期利率", Response_Value:autoTransRateTypeDropView?.getContentByType(.First) ?? ""])
                 enterConfirmResultController(true, dataConfirm, true)
@@ -380,7 +379,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             switch actionSheet.tag {
             case ViewTag.View_AccountActionSheet.rawValue:
                 if let info = accountList?[buttonIndex-1] {
-                    topDropView?.setThreeRow(DepositCombinedToDeposit_Account_Title, info.accountNO, DepositCombinedToDeposit_Currency_Title, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), DepositCombinedToDeposit_Balance_Title, String(info.balance))
+                    topDropView?.setThreeRow(DepositCombinedToDeposit_Account_Title, info.accountNO, DepositCombinedToDeposit_Currency_Title, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), DepositCombinedToDeposit_Balance_Title, String(info.balance).separatorThousand())
                 }
                 
             case ViewTag.View_ExpireSaveActionSheet.rawValue:

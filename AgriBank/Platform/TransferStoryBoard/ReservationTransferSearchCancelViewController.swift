@@ -79,7 +79,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             }
             if let AMOUNT = dic["AMOUNT"] {
                 input.amount = AMOUNT
-                list.append([Response_Key:"金額", Response_Value:AMOUNT])
+                list.append([Response_Key:"金額", Response_Value:AMOUNT.separatorThousand()])
             }
             else {
                 list.append([Response_Key:"金額", Response_Value:""])
@@ -124,7 +124,6 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
         
-        setLoading(true)
         getTransactionID("03003", TransactionID_Description)
     }
 
@@ -251,7 +250,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             cell.detail2Label.text = TRACTNO
         }
         if let AMOUNT = resultList[indexPath.row]["AMOUNT"] {
-            cell.detail3Label.text = AMOUNT
+            cell.detail3Label.text = AMOUNT.separatorThousand()
         }
         return cell
     }

@@ -111,7 +111,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
                 let DFDAYS = breakContractDayLabel.text ?? ""
                 let curDate = date.replacingOccurrences(of: "/", with: "")
                 
-                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0602", strSessionDescription: "TRAN0602", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"commitTxn","TransactionId":transactionId,"PAYACTNO":outAccount,"ACTNOSQNO":inAccount,"APAMT":APAMT,"ACTBAL":ACTBAL,"TOTAL":TOTAL,"TPRIAMT":TPRIAMT,"TINTAMT":TINTAMT,"TODIAMT":TODIAMT,"TDFAMT":TDFAMT,"SINTAMT":SINTAMT,"ACRECAMT":ACRECAMT,"FITIRT":FITIRT,"DFDAYS":DFDAYS,"VLDATE":curDate], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0602", strSessionDescription: "TRAN0602", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"commitTxn","TransactionId":transactionId,"PAYACTNO":outAccount,"ACTNOSQNO":inAccount,"APAMT":APAMT,"ACTBAL":ACTBAL,"TOTAL":TOTAL.replacingOccurrences(of: ",", with: ""),"TPRIAMT":TPRIAMT.replacingOccurrences(of: ",", with: ""),"TINTAMT":TINTAMT.replacingOccurrences(of: ",", with: ""),"TODIAMT":TODIAMT.replacingOccurrences(of: ",", with: ""),"TDFAMT":TDFAMT.replacingOccurrences(of: ",", with: ""),"SINTAMT":SINTAMT.replacingOccurrences(of: ",", with: ""),"ACRECAMT":ACRECAMT,"FITIRT":FITIRT,"DFDAYS":DFDAYS,"VLDATE":curDate], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
                 
                 var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認繳交", resultBtnName: "繼續交易", checkRequest: confirmRequest)
                 dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:outAccount])
@@ -162,7 +162,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
             switch actionSheet.tag {
             case ViewTag.View_AccountActionSheet.rawValue:
                 if let info = accountList?[buttonIndex-1] {
-                    topDropView?.setThreeRow(PayLoanPrincipalInterest_OutAccount_Title, info.accountNO, PayLoanPrincipalInterest_Currency_Title, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), PayLoanPrincipalInterest_Balance_Title, String(info.balance))
+                    topDropView?.setThreeRow(PayLoanPrincipalInterest_OutAccount_Title, info.accountNO, PayLoanPrincipalInterest_Currency_Title, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), PayLoanPrincipalInterest_Balance_Title, String(info.balance).separatorThousand())
                 }
         
             default: break
@@ -182,22 +182,22 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
             breakContractDayLabel.text = DFDAYS
         }
         if let TPRIAMT = list?["TPRIAMT"] as? String {
-            needPayPrincipalLabel.text = TPRIAMT
+            needPayPrincipalLabel.text = TPRIAMT.separatorThousand()
         }
         if let TDFAMT = list?["TDFAMT"] as? String {
-            needPayBreakContractLabel.text = TDFAMT
+            needPayBreakContractLabel.text = TDFAMT.separatorThousand()
         }
         if let TINTAMT = list?["TINTAMT"] as? String {
-            needPayInterestLabel.text = TINTAMT
+            needPayInterestLabel.text = TINTAMT.separatorThousand()
         }
         if let TODIAMT = list?["TODIAMT"] as? String {
-            needPayDelayInterestLabel.text = TODIAMT
+            needPayDelayInterestLabel.text = TODIAMT.separatorThousand()
         }
         if let SINTAMT = list?["SINTAMT"] as? String {
-            lastShortAmountLabel.text = SINTAMT
+            lastShortAmountLabel.text = SINTAMT.separatorThousand()
         }
         if let TOTAL = list?["TOTAL"] as? String {
-            needPayAmountLabel.text = TOTAL
+            needPayAmountLabel.text = TOTAL.separatorThousand()
         }
     }
 }

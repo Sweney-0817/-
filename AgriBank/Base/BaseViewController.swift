@@ -134,7 +134,6 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                         else if ID == .FeatureID_BillPayment {
                             workCode = "05002"
                         }
-                        setLoading(true)
                         getTransactionID(workCode, TransactionID_Description)
                         curFeatureID = ID
                     }
@@ -200,14 +199,10 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                 loading.center = loadingView!.center
                 loadingView?.addSubview(loading)
     
-//                view.addSubview(loadingView)
-                UIApplication.shared.keyWindow?.addSubview(loadingView!)
+                UIApplication.shared.windows.last?.addSubview(loadingView!)
             }
         }
         else {
-//            if let loadingView = view.viewWithTag(ViewTag.View_Loading.rawValue) {
-//                loadingView.removeFromSuperview()
-//            }
             if loadingView != nil {
                 loadingView?.removeFromSuperview()
                 loadingView = nil
@@ -348,6 +343,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
 // MARK: - 電文發送 接收
 extension BaseViewController: ConnectionUtilityDelegate {
     func getTransactionID(_ workCode:String, _ description:String) { // 取得交易編號
+        setLoading(true)
         postRequest("Comm/COMM0601", description, AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"getTranID"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     

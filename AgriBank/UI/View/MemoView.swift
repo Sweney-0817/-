@@ -17,7 +17,7 @@ class MemoView: UIView {
     static func GetStringHeightByWidthAndFontSize(_ content:String, _ width:CGFloat) -> CGFloat {
         //.xib拉的
         let dataWidth = width-(8*2)
-        let plusHeight:CGFloat = 20+8
+        let plusHeight:CGFloat = 20+8+5
         
         //        let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: dataWidth, height: CGFloat.greatestFiniteMagnitude))
         //        label.numberOfLines = 0

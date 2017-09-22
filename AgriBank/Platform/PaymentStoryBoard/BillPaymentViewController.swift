@@ -265,7 +265,14 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
         }
         let confirmRequest = RequestStruct(strMethod: "PAY/PAY0107", strSessionDescription: "PAY0107", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
         
-        let dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: nil, memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05002","Operate":"commitTxn","TransactionId":transactionId,"OUTACT":m_DDTransOutAccount?.getContentByType(.First) ?? "","INACT": INACT,"INBANK":INBANK,"TXAMT":Int(m_tfTransAmount.text!) ?? 0,"MEMO":m_tfTransMemo.text!,"EMAIL":m_tfEmail.text!,"taskId":taskID,"otp":""],task: nil)
+        var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05002","Operate":"commitTxn","TransactionId":transactionId,"OUTACT":m_DDTransOutAccount?.getContentByType(.First) ?? "","INACT": INACT,"INBANK":INBANK,"TXAMT":Int(m_tfTransAmount.text!) ?? 0,"MEMO":m_tfTransMemo.text!,"EMAIL":m_tfEmail.text!,"taskId":taskID,"otp":""],task: nil)
+        
+        dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:m_DDTransOutAccount?.getContentByType(.First) ?? ""])
+        dataConfirm.list?.append([Response_Key: "銀行代碼", Response_Value:INBANK])
+        dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:INACT])
+        dataConfirm.list?.append([Response_Key: "繳納金額", Response_Value:m_tfTransAmount.text!.separatorThousand()])
+        dataConfirm.list?.append([Response_Key: "備註/交易備記", Response_Value:m_tfTransMemo.text!])
+        dataConfirm.list?.append([Response_Key: "受款人E-mail", Response_Value:m_tfEmail.text!])
         enterConfirmOTPController(dataConfirm, true)
     }
 

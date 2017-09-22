@@ -33,13 +33,6 @@ class ImageConfirmView: UIView, UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        if string == "" {
-//            delegate?.changeInputTextfield(textField.text!.substring(to: textField.text!.index(textField.text!.endIndex, offsetBy:-1)))
-//        }
-//        else {
-//            let input = textField.text! + string
-//            delegate?.changeInputTextfield(input)
-//        }
         let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         if DetermineUtility.utility.checkStringContainIllegalCharacter(newString) {
             return false

@@ -59,7 +59,6 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
-        setLoading(true)
         getTransactionID("08001", TransactionID_Description)
         addObserverToKeyBoard()
         addGestureForKeyBoard()

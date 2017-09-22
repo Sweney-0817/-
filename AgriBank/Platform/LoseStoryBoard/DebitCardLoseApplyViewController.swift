@@ -29,7 +29,6 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
         setAllSubView()
         setShadowView(m_vShadowView)
         
-        setLoading(true)
         getTransactionID("04002", TransactionID_Description)
         addGestureForKeyBoard()
     }

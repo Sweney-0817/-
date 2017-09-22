@@ -204,7 +204,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 loginImageView.layer.masksToBounds = true
             }
             if let info = AuthorizationManage.manage.getResponseLoginInfo() {
-                accountBalanceLabel.text = "活存總餘額 \(String(info.Balance ?? 0))"
+                accountBalanceLabel.text = "活存總餘額 \(String(info.Balance ?? 0).separatorThousand())"
             }
             loginStatusLabel.text = Login_Title
             if centerNewsList == nil {
@@ -240,12 +240,13 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     
     // MARK: - Private Post 電文
     private func getAnnounceNewsInfo() { // 最新消息電文
-        let loginInfo = AuthorizationManage.manage.GetLoginInfo()
         var body = [String:Any]()
         body = ["WorkCode":"07041","Operate":"getListInfo"]
         if AuthorizationManage.manage.IsLoginSuccess() {
             body["CB_Type"] = Int(1)
-            body["CB_CUM_BankCode"] = loginInfo?.bankCode ?? ""
+            if let loginInfo = AuthorizationManage.manage.GetLoginInfo() {
+                body["CB_CUM_BankCode"] = loginInfo.bankCode 
+            }
         }
         else {
             body["CB_Type"] = Int(2)
@@ -263,8 +264,9 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     }
     
     private func getBankLogoInfo() { // 取得農、漁會LOGO
-        let loginInfo = AuthorizationManage.manage.GetLoginInfo()
-        postRequest("Comm/COMM0404", "COMM0404", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07004","Operate":"queryData","hsienCode":loginInfo?.cityCode ?? "","bankCode":loginInfo?.bankCode ?? ""], false), AuthorizationManage.manage.getHttpHead(false))
+        if let loginInfo = AuthorizationManage.manage.GetLoginInfo() {
+            postRequest("Comm/COMM0404", "COMM0404", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07004","Operate":"queryData","hsienCode":loginInfo.cityCode,"bankCode":loginInfo.bankCode], false), AuthorizationManage.manage.getHttpHead(false))
+        }
     }
 
     // MARK: - StoryBoard Touch Event

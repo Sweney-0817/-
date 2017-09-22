@@ -33,7 +33,6 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
         setShadowView(topView)
         
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
-        setLoading(true)
         getTransactionID("03005", TransactionID_Description)
     }
 
@@ -48,7 +47,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
         if curIndex != nil, let dic = result?[curIndex!] {
             var list = [[String:String]]()
             list.append([Response_Key: "定存帳號", Response_Value:dic["Deposit"] ?? ""])
-            list.append([Response_Key: "定存金額", Response_Value:dic["CTBAL"] ?? ""])
+            list.append([Response_Key: "定存金額", Response_Value:dic["CTBAL"]?.separatorThousand() ?? ""])
             list.append([Response_Key: "到期日", Response_Value:dic["EDAY"] ?? ""])
             list.append([Response_Key: "起存日", Response_Value:dic["CIDAY"] ?? ""])
             list.append([Response_Key: "存單期別(月)", Response_Value:dic["PRDMM"] ?? ""])
@@ -136,7 +135,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
             cell.detail1Label.text = Deposit
         }
         if let CTBAL = result?[indexPath.row]["CTBAL"] {
-            cell.detail2Label.text = CTBAL
+            cell.detail2Label.text = CTBAL.separatorThousand()
         }
         if let EDAY = result?[indexPath.row]["EDAY"] {
             cell.detail3Label.text = EDAY

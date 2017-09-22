@@ -26,7 +26,6 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
         super.viewDidLoad()
         setAllSubView()
         setShadowView(m_vShadowView)
-        setLoading(true)
         getTransactionID("04001", TransactionID_Description)
         addGestureForKeyBoard()
     }

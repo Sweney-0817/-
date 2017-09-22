@@ -58,7 +58,6 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
         topDropView?.delegate = self
         topView.addSubview(topDropView!)
         
-        setLoading(true)
         getTransactionID("03006", TransactionID_Description)
     }
 
@@ -78,43 +77,43 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
             var list = [[String:String]]()
             list.append([Response_Key: "放款帳號", Response_Value:topDropView?.getContentByType(.First) ?? ""])
             if let ACTBAL = result?["ACTBAL"] as? String {
-                list.append([Response_Key: "目前本金餘額", Response_Value:ACTBAL])
+                list.append([Response_Key: "目前本金餘額", Response_Value:ACTBAL.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "目前本金餘額", Response_Value:""])
             }
             if let TPRIAMT = result?["TPRIAMT"] as? String {
-                list.append([Response_Key: "應繳本金", Response_Value:TPRIAMT])
+                list.append([Response_Key: "應繳本金", Response_Value:TPRIAMT.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "應繳本金", Response_Value:""])
             }
             if let TINTAMT = result?["TINTAMT"] as? String {
-                list.append([Response_Key: "應繳利息", Response_Value:TINTAMT])
+                list.append([Response_Key: "應繳利息", Response_Value:TINTAMT.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "應繳利息", Response_Value:""])
             }
             if let TODIAMT = result?["TODIAMT"] as? String {
-                list.append([Response_Key: "應繳諭期息", Response_Value:TODIAMT])
+                list.append([Response_Key: "應繳諭期息", Response_Value:TODIAMT.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "應繳諭期息", Response_Value:""])
             }
             if let TDFAMT = result?["TDFAMT"] as? String {
-                list.append([Response_Key: "應繳違約金", Response_Value:TDFAMT])
+                list.append([Response_Key: "應繳違約金", Response_Value:TDFAMT.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "應繳違約金", Response_Value:""])
             }
             if let SINTAMT = result?["SINTAMT"] as? String {
-                list.append([Response_Key: "上次短收利息", Response_Value:SINTAMT])
+                list.append([Response_Key: "上次短收利息", Response_Value:SINTAMT.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "上次短收利息", Response_Value:""])
             }
             if let TOTAL = result?["TOTAL"] as? String {
-                list.append([Response_Key: "應繳總額", Response_Value:TOTAL])
+                list.append([Response_Key: "應繳總額", Response_Value:TOTAL.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "應繳總額", Response_Value:""])
@@ -171,13 +170,13 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 result = data
                 if let APAMT = result?["APAMT"] as? String {
-                    loanAmountLabel.text = APAMT
+                    loanAmountLabel.text = APAMT.separatorThousand()
                 }
                 if let ACTBAL = result?["ACTBAL"] as? String {
-                    currentAmountLabel.text = ACTBAL
+                    currentAmountLabel.text = ACTBAL.separatorThousand()
                 }
                 if let TOTAL = result?["TOTAL"] as? String {
-                    needPayAmountLabel.text = TOTAL
+                    needPayAmountLabel.text = TOTAL.separatorThousand()
                 }
                 if let Memo = result?["Memo"] as? String {
                     memoStatus = Memo
@@ -225,10 +224,10 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                 cell.principalInterestLabel.text = "\(PRAMT) / \(INT)"
             }
             if let PRAMT = array[indexPath.row]["DFAMT"] {
-                cell.breachContractLabel.text = "\(PRAMT)"
+                cell.breachContractLabel.text = "\(PRAMT)".separatorThousand()
             }
             if let DIAMT = array[indexPath.row]["DIAMT"] {
-                cell.delayInterestLabel.text = "\(DIAMT)"
+                cell.delayInterestLabel.text = "\(DIAMT)".separatorThousand()
             }
         }
         return cell

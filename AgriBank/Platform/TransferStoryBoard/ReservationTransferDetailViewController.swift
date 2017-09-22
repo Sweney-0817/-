@@ -93,7 +93,7 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
         dataConfirm.list?.append([Response_Key:"預約轉帳日",Response_Value:input?.reservationTransDate ?? ""])
         dataConfirm.list?.append([Response_Key:"銀行代碼",Response_Value:input?.bankCode ?? ""])
         dataConfirm.list?.append([Response_Key:"轉入帳號",Response_Value:input?.inAccount ?? ""])
-        dataConfirm.list?.append([Response_Key:"金額",Response_Value:input?.amount ?? ""])
+        dataConfirm.list?.append([Response_Key:"金額",Response_Value:input?.amount.separatorThousand() ?? ""])
         dataConfirm.list?.append([Response_Key:"交易備註",Response_Value:input?.memo ?? ""])
         dataConfirm.list?.append([Response_Key:"登錄序號",Response_Value:input?.serialNumber ?? ""])
         enterConfirmResultController(true, dataConfirm, true)

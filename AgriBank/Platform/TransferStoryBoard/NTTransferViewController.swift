@@ -137,7 +137,6 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         addObserverToKeyBoard()
         addGestureForKeyBoard()
         
-        setLoading(true)
         getTransactionID("03001", TransactionID_Description)
     }
 
@@ -175,7 +174,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                     for index in 0..<(accountList?.count)! {
                         if let info = accountList?[index], info.accountNO == inputAccount! {
                             accountIndex = index
-                            topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance))
+                            topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance).separatorThousand())
                             break
                         }
                     }
@@ -383,11 +382,16 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             inAccount = showBankAccountDropView?.getContentByType(.Second) ?? ""
             inBank = showBankAccountDropView?.getContentByType(.First) ?? ""
         }
-        self.postRequest("TRAN/TRAN0103", "TRAN0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":inAccount,"INBANK":inBank,"TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!], true), AuthorizationManage.manage.getHttpHead(true))
         
         let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0103", strSessionDescription: "TRAN0103", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
         
-        let dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: nil, memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":inAccount,"INBANK":inBank,"TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!],task: nil)
+        var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":inAccount,"INBANK":inBank,"TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!],task: nil)
+        dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:topDropView?.getContentByType(.First) ?? ""])
+        dataConfirm.list?.append([Response_Key: "銀行代碼", Response_Value:inBank])
+        dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:inAccount])
+        dataConfirm.list?.append([Response_Key: "轉帳金額", Response_Value:transAmountTextfield.text!.separatorThousand()])
+        dataConfirm.list?.append([Response_Key: "備註/交易備記", Response_Value:memoTextfield.text!])
+        dataConfirm.list?.append([Response_Key: "受款人E-mail", Response_Value:emailTextfield.text!])
         
         enterConfirmOTPController(dataConfirm, true)
     }
@@ -458,7 +462,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:topDropView?.getContentByType(.First) ?? ""])
                 dataConfirm.list?.append([Response_Key: "銀行代碼", Response_Value:showBankAccountDropView?.getContentByType(.First) ?? ""])
                 dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:showBankAccountDropView?.getContentByType(.Second) ?? ""])
-                dataConfirm.list?.append([Response_Key: "轉帳金額", Response_Value:transAmountTextfield.text!])
+                dataConfirm.list?.append([Response_Key: "轉帳金額", Response_Value:transAmountTextfield.text!.separatorThousand()])
                 dataConfirm.list?.append([Response_Key: "備註/交易備記", Response_Value:memoTextfield.text!])
                 dataConfirm.list?.append([Response_Key: "受款人E-mail", Response_Value:emailTextfield.text!])
                 
@@ -558,7 +562,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             case ViewTag.View_AccountActionSheet.rawValue:
                 accountIndex = buttonIndex-1
                 if let info = accountList?[accountIndex!] {
-                    topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance) )
+                    topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance).separatorThousand() )
                 }
                 
             case ViewTag.View_InAccountActionSheet.rawValue:

@@ -258,14 +258,28 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
             let confirmRequest = RequestStruct(strMethod: "PAY/PAY0103", strSessionDescription: "PAY0103", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
             
             
-            let dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: nil, memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","CORP":m_tfInput1.text!,"IDNO":m_tfInput2.text!,"TXAMT":m_tfInput3.text!,"taskId":taskID,"otp":""],task: nil)
+            var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","CORP":m_tfInput1.text!,"IDNO":m_tfInput2.text!,"TXAMT":m_tfInput3.text!,"taskId":taskID,"otp":""],task: nil)
+            
+            dataConfirm.list?.append([Response_Key: "繳稅總類", Response_Value:ACTTYPE])
+            dataConfirm.list?.append([Response_Key: "繳稅類別", Response_Value:PAYTYPE])
+            dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:m_DDAccount?.getContentByType(.First) ?? ""])
+            dataConfirm.list?.append([Response_Key: "機關代號", Response_Value:m_tfInput1.text!])
+            dataConfirm.list?.append([Response_Key: "身分證號碼", Response_Value:m_tfInput2.text!])
+            dataConfirm.list?.append([Response_Key: "繳納金額", Response_Value:m_tfInput3.text!.separatorThousand()])
             
             enterConfirmOTPController(dataConfirm, true)
         }
         else {
             let confirmRequest = RequestStruct(strMethod: "PAY/PAY0105", strSessionDescription: "PAY0105", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
             
-            let dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: nil, memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","BILLNO":m_tfInput1.text!,"DATELINE":endDate,"TXAMT":m_tfInput3.text!,"taskId":taskID,"otp":""],task: nil)
+            var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","BILLNO":m_tfInput1.text!,"DATELINE":endDate,"TXAMT":m_tfInput3.text!,"taskId":taskID,"otp":""],task: nil)
+            
+            dataConfirm.list?.append([Response_Key: "繳稅總類", Response_Value:ACTTYPE])
+            dataConfirm.list?.append([Response_Key: "繳稅類別", Response_Value:PAYTYPE])
+            dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:m_DDAccount?.getContentByType(.First) ?? ""])
+            dataConfirm.list?.append([Response_Key: "銷帳編號", Response_Value:m_tfInput1.text!])
+            dataConfirm.list?.append([Response_Key: "繳費期限", Response_Value:m_tfInput2.text!])
+            dataConfirm.list?.append([Response_Key: "繳納金額", Response_Value:m_tfInput3.text!.separatorThousand()])
             
             enterConfirmOTPController(dataConfirm, true)
         }

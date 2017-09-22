@@ -62,8 +62,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         
         addObserverToKeyBoard()
         addGestureForKeyBoard()
-        
-        setLoading(true)
+
         getTransactionID("03002", TransactionID_Description)
     }
 
@@ -124,7 +123,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             dataConfirm.list?.append([Response_Key: "預約轉帳日", Response_Value:(isFixedDate ? "固定每月\(chooseDay)日":"\(chooseYear)/\(chooseMonth)/\(chooseDay)")])
             dataConfirm.list?.append([Response_Key: "銀行代碼", Response_Value:showBankAccountDropView?.getContentByType(.First) ?? ""])
             dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:showBankAccountDropView?.getContentByType(.Second) ?? ""])
-            dataConfirm.list?.append([Response_Key: "轉帳金額", Response_Value:transAmountTextfield.text!])
+            dataConfirm.list?.append([Response_Key: "轉帳金額", Response_Value:transAmountTextfield.text!.separatorThousand()])
             dataConfirm.list?.append([Response_Key: "備註/交易備記", Response_Value:memoTextfield.text!])
             enterConfirmResultController(true, dataConfirm, true)
         }
@@ -265,7 +264,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             case ViewTag.View_AccountActionSheet.rawValue:
                 accountIndex = buttonIndex-1
                 if let info = accountList?[accountIndex!] {
-                    topDropView?.setThreeRow(ReservationTransfer_OutAccount, info.accountNO, ReservationTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), ReservationTransfer_Balance, String(info.balance) )
+                    topDropView?.setThreeRow(ReservationTransfer_OutAccount, info.accountNO, ReservationTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), ReservationTransfer_Balance, String(info.balance).separatorThousand())
                     inAccountIndex = nil
                     showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, "")
                     transAmountTextfield.text = ""

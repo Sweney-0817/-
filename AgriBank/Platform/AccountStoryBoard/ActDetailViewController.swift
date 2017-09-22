@@ -64,7 +64,6 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         view.setOneRow(ActDetailView_ShowAccount_Title, Choose_Title)
         chooseAccountView.addSubview(view)
         
-        setLoading(true)
         getTransactionID("02041", TransactionID_Description)
         
         // 規格要求------------------------------------------------------------------------------
@@ -126,13 +125,13 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "更正記號", Response_Value:""])
                 }
                 if let TXAMT = dic["TXAMT"] as? String {
-                    list.append([Response_Key: "交易金額", Response_Value:TXAMT])
+                    list.append([Response_Key: "交易金額", Response_Value:TXAMT.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "交易金額", Response_Value:""])
                 }
                 if let OAVBAL = dic["OAVBAL"] as? String {
-                    list.append([Response_Key: "餘額", Response_Value:OAVBAL])
+                    list.append([Response_Key: "餘額", Response_Value:OAVBAL.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "餘額", Response_Value:""])
@@ -188,13 +187,13 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "借貸紀號", Response_Value:""])
                 }
                 if let TXAMT = dic["TXAMT"] as? String {
-                    list.append([Response_Key: "交易金額", Response_Value:TXAMT])
+                    list.append([Response_Key: "交易金額", Response_Value:TXAMT.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "交易金額", Response_Value:""])
                 }
                 if let AVBAL = dic["AVBAL"] as? String {
-                    list.append([Response_Key: "餘額", Response_Value:AVBAL])
+                    list.append([Response_Key: "餘額", Response_Value:AVBAL.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "餘額", Response_Value:""])
@@ -232,31 +231,31 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "更正記號", Response_Value:""])
                 }
                 if let TAXAMT = dic["TAXAMT"] as? String {
-                    list.append([Response_Key: "所得稅", Response_Value:TAXAMT])
+                    list.append([Response_Key: "所得稅", Response_Value:TAXAMT.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "所得稅", Response_Value:""])
                 }
                 if let PRTAX = dic["PRTAX"] as? String {
-                    list.append([Response_Key: "印花稅", Response_Value:PRTAX])
+                    list.append([Response_Key: "印花稅", Response_Value:PRTAX.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "印花稅", Response_Value:""])
                 }
                 if let BALNINT = dic["BALNINT"] as? String {
-                    list.append([Response_Key: "淨利/結存本金", Response_Value:BALNINT])
+                    list.append([Response_Key: "淨利/結存本金", Response_Value:BALNINT.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "淨利/結存本金", Response_Value:""])
                 }
                 if let PRIBAL = dic["PRIBAL"] as? String {
-                    list.append([Response_Key: "補充保費", Response_Value:PRIBAL])
+                    list.append([Response_Key: "補充保費", Response_Value:PRIBAL.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "補充保費", Response_Value:""])
                 }
                 if let AMTINT = dic["AMTINT"] as? String {
-                    list.append([Response_Key: "交易金額", Response_Value:AMTINT])
+                    list.append([Response_Key: "交易金額", Response_Value:AMTINT.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "交易金額", Response_Value:""])
@@ -282,7 +281,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "交易代號", Response_Value:""])
                 }
                 if let PRIAMT = dic["PRIAMT"] as? String {
-                    list.append([Response_Key: "攤還本金/本金", Response_Value:PRIAMT])
+                    list.append([Response_Key: "攤還本金/本金", Response_Value:PRIAMT.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "攤還本金/本金", Response_Value:""])
@@ -294,19 +293,19 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "利息", Response_Value:""])
                 }
                 if let BAL = dic["BAL"] as? String {
-                    list.append([Response_Key: "本金餘額", Response_Value:BAL])
+                    list.append([Response_Key: "本金餘額", Response_Value:BAL.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "本金餘額", Response_Value:""])
                 }
                 if let DFAMT = dic["DFAMT"] as? String {
-                    list.append([Response_Key: "違約金", Response_Value:DFAMT])
+                    list.append([Response_Key: "違約金", Response_Value:DFAMT.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "違約金", Response_Value:""])
                 }
                 if let DIAMT = dic["DIAMT"] as? String {
-                    list.append([Response_Key: "延遲息", Response_Value:DIAMT])
+                    list.append([Response_Key: "延遲息", Response_Value:DIAMT.separatorThousand()])
                 }
                 else {
                     list.append([Response_Key: "延遲息", Response_Value:""])
@@ -346,7 +345,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     cell.detail2Label.text = CRDB == "1" ? "支出" : "存入"
                 }
                 if let TXAMT = dic["TXAMT"] as? String {
-                    cell.detail3Label.text = TXAMT
+                    cell.detail3Label.text = TXAMT.separatorThousand()
                 }
                 
             case .Type2:
@@ -357,7 +356,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     cell.detail2Label.text = CKNO
                 }
                 if let TXAMT = dic["TXAMT"] as? String {
-                    cell.detail3Label.text = TXAMT
+                    cell.detail3Label.text = TXAMT.separatorThousand()
                 }
             
             case .Type3:
@@ -365,10 +364,10 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     cell.detail1Label.text = ENTDAY
                 }
                 if let AMTINT = dic["AMTINT"] as? String {
-                    cell.detail2Label.text = AMTINT
+                    cell.detail2Label.text = AMTINT.separatorThousand()
                 }
                 if let BALNINT = dic["BALNINT"] as? String {
-                    cell.detail3Label.text = BALNINT
+                    cell.detail3Label.text = BALNINT.separatorThousand()
                 }
             
             case .Type4:
@@ -376,10 +375,10 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     cell.detail1Label.text = TXDAY
                 }
                 if let PRIAMT = dic["PRIAMT"] as? String {
-                    cell.detail2Label.text = PRIAMT
+                    cell.detail2Label.text = PRIAMT.separatorThousand()
                 }
                 if let BAL = dic["BAL"] as? String {
-                    cell.detail3Label.text = BAL
+                    cell.detail3Label.text = BAL.separatorThousand()
                 }
                 
             default: break

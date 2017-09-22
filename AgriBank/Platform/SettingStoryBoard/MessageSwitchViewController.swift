@@ -16,7 +16,6 @@ class MessageSwitchViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setLoading(true)
         getTransactionID("08004", TransactionID_Description)
     }
 

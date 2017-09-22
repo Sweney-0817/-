@@ -65,7 +65,6 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         // Do any additional setup after loading the view.
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
         navigationController?.delegate = self
-        setLoading(true)
         getTransactionID("02031", TransactionID_Description)
     }
 
@@ -88,19 +87,19 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "帳號", Response_Value:""])
             }
             if let AVBAL = resultList["AVBAL"] as? String {
-                list.append([Response_Key: "可用餘額", Response_Value:AVBAL])
+                list.append([Response_Key: "可用餘額", Response_Value:AVBAL.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "可用餘額", Response_Value:""])
             }
             if let NAMT = resultList["NAMT"] as? String {
-                list.append([Response_Key: "本交金額", Response_Value:NAMT])
+                list.append([Response_Key: "本交金額", Response_Value:NAMT.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "本交金額", Response_Value:""])
             }
             if let ACTBAL = resultList["ACTBAL"] as? String {
-                list.append([Response_Key: "帳戶餘額", Response_Value:ACTBAL])
+                list.append([Response_Key: "帳戶餘額", Response_Value:ACTBAL.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "帳戶餘額", Response_Value:""])
@@ -114,25 +113,25 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "帳號", Response_Value:""])
             }
             if let PRIBAL = resultList["PRIBAL"] as? String {
-                list.append([Response_Key: "帳戶餘額", Response_Value:PRIBAL])
+                list.append([Response_Key: "帳戶餘額", Response_Value:PRIBAL.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "帳戶餘額", Response_Value:""])
             }
             if let AVBAL = resultList["AVBAL"] as? String {
-                list.append([Response_Key: "可用餘額", Response_Value:AVBAL])
+                list.append([Response_Key: "可用餘額", Response_Value:AVBAL.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "可用餘額", Response_Value:""])
             }
             if let NAMT = resultList["NAMT"] as? String {
-                list.append([Response_Key: "本交票金額", Response_Value:NAMT])
+                list.append([Response_Key: "本交票金額", Response_Value:NAMT.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "本交票金額", Response_Value:""])
             }
             if let STPBAL = resultList["STPBAL"] as? String {
-                list.append([Response_Key: "扣押總金額", Response_Value:STPBAL])
+                list.append([Response_Key: "扣押總金額", Response_Value:STPBAL.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "扣押總金額", Response_Value:""])
@@ -144,7 +143,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "拒往日/上交日", Response_Value:""])
             }
             if let LNLMT = resultList["LNLMT"] as? String {
-                list.append([Response_Key: "透支限額", Response_Value:LNLMT])
+                list.append([Response_Key: "透支限額", Response_Value:LNLMT.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "透支限額", Response_Value:""])
@@ -188,7 +187,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "利率", Response_Value:""])
             }
             if let CTBAL = resultList["CTBAL"] as? String {
-                list.append([Response_Key: "存單面額", Response_Value:CTBAL])
+                list.append([Response_Key: "存單面額", Response_Value:CTBAL.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "存單面額", Response_Value:""])
@@ -226,13 +225,13 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "分號", Response_Value:""])
             }
             if let APAMT = resultList["APAMT"] as? String {
-                list.append([Response_Key: "初貸金額", Response_Value:APAMT])
+                list.append([Response_Key: "初貸金額", Response_Value:APAMT.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "初貸金額", Response_Value:""])
             }
             if let ACTBAL = resultList["ACTBAL"] as? String {
-                list.append([Response_Key: "貸款餘額", Response_Value:ACTBAL])
+                list.append([Response_Key: "貸款餘額", Response_Value:ACTBAL.separatorThousand()])
             }
             else {
                 list.append([Response_Key: "貸款餘額", Response_Value:""])
@@ -450,7 +449,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         if let type = categoryType[ActOverview_TypeList[index]], let array = categoryList[type] {
             cell.detail1Label.text = array[indexPath.row].accountNO
             cell.detail2Label.text = (array[indexPath.row].currency == Currency_TWD) ? Currency_TWD_Title : array[indexPath.row].currency
-            cell.detail3Label.text = String(array[indexPath.row].balance)
+            cell.detail3Label.text = String(array[indexPath.row].balance)?.separatorThousand()
             if let cellType = getTypeByInputString(ActOverview_TypeList[index]) {
                 cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == Account_EnableTrans,true))
             }
