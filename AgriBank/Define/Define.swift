@@ -152,7 +152,7 @@ enum FeatureType: Int {  // 新增編輯 Cell Type
 
 struct FeatureStruct {
     var type:FeatureType
-    var contentList:[PlatformFeatureID]? = nil
+    var contentList:[PlatformFeatureID]? = nil  // 未經授權判斷的功能代碼表
     var belong:PlatformFeatureID? = nil
     var name = String()
 }
@@ -276,6 +276,7 @@ enum ViewTag: Int {
     case View_OptionModifyPassword          // 密碼已到期，建議變更密碼
     case View_LogOut                        // 登出
     case View_AlertActionType               // ReturnCode 電文response: ActionType = backHome
+    case View_AlertForceUpdate              // 強制更新
 }
 
 // MARK: - AuthorizationManager
@@ -368,6 +369,7 @@ let Error_Title = "錯誤訊息"
 let Lose_Successful_Title = "掛失成功"
 let Lose_Faild_Title = "掛失失敗"
 let Currency_TWD_Title = "新臺幣"
+let Update_Title = "更新"
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "agriBank_iOS"
@@ -434,7 +436,7 @@ let ErrorMsg_IsNot_TransTime = "目前非營業時間"
 let ErrorMsg_Error_Identify = "身份證字號格式錯誤"
 let ErrorMsg_Format = "格式不符"
 let ErrorMsg_IsJailBroken = "此功能無法在JB下使用"
-let ErrorMsg_No_TaskId = "無法取得TaskID"
+let ErrorMsg_DateMonthOnlyTwo = "查詢區間僅能兩個月"
 /*  用於「即時轉帳」 */
 let ErrorMsg_GetList_InAgreedAccount = "無法取得約定轉入帳戶"
 let ErrorMsg_GetList_InCommonAccount = "無法取得常用轉入帳戶"
@@ -462,7 +464,12 @@ let ErrorMsg_GetTasks_Faild = "Load task failed"
 let ErrorMsg_GenerateOTP_Faild = "generateGeoOTPCode faild"
 let ErrorMsg_SignTask_Faild = "signTaskOperation faild"
 let ErrorMsg_CancelTask_Faild = "cancelTaskOperation faild"
+let ErrorMsg_No_TaskId = "無法取得TaskID"
 /* 用於「登入」 */
 let ErrorMsg_First_Login = "首次登入請變更代號"
 let ErrorMsg_Force_ChangePassword = "請強制變更密碼"
 let ErrorMsg_Suggest_ChangePassword = "密碼已到期，建議變更密碼"
+/* 用於「首頁」 */
+let ErrorMsg_AntivirusSoftware_Title = "安裝防毒軟體"
+let ErrorMsg_AntivirusSoftware_Content = "請於行動裝置上安裝防毒軟體"
+let ErrorMsg_HaveNewVersion = "請更新農業金庫APP"

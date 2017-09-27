@@ -6,3 +6,4 @@
 #import "VPImageCropperViewController.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import "VaktenManager.h"
+#include <ifaddrs.h>

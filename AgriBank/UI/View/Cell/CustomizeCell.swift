@@ -54,6 +54,7 @@ class EditCell: UITableViewCell {
 protocol OverviewCellDelegate {
     func clickExpandBtn1(_ btn:UIButton, _ value:[String:String])
     func clickExpandBtn2(_ btn:UIButton, _ value:[String:String])
+    func endExpanding(_ curRow:IndexPath?)
 }
 
 class OverviewCell: UITableViewCell {
@@ -71,8 +72,10 @@ class OverviewCell: UITableViewCell {
     private var sleading:CGFloat = 0
     private var expandView:ExpandView? = nil
     private var gesture:UIPanGestureRecognizer? = nil
-    var delegate:OverviewCellDelegate? = nil
+    private var curRow:IndexPath? = nil
+    private var delegate:OverviewCellDelegate? = nil
     
+    // MARK: - Override
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -85,10 +88,23 @@ class OverviewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func AddExpnadBtn(_ delegate:OverviewCellDelegate?, _ type:ActOverviewType, _ isEnable:(Bool,Bool)) {
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == gesture {
+            let point = (gestureRecognizer as! UIPanGestureRecognizer).translation(in: contentView)
+            let verticalness = abs(point.y)
+            if verticalness > 0 {
+                return false
+            }
+        }
+        return true
+    }
+    
+    // MARK: - Public
+    func AddExpnadBtn(_ delegate:OverviewCellDelegate?, _ type:ActOverviewType, _ isEnable:(Bool,Bool), _ curRow:IndexPath) {
         status = .Hide
         trailingCons.constant = sTrailing
         leadingCons.constant = sleading
+        self.curRow = curRow
         self.delegate = delegate
         if gesture == nil {
             gesture = UIPanGestureRecognizer(target: self, action: #selector(HandlePanGesture))
@@ -111,19 +127,16 @@ class OverviewCell: UITableViewCell {
         }
         expandView?.button1.tag = type.rawValue
         expandView?.button2.tag = type.rawValue
-        
         expandView?.frame = CGRect(x: contentView.frame.maxX, y: 0, width: (expandView?.frame.size.width)!, height: contentView.frame.height-1)
     }
     
-    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer == gesture {
-            let point = (gestureRecognizer as! UIPanGestureRecognizer).translation(in: contentView)
-            let verticalness = abs(point.y)
-            if verticalness > 0 {
-                return false
-            }
+    func showExpandView() {
+        if expandView != nil {
+            expandView?.frame = CGRect(x: contentView.frame.maxX-Button_Width, y: 0, width: (expandView?.frame.size.width)!, height: contentView.frame.height-1)
+            status = .Expand
+            trailingCons.constant = sTrailing + Button_Width
+            leadingCons.constant = sleading - Button_Width
         }
-        return true
     }
     
     // MARK: - selector
@@ -156,12 +169,14 @@ class OverviewCell: UITableViewCell {
                     status = .Expand
                     trailingCons.constant = sTrailing + Button_Width
                     leadingCons.constant = sleading - Button_Width
+                    delegate?.endExpanding(curRow)
                 }
                 else {
                     expandView?.frame = CGRect(x: contentView.frame.maxX, y: 0, width: (expandView?.frame.size.width)!, height: contentView.frame.height-1)
                     status = .Hide
                     trailingCons.constant = sTrailing
                     leadingCons.constant = sleading
+                    delegate?.endExpanding(nil)
                 }
             }
             break
@@ -171,11 +186,17 @@ class OverviewCell: UITableViewCell {
     }
     
     func clickButton1(_ sender:Any) {
-        delegate?.clickExpandBtn1(sender as! UIButton, [title1Label.text!:detail1Label.text!,title2Label.text!:detail2Label.text!,title3Label.text!:detail3Label.text!])
+        let btn = sender as! UIButton
+        if btn.backgroundColor != Disable_Color {
+            delegate?.clickExpandBtn1(sender as! UIButton, [title1Label.text!:detail1Label.text!,title2Label.text!:detail2Label.text!,title3Label.text!:detail3Label.text!])
+        }
     }
     
     func clickButton2(_ sender:Any) {
-        delegate?.clickExpandBtn2(sender as! UIButton, [title1Label.text!:detail1Label.text!,title2Label.text!:detail2Label.text!,title3Label.text!:detail3Label.text!])
+        let btn = sender as! UIButton
+        if btn.backgroundColor != Disable_Color {
+            delegate?.clickExpandBtn2(sender as! UIButton, [title1Label.text!:detail1Label.text!,title2Label.text!:detail2Label.text!,title3Label.text!:detail3Label.text!])
+        }
     }
 }
 

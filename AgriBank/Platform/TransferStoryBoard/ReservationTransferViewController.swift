@@ -133,9 +133,9 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         isFixedDate = false
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
             dateView.frame = view.frame
-            var component = Calendar.current.dateComponents([.day,.year,.month], from: Date())
-            component.day = component.day!+1
-            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: component), maxDate: nil)
+            var componenets = Calendar.current.dateComponents([.day,.year,.month], from: Date())
+            componenets.day = componenets.day!+1
+            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: componenets), maxDate: nil)
             dateView.showOneDatePickerView(true, startDate) { start in
                 self.chooseDay = start.day
                 self.chooseMonth = start.month

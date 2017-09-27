@@ -237,14 +237,6 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             showErrorMessage(nil, "\(Enter_Title)\(m_tfTransAmount.placeholder ?? "")")
             return false
         }
-        if (m_tfTransMemo.text?.isEmpty)! {
-            showErrorMessage(nil, "\(Enter_Title)\(m_tfTransMemo.placeholder ?? "")")
-            return false
-        }
-        if (m_tfEmail.text?.isEmpty)! {
-            showErrorMessage(nil, "\(Enter_Title)\(m_tfEmail.placeholder ?? "")")
-            return false
-        }
         if DetermineUtility.utility.isValidEmail(m_tfEmail.text!) {
             showErrorMessage(nil, ErrorMsg_Invalid_Email)
             return false

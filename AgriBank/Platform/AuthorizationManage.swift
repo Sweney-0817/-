@@ -300,4 +300,17 @@ class AuthorizationManage {
         
         return list
     }
+    
+    func getAuthList(_ list:[PlatformFeatureID]?) -> [PlatformFeatureID]? {
+        var temp:[PlatformFeatureID]? = nil
+        if list != nil && IsLoginSuccess() {
+            temp = [PlatformFeatureID]()
+            for ID in list! {
+                if authList?.index(of: ID) != nil {
+                    temp?.append(ID)
+                }
+            }
+        }
+        return temp
+    }
 }

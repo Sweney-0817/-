@@ -66,7 +66,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         
         getTransactionID("02041", TransactionID_Description)
         
-        // 規格要求------------------------------------------------------------------------------
+        /*  規格需求  */
         let date = Date()
         let componenets = Calendar.current.dateComponents([.year, .month, .day], from: date)
         if let day = componenets.day, let month = componenets.month, let year = componenets.year {
@@ -482,8 +482,11 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         case "ACIF0201":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:Any]] {
                 resultList = result
-                tableView.reloadData()
             }
+            else {
+                resultList = nil
+            }
+            tableView.reloadData()
             
         default: super.didResponse(description, response)
         }
@@ -535,11 +538,18 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
                 dateView.frame = view.frame
                 dateView.frame.origin = .zero
-                dateView.showTwoDatePickerView(true, nil, nil) { start, end in
-                    self.startDate = "\(start.year)/\(start.month)/\(start.day)"
-                    self.endDate = "\(end.year)/\(end.month)/\(end.day)"
-                    self.dateLabel.text = self.startDate + (self.endDate != "" ? " - \(self.endDate)" : "")
-                    self.postGetAcntInfo()
+                dateView.showTwoDatePickerView(true, nil, nil) { start, end, sDate, eDate in
+                    var componenets = Calendar.current.dateComponents([.year, .month, .day], from: sDate!)
+                    componenets.month = componenets.month!+2
+                    if Calendar.current.compare(Calendar.current.date(from: componenets)!, to: eDate!, toGranularity: .day) == .orderedAscending {
+                        self.showErrorMessage(nil, ErrorMsg_DateMonthOnlyTwo)
+                    }
+                    else {
+                        self.startDate = "\(start.year)/\(start.month)/\(start.day)"
+                        self.endDate = "\(end.year)/\(end.month)/\(end.day)"
+                        self.dateLabel.text = self.startDate + (self.endDate != "" ? " - \(self.endDate)" : "")
+                        self.postGetAcntInfo()
+                    }
                 }
                 view.addSubview(dateView)
             }

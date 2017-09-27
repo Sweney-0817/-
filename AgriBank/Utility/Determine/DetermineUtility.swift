@@ -13,6 +13,9 @@ class DetermineUtility {
     
     // MARK: 檢核Email
     func isValidEmail(_ mail:String) -> Bool {
+        if mail.isEmpty {
+            return true
+        }
         let checkString = mail.lowercased()
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)

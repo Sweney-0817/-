@@ -57,12 +57,10 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Private
     private func getCountByID(_ ID:PlatformFeatureID) -> Int {
         var count = 0
-        if let info = getFeatureInfoByID(ID) {
-            if let list = info.contentList {
-                for i in list {
-                    if addList.index(of: i) != nil {
-                        count += 1
-                    }
+        if let authList = getAuthFeatureIDContentList(ID) {
+            for i in authList {
+                if addList.index(of: i) != nil {
+                    count += 1
                 }
             }
         }
@@ -120,9 +118,11 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         if let info = getFeatureInfoByID(showList[indexPath.row]) {
             switch info.type {
             case .Head_Next_Type:
-                let controller = getControllerByID(.FeatureID_Edit) as! EditViewController
-                controller.setInitial(false, setShowList: info.contentList!, setAddList: addList, SetTitle: getFeatureName(showList[indexPath.row]))
-                navigationController?.pushViewController(controller, animated: true)
+                if let list = getAuthFeatureIDContentList(showList[indexPath.row]) {
+                    let controller = getControllerByID(.FeatureID_Edit) as! EditViewController
+                    controller.setInitial(false, setShowList: list, setAddList: addList, SetTitle: getFeatureName(showList[indexPath.row]))
+                    navigationController?.pushViewController(controller, animated: true)
+                }
             case .Select_Type:
                 if let i = addList.index(of: showList[indexPath.row]) {
                     addList.remove(at: i)

@@ -43,10 +43,8 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = 1
         if expandList.contains(section) {
-            if let info = getFeatureInfoByID(featureList[section]) {
-                if info.contentList != nil {
-                    count += (info.contentList?.count)!
-                }
+            if let list = getAuthFeatureIDContentList(featureList[section]) {
+                count += list.count
             }
         }
         
@@ -59,6 +57,7 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell:UITableViewCell? = nil
+        let list = getAuthFeatureIDContentList(featureList[indexPath.section])
         if indexPath.row == 0 {
             cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_MenuCell.NibName()!, for: indexPath)
             (cell as! MenuCell).nameLabel.text = getFeatureName(featureList[indexPath.section])
@@ -66,13 +65,8 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
                 (cell as! MenuCell).directionImage.image = UIImage(named: ImageName.DropUp.rawValue)
             }
             else {
-                if let info = getFeatureInfoByID(featureList[indexPath.section]) {
-                    if info.contentList != nil {
-                        (cell as! MenuCell).directionImage.image = UIImage(named: ImageName.DropDown.rawValue)
-                    }
-                    else {
-                        (cell as! MenuCell).directionImage.image = nil
-                    }
+                if list != nil && (list?.count)! > 0 {
+                    (cell as! MenuCell).directionImage.image = UIImage(named: ImageName.DropDown.rawValue)
                 }
                 else {
                     (cell as! MenuCell).directionImage.image = nil
@@ -81,10 +75,8 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
         }
         else {
             cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_MenuExpandCell.NibName()!, for: indexPath)
-            if let info = getFeatureInfoByID(featureList[indexPath.section]) {
-                (cell as! MenuExpandCell).nameLabel.text = getFeatureName((info.contentList?[indexPath.row-1])!)
-                (cell as! MenuExpandCell).separatorView.isHidden = (info.contentList?.count == indexPath.row)
-            }
+            (cell as! MenuExpandCell).nameLabel.text = getFeatureName((list?[indexPath.row-1])!)
+            (cell as! MenuExpandCell).separatorView.isHidden = (list?.count == indexPath.row)
         }
         
         return cell!

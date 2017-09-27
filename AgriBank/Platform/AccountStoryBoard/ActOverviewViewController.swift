@@ -45,6 +45,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     private var chooseAccount:String? = nil             // cell選擇的帳戶
     private var resultList = [String:Any]()             // 電文(ACIF0101)response
     private var pushByclickExpandBtn = false            // 判斷是否從cell觸發 進功能畫面
+    private var curExpandCell:IndexPath? = nil          // 目前展開的cell
     
     // MARK: - Private
     private func getTypeByInputString(_ input:String) -> ActOverviewType? {
@@ -368,7 +369,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                         
                         if addType {
                             for actInfo in result {
-                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
+                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String {
                                     categoryList[type]?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                                 }
                             }
@@ -419,6 +420,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 }
             }
         }
+        curExpandCell = nil
     }
     
     // MARK: - UITableViewDataSource
@@ -451,8 +453,11 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             cell.detail2Label.text = (array[indexPath.row].currency == Currency_TWD) ? Currency_TWD_Title : array[indexPath.row].currency
             cell.detail3Label.text = String(array[indexPath.row].balance)?.separatorThousand()
             if let cellType = getTypeByInputString(ActOverview_TypeList[index]) {
-                cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == Account_EnableTrans,true))
+                cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == Account_EnableTrans,true), indexPath)
             }
+        }
+        if curExpandCell == indexPath {
+            cell.showExpandView()
         }
         return cell
     }
@@ -532,6 +537,21 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             pushByclickExpandBtn = true
             
         default: break
+        }
+    }
+    
+    func endExpanding(_ curRow:IndexPath?) {
+        if curRow != curExpandCell {
+            let oldCell = curExpandCell
+            curExpandCell = curRow
+            var temp = [IndexPath]()
+            if oldCell != nil {
+                temp.append(oldCell!)
+            }
+            if curExpandCell != nil {
+                temp.append(curExpandCell!)
+            }
+            tableView.reloadRows(at: temp, with: .none)
         }
     }
     

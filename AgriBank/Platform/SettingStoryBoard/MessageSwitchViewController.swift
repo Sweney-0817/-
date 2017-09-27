@@ -10,7 +10,7 @@ import UIKit
 
 class MessageSwitchViewController: BaseViewController {
     @IBOutlet weak var messageSwitch: UISwitch!
-    private var settingStatus = true
+    private var getStatus = true
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -26,11 +26,6 @@ class MessageSwitchViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        if UIApplication.shared.currentUserNotificationSettings == nil {
-//            settingStatus = false
-//            messageSwitch.isOn = false
-//        }
-//        print(UIApplication.shared.isRegisteredForRemoteNotifications)
     }
     
     override func didResponse(_ description:String, _ response: NSDictionary) {
@@ -48,19 +43,18 @@ class MessageSwitchViewController: BaseViewController {
         case "COMM0306":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let status = data["ReceiveMsgFlag"] as? String {
                 if status == "0" {
-                    messageSwitch.isOn = false
-                }
-                else {
-                    if !settingStatus {
-                        messageSwitch.isOn = false
-                    }
-                    else {
-                        messageSwitch.isOn = true
-                    }
+                   getStatus = false
                 }
             }
             else {
                 super.didResponse(description, response)
+            }
+            
+            if getStatus && getSettingStatus() {
+                messageSwitch.isOn = true
+            }
+            else {
+                messageSwitch.isOn = false
             }
             
         default: super.didResponse(description, response)
@@ -69,12 +63,39 @@ class MessageSwitchViewController: BaseViewController {
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickSwitch(_ sender: Any) {
-        if settingStatus {
+        if messageSwitch.isOn {
             setLoading(true)
             postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":transactionId,"action":messageSwitch.isOn ? "1" : "0"], true), AuthorizationManage.manage.getHttpHead(true))
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
         }
         else {
-            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            if getStatus && !getSettingStatus() {
+                UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            }
+            else if !getStatus && getSettingStatus() {
+                setLoading(true)
+                postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":transactionId,"action":messageSwitch.isOn ? "1" : "0"], true), AuthorizationManage.manage.getHttpHead(true))
+            }
+            else if !getStatus && !getSettingStatus() {
+                setLoading(true)
+                postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":transactionId,"action":messageSwitch.isOn ? "1" : "0"], true), AuthorizationManage.manage.getHttpHead(true))
+                UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            }
+        }
+    }
+    
+    // MARK: - Private
+    func getSettingStatus() -> Bool {
+        if let status = UIApplication.shared.currentUserNotificationSettings {
+            if status.types == .alert {
+                return true
+            }
+            else {
+                return false
+            }
+        }
+        else {
+            return false
         }
     }
 }

@@ -39,8 +39,16 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        m_ivTopImage.image = UIImage(named: (data?.image)!)
-        m_lbTopTitle.text = data?.title
+        if isNeedOTP {
+            m_ivTopImage.image = UIImage(named: dataOTP?.image ?? "")
+            m_lbTopTitle.text = dataOTP?.title
+            m_btnConfirm.setTitle(dataOTP?.confirmBtnName, for: .normal)
+        }
+        else {
+            m_ivTopImage.image = UIImage(named: data?.image ?? "")
+            m_lbTopTitle.text = data?.title
+            m_btnConfirm.setTitle(data?.confirmBtnName, for: .normal)
+        }
         
         imageConfirmView = getUIByID(.UIID_ImageConfirmView) as? ImageConfirmView
         imageConfirmView?.delegate = self
@@ -51,9 +59,9 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         m_tvData.allowsSelection = false
         m_tvData.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
         
-        m_btnConfirm.setTitle(data?.confirmBtnName, for: .normal)
         setShadowView(m_vBottomView)
         addObserverToKeyBoard()
+        addGestureForKeyBoard()
         
         getImageConfirm(transactionId)
     }

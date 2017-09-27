@@ -24,12 +24,12 @@ let DatePicker_Specific_Date = ["1日","2日","3日","4日","5日","6日","7日"
                                "21日","22日","23日","24日","25日","26日","27日","28日","29日","30日","31日"]
 
 class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
-    private var getTwoDate:((DatePickerStruct,DatePickerStruct)->())? = nil
+    private var getTwoDate:((DatePickerStruct,DatePickerStruct,Date?,Date?)->())? = nil
     private var getOneDate:((DatePickerStruct)->())? = nil
     private var isSpecific = true
     
     // MARK: - Public
-    func showTwoDatePickerView(_ isSpecific:Bool, _ inputDate1:InputDatePickerStruct?, _ inputDate2:InputDatePickerStruct?, getTwoDate: ((DatePickerStruct,DatePickerStruct)->())?) {
+    func showTwoDatePickerView(_ isSpecific:Bool, _ inputDate1:InputDatePickerStruct?, _ inputDate2:InputDatePickerStruct?, getTwoDate: ((DatePickerStruct,DatePickerStruct,Date?,Date?)->())?) {
         self.getTwoDate = getTwoDate
         self.isSpecific = isSpecific
         self.backgroundColor = Disable_Color
@@ -183,7 +183,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             
             if startDate != nil && endDate != nil && getTwoDate != nil {
                 if startDate! <= endDate! {
-                    getTwoDate!(start, end)
+                    getTwoDate!(start, end, startDate, endDate)
                     removeFromSuperview()
                 }
                 else {
@@ -206,7 +206,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             let endValue = Int(end.day.replacingOccurrences(of: "日", with: "")) ?? 0
             if startValue < endValue {
                 if getTwoDate != nil {
-                    getTwoDate!(start, end)
+                    getTwoDate!(start, end, nil, nil)
                 }
                 removeFromSuperview()
             }

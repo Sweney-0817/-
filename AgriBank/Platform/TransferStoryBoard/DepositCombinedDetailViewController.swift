@@ -15,12 +15,14 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var terminationBtn: UIButton!
     private var list:[[String:String]]? = nil
-    private var account:String? = nil
+    private var account:String? = nil   // 定存帳號
+    private var sAccount:String? = nil  // 活存帳號
     
     // MARK: - Public
-    func setList(_ list:[[String:String]], _ account:String?) {
+    func setList(_ list:[[String:String]], _ account:String?, _ sAccount:String?) {
         self.list = list
         self.account = account
+        self.sAccount = sAccount
     }
     
     // MARK: - Override
@@ -83,7 +85,7 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
 
     // MARK: - StoryBoard Touch Event
     @IBAction func clickTerminationBtn(_ sender: Any) {
-        let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0502", strSessionDescription: "TRAN0502", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03005","Operate":"commitTxn","TransactionId":transactionId,"Deposit":account ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+        let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0502", strSessionDescription: "TRAN0502", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03005","Operate":"commitTxn","TransactionId":transactionId,"Deposit":account ?? "","ACTNO":sAccount ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
         let dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: list, memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         enterConfirmResultController(true, dataConfirm, true)
     }

@@ -335,10 +335,6 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(emailTextfield.text!) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
-            return false
-        }
         if !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {
             showErrorMessage(nil, ErrorMsg_Invalid_Email)
             return false
@@ -413,9 +409,12 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     @IBAction func clickNonPredesignatedBtn(_ sender: Any) { // 非約定轉帳
         setLoading(true)
         if !SecurityUtility.utility.isJailBroken() {
-            VaktenManager.sharedInstance().authenticateOperation(withSessionID: transactionId) { resultCode in
+            let info = AuthorizationManage.manage.getResponseLoginInfo()
+            VaktenManager.sharedInstance().authenticateOperation(withSessionID: (info?.Token)!) { resultCode in
+//            VaktenManager.sharedInstance().authenticateOperation(withSessionID: transactionId) { resultCode inx
                 if VIsSuccessful(resultCode) {
-                    self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":Kepasco_userIP], true), AuthorizationManage.manage.getHttpHead(true))
+//                    self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":Kepasco_userIP], true), AuthorizationManage.manage.getHttpHead(true))
+                    self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                 }
                 else {
                     self.showErrorMessage(nil, ErrorMsg_Verification_Faild)
@@ -564,6 +563,14 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 if let info = accountList?[accountIndex!] {
                     topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance).separatorThousand() )
                 }
+                agreedAccountList = nil
+                commonAccountList = nil
+                showBankDorpView?.setOneRow(NTTransfer_BankCode, Choose_Title)
+                enterAccountTextfield.text = ""
+                transAmountTextfield.text = ""
+                memoTextfield.text = ""
+                emailTextfield.text = ""
+                showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, Choose_Title, NTTransfer_InAccount, "")
                 
             case ViewTag.View_InAccountActionSheet.rawValue:
                 inAccountIndex = buttonIndex-1

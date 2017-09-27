@@ -112,6 +112,21 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         return Platform.plat.getCurrentFeatureID()
     }
     
+    func getAuthFeatureIDContentList(_ ID:PlatformFeatureID) -> [PlatformFeatureID]? {
+        var list:[PlatformFeatureID]? = nil
+        if let info = getFeatureInfoByID(ID) {
+            if let content = info.contentList {
+                if AuthorizationManage.manage.IsLoginSuccess() {
+                    list =  AuthorizationManage.manage.getAuthList(content)
+                }
+                else {
+                    list = content
+                }
+            }
+        }
+        return list
+    }
+    
     func enterFeatureByID(_ ID:PlatformFeatureID, _ animated:Bool) {
         if ID == .FeatureID_Home {
             Platform.plat.popToRootViewController()
@@ -210,10 +225,13 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         }
     }
     
-    func showErrorMessage(_ inputTitle:String?, _ message:String?, _ delegate:Any? = nil) {
+    func showErrorMessage(_ inputTitle:String?, _ message:String?) {
         let title = inputTitle != nil ? inputTitle! : UIAlert_Default_Title
-        let alert = UIAlertView(title: title, message: message, delegate: delegate, cancelButtonTitle:Determine_Title)
-        alert.show()
+//        let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:Determine_Title)
+//        alert.show()
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Determine_Title, style: .default, handler: nil))
+        present(alert, animated: false, completion: nil)
     }
     
     func showLoginView() { // 顯示Login畫面
@@ -229,6 +247,40 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         }
     }
     
+    func getLocalIPAddressForCurrentWiFi() -> String? {
+        var address: String?
+        // get list of all interfaces on the local machine
+        var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
+        guard getifaddrs(&ifaddr) == 0 else {
+            return nil
+        }
+        guard let firstAddr = ifaddr else {
+            return nil
+        }
+        for ifptr in sequence(first: firstAddr, next: { $0.pointee.ifa_next }) {
+            
+            let interface = ifptr.pointee
+            
+            // Check for IPV4 or IPV6 interface
+            let addrFamily = interface.ifa_addr.pointee.sa_family
+            if addrFamily == UInt8(AF_INET) || addrFamily == UInt8(AF_INET6) {
+                // Check interface name
+                let name = String(cString: interface.ifa_name)
+                if name == "en0" {
+                    
+                    // Convert interface address to a human readable string
+                    var addr = interface.ifa_addr.pointee
+                    var hostName = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                    getnameinfo(&addr, socklen_t(interface.ifa_addr.pointee.sa_len), &hostName, socklen_t(hostName.count), nil, socklen_t(0), NI_NUMERICHOST)
+                    address = String(cString: hostName)
+                }
+            }
+        }
+        
+        freeifaddrs(ifaddr)
+        return address
+    }
+
     // MARK: - LoginDelegate
     func clickLoginBtn(_ info:LoginStrcture) {
         AuthorizationManage.manage.SetLoginInfo(info)
@@ -511,7 +563,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
         case TransactionID_Description:
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 tempTransactionId = tranId
-                VaktenManager.sharedInstance().authenticateOperation(withSessionID: tranId) { resultCode in
+                let info = AuthorizationManage.manage.getResponseLoginInfo()
+//                VaktenManager.sharedInstance().authenticateOperation(withSessionID: tranId) { resultCode in
+                VaktenManager.sharedInstance().authenticateOperation(withSessionID: (info?.Token)!) { resultCode in
                     if VIsSuccessful(resultCode) {
                         var workCode = ""
                         if self.curFeatureID! == .FeatureID_TaxPayment {
@@ -521,7 +575,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                             workCode = "05002"
                         }
                         self.setLoading(true)
-                        self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":Kepasco_userIP], true), AuthorizationManage.manage.getHttpHead(true))
+                        self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                     }
                     else {
                         self.showErrorMessage(nil, ErrorMsg_Verification_Faild)
@@ -565,9 +619,20 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 }
                 else if returnCode == "E_COMM0101_05" {
                     let message = (response.object(forKey: ReturnMessage_Key) as? String) ?? ""
-                    let alert = UIAlertView(title: UIAlert_Default_Title, message: message, delegate: self, cancelButtonTitle: Cancel_Title, otherButtonTitles: Determine_Title)
-                    alert.tag = ViewTag.View_ForceLogin.rawValue
-                    alert.show()
+//                    let alert = UIAlertView(title: UIAlert_Default_Title, message: message, delegate: self, cancelButtonTitle: Cancel_Title, otherButtonTitles: Determine_Title)
+//                    alert.tag = ViewTag.View_ForceLogin.rawValue
+//                    alert.show()
+                    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
+                    alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                        if let info = AuthorizationManage.manage.GetLoginInfo() {
+                            let idMd5 = SecurityUtility.utility.MD5(string: info.id)
+                            let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
+                            self.setLoading(true)
+                            self.postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                        }
+                    })
+                    present(alert, animated: false, completion: nil)
                     return
                 }
                 else {
@@ -583,7 +648,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                 AuthorizationManage.manage.setLoginStatus(false)
                             }
                             if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
-                                let alert = UIAlertView(title: UIAlert_Default_Title, message: returnMsg, delegate: self, cancelButtonTitle: Cancel_Title)
+                                let alert = UIAlertView(title: UIAlert_Default_Title, message: returnMsg, delegate: self, cancelButtonTitle: Determine_Title)
                                 alert.tag = ViewTag.View_AlertActionType.rawValue
                                 alert.show()
                             }

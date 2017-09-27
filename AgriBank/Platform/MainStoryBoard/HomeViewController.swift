@@ -98,22 +98,25 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             
         case "COMM0901":
             if let data = response.object(forKey: ReturnData_Key) as? [String : Any] {
-                if let forcedChange = data["forcedChange"] as? String { //是否強制換版
-                    if forcedChange == "Y" {
-                        showErrorMessage(nil, "需要強制換版")
+                if let isNew = data["isNew"] as? String, isNew == "Y" { // 是否有更新版本
+                    if let newVersion = data["newVersion"] as? String, newVersion != AgriBank_Version {
+                        if let forcedChange = data["forcedChange"] as? String { //是否強制換版
+                            if forcedChange == "Y" {
+                                let alert = UIAlertView(title: UIAlert_Default_Title, message: ErrorMsg_HaveNewVersion, delegate: self, cancelButtonTitle:Update_Title)
+                                alert.tag = ViewTag.View_AlertForceUpdate.rawValue
+                                alert.show()
+                            }
+                            else {
+                                let alert = UIAlertView(title: UIAlert_Default_Title, message: ErrorMsg_HaveNewVersion, delegate: self, cancelButtonTitle:Cancel_Title, otherButtonTitles:Update_Title)
+                                alert.tag = ViewTag.View_AlertForceUpdate.rawValue
+                                alert.show()
+                            }
+                        }
                     }
                 }
-                if let isNew = data["isNew"] as? String { // 是否有更新版本
-                    if isNew == "Y" {
-                        showErrorMessage(nil, "有更新版本")
-                    }
+                if let showLaunchAppMsg = data["showLaunchAppMsg"] as? String, showLaunchAppMsg == "Y" { //App啟動時是否顯示金管會要求訊息
+                    showErrorMessage(ErrorMsg_AntivirusSoftware_Title, ErrorMsg_AntivirusSoftware_Content)
                 }
-//                if let newVersion = data["newVersion"] as? String { //最新版號
-//
-//                }
-//                if let showLaunchAppMsg = data["showLaunchAppMsg"] as? String { //App啟動時是否顯示金管會要求訊息
-//                    
-//                }
             }
             else {
                 super.didResponse(description, response)
@@ -301,6 +304,11 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         case ViewTag.View_LogOut.rawValue:
             if buttonIndex != alertView.cancelButtonIndex {
                 postLogout()
+            }
+            
+        case ViewTag.View_AlertForceUpdate.rawValue:
+            if let title = alertView.buttonTitle(at: buttonIndex), title == Update_Title {
+                
             }
             
         default: super.alertView(alertView, clickedButtonAt: buttonIndex)

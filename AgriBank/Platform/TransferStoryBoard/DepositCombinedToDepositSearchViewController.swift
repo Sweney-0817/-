@@ -52,7 +52,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
             list.append([Response_Key: "起存日", Response_Value:dic["CIDAY"] ?? ""])
             list.append([Response_Key: "存單期別(月)", Response_Value:dic["PRDMM"] ?? ""])
             list.append([Response_Key: "開戶利率", Response_Value:dic["YRATE"] ?? ""])
-            controller.setList(list, dic["Deposit"] ?? "")
+            controller.setList(list, dic["Deposit"], topDropView?.getContentByType(.First))
         }
     }
     

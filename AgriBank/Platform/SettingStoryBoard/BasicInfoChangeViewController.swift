@@ -46,7 +46,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
             showErrorMessage(nil, ErrorMsg_Address)
             return false
         }
-        if !emailTextfield.text!.isEmpty && !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {
+        if !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {
             showErrorMessage(nil, ErrorMsg_Invalid_Email)
             return false
         }

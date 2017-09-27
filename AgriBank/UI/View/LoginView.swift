@@ -192,6 +192,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
             alert.show()
         }
         else {
+            self.endEditing(true)
             loginInfo.bankCode = bankCode[locationTextfield.text?.replacingOccurrences(of: " ", with: "") ?? ""] ?? loginInfo.bankCode
             loginInfo.account = sAccount
             loginInfo.id = idTextfield.text ?? loginInfo.id
