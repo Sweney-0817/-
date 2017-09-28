@@ -482,11 +482,8 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         case "ACIF0201":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:Any]] {
                 resultList = result
+                tableView.reloadData()
             }
-            else {
-                resultList = nil
-            }
-            tableView.reloadData()
             
         default: super.didResponse(description, response)
         }
@@ -594,6 +591,8 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     // MARK: - Private
     private func postGetAcntInfo() {
         if currentType != nil && chooseAccount != nil, let type = categoryType[currentType!] {
+            resultList = nil
+            tableView.reloadData()
             setLoading(true)
             let date = endDate.isEmpty ? startDate : endDate
             postRequest("ACIF/ACIF0201", "ACIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02041","Operate":"getAcntInfo","TransactionId":transactionId,"ACTTYPE":type,"ACTNO":chooseAccount!,"TXSDAY":startDate.replacingOccurrences(of: "/", with: ""),"TXEDAY":date.replacingOccurrences(of: "/", with: "")], true), AuthorizationManage.manage.getHttpHead(true))

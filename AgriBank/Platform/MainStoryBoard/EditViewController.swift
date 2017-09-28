@@ -123,6 +123,7 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
                     controller.setInitial(false, setShowList: list, setAddList: addList, SetTitle: getFeatureName(showList[indexPath.row]))
                     navigationController?.pushViewController(controller, animated: true)
                 }
+                
             case .Select_Type:
                 if let i = addList.index(of: showList[indexPath.row]) {
                     addList.remove(at: i)
@@ -131,6 +132,7 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
                     addList.append(showList[indexPath.row])
                 }
                 tableView.reloadData()
+                
             default:
                 break
             }

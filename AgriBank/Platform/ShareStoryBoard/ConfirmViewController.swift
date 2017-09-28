@@ -106,8 +106,8 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 }
             }
             else {
+                getImageConfirm()
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
-                getImageConfirm(transactionId)
             }
             
         default:
@@ -148,12 +148,10 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         }
         else {
             VaktenManager.sharedInstance().cancelTaskOperation(with: dataOTP?.task) { resultCode in
-                if VIsSuccessful(resultCode) {
-                    self.navigationController?.popViewController(animated: true)
-                }
-                else {
+                if !VIsSuccessful(resultCode) {
                     self.showErrorMessage(nil, "\(ErrorMsg_CancelTask_Faild) \(resultCode)")
                 }
+                self.navigationController?.popViewController(animated: true)
             }
         }
     }

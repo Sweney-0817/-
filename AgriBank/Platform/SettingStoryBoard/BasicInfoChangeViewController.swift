@@ -34,6 +34,10 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
     
     // MARK: - Private
     private func inputIsCorrect() -> Bool {
+        if !AuthorizationManage.manage.getChangeBaseInfoStaus() {
+            showErrorMessage(nil, ErrorMsg_NoAuth)
+            return false
+        }
         if emailTextfield.text!.isEmpty && mobliePhoneTextfield.text!.isEmpty && telePhoneTextfield.text!.isEmpty && teleAreaCodeTextfield.text!.isEmpty && postalCodeTextfield.text!.isEmpty && addressTextfield.text!.isEmpty {
             showErrorMessage(nil, ErrorMsg_NeedChangeOne)
             return false
@@ -128,6 +132,26 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("Usif/USIF0101", "USIF0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08001","Operate":"queryData","TransactionId":tranId], true), AuthorizationManage.manage.getHttpHead(true))
+                if !AuthorizationManage.manage.getChangeBaseInfoStaus() {
+                    emailTextfield.text = teleAreaCode
+                    emailTextfield.isEnabled = false
+                    emailTextfield.backgroundColor = Disable_Color
+                    mobliePhoneTextfield.text = teleAreaCode
+                    mobliePhoneTextfield.isEnabled = false
+                    mobliePhoneTextfield.backgroundColor = Disable_Color
+                    teleAreaCodeTextfield.text = teleAreaCode
+                    teleAreaCodeTextfield.isEnabled = false
+                    teleAreaCodeTextfield.backgroundColor = Disable_Color
+                    telePhoneTextfield.text = telePhone
+                    telePhoneTextfield.isEnabled = false
+                    telePhoneTextfield.backgroundColor = Disable_Color
+                    addressTextfield.text = address
+                    addressTextfield.isEnabled = false
+                    addressTextfield.backgroundColor = Disable_Color
+                    postalCodeTextfield.text = postalCode
+                    postalCodeTextfield.isEnabled = false
+                    postalCodeTextfield.backgroundColor = Disable_Color
+                }
             }
             else {
                 super.didResponse(description, response)

@@ -272,7 +272,6 @@ enum ViewTag: Int {
     case View_DepositTypeActionSheet        // 綜存戶轉定存-存款種類
     case View_RateTypeActionSheet           // 綜存戶轉定存-利率方式
     case View_TransPeriodActionSheet        // 綜存戶轉定存-轉存期別
-    case View_ForceLogin                    // 強制登入
     case View_OptionModifyPassword          // 密碼已到期，建議變更密碼
     case View_LogOut                        // 登出
     case View_AlertActionType               // ReturnCode 電文response: ActionType = backHome
@@ -350,6 +349,7 @@ let File_BankCode_Key = "BankCode"
 let TransactionID_Description = "TrID"
 let TransactionID_Key = "TransactionId"
 let LogoImage_Description = "LogoImage"
+let BaseTransactionID_Description = "BaseTrID"
 
 let Login_Title = "登出"
 let NoLogin_Title  = "登入"
@@ -370,6 +370,10 @@ let Lose_Successful_Title = "掛失成功"
 let Lose_Faild_Title = "掛失失敗"
 let Currency_TWD_Title = "新臺幣"
 let Update_Title = "更新"
+let NextChange_Title = "下次變更"
+let PerformChange_Title = "執行變更"
+let SetNotification_Title = "您要打開系統應用通知才可收到推播通知"
+let Setting_Title = "設定"
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "agriBank_iOS"
@@ -432,11 +436,12 @@ let ErrorMsg_Image_ConfirmFaild = "圖形驗證碼錯誤"
 let ErrorMsg_Illegal_Character = "不得輸入非法字元"
 let ErrorMsg_Invalid_Email = "E-mail格式不合"
 let ErrorMsg_Choose_Date = "起始日不可大於截止日"
-let ErrorMsg_IsNot_TransTime = "目前非營業時間"
 let ErrorMsg_Error_Identify = "身份證字號格式錯誤"
 let ErrorMsg_Format = "格式不符"
 let ErrorMsg_IsJailBroken = "此功能無法在JB下使用"
 let ErrorMsg_DateMonthOnlyTwo = "查詢區間僅能兩個月"
+let ErrorMsg_NoAuth = "本單位目前尚未開放此功能"
+let ErrorMsg_IsNot_TransTime = "目前非營業時間"
 /*  用於「即時轉帳」 */
 let ErrorMsg_GetList_InAgreedAccount = "無法取得約定轉入帳戶"
 let ErrorMsg_GetList_InCommonAccount = "無法取得常用轉入帳戶"

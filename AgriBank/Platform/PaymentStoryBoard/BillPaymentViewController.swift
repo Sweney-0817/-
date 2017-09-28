@@ -136,7 +136,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let Id = data["taskId"] as? String {
                 VaktenManager.sharedInstance().getTasksOperation{ resultCode, tasks  in
                     if VIsSuccessful(resultCode) && tasks != nil {
-                        self.payBill(tasks!, Id)
+                        self.payBill(tasks! as! [VTask], Id)
                     }
                     else {
                         self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode)")
@@ -244,28 +244,43 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
         return true
     }
     
-    private func payBill(_ taskList:[Any], _ taskID:String) {
-        var INACT = ""
-        var INBANK = ""
-        if curType == BillPayment_Type1 {
-            INACT = m_tfTransInAccount.text!
-            INBANK = m_DDTransInBank?.getContentByType(.First) ?? ""
+    private func payBill(_ taskList:[VTask], _ taskID:String) {
+        var task:VTask? = nil
+        for info in taskList {
+            if info.taskID == taskID {
+                task = info
+                break
+            }
         }
-        else {
-            INACT = m_DDTransInBA?.getContentByType(.First) ?? ""
-            INBANK = m_DDTransInBA?.getContentByType(.Second) ?? ""
+        
+        if task != nil, let data = task?.message.data(using: .utf8) {
+            do {
+                let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String:String]
+                
+                let OUTACT = jsonDic["OUTACT"] ?? ""
+                let INACT = jsonDic["INACT"] ?? ""
+                let INBANK = jsonDic["INBANK"] ?? ""
+                let TXAMT = jsonDic["TXAMT"] ?? ""
+                let MEMO = jsonDic["MEMO"] ?? ""
+                let EMAIL = jsonDic["EMAIL"] ?? ""
+                
+                let confirmRequest = RequestStruct(strMethod: "PAY/PAY0107", strSessionDescription: "PAY0107", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                
+                var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05002","Operate":"commitTxn","TransactionId":transactionId,"OUTACT":OUTACT,"INACT": INACT,"INBANK":INBANK,"TXAMT":TXAMT,"MEMO":MEMO,"EMAIL":EMAIL,"taskId":taskID,"otp":""],task: task)
+                
+                dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:OUTACT])
+                dataConfirm.list?.append([Response_Key: "銀行代碼", Response_Value:INBANK])
+                dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:INACT])
+                dataConfirm.list?.append([Response_Key: "繳納金額", Response_Value:TXAMT.separatorThousand()])
+                dataConfirm.list?.append([Response_Key: "備註/交易備記", Response_Value:MEMO])
+                dataConfirm.list?.append([Response_Key: "受款人E-mail", Response_Value:EMAIL])
+                enterConfirmOTPController(dataConfirm, true)
+            }
+            catch {
+                showErrorMessage(nil, error.localizedDescription)
+            }
         }
-        let confirmRequest = RequestStruct(strMethod: "PAY/PAY0107", strSessionDescription: "PAY0107", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
         
-        var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05002","Operate":"commitTxn","TransactionId":transactionId,"OUTACT":m_DDTransOutAccount?.getContentByType(.First) ?? "","INACT": INACT,"INBANK":INBANK,"TXAMT":Int(m_tfTransAmount.text!) ?? 0,"MEMO":m_tfTransMemo.text!,"EMAIL":m_tfEmail.text!,"taskId":taskID,"otp":""],task: nil)
-        
-        dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:m_DDTransOutAccount?.getContentByType(.First) ?? ""])
-        dataConfirm.list?.append([Response_Key: "銀行代碼", Response_Value:INBANK])
-        dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:INACT])
-        dataConfirm.list?.append([Response_Key: "繳納金額", Response_Value:m_tfTransAmount.text!.separatorThousand()])
-        dataConfirm.list?.append([Response_Key: "備註/交易備記", Response_Value:m_tfTransMemo.text!])
-        dataConfirm.list?.append([Response_Key: "受款人E-mail", Response_Value:m_tfEmail.text!])
-        enterConfirmOTPController(dataConfirm, true)
     }
 
     // MARK: - ThreeRowDropDownViewDelegate

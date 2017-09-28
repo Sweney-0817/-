@@ -34,29 +34,46 @@ class AuthorizationManage {
     private var userInfo:ResponseLoginInfo? = nil        // 登入成功後回傳的資訊
     private var loginInfo:LoginStrcture? = nil           // 使用者登入的資訊
     private var apnsToken:String? = nil                  // APNS回傳的token
-    private var canNTAgreedTransfer = false              // 是否可以約轉
-    private var canNTNonAgreedTransfer = false           // 是否可以非約轉
     private var needReAddList = [PlatformFeatureID:Int]()// 使用者加入的功能，但功能授權未開啟
     private var isLoginSuccess = false                   // 判斷是否登入成功
+    private var canNTNonAgreedTransfer = false           // 是否可以「非約轉」
+    private var canReservationTransferCancel = false     // 是否可以「預約轉帳取消」
+    private var canDepositTermination = false            // 是否可以「綜存戶轉存明細解約」
+    private var canPayLoan = false                       // 是否可以「繳交放款本息」
+    private var canChangeBaseInfo = false                // 是否可以「繳交放款本息」
     
     func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info
         if list != nil {
             authList = [PlatformFeatureID]()
             for index in list! {
-                if let ID = index["TransactionId"], let pID = getPlatformIDByAuthID(ID) {
-                    if ID == "T04" {
-                        canNTAgreedTransfer = true
-                    }
-                    if ID == "T05" {
+                if let ID = index["TransactionId"] {
+                    switch ID {
+                    case "T05":
                         canNTNonAgreedTransfer = true
+                        
+                    case "T34":
+                        canReservationTransferCancel = true
+                    
+                    case "T35":
+                        canDepositTermination = true
+                        
+                    case "T36":
+                        canPayLoan = true
+                        
+                    case "37":
+                        canChangeBaseInfo = true
+                        
+                    default:
+                        if let pID = getPlatformIDByAuthID(ID) {
+                            if authList?.index(of: pID) == nil {
+                                authList?.append(pID)
+                            }
+                        }
                     }
-                    if authList?.index(of: pID) == nil {
-                        authList?.append(pID)
-                    }
-                    authList?.append(.FeatureID_Edit) // 新增/編輯
                 }
             }
+            authList?.append(.FeatureID_Edit) // 新增/編輯
         }
     }
     
@@ -91,8 +108,24 @@ class AuthorizationManage {
         }
     }
     
-    func checkCanNTTransfer(_ isNotAgreedTrans:Bool) -> Bool {
-        return isNotAgreedTrans ? canNTNonAgreedTransfer : canNTAgreedTransfer
+    func canEnterNTNonAgreedTransfer() -> Bool {
+        return canNTNonAgreedTransfer
+    }
+    
+    func canCancelReservationTransfer() -> Bool {
+        return canReservationTransferCancel
+    }
+    
+    func canTerminationDeposit() -> Bool {
+        return canDepositTermination
+    }
+    
+    func getPayLoanStatus() -> Bool {
+        return canPayLoan
+    }
+    
+    func getChangeBaseInfoStaus() -> Bool {
+        return canChangeBaseInfo
     }
 
     func getHttpHead(_ isNeedCID:Bool) -> [String:String] {
@@ -147,7 +180,6 @@ class AuthorizationManage {
         case "T02": return PlatformFeatureID.FeatureID_AccountDetailView
         case "T03": return PlatformFeatureID.FeatureID_NTAccountTransfer
         case "T04": return PlatformFeatureID.FeatureID_NTTransfer               // 約轉
-        case "T05": return PlatformFeatureID.FeatureID_NTTransfer               // 非約轉
         case "T06": return PlatformFeatureID.FeatureID_ReservationTransfer
         case "T07": return PlatformFeatureID.FeatureID_ReservationTransferSearchCancel
         case "T08": return PlatformFeatureID.FeatureID_DepositCombinedToDeposit

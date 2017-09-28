@@ -24,8 +24,23 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setAllSubView()
+        
+        m_tfPicker.delegate = self
+        m_vPlace.addSubview(m_tfPicker)
+        
+        if m_DDPlace == nil {
+            m_DDPlace = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
+            m_DDPlace?.delegate = self
+            m_DDPlace?.setOneRow(ExchangeRate_Bank_Title, Choose_Title)
+            m_DDPlace?.m_lbFirstRowTitle.textAlignment = .center
+            m_DDPlace?.frame = CGRect(x:0, y:0, width:m_vPlace.frame.width, height:(m_DDPlace?.getHeight())!)
+            m_vPlace.addSubview(m_DDPlace!)
+        }
+        m_vPlace.layer.borderColor = Gray_Color.cgColor
+        m_vPlace.layer.borderWidth = 1
+        
+        m_tvData.register(UINib(nibName: UIID.UIID_NTRationCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_NTRationCell.NibName()!)
+        
         setShadowView(m_vPlace)
         setLoading(true)
         
@@ -103,36 +118,7 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
     }
     
     // MARK: -Private
-    private func setAllSubView() {
-        setDDPlace()
-        setDataTableView()
-    }
-    
-    private func setDDPlace() {
-        if m_DDPlace == nil {
-            m_DDPlace = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
-            m_DDPlace?.delegate = self
-            m_DDPlace?.setOneRow(ExchangeRate_Bank_Title, Choose_Title)
-            m_DDPlace?.m_lbFirstRowTitle.textAlignment = .center
-            m_DDPlace?.frame = CGRect(x:0, y:0, width:m_vPlace.frame.width, height:(m_DDPlace?.getHeight())!)
-            m_vPlace.addSubview(m_DDPlace!)
-        }
-        m_vPlace.layer.borderColor = Gray_Color.cgColor
-        m_vPlace.layer.borderWidth = 1
-    }
-    
-    private func setDataTableView() {
-        m_tvData.register(UINib(nibName: UIID.UIID_NTRationCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_NTRationCell.NibName()!)
-        m_tvData.allowsSelection = false
-    }
-    
     private func setPicker() {
-        if m_PickerData.count <= 0 {
-            return
-        }
-        m_tfPicker.delegate = self
-        m_vPlace.addSubview(m_tfPicker)
-        
         // UIPickerView
         let pickerView = UIPickerView(frame: CGRect(x:0, y:self.view.frame.height-PickView_Height, width:self.view.frame.width, height:PickView_Height))
         pickerView.dataSource = self
@@ -240,7 +226,12 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
         else {
             let a = m_PickerData[pickerView.selectedRow(inComponent: 0)]
             let city = [String](a.keys).first ?? ""
-            return a[city]?[row]
+            if let count = a[city]?.count, count > row {
+                return a[city]?[row]
+            }
+            else {
+                return nil
+            }
         }
     }
     

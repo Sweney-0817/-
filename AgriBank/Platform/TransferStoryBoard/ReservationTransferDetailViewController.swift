@@ -26,6 +26,7 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
     @IBOutlet weak var bottomView: UIView!
     private var input:ReservationTransDetailStruct? = nil
     private var list:[[String:String]]? = nil
+    private var canTransTime = false    // 是否為交易時間
     
     // MARK: - Public
     func setList(_ list:[[String:String]], _ input:ReservationTransDetailStruct) {
@@ -41,8 +42,10 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
         setShadowView(bottomView)
         cancelButton.layer.cornerRadius = Layer_BorderRadius
         
-        setLoading(true)
-        postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
+        if AuthorizationManage.manage.canCancelReservationTransfer() {
+            setLoading(true)
+            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -59,8 +62,7 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
         switch description {
         case "COMM0701":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
-                cancelButton.setBackgroundImage(UIImage(named: ImageName.ButtonLarge.rawValue), for: .normal)
-                cancelButton.isEnabled = true
+                canTransTime = true
             }
             
         default: super.didResponse(description, response)
@@ -85,18 +87,32 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickCancelBtn(_ sender: Any) {
-        let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0302", strSessionDescription: "TRAN0302", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"commitTxn","TransactionId":transactionId,"ACTNO":input?.outAccount ?? "","RGDAY":input?.loginDate ?? "","TXTNO":input?.serialNumber ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
-        
-        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認取消", resultBtnName: "繼續交易", checkRequest: confirmRequest)
-        dataConfirm.list?.append([Response_Key:"轉出帳號",Response_Value:input?.outAccount ?? ""])
-        dataConfirm.list?.append([Response_Key:"登錄日期",Response_Value:input?.loginDate ?? ""])
-        dataConfirm.list?.append([Response_Key:"預約轉帳日",Response_Value:input?.reservationTransDate ?? ""])
-        dataConfirm.list?.append([Response_Key:"銀行代碼",Response_Value:input?.bankCode ?? ""])
-        dataConfirm.list?.append([Response_Key:"轉入帳號",Response_Value:input?.inAccount ?? ""])
-        dataConfirm.list?.append([Response_Key:"金額",Response_Value:input?.amount.separatorThousand() ?? ""])
-        dataConfirm.list?.append([Response_Key:"交易備註",Response_Value:input?.memo ?? ""])
-        dataConfirm.list?.append([Response_Key:"登錄序號",Response_Value:input?.serialNumber ?? ""])
-        enterConfirmResultController(true, dataConfirm, true)
+        if inputIsCorrect() {
+            let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0302", strSessionDescription: "TRAN0302", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"commitTxn","TransactionId":transactionId,"ACTNO":input?.outAccount ?? "","RGDAY":input?.loginDate ?? "","TXTNO":input?.serialNumber ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+            
+            var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認取消", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+            dataConfirm.list?.append([Response_Key:"轉出帳號",Response_Value:input?.outAccount ?? ""])
+            dataConfirm.list?.append([Response_Key:"登錄日期",Response_Value:input?.loginDate ?? ""])
+            dataConfirm.list?.append([Response_Key:"預約轉帳日",Response_Value:input?.reservationTransDate ?? ""])
+            dataConfirm.list?.append([Response_Key:"銀行代碼",Response_Value:input?.bankCode ?? ""])
+            dataConfirm.list?.append([Response_Key:"轉入帳號",Response_Value:input?.inAccount ?? ""])
+            dataConfirm.list?.append([Response_Key:"金額",Response_Value:input?.amount.separatorThousand() ?? ""])
+            dataConfirm.list?.append([Response_Key:"交易備註",Response_Value:input?.memo ?? ""])
+            dataConfirm.list?.append([Response_Key:"登錄序號",Response_Value:input?.serialNumber ?? ""])
+            enterConfirmResultController(true, dataConfirm, true)
+        }
     }
-
+    
+    // MARK: - Private
+    private func inputIsCorrect() -> Bool {
+        if !AuthorizationManage.manage.canCancelReservationTransfer() {
+            showErrorMessage(nil, ErrorMsg_NoAuth)
+            return false
+        }
+        if !canTransTime {
+            showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
+            return false
+        }
+        return true
+    }
 }

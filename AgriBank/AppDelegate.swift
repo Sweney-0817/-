@@ -31,21 +31,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         if #available(iOS 10.0, *) {
             let center = UNUserNotificationCenter.current()
             center.delegate = self
-            center.requestAuthorization(options: [.sound,.alert], completionHandler: { (granted, error) in
+            center.requestAuthorization(options: [.sound,.alert,.badge]) { granted, error in
                 if granted {
                     center.getNotificationSettings(completionHandler: { (setting) in
-                        
                     })
                 }
                 else {
-                    let alert = UIAlertView(title: UIAlert_Default_Title, message: "您未同意開啟接收推播訊息", delegate: nil, cancelButtonTitle:Determine_Title)
-                    alert.show()
                 }
-            })
+            }
         }
         else {
             if application.responds(to: #selector(getter: UIApplication.isRegisteredForRemoteNotifications)) {
-                application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .sound], categories: nil))
+                application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil))
             }
         }
         UIApplication.shared.registerForRemoteNotifications()

@@ -117,7 +117,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let Id = data["taskId"] as? String {
                 VaktenManager.sharedInstance().getTasksOperation{ resultCode, tasks  in
                     if VIsSuccessful(resultCode) && tasks != nil {
-                        self.payTax(tasks!, Id)
+                        self.payTax(tasks! as! [VTask], Id)
                     }
                     else {
                         self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode)")
@@ -248,40 +248,65 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
         m_curDropDownView = nil
     }
     
-    private func payTax(_ taskList:[Any], _ taskID:String) {
-        let ACTTYPECODE = typeCodeList[typeCodeIndex!]["ACTTYPECODE"] ?? ""
-        let ACTTYPE = typeCodeList[typeCodeIndex!]["ACTTYPE"] ?? ""
-        let PAYTYPECODE = typeItemList[ACTTYPE]?[typeItemIndex!]["PAYTYPECODE"] ?? ""
-        let PAYTYPE = typeItemList[ACTTYPE]?[typeItemIndex!]["PAYTYPE"] ?? ""
-        
-        if curType == TaxPayment_Type1  {
-            let confirmRequest = RequestStruct(strMethod: "PAY/PAY0103", strSessionDescription: "PAY0103", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
-            
-            
-            var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","CORP":m_tfInput1.text!,"IDNO":m_tfInput2.text!,"TXAMT":m_tfInput3.text!,"taskId":taskID,"otp":""],task: nil)
-            
-            dataConfirm.list?.append([Response_Key: "繳稅總類", Response_Value:ACTTYPE])
-            dataConfirm.list?.append([Response_Key: "繳稅類別", Response_Value:PAYTYPE])
-            dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:m_DDAccount?.getContentByType(.First) ?? ""])
-            dataConfirm.list?.append([Response_Key: "機關代號", Response_Value:m_tfInput1.text!])
-            dataConfirm.list?.append([Response_Key: "身分證號碼", Response_Value:m_tfInput2.text!])
-            dataConfirm.list?.append([Response_Key: "繳納金額", Response_Value:m_tfInput3.text!.separatorThousand()])
-            
-            enterConfirmOTPController(dataConfirm, true)
+    private func payTax(_ taskList:[VTask], _ taskID:String) {
+        var task:VTask? = nil
+        for info in taskList {
+            if info.taskID == taskID {
+                task = info
+                break
+            }
         }
-        else {
-            let confirmRequest = RequestStruct(strMethod: "PAY/PAY0105", strSessionDescription: "PAY0105", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
-            
-            var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","BILLNO":m_tfInput1.text!,"DATELINE":endDate,"TXAMT":m_tfInput3.text!,"taskId":taskID,"otp":""],task: nil)
-            
-            dataConfirm.list?.append([Response_Key: "繳稅總類", Response_Value:ACTTYPE])
-            dataConfirm.list?.append([Response_Key: "繳稅類別", Response_Value:PAYTYPE])
-            dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:m_DDAccount?.getContentByType(.First) ?? ""])
-            dataConfirm.list?.append([Response_Key: "銷帳編號", Response_Value:m_tfInput1.text!])
-            dataConfirm.list?.append([Response_Key: "繳費期限", Response_Value:m_tfInput2.text!])
-            dataConfirm.list?.append([Response_Key: "繳納金額", Response_Value:m_tfInput3.text!.separatorThousand()])
-            
-            enterConfirmOTPController(dataConfirm, true)
+        
+        if task != nil, let data = task?.message.data(using: .utf8) {
+            do {
+                let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String:String]
+                
+                let OUTACT = jsonDic["OUTACT"] ?? ""
+                let ACTTYPECODE = jsonDic["ACTTYPECODE"] ?? ""
+                let ACTTYPE = jsonDic["ACTTYPE"] ?? ""
+                let PAYTYPECODE = jsonDic["PAYTYPECODE"] ?? ""
+                let PAYTYPE = jsonDic["PAYTYPE"] ?? ""
+                let TXAMT = jsonDic["TXAMT"] ?? ""
+                let TYPE = jsonDic["TYPE"] ?? ""
+                
+                if TYPE == TaxPayment_Type1  {
+                    let CORP = jsonDic["CORP"] ?? ""
+                    let IDNO = jsonDic["IDNO"] ?? ""
+                    
+                    let confirmRequest = RequestStruct(strMethod: "PAY/PAY0103", strSessionDescription: "PAY0103", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                    
+                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":TYPE,"OUTACT":OUTACT,"CORP":CORP,"IDNO":IDNO,"TXAMT":TXAMT,"taskId":taskID,"otp":""],task: task)
+                    
+                    dataConfirm.list?.append([Response_Key: "繳稅總類", Response_Value:ACTTYPE])
+                    dataConfirm.list?.append([Response_Key: "繳稅類別", Response_Value:PAYTYPE])
+                    dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:OUTACT])
+                    dataConfirm.list?.append([Response_Key: "機關代號", Response_Value:CORP])
+                    dataConfirm.list?.append([Response_Key: "身分證號碼", Response_Value:IDNO])
+                    dataConfirm.list?.append([Response_Key: "繳納金額", Response_Value:TXAMT.separatorThousand()])
+                    
+                    enterConfirmOTPController(dataConfirm, true)
+                }
+                else {
+                    let BILLNO = jsonDic["BILLNO"] ?? ""
+                    let DATELINE = jsonDic["DATELINE"] ?? ""
+                    
+                    let confirmRequest = RequestStruct(strMethod: "PAY/PAY0105", strSessionDescription: "PAY0105", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                    
+                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":TYPE,"OUTACT":OUTACT,"BILLNO":BILLNO,"DATELINE":DATELINE,"TXAMT":TXAMT,"taskId":taskID,"otp":""],task: nil)
+                    
+                    dataConfirm.list?.append([Response_Key: "繳稅總類", Response_Value:ACTTYPE])
+                    dataConfirm.list?.append([Response_Key: "繳稅類別", Response_Value:PAYTYPE])
+                    dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:OUTACT])
+                    dataConfirm.list?.append([Response_Key: "銷帳編號", Response_Value:BILLNO])
+                    dataConfirm.list?.append([Response_Key: "繳費期限", Response_Value:DATELINE])
+                    dataConfirm.list?.append([Response_Key: "繳納金額", Response_Value:TXAMT.separatorThousand()])
+                    
+                    enterConfirmOTPController(dataConfirm, true)
+                }
+            }
+            catch {
+                showErrorMessage(nil, error.localizedDescription)
+            }
         }
     }
     

@@ -17,6 +17,7 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
     private var list:[[String:String]]? = nil
     private var account:String? = nil   // 定存帳號
     private var sAccount:String? = nil  // 活存帳號
+    private var canTransTime = false    // 是否為交易時間
     
     // MARK: - Public
     func setList(_ list:[[String:String]], _ account:String?, _ sAccount:String?) {
@@ -32,8 +33,10 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
         tableView.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
         terminationBtn.layer.cornerRadius = Layer_BorderRadius
         
-        setLoading(true)
-        postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
+        if AuthorizationManage.manage.canTerminationDeposit() {
+            setLoading(true)
+            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,8 +53,7 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
         switch description {
         case "COMM0701":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
-                terminationBtn.setBackgroundImage(UIImage(named: ImageName.ButtonLarge.rawValue), for: .normal)
-                terminationBtn.isEnabled = true
+                canTransTime = true
             }
             
         default: super.didResponse(description, response)
@@ -85,8 +87,23 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
 
     // MARK: - StoryBoard Touch Event
     @IBAction func clickTerminationBtn(_ sender: Any) {
-        let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0502", strSessionDescription: "TRAN0502", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03005","Operate":"commitTxn","TransactionId":transactionId,"Deposit":account ?? "","ACTNO":sAccount ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
-        let dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: list, memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
-        enterConfirmResultController(true, dataConfirm, true)
+        if inputIsCorrect() {
+            let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0502", strSessionDescription: "TRAN0502", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03005","Operate":"commitTxn","TransactionId":transactionId,"Deposit":account ?? "","ACTNO":sAccount ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+            let dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: list, memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+            enterConfirmResultController(true, dataConfirm, true)
+        }
+    }
+    
+    // MARK: - Private
+    private func inputIsCorrect() -> Bool {
+        if !AuthorizationManage.manage.canTerminationDeposit() {
+            showErrorMessage(nil, ErrorMsg_NoAuth)
+            return false
+        }
+        if !canTransTime {
+            showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
+            return false
+        }
+        return true
     }
 }

@@ -149,7 +149,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                         else if ID == .FeatureID_BillPayment {
                             workCode = "05002"
                         }
-                        getTransactionID(workCode, TransactionID_Description)
+                        getTransactionID(workCode, BaseTransactionID_Description)
                         curFeatureID = ID
                     }
                     
@@ -227,8 +227,6 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     
     func showErrorMessage(_ inputTitle:String?, _ message:String?) {
         let title = inputTitle != nil ? inputTitle! : UIAlert_Default_Title
-//        let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle:Determine_Title)
-//        alert.show()
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Determine_Title, style: .default, handler: nil))
         present(alert, animated: false, completion: nil)
@@ -248,7 +246,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     }
     
     func getLocalIPAddressForCurrentWiFi() -> String? {
-        var address: String?
+        var address:String? = nil
         // get list of all interfaces on the local machine
         var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
         guard getifaddrs(&ifaddr) == 0 else {
@@ -351,19 +349,6 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     // MARK: - UIAlertViewDelegate
     func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
         switch alertView.tag {
-        case ViewTag.View_ForceLogin.rawValue:
-            if alertView.cancelButtonIndex != buttonIndex {
-                if let info = AuthorizationManage.manage.GetLoginInfo() {
-                    let idMd5 = SecurityUtility.utility.MD5(string: info.id)
-                    let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
-                    setLoading(true)
-                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
-                }
-            }
-            else {
-                clickLoginCloseBtn()
-            }
-            
         case ViewTag.View_OptionModifyPassword.rawValue:
             if alertView.cancelButtonIndex != buttonIndex {
                 AuthorizationManage.manage.setLoginStatus(true)
@@ -382,9 +367,6 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                 }
             }
             curFeatureID = nil
-            
-        case ViewTag.View_AlertActionType.rawValue:
-            navigationController?.popToRootViewController(animated: true)
             
         default: navigationController?.popToRootViewController(animated: true)
         }
@@ -525,6 +507,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         
                     case "2":
                         showErrorMessage(nil, ErrorMsg_Force_ChangePassword)
+                        /* 此時尚未登入成功，使用enterFeatureByID會失敗 */
                         if let con = navigationController?.viewControllers.first {
                             if con is HomeViewController {
                                 navigationController?.popToRootViewController(animated: true)
@@ -534,12 +517,13 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         curFeatureID = nil
                         
                     case "3":
-                        let alert = UIAlertView(title: UIAlert_Default_Title, message: ErrorMsg_Suggest_ChangePassword, delegate: self, cancelButtonTitle: "下次變更", otherButtonTitles: "執行變更")
+                        let alert = UIAlertView(title: UIAlert_Default_Title, message: ErrorMsg_Suggest_ChangePassword, delegate: self, cancelButtonTitle: NextChange_Title, otherButtonTitles: PerformChange_Title)
                         alert.tag = ViewTag.View_OptionModifyPassword.rawValue
                         alert.show()
                         
                     case "4":
                         showErrorMessage(nil, ErrorMsg_First_Login)
+                        /* 此時尚未登入成功，使用enterFeatureByID會失敗 */
                         if let con = navigationController?.viewControllers.first {
                             if con is HomeViewController {
                                 navigationController?.popToRootViewController(animated: true)
@@ -553,32 +537,34 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     default: curFeatureID = nil
                     }
                 }
-//                registerAPNSToken()
+                registerAPNSToken()
                 (UIApplication.shared.delegate as! AppDelegate).notificationAllEvent()
             }
             
         case "COMM0102":
             AuthorizationManage.manage.setLoginStatus(false)
+            curFeatureID = nil
             
-        case TransactionID_Description:
+        case BaseTransactionID_Description:
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 tempTransactionId = tranId
-                let info = AuthorizationManage.manage.getResponseLoginInfo()
 //                VaktenManager.sharedInstance().authenticateOperation(withSessionID: tranId) { resultCode in
-                VaktenManager.sharedInstance().authenticateOperation(withSessionID: (info?.Token)!) { resultCode in
-                    if VIsSuccessful(resultCode) {
-                        var workCode = ""
-                        if self.curFeatureID! == .FeatureID_TaxPayment {
-                            workCode = "05001"
+                if let info = AuthorizationManage.manage.getResponseLoginInfo() {
+                    VaktenManager.sharedInstance().authenticateOperation(withSessionID: (info.Token ?? "")) { resultCode in
+                        if VIsSuccessful(resultCode) {
+                            var workCode = ""
+                            if self.curFeatureID! == .FeatureID_TaxPayment {
+                                workCode = "05001"
+                            }
+                            else if self.curFeatureID! == .FeatureID_BillPayment {
+                                workCode = "05002"
+                            }
+                            self.setLoading(true)
+                            self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                         }
-                        else if self.curFeatureID! == .FeatureID_BillPayment {
-                            workCode = "05002"
+                        else {
+                            self.showErrorMessage(nil, ErrorMsg_Verification_Faild)
                         }
-                        self.setLoading(true)
-                        self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
-                    }
-                    else {
-                        self.showErrorMessage(nil, ErrorMsg_Verification_Faild)
                     }
                 }
             }
@@ -605,7 +591,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
         setLoading(false)
         switch description {
         /*  有到「結果頁」的電文都不需判斷ReturnCode  */
-        case "TRAN0101","TRAN0103","TRAN0201","TRAN0302","TRAN0401","TRAN0502","TRAN0602",
+        case "TRAN0101","TRAN0102","TRAN0201","TRAN0302","TRAN0401","TRAN0502","TRAN0602",
              "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
              "PAY0103","PAY0105","PAY0107",
              "USIF0102","USIF0201","USIF0301",
@@ -619,10 +605,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 }
                 else if returnCode == "E_COMM0101_05" {
                     let message = (response.object(forKey: ReturnMessage_Key) as? String) ?? ""
-//                    let alert = UIAlertView(title: UIAlert_Default_Title, message: message, delegate: self, cancelButtonTitle: Cancel_Title, otherButtonTitles: Determine_Title)
-//                    alert.tag = ViewTag.View_ForceLogin.rawValue
-//                    alert.show()
-                    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    let alert = UIAlertController(title: UIAlert_Default_Title, message: message, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
                     alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
                         if let info = AuthorizationManage.manage.GetLoginInfo() {
@@ -646,13 +629,18 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         case "backHome":
                             if returnCode == "E_HEADER_04" || returnCode == "E_HEADER_05" {
                                 AuthorizationManage.manage.setLoginStatus(false)
+                                curFeatureID = nil
                             }
                             if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
-                                let alert = UIAlertView(title: UIAlert_Default_Title, message: returnMsg, delegate: self, cancelButtonTitle: Determine_Title)
-                                alert.tag = ViewTag.View_AlertActionType.rawValue
-                                alert.show()
+                                if navigationController?.viewControllers.last is HomeViewController {
+                                    (navigationController?.viewControllers.last as! HomeViewController).updateLoginStatus()
+                                }
+                                else {
+                                    navigationController?.popToRootViewController(animated: true)
+                                }
+                                showErrorMessage(nil, returnMsg)
                             }
-                       
+                            
                         default: break
                         }
                     }

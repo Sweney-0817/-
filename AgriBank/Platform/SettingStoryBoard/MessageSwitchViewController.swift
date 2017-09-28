@@ -7,16 +7,18 @@
 //
 
 import UIKit
+import UserNotifications
 
 class MessageSwitchViewController: BaseViewController {
     @IBOutlet weak var messageSwitch: UISwitch!
-    private var getStatus = true
+    private var getStatus:Bool? = nil
     
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
 
         getTransactionID("08004", TransactionID_Description)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground(_:)), name: .UIApplicationDidBecomeActive, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,59 +45,117 @@ class MessageSwitchViewController: BaseViewController {
         case "COMM0306":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let status = data["ReceiveMsgFlag"] as? String {
                 if status == "0" {
-                   getStatus = false
+                    getStatus = false
+                }
+                else {
+                    getStatus = true
+                }
+                if getStatus! {
+                    if #available(iOS 10.0, *) {
+                        let center = UNUserNotificationCenter.current()
+                        center.getNotificationSettings() { setting in
+                            if setting.alertStyle != .none {
+                                DispatchQueue.main.async {
+                                    self.messageSwitch.isOn = true
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        if UIApplication.shared.currentUserNotificationSettings != nil {
+                            messageSwitch.isOn = true
+                        }
+                    }
                 }
             }
             else {
                 super.didResponse(description, response)
             }
             
-            if getStatus && getSettingStatus() {
-                messageSwitch.isOn = true
-            }
-            else {
-                messageSwitch.isOn = false
-            }
-            
         default: super.didResponse(description, response)
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickSwitch(_ sender: Any) {
         if messageSwitch.isOn {
-            setLoading(true)
-            postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":transactionId,"action":messageSwitch.isOn ? "1" : "0"], true), AuthorizationManage.manage.getHttpHead(true))
-            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            if getStatus! == false {
+                setLoading(true)
+                postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":transactionId,"action":messageSwitch.isOn ? "1" : "0"], true), AuthorizationManage.manage.getHttpHead(true))
+            }
+            
+            if #available(iOS 10.0, *) {
+                let center = UNUserNotificationCenter.current()
+                center.getNotificationSettings() { setting in
+                    if setting.alertStyle == .none {
+                        self.showAlertViewController()
+                    }
+                }
+            }
+            else {
+                if UIApplication.shared.currentUserNotificationSettings == nil {
+                    showAlertViewController()
+                }
+            }
         }
         else {
-            if getStatus && !getSettingStatus() {
-                UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
-            }
-            else if !getStatus && getSettingStatus() {
-                setLoading(true)
-                postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":transactionId,"action":messageSwitch.isOn ? "1" : "0"], true), AuthorizationManage.manage.getHttpHead(true))
-            }
-            else if !getStatus && !getSettingStatus() {
-                setLoading(true)
-                postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":transactionId,"action":messageSwitch.isOn ? "1" : "0"], true), AuthorizationManage.manage.getHttpHead(true))
-                UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
-            }
+            setLoading(true)
+            postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":transactionId,"action":messageSwitch.isOn ? "1" : "0"], true), AuthorizationManage.manage.getHttpHead(true))
         }
     }
     
     // MARK: - Private
-    func getSettingStatus() -> Bool {
-        if let status = UIApplication.shared.currentUserNotificationSettings {
-            if status.types == .alert {
-                return true
+    private func showAlertViewController() {
+        let alert = UIAlertController(title: UIAlert_Default_Title, message: SetNotification_Title, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Cancel_Title, style: .default) { _ in
+            self.setLoading(true)
+            self.postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":self.transactionId,"action":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+            self.messageSwitch.isOn = false
+        })
+        alert.addAction(UIAlertAction(title: Setting_Title, style: .default) { _ in
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+        })
+        present(alert, animated: false, completion: nil)
+    }
+    
+    // MARK: - Public
+    func appWillEnterForeground(_ sender:Any) {  /* 從背景返回 */
+        if getStatus != nil {
+            if #available(iOS 10.0, *) {
+                let center = UNUserNotificationCenter.current()
+                center.getNotificationSettings() { setting in
+                    if setting.alertStyle != .none {
+                        DispatchQueue.main.async {
+                            self.messageSwitch.isOn = true
+                            if self.getStatus! == false {
+                                self.setLoading(true)
+                                self.postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":self.transactionId,"action":"1"], true), AuthorizationManage.manage.getHttpHead(true))
+                            }
+                        }
+                    }
+                    else {
+                        DispatchQueue.main.async {
+                            self.messageSwitch.isOn = false
+                        }
+                    }
+                }
             }
             else {
-                return false
+                if UIApplication.shared.currentUserNotificationSettings != nil {
+                    messageSwitch.isOn = true
+                    if self.getStatus == false {
+                        setLoading(true)
+                        postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":transactionId,"action":"1"], true), AuthorizationManage.manage.getHttpHead(true))
+                    }
+                }
+                else {
+                    messageSwitch.isOn = false
+                }
             }
-        }
-        else {
-            return false
         }
     }
 }
