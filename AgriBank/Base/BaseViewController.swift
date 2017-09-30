@@ -626,10 +626,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 else {
                     if let type = response.object(forKey: "ActionType") as? String {
                         switch type {
-                        case "showMsg":
-                            if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
-                                showErrorMessage(nil, returnMsg)
-                            }
+//                        case "showMsg":
+//                            if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
+//                                showErrorMessage(nil, returnMsg)
+//                            }
                             
                         case "backHome":
                             if returnCode == "E_HEADER_04" || returnCode == "E_HEADER_05" {
@@ -646,7 +646,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                 showErrorMessage(nil, returnMsg)
                             }
                             
-                        default: break
+                        default:
+                            if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
+                                showErrorMessage(nil, returnMsg)
+                            }
                         }
                     }
                     /*  登入失敗，需要重取圖形驗證碼 */
