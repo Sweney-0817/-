@@ -441,7 +441,7 @@ let ErrorMsg_Format = "格式不符"
 let ErrorMsg_IsJailBroken = "此功能無法在JB下使用"
 let ErrorMsg_DateMonthOnlyTwo = "查詢區間僅能兩個月"
 let ErrorMsg_NoAuth = "本單位目前尚未開放此功能"
-let ErrorMsg_IsNot_TransTime = "目前非營業時間"
+let ErrorMsg_IsNot_TransTime = "非營業時間，不受理交易"
 /*  用於「即時轉帳」 */
 let ErrorMsg_GetList_InAgreedAccount = "無法取得約定轉入帳戶"
 let ErrorMsg_GetList_InCommonAccount = "無法取得常用轉入帳戶"

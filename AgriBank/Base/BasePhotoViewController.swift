@@ -31,10 +31,14 @@ enum PhotoActionSheetTitle {
 
 class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, VPImageCropperDelegate {
 
+    var imgVcClip:VPImageCropperViewController? = nil
+    var imagePicker:UIImagePickerController? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+        imagePicker = UIImagePickerController()
+        imagePicker?.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -110,19 +114,17 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
     public func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if actionSheet.tag == ViewTag.ActionSheet_Photo.rawValue {
             if buttonIndex != actionSheet.cancelButtonIndex {
-                let imgVc = UIImagePickerController()
-                imgVc.delegate = self
                 switch actionSheet.buttonTitle(at: buttonIndex)! {
                 case PhotoActionSheetTitle.first.simpleDescription():
-                    imgVc.sourceType = .photoLibrary
+                    imagePicker?.sourceType = .photoLibrary
                     break
                 case PhotoActionSheetTitle.second.simpleDescription():
-                    imgVc.sourceType = .camera
+                    imagePicker?.sourceType = .camera
                     break
                 default:
                     break
                 }
-                present(imgVc, animated: true, completion: nil)
+                present(imagePicker!, animated: true, completion: nil)
             }
         }
     }
@@ -131,14 +133,18 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         picker.dismiss(animated: true, completion: {
             if let portraitImg = info[Original_Image_Key] as? UIImage {
-                let imgVcClip = VPImageCropperViewController(image: portraitImg, cropFrame: CGRect(origin: CGPoint(x: VPImageCropperVC_XStart, y: VPImageCropperVC_YStart), size: CGSize(width: VPImageCropperVC_Width, height:VPImageCropperVC_Height)), limitScaleRatio: VPImageCropperVC_LimitRatio)
-                imgVcClip?.delegate = self
-                self.present(imgVcClip!, animated: true, completion: nil)
+                self.imgVcClip = VPImageCropperViewController(image: portraitImg, cropFrame: CGRect(origin: CGPoint(x: VPImageCropperVC_XStart, y: VPImageCropperVC_YStart), size: CGSize(width: VPImageCropperVC_Width, height:VPImageCropperVC_Height)), limitScaleRatio: VPImageCropperVC_LimitRatio)
+                self.imgVcClip?.delegate = self
+                self.present(self.imgVcClip!, animated: true, completion: nil)
             }
             else {
                 print("func imagePickerController - info[Original_Image_Key] as? UIImage => faild")
             }
         })
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - VPImageCropperDelegate

@@ -9,15 +9,15 @@
 import Foundation
 import UIKit
 
-#if DEBUG
+//#if DEBUG
 let URL_PROTOCOL = "http"
 //let URL_DOMAIN = "52.187.113.27/FFICMAPIFORMAL/api"
 //let URL_DOMAIN = "52.187.113.27/FFICMAPI/api"
 let URL_DOMAIN = "172.16.132.52/APP/api"
-#else
-let URL_PROTOCOL = "https"
-let URL_DOMAIN = ""
-#endif
+//#else
+//let URL_PROTOCOL = "https"
+//let URL_DOMAIN = ""
+//#endif
 
 let REQUEST_URL = "\(URL_PROTOCOL)://\(URL_DOMAIN)"
 let BarItem_Height_Weight = 30
@@ -70,6 +70,11 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.topItem?.title = getFeatureName(getCurrentFeatureID())
         navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.white]
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        dismissKeyboard()
+        super.viewWillDisappear(animated)
     }
     
     deinit {

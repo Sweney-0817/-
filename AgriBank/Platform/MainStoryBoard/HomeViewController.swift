@@ -51,10 +51,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
-        if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
-            statusView.isHidden = true
-        }
         updateLoginStatus()
     }
     
@@ -198,6 +194,12 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     }
 
     func updateLoginStatus() {
+        /* Time out登出，不會viewWillAppear */
+        navigationController?.navigationBar.isHidden = true
+        if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
+            statusView.isHidden = true
+        }
+        
         featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
         var list:[[String:Any]]? = nil
         if AuthorizationManage.manage.IsLoginSuccess() {

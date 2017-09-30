@@ -185,6 +185,8 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
         m_tfPicker.resignFirstResponder()
         
         if let code = bankCode["\(city)\(place)"] {
+            m_Data1.removeAll()
+            m_tvData.reloadData()
             setLoading(true)
             postRequest("Mang/MANG0201", "MANG0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"06002","Operate":"queryData","BR_CODE":"\(code)"], false), AuthorizationManage.manage.getHttpHead(false))
         }

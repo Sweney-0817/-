@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
 
     var window: UIWindow?
     var logoutTimer:Timer? = nil
+    var notification:NSObjectProtocol? = nil
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // 連線暫存檔清除
@@ -83,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     func timeOut(_ sender:Timer) {
         if sender == logoutTimer {
             if AuthorizationManage.manage.IsLoginSuccess() {
-                let alert = UIAlertView(title: UIAlert_Default_Title, message: "待機時間過長即將退出", delegate: self, cancelButtonTitle: Determine_Title)
+                let alert = UIAlertView(title: UIAlert_Default_Title, message: "待機時間過長即將登出", delegate: self, cancelButtonTitle: Determine_Title)
                 alert.show()
             }
             logoutTimer?.invalidate()
@@ -93,12 +94,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     func notificationAllEvent() {
         if AuthorizationManage.manage.IsLoginSuccess() {
             logoutTimer = Timer.scheduledTimer(timeInterval: AgriBank_TimeOut, target: self, selector: #selector(timeOut(_:)), userInfo: nil, repeats: false)
-            NotificationCenter.default.addObserver(forName: nil, object: nil, queue: nil) { notification in
-                if notification.name.rawValue == "_UIWindowSystemGestureStateChangedNotification" {
-                    self.logoutTimer?.invalidate()
-                    self.logoutTimer = Timer.scheduledTimer(timeInterval: AgriBank_TimeOut, target: self, selector: #selector(self.timeOut(_:)), userInfo: nil, repeats: false)
+            if notification == nil {
+                notification = NotificationCenter.default.addObserver(forName: nil, object: nil, queue: nil) { notification in
+                    if notification.name.rawValue == "_UIWindowSystemGestureStateChangedNotification" {
+                        self.logoutTimer?.invalidate()
+                        self.logoutTimer = Timer.scheduledTimer(timeInterval: AgriBank_TimeOut, target: self, selector: #selector(self.timeOut(_:)), userInfo: nil, repeats: false)
+                    }
                 }
             }
+        }
+    }
+    
+    func removeNotificationAllEvent() {
+        logoutTimer?.invalidate()
+        logoutTimer = nil
+        if notification != nil {
+            NotificationCenter.default.removeObserver(notification!, name: nil, object: nil)
+            notification = nil
         }
     }
     
@@ -114,12 +126,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     // MARK: - ConnectionUtilityDelegate
     func didRecvdResponse(_ description: String, _ response: NSDictionary) {
         switch description {
-        case "COMM0102":
-            AuthorizationManage.manage.setLoginStatus(false)
-            let center = ((window?.rootViewController as! SideMenuViewController).getController(.center) as! UINavigationController)
-            center.popToRootViewController(animated: true)
-            (center.viewControllers.first as! HomeViewController).updateLoginStatus()
-            (window?.rootViewController as! SideMenuViewController).ShowSideMenu(false)
+//        case "COMM0102":
+//            AuthorizationManage.manage.setLoginStatus(false)
+//            let center = ((window?.rootViewController as! SideMenuViewController).getController(.center) as! UINavigationController)
+//            center.popToRootViewController(animated: true)
+//            (center.viewControllers.first as! HomeViewController).updateLoginStatus()
+//            (window?.rootViewController as! SideMenuViewController).ShowSideMenu(false)
             
         default: break
         }
@@ -134,7 +146,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
         let request = ConnectionUtility()
         request.requestData(self, "\(REQUEST_URL)/Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(false))
-        logoutTimer?.invalidate()
+
+        AuthorizationManage.manage.setLoginStatus(false)
+        
+        let center = ((window?.rootViewController as! SideMenuViewController).getController(.center) as! UINavigationController)
+        center.popToRootViewController(animated: true)
+        (center.viewControllers.first as! HomeViewController).updateLoginStatus()
+        (window?.rootViewController as! SideMenuViewController).ShowSideMenu(false)
     }
 }
 

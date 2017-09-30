@@ -25,7 +25,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     private var startDate = ""
     private var endDate = ""
     private var isSpecific = true
-    private var resultList = [[String:String]]()
+    private var resultList = [[String:Any]]()
     private var curResultIndex:Int? = nil
     
     // MARK: - Override
@@ -37,67 +37,67 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         input.outAccount = chooseAccountDorpView?.getContentByType(.First) ?? ""
         if curResultIndex != nil && curResultIndex! < resultList.count {
             let dic = resultList[curResultIndex!]
-            if let RGDAY = dic["RGDAY"] {
+            if let RGDAY = dic["RGDAY"] as? String {
                 input.loginDate = RGDAY
                 list.append([Response_Key:"登錄日期", Response_Value:RGDAY])
             }
             else {
                 list.append([Response_Key:"登錄日期", Response_Value:""])
             }
-            if let RVDAY = dic["RVDAY"] {
+            if let RVDAY = dic["RVDAY"] as? String {
                 input.reservationTransDate = RVDAY
                 list.append([Response_Key:"預約轉帳日", Response_Value:RVDAY])
             }
             else {
                 list.append([Response_Key:"預約轉帳日", Response_Value:""])
             }
-            if let LSTDT = dic["LSTDT"] {
+            if let LSTDT = dic["LSTDT"] as? String {
                 list.append([Response_Key:"上次轉帳日期", Response_Value:LSTDT])
             }
             else {
                 list.append([Response_Key:"上次轉帳日期", Response_Value:""])
             }
-            if let TXTNO = dic["TXTNO"] {
+            if let TXTNO = dic["TXTNO"] as? String {
                 input.serialNumber = TXTNO
                 list.append([Response_Key:"登錄序號", Response_Value:TXTNO])
             }
             else {
                 list.append([Response_Key:"登錄序號", Response_Value:""])
             }
-            if let TRACTNO = dic["TRACTNO"] {
+            if let TRACTNO = dic["TRACTNO"] as? String {
                 list.append([Response_Key:"轉入帳號", Response_Value:TRACTNO])
             }
             else {
                 list.append([Response_Key:"轉入帳號", Response_Value:""])
             }
-            if let TRBANK = dic["TRBANK"] {
+            if let TRBANK = dic["TRBANK"] as? String {
                 input.bankCode = TRBANK
                 list.append([Response_Key:"銀行代碼", Response_Value:TRBANK])
             }
             else {
                 list.append([Response_Key:"銀行代碼", Response_Value:""])
             }
-            if let AMOUNT = dic["AMOUNT"] {
+            if let AMOUNT = dic["AMOUNT"] as? String {
                 input.amount = AMOUNT
                 list.append([Response_Key:"金額", Response_Value:AMOUNT.separatorThousand()])
             }
             else {
                 list.append([Response_Key:"金額", Response_Value:""])
             }
-            if let DSCPTX = dic["DSCPTX"] {
+            if let DSCPTX = dic["DSCPTX"] as? String {
                 input.memo = DSCPTX
                 list.append([Response_Key:"交易備註", Response_Value:DSCPTX])
             }
             else {
                 list.append([Response_Key:"交易備註", Response_Value:""])
             }
-            if let ERRCODE = dic["ERRCODE"] {
+            if let ERRCODE = dic["ERRCODE"] as? String {
                 list.append([Response_Key:"處理結果", Response_Value:ERRCODE])
             }
             else {
                 list.append([Response_Key:"處理結果", Response_Value:""])
             }
-            if let TRACTNO = dic["TRACTNO"] {
+            if let TRACTNO = dic["TRACTNO"] as? String{
                 input.inAccount = TRACTNO
             }
         }
@@ -162,7 +162,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             }
             
         case "TRAN0301":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:String]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]] {
                 resultList = array
                 tableView.reloadData()
             }
@@ -208,10 +208,13 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         }
         else {
             if chooseAccountDorpView?.getContentByType(.First) != Choose_Title {
+                var componenets = Calendar.current.dateComponents([.day,.year,.month], from: Date())
+                componenets.day = componenets.day!+1
+                let curDate = InputDatePickerStruct(minDate: nil, maxDate: nil, curDate: Calendar.current.date(from: componenets))
                 if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
                     dateView.frame = view.frame
                     dateView.frame.origin = .zero
-                    dateView.showTwoDatePickerView(isSpecific, nil, nil) { startDate, endDate, _, _ in
+                    dateView.showTwoDatePickerView(isSpecific, curDate, curDate) { startDate, endDate, _, _ in
                         if self.isSpecific {
                             self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.year)/\(startDate.month)/\(startDate.day) - \(endDate.year)/\(endDate.month)/\(endDate.day)")
                             self.startDate = "\(startDate.year)\(startDate.month)\(startDate.day)"
@@ -243,13 +246,13 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         cell.title1Label.text = ReservationTransferSearchCancel_CellTitle[0]
         cell.title2Label.text = ReservationTransferSearchCancel_CellTitle[1]
         cell.title3Label.text = ReservationTransferSearchCancel_CellTitle[2]
-        if let RGDAY = resultList[indexPath.row]["RGDAY"] {
+        if let RGDAY = resultList[indexPath.row]["RGDAY"] as? String {
             cell.detail1Label.text = RGDAY
         }
-        if let TRACTNO = resultList[indexPath.row]["TRACTNO"] {
+        if let TRACTNO = resultList[indexPath.row]["TRACTNO"] as? String {
             cell.detail2Label.text = TRACTNO
         }
-        if let AMOUNT = resultList[indexPath.row]["AMOUNT"] {
+        if let AMOUNT = resultList[indexPath.row]["AMOUNT"] as? String {
             cell.detail3Label.text = AMOUNT.separatorThousand()
         }
         return cell
@@ -292,8 +295,10 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     
     private func getReservationTransferDetail() {
         if chooseAccountDorpView?.getContentByType(.First) != Choose_Title && !startDate.isEmpty && !endDate.isEmpty {
+            resultList = [[String:Any]]()
+            tableView.reloadData()
             setLoading(true)
-            postRequest("TRAN/TRAN0301", "TRAN0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"getList","TransactionId":transactionId,"ACTNO":chooseAccountDorpView?.getContentByType(.First) ?? "","KIND":isSpecific ? "1":"2","RVDAY":isSpecific ? startDate:"00000000","RVDAY2":isSpecific ? endDate:"00000000","IDD1":isSpecific ? "00":startDate,"IDD2":isSpecific ? "00":endDate], true), AuthorizationManage.manage.getHttpHead(true))
+            postRequest("TRAN/TRAN0301", "TRAN0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"getList","TransactionId":transactionId,"ACTNO":chooseAccountDorpView?.getContentByType(.First) ?? "","KIND":isSpecific ? "2":"1","RVDAY":isSpecific ? startDate:"00000000","RVDAY2":isSpecific ? endDate:"00000000","IDD1":isSpecific ? "00":startDate,"IDD2":isSpecific ? "00":endDate], true), AuthorizationManage.manage.getHttpHead(true))
         }
     }
 }

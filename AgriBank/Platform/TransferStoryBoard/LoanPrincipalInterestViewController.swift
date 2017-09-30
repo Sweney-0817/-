@@ -15,6 +15,7 @@ let LoanPrincipalInterest_Accout_Title = "放款帳號"
 class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, OneRowDropDownViewDelegate, UIActionSheetDelegate {
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var middleView: UIView!
+    @IBOutlet weak var middleSeparatorView: UIView!
     @IBOutlet weak var loanAmountLabel: UILabel!
     @IBOutlet weak var currentAmountLabel: UILabel!
     @IBOutlet weak var needPayAmountLabel: UILabel!
@@ -168,6 +169,8 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
             
         case "TRAN0601-0":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
+                middleView.isHidden = false
+                middleSeparatorView.isHidden = false
                 result = data
                 if let APAMT = result?["APAMT"] as? String {
                     loanAmountLabel.text = APAMT.separatorThousand()
@@ -183,6 +186,8 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                 }
             }
             else {
+                middleView.isHidden = true
+                middleSeparatorView.isHidden = true
                 super.didResponse(description, response)
             }
             tableView.reloadData()

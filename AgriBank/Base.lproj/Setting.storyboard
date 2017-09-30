@@ -483,7 +483,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1yy-OK-oed">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="1yy-OK-oed">
                                 <rect key="frame" x="311" y="34" width="51" height="32"/>
                                 <connections>
                                     <action selector="clickSwitch:" destination="ayH-8Y-TAi" eventType="valueChanged" id="ZG3-mS-Ova"/>
@@ -699,7 +699,7 @@
                                     <constraint firstAttribute="height" constant="1" id="kXo-BQ-cJ0"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="身分證字號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="nKt-yB-iBo" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="a123456789" placeholder="身分證字號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="nKt-yB-iBo" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="89" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
@@ -715,7 +715,7 @@
                                     <constraint firstAttribute="height" constant="1" id="lw5-TL-fwZ"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="jLJ-tI-Y2k" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="agribank" placeholder="使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="jLJ-tI-Y2k" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="150" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
@@ -731,7 +731,7 @@
                                     <constraint firstAttribute="height" constant="1" id="BPc-gZ-Rzq"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="GBF-Nq-HcX" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="agri2968" placeholder="使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="GBF-Nq-HcX" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="211" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>

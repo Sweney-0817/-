@@ -331,10 +331,6 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
-            return false
-        }
         if !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {
             showErrorMessage(nil, ErrorMsg_Invalid_Email)
             return false
@@ -377,16 +373,16 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         }
         if task != nil, let data = task?.message.data(using: .utf8) {
             do {
-                let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String:String]
+                let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:Any]
                             
                 let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0102", strSessionDescription: "TRAN0102", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
                 
-                let CARDACTNO = jsonDic["CARDACTNO"] ?? ""
-                let INACT = jsonDic["INACT"] ?? ""
-                let INBANK = jsonDic["INBANK"] ?? ""
-                let TXAMT = jsonDic["TXAMT"] ?? ""
-                let TXMEMO = jsonDic["TXMEMO"] ?? ""
-                let MAIL = jsonDic["MAIL"] ?? ""
+                let CARDACTNO = (jsonDic?["CARDACTNO"] as? String) ?? ""
+                let INACT = (jsonDic?["INACT"] as? String) ?? ""
+                let INBANK = (jsonDic?["INBANK"] as? String) ?? ""
+                let TXAMT = (jsonDic?["TXAMT"] as? String) ?? ""
+                let TXMEMO = (jsonDic?["TXMEMO"] as? String) ?? ""
+                let MAIL = (jsonDic?["MAIL"] as? String) ?? ""
                 
                 var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":CARDACTNO,"INACT":INACT,"INBANK":INBANK,"TXAMT":TXAMT,"TXMEMO":TXMEMO,"MAIL":MAIL,"taskId":taskID,"otp":""],task: task)
                 

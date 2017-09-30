@@ -1198,7 +1198,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LTv-hu-dkq">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LTv-hu-dkq">
                                 <rect key="frame" x="0.0" y="180" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -1213,7 +1213,7 @@
                                     <outlet property="delegate" destination="IxZ-Ve-dlr" id="uIC-fU-4LE"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gsl-iW-bHf">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gsl-iW-bHf">
                                 <rect key="frame" x="0.0" y="80" width="375" height="100"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="初貸金額" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="swZ-3i-qek">
@@ -1354,6 +1354,7 @@
                     <connections>
                         <outlet property="currentAmountLabel" destination="xIM-0n-VVP" id="t9c-9p-cyP"/>
                         <outlet property="loanAmountLabel" destination="d7C-Xn-WYc" id="2X7-l1-Ri7"/>
+                        <outlet property="middleSeparatorView" destination="LTv-hu-dkq" id="JAV-13-ZI6"/>
                         <outlet property="middleView" destination="gsl-iW-bHf" id="3fZ-0V-8hk"/>
                         <outlet property="needPayAmountLabel" destination="22L-cA-N36" id="pQx-2F-NW0"/>
                         <outlet property="tableView" destination="eYk-tX-EhO" id="h7W-OF-DRY"/>

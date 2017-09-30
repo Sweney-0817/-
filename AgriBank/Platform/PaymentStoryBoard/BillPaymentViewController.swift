@@ -237,7 +237,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             showErrorMessage(nil, "\(Enter_Title)\(m_tfTransAmount.placeholder ?? "")")
             return false
         }
-        if DetermineUtility.utility.isValidEmail(m_tfEmail.text!) {
+        if !DetermineUtility.utility.isValidEmail(m_tfEmail.text!) {
             showErrorMessage(nil, ErrorMsg_Invalid_Email)
             return false
         }
@@ -255,14 +255,14 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
         
         if task != nil, let data = task?.message.data(using: .utf8) {
             do {
-                let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String:String]
+                let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:Any]
                 
-                let OUTACT = jsonDic["OUTACT"] ?? ""
-                let INACT = jsonDic["INACT"] ?? ""
-                let INBANK = jsonDic["INBANK"] ?? ""
-                let TXAMT = jsonDic["TXAMT"] ?? ""
-                let MEMO = jsonDic["MEMO"] ?? ""
-                let EMAIL = jsonDic["EMAIL"] ?? ""
+                let OUTACT = (jsonDic?["OUTACT"] as? String) ?? ""
+                let INACT = (jsonDic?["INACT"] as? String) ?? ""
+                let INBANK = (jsonDic?["INBANK"] as? String) ?? ""
+                let TXAMT = (jsonDic?["TXAMT"] as? String) ?? ""
+                let MEMO = (jsonDic?["MEMO"] as? String) ?? ""
+                let EMAIL = (jsonDic?["EMAIL"] as? String) ?? ""
                 
                 let confirmRequest = RequestStruct(strMethod: "PAY/PAY0107", strSessionDescription: "PAY0107", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
                 

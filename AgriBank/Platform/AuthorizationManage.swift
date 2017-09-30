@@ -105,6 +105,7 @@ class AuthorizationManage {
         isLoginSuccess = status
         if status == false {
             AuthorizationManage.manage.setResponseLoginInfo(nil, nil)
+            (UIApplication.shared.delegate as! AppDelegate).removeNotificationAllEvent()
         }
     }
     

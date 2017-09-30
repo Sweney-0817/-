@@ -135,7 +135,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             dateView.frame = view.frame
             var componenets = Calendar.current.dateComponents([.day,.year,.month], from: Date())
             componenets.day = componenets.day!+1
-            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: componenets), maxDate: nil)
+            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: componenets), maxDate: nil, curDate: nil)
             dateView.showOneDatePickerView(true, startDate) { start in
                 self.chooseDay = start.day
                 self.chooseMonth = start.month
@@ -246,10 +246,6 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             return false
         }
         if DetermineUtility.utility.checkStringContainIllegalCharacter(transAmountTextfield.text!) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
-            return false
-        }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
             showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }

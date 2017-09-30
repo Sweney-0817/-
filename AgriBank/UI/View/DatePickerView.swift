@@ -17,6 +17,7 @@ struct DatePickerStruct {
 struct InputDatePickerStruct {
     var minDate:Date? = nil
     var maxDate:Date? = nil
+    var curDate:Date? = nil
 }
 
 let DatePicker_Specific_Date = ["1日","2日","3日","4日","5日","6日","7日","8日","9日","10日",
@@ -62,6 +63,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             if inputDate1 != nil {
                 (startDatePicker as! UIDatePicker).minimumDate = inputDate1!.minDate
                 (startDatePicker as! UIDatePicker).maximumDate = inputDate1!.maxDate
+                (startDatePicker as! UIDatePicker).date = inputDate1!.curDate ?? Date()
             }
         }
         else {
@@ -88,6 +90,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             if inputDate2 != nil {
                 (endDatePicker as! UIDatePicker).minimumDate = inputDate2!.minDate
                 (endDatePicker as! UIDatePicker).maximumDate = inputDate2!.maxDate
+                (endDatePicker as! UIDatePicker).date = inputDate2!.curDate ?? Date()
             }
         }
         else {
@@ -113,7 +116,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         self.backgroundColor = Disable_Color
         
         let xStrart:CGFloat = 30
-        let yStart:CGFloat = frame.midY
+        let yStart:CGFloat = frame.size.height / 3
         let pickerWidth = frame.size.width - 2*xStrart
         let pickerHeight:CGFloat = 200
         let titleHeight:CGFloat = 30
@@ -135,6 +138,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             if inputDate != nil {
                 (startDatePicker as! UIDatePicker).minimumDate = inputDate!.minDate
                 (startDatePicker as! UIDatePicker).maximumDate = inputDate!.maxDate
+                (startDatePicker as! UIDatePicker).date = inputDate!.curDate ?? Date()
             }
         }
         else {

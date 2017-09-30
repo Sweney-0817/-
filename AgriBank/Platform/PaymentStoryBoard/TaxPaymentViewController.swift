@@ -259,19 +259,19 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
         
         if task != nil, let data = task?.message.data(using: .utf8) {
             do {
-                let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String:String]
+                let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:Any]
                 
-                let OUTACT = jsonDic["OUTACT"] ?? ""
-                let ACTTYPECODE = jsonDic["ACTTYPECODE"] ?? ""
-                let ACTTYPE = jsonDic["ACTTYPE"] ?? ""
-                let PAYTYPECODE = jsonDic["PAYTYPECODE"] ?? ""
-                let PAYTYPE = jsonDic["PAYTYPE"] ?? ""
-                let TXAMT = jsonDic["TXAMT"] ?? ""
-                let TYPE = jsonDic["TYPE"] ?? ""
+                let OUTACT = (jsonDic?["OUTACT"] as? String) ?? ""
+                let ACTTYPECODE = (jsonDic?["ACTTYPECODE"] as? String) ?? ""
+                let ACTTYPE = (jsonDic?["ACTTYPE"] as? String) ?? ""
+                let PAYTYPECODE = (jsonDic?["PAYTYPECODE"] as? String) ?? ""
+                let PAYTYPE = (jsonDic?["PAYTYPE"] as? String) ?? ""
+                let TXAMT = (jsonDic?["TXAMT"] as? String) ?? ""
+                let TYPE = (jsonDic?["TYPE"] as? String) ?? ""
                 
                 if TYPE == TaxPayment_Type1  {
-                    let CORP = jsonDic["CORP"] ?? ""
-                    let IDNO = jsonDic["IDNO"] ?? ""
+                    let CORP = (jsonDic?["CORP"] as? String) ?? ""
+                    let IDNO = (jsonDic?["IDNO"] as? String) ?? ""
                     
                     let confirmRequest = RequestStruct(strMethod: "PAY/PAY0103", strSessionDescription: "PAY0103", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
                     
@@ -287,12 +287,12 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
                     enterConfirmOTPController(dataConfirm, true)
                 }
                 else {
-                    let BILLNO = jsonDic["BILLNO"] ?? ""
-                    let DATELINE = jsonDic["DATELINE"] ?? ""
+                    let BILLNO = (jsonDic?["BILLNO"] as? String) ?? ""
+                    let DATELINE = (jsonDic?["DATELINE"] as? String) ?? ""
                     
                     let confirmRequest = RequestStruct(strMethod: "PAY/PAY0105", strSessionDescription: "PAY0105", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
                     
-                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":TYPE,"OUTACT":OUTACT,"BILLNO":BILLNO,"DATELINE":DATELINE,"TXAMT":TXAMT,"taskId":taskID,"otp":""],task: nil)
+                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":TYPE,"OUTACT":OUTACT,"BILLNO":BILLNO,"DATELINE":DATELINE,"TXAMT":TXAMT,"taskId":taskID,"otp":""],task: task)
                     
                     dataConfirm.list?.append([Response_Key: "繳稅總類", Response_Value:ACTTYPE])
                     dataConfirm.list?.append([Response_Key: "繳稅類別", Response_Value:PAYTYPE])
@@ -339,12 +339,13 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
             let ACTTYPECODE = typeCodeList[typeCodeIndex!]["ACTTYPECODE"] ?? ""
             let ACTTYPE = typeCodeList[typeCodeIndex!]["ACTTYPE"] ?? ""
             let PAYTYPE = typeItemList[ACTTYPE]?[typeItemIndex!]["PAYTYPE"] ?? ""
+            let PAYTYPECODE = typeItemList[ACTTYPE]?[typeItemIndex!]["PAYCODE"] ?? ""
             if curType == TaxPayment_Type1 {
-                let PAYTYPECODE = typeItemList[ACTTYPE]?[typeItemIndex!]["PAYTYPECODE"] ?? ""
+                
                 postRequest("PAY/PAY0102", "PAY0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"05001","Operate":"dataConfirm","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","CORP":m_tfInput1.text!,"IDNO":m_tfInput2.text!,"TXAMT":m_tfInput3.text!], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
-                postRequest("PAY/PAY0104", "PAY0104", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"05001","Operate":"dataConfirm","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","BILLNO":m_tfInput1.text!,"DATELINE":endDate,"TXAMT":m_tfInput3.text!], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("PAY/PAY0104", "PAY0104", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"05001","Operate":"dataConfirm","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","BILLNO":m_tfInput1.text!,"DATELINE":endDate,"TXAMT":m_tfInput3.text!], true), AuthorizationManage.manage.getHttpHead(true))
             }
         }
     }

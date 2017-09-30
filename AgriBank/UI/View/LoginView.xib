@@ -75,7 +75,7 @@
                                 <action selector="clickLockBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="sZv-SV-NOt"/>
                             </connections>
                         </button>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="使用者代碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="OI6-jV-582" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="agribank" placeholder="使用者代碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="OI6-jV-582" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                             <rect key="frame" x="15" y="303" width="311" height="44"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
@@ -84,7 +84,7 @@
                                 <outlet property="delegate" destination="iN0-l3-epB" id="A1e-cb-1p2"/>
                             </connections>
                         </textField>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="XbQ-Sb-po2" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="agri2968" placeholder="使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="XbQ-Sb-po2" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                             <rect key="frame" x="15" y="357" width="311" height="44"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>

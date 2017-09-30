@@ -21,9 +21,9 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentSizeWidth: NSLayoutConstraint!
-    var contentList:[BannerStructure]? = nil
-    var imageList = [Int:UIImage]()
-    var request:ConnectionUtility? = nil
+    private var contentList:[BannerStructure]? = nil
+    private var imageList = [Int:UIImage]()
+    private var request:ConnectionUtility? = nil
     
     func setContentList(_ list: [BannerStructure]?)  {
         contentList = list

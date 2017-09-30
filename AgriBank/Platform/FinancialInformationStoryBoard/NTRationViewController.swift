@@ -317,6 +317,11 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         m_tfPicker.resignFirstResponder()
         
         if let code = bankCode["\(city)\(place)"] {
+            m_Data1.removeAll()
+            m_Data2.removeAll()
+            m_Data3.removeAll()
+            m_Data4.removeAll()
+            m_tvData.reloadData()
             setLoading(true)
             postRequest("Mang/MANG0101", "MANG0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"06001","Operate":"queryData","BR_CODE":"\(code)"], false), AuthorizationManage.manage.getHttpHead(false))
         }
