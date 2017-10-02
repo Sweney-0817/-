@@ -57,7 +57,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
-        if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
+        if let statusView = UIApplication.shared.windows.first?.viewWithTag(ViewTag.View_Status.rawValue) {
             statusView.isHidden = false
         }
     }
@@ -196,7 +196,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     func updateLoginStatus() {
         /* Time out登出，不會viewWillAppear */
         navigationController?.navigationBar.isHidden = true
-        if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
+        if let statusView = UIApplication.shared.windows.first?.viewWithTag(ViewTag.View_Status.rawValue) {
             statusView.isHidden = true
         }
         

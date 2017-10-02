@@ -151,8 +151,8 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 if !VIsSuccessful(resultCode) {
                     self.showErrorMessage(nil, "\(ErrorMsg_CancelTask_Faild) \(resultCode)")
                 }
-                self.navigationController?.popViewController(animated: true)
             }
+            self.navigationController?.popViewController(animated: true)
         }
     }
     

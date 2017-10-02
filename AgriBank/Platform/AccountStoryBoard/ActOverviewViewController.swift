@@ -453,7 +453,12 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             cell.detail2Label.text = (array[indexPath.row].currency == Currency_TWD) ? Currency_TWD_Title : array[indexPath.row].currency
             cell.detail3Label.text = String(array[indexPath.row].balance)?.separatorThousand()
             if let cellType = getTypeByInputString(ActOverview_TypeList[index]) {
-                cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == Account_EnableTrans,true), indexPath)
+                if cellType == .Type1  {
+                    cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == Account_EnableTrans,true), indexPath)
+                }
+                else {
+                    cell.AddExpnadBtn(self, cellType, (true,true), indexPath)
+                }
             }
         }
         if curExpandCell == indexPath {

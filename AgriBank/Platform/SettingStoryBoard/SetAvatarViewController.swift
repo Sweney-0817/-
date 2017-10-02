@@ -35,7 +35,7 @@ class SetAvatarViewController: BasePhotoViewController {
 
     // MARK: - StoryBoard Touch Event
     @IBAction func clickShootBtn(_ sender: Any) {
-        if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
+        if let statusView = UIApplication.shared.windows.first?.viewWithTag(ViewTag.View_Status.rawValue) {
             statusView.isHidden = true
         }
         imagePicker?.sourceType = .camera
@@ -43,7 +43,7 @@ class SetAvatarViewController: BasePhotoViewController {
     }
     
     @IBAction func clickChooseBtn(_ sender: Any) {
-        if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
+        if let statusView = UIApplication.shared.windows.first?.viewWithTag(ViewTag.View_Status.rawValue) {
             statusView.isHidden = true
         }
         imagePicker?.sourceType = .photoLibrary
@@ -77,14 +77,14 @@ class SetAvatarViewController: BasePhotoViewController {
         if let info = AuthorizationManage.manage.GetLoginInfo() {
             savePersonalImage(editedImage, SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
         }
-        if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
+        if let statusView = UIApplication.shared.windows.first?.viewWithTag(ViewTag.View_Status.rawValue) {
             statusView.isHidden = false
         }
     }
 
     override func imageCropperDidCancel(_ cropperViewController: VPImageCropperViewController!) {
         super.imageCropperDidCancel(cropperViewController)
-        if let statusView = UIApplication.shared.keyWindow?.viewWithTag(ViewTag.View_Status.rawValue) {
+        if let statusView = UIApplication.shared.windows.first?.viewWithTag(ViewTag.View_Status.rawValue) {
             statusView.isHidden = false
         }
     }
