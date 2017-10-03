@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,10 +19,6 @@
             <subviews>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="圖形驗證碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="B6D-AY-Ncn" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                     <rect key="frame" x="15" y="8" width="167" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="TE3-nT-ScU"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="Z5M-mu-EQY"/>
-                    </constraints>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                     <textInputTraits key="textInputTraits"/>
@@ -31,16 +28,11 @@
                 </textField>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="8qk-ZR-nJc">
                     <rect key="frame" x="192" y="8" width="134" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="YfG-UL-YGx"/>
-                        <constraint firstAttribute="height" constant="44" id="iJx-W0-evO"/>
-                    </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gJj-jo-eTJ">
                     <rect key="frame" x="336" y="18" width="24" height="24"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="24" id="Idx-pJ-y5Z"/>
-                        <constraint firstAttribute="width" constant="24" id="Nb8-rg-qnQ"/>
+                        <constraint firstAttribute="width" secondItem="gJj-jo-eTJ" secondAttribute="height" multiplier="1:1" id="6VB-HD-mv5"/>
                     </constraints>
                     <state key="normal" image="Refresh"/>
                     <connections>
@@ -58,6 +50,7 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="B6D-AY-Ncn" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="44:60" id="9sh-zw-aKX"/>
                 <constraint firstItem="B6D-AY-Ncn" firstAttribute="width" secondItem="8qk-ZR-nJc" secondAttribute="width" multiplier="1.25:1" id="B11-Pv-kcx"/>
                 <constraint firstAttribute="bottom" secondItem="Phe-s0-1x7" secondAttribute="bottom" id="DK1-us-vnw"/>
                 <constraint firstItem="8qk-ZR-nJc" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Fp0-eT-hMc"/>
@@ -65,11 +58,16 @@
                 <constraint firstItem="B6D-AY-Ncn" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="LNT-dF-693"/>
                 <constraint firstItem="Phe-s0-1x7" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="UbH-76-Iui"/>
                 <constraint firstAttribute="trailing" secondItem="Phe-s0-1x7" secondAttribute="trailing" id="VHM-nC-OZf"/>
+                <constraint firstItem="8qk-ZR-nJc" firstAttribute="height" secondItem="B6D-AY-Ncn" secondAttribute="height" id="bHK-Dy-qfI"/>
                 <constraint firstItem="gJj-jo-eTJ" firstAttribute="leading" secondItem="8qk-ZR-nJc" secondAttribute="trailing" constant="10" id="rmd-4B-mEV"/>
                 <constraint firstItem="8qk-ZR-nJc" firstAttribute="leading" secondItem="B6D-AY-Ncn" secondAttribute="trailing" constant="10" id="utV-82-5Vu"/>
+                <constraint firstItem="gJj-jo-eTJ" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="24:60" id="wDP-Sa-sO7"/>
                 <constraint firstItem="B6D-AY-Ncn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="x8A-9T-bMK"/>
                 <constraint firstAttribute="trailing" secondItem="gJj-jo-eTJ" secondAttribute="trailing" constant="15" id="z3R-Nl-x3J"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="m_btnRefresh" destination="gJj-jo-eTJ" id="ZYB-uE-10c"/>

@@ -6,6 +6,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,7 +22,7 @@
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ctq-ku-OMi">
-                    <rect key="frame" x="17" y="65" width="341" height="537"/>
+                    <rect key="frame" x="17" y="68.5" width="341" height="530"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V4V-ak-80a">
                             <rect key="frame" x="15" y="15" width="24" height="24"/>
@@ -34,17 +36,14 @@
                             </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Vegetable" translatesAutoresizingMaskIntoConstraints="NO" id="1pS-MV-8lP">
-                            <rect key="frame" x="123.5" y="65" width="94" height="100"/>
+                            <rect key="frame" x="123.5" y="58" width="94" height="100"/>
                             <constraints>
+                                <constraint firstAttribute="width" secondItem="1pS-MV-8lP" secondAttribute="height" multiplier="47:50" id="Rnd-nm-raE"/>
                                 <constraint firstAttribute="height" constant="100" id="WC6-9J-735"/>
-                                <constraint firstAttribute="width" constant="94" id="tSG-0Z-hXc"/>
                             </constraints>
                         </imageView>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="請選擇" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="9Iu-uw-4Wn" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
-                            <rect key="frame" x="15" y="195" width="256" height="44"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="44" id="CRg-EQ-at5"/>
-                            </constraints>
+                            <rect key="frame" x="15" y="188" width="256" height="44"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                             <textInputTraits key="textInputTraits"/>
@@ -53,14 +52,14 @@
                             </connections>
                         </textField>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropDown" translatesAutoresizingMaskIntoConstraints="NO" id="u6L-Ck-AMf">
-                            <rect key="frame" x="236" y="207" width="20" height="20"/>
+                            <rect key="frame" x="236" y="200" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="YbY-Vm-qk9"/>
                                 <constraint firstAttribute="width" constant="20" id="k2U-Kq-CFs"/>
                             </constraints>
                         </imageView>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="身分證字號" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="0LC-lY-FRG" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
-                            <rect key="frame" x="15" y="249" width="256" height="44"/>
+                            <rect key="frame" x="15" y="242" width="256" height="44"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                             <textInputTraits key="textInputTraits"/>
@@ -69,14 +68,14 @@
                             </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="otZ-hw-mHX">
-                            <rect key="frame" x="279" y="259" width="24" height="24"/>
+                            <rect key="frame" x="279" y="252" width="24" height="24"/>
                             <state key="normal" backgroundImage="Unlocker"/>
                             <connections>
                                 <action selector="clickLockBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="sZv-SV-NOt"/>
                             </connections>
                         </button>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="agribank" placeholder="使用者代碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="OI6-jV-582" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
-                            <rect key="frame" x="15" y="303" width="311" height="44"/>
+                            <rect key="frame" x="15" y="296" width="311" height="44"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                             <textInputTraits key="textInputTraits"/>
@@ -85,7 +84,7 @@
                             </connections>
                         </textField>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="agri2968" placeholder="使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="XbQ-Sb-po2" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
-                            <rect key="frame" x="15" y="357" width="311" height="44"/>
+                            <rect key="frame" x="15" y="350" width="311" height="44"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                             <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -94,7 +93,7 @@
                             </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NaA-w9-Z9a">
-                            <rect key="frame" x="15" y="463" width="311" height="44"/>
+                            <rect key="frame" x="15" y="456" width="311" height="44"/>
                             <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                             <state key="normal" title="登入" backgroundImage="ButtonLarge"/>
                             <connections>
@@ -102,7 +101,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ewn-RS-hQo">
-                            <rect key="frame" x="0.0" y="403" width="341" height="60"/>
+                            <rect key="frame" x="0.0" y="396" width="341" height="60"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="60" id="kMr-eZ-2U4"/>
@@ -121,7 +120,6 @@
                         <constraint firstItem="u6L-Ck-AMf" firstAttribute="centerY" secondItem="9Iu-uw-4Wn" secondAttribute="centerY" id="In7-l2-H3G"/>
                         <constraint firstAttribute="trailing" secondItem="9Iu-uw-4Wn" secondAttribute="trailing" constant="70" id="IsW-sx-dKk"/>
                         <constraint firstItem="NaA-w9-Z9a" firstAttribute="height" secondItem="XbQ-Sb-po2" secondAttribute="height" id="Kk9-cz-yxg"/>
-                        <constraint firstItem="1pS-MV-8lP" firstAttribute="top" secondItem="Ctq-ku-OMi" secondAttribute="top" constant="65" id="NBB-yP-ZIx"/>
                         <constraint firstAttribute="trailing" secondItem="OI6-jV-582" secondAttribute="trailing" constant="15" id="QmB-hV-GdY"/>
                         <constraint firstItem="OI6-jV-582" firstAttribute="top" secondItem="0LC-lY-FRG" secondAttribute="bottom" constant="10" id="U6e-no-jgq"/>
                         <constraint firstItem="XbQ-Sb-po2" firstAttribute="width" secondItem="OI6-jV-582" secondAttribute="width" id="Uva-PH-6v7"/>
@@ -148,13 +146,15 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Ctq-ku-OMi" firstAttribute="trailing" secondItem="z4q-5Q-8wY" secondAttribute="trailing" constant="-17" id="3i1-8M-Jjc"/>
-                <constraint firstItem="Ctq-ku-OMi" firstAttribute="leading" secondItem="z4q-5Q-8wY" secondAttribute="leading" constant="17" id="BSE-uT-PnW"/>
                 <constraint firstAttribute="trailing" secondItem="z4q-5Q-8wY" secondAttribute="trailing" id="Jhr-oP-kmd"/>
+                <constraint firstItem="Ctq-ku-OMi" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="341:375" id="Msf-3j-alF"/>
                 <constraint firstAttribute="bottom" secondItem="z4q-5Q-8wY" secondAttribute="bottom" id="Xgq-t8-i5J"/>
                 <constraint firstItem="z4q-5Q-8wY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Ysu-qj-Qia"/>
+                <constraint firstItem="Ctq-ku-OMi" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="530:667" id="cGG-6x-j72"/>
                 <constraint firstItem="Ctq-ku-OMi" firstAttribute="centerX" secondItem="z4q-5Q-8wY" secondAttribute="centerX" id="ggw-Bn-bak"/>
                 <constraint firstItem="z4q-5Q-8wY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pma-TI-URV"/>
+                <constraint firstItem="ewn-RS-hQo" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="60:667" id="pvd-NK-y1q"/>
+                <constraint firstItem="9Iu-uw-4Wn" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="44:667" id="tj6-GF-OGE"/>
                 <constraint firstItem="Ctq-ku-OMi" firstAttribute="centerY" secondItem="z4q-5Q-8wY" secondAttribute="centerY" id="wNw-4t-YFR"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

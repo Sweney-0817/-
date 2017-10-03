@@ -15,6 +15,8 @@ protocol FeatureWallViewDelegate {
 let FeatureWall_PageControl_BottomDistance:CGFloat = 30
 let FeatureWall_PageControl_currentPageColor = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha:1)
 let FeatureWall_PageControl_PageColor = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha:0.2)
+let FeatureWall_PageControl_ScaleSize = (UIScreen.main.bounds.width / CGFloat(375)) * CGFloat(18)
+let FeatureWall_PageControl_CellFont = UIFont(name: "PingFangTC-Medium", size: FeatureWall_PageControl_ScaleSize) ?? UIFont.systemFont(ofSize: FeatureWall_PageControl_ScaleSize)
 
 class FeatureWallView: UIView, UIScrollViewDelegate {
     let scrollview = UIScrollView()
@@ -75,6 +77,7 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
                     if let info = Platform.plat.getFeatureInfoByID(featureIDList[current]) {
                         wallCell.imageView.image = UIImage(named: String(featureIDList[current].rawValue))
                         wallCell.titleLabel.text = info.name
+                        wallCell.titleLabel.font = FeatureWall_PageControl_CellFont
                         wallCell.button.addTarget(self, action: #selector(clickFeatureBtn(_:)), for: .touchUpInside)
                         wallCell.button.tag = featureIDList[current].rawValue
                     }

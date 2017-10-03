@@ -390,7 +390,6 @@ let AgriBank_AppUid = Bundle.main.bundleIdentifier ?? ""
 let AgriBank_TimeOut:TimeInterval = 300
 
 // MARK: - Cell定義
-let Separator_Height = CGFloat(1)
 let Cell_Font_Size = UIFont.systemFont(ofSize: 18)
 enum CellStatus {
     case Hide

@@ -22,14 +22,14 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GIQ-hX-gNY">
-                    <rect key="frame" x="25" y="10" width="51" height="51"/>
+                    <rect key="frame" x="23.5" y="10" width="54" height="54"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="GIQ-hX-gNY" secondAttribute="height" multiplier="1:1" id="UYH-cT-s6X"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="kG0-kE-LMP">
-                    <rect key="frame" x="7" y="61" width="86" height="34"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kG0-kE-LMP">
+                    <rect key="frame" x="7" y="59" width="86" height="41"/>
                     <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -43,9 +43,9 @@
                 <constraint firstItem="kG0-kE-LMP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="7" id="BAu-Zm-SqI"/>
                 <constraint firstItem="GIQ-hX-gNY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="BrG-7X-FHK"/>
                 <constraint firstAttribute="bottom" secondItem="rmb-8S-pn8" secondAttribute="bottom" id="FmU-HT-tJV"/>
-                <constraint firstItem="kG0-kE-LMP" firstAttribute="height" secondItem="GIQ-hX-gNY" secondAttribute="height" multiplier="1:1.5" id="adj-6u-otp"/>
-                <constraint firstAttribute="bottom" secondItem="kG0-kE-LMP" secondAttribute="bottom" constant="5" id="f1m-li-A2m"/>
-                <constraint firstItem="kG0-kE-LMP" firstAttribute="top" secondItem="GIQ-hX-gNY" secondAttribute="bottom" id="gaz-SS-ogE"/>
+                <constraint firstItem="GIQ-hX-gNY" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="27:50" id="P8P-51-GBO"/>
+                <constraint firstAttribute="bottom" secondItem="kG0-kE-LMP" secondAttribute="bottom" id="f1m-li-A2m"/>
+                <constraint firstItem="kG0-kE-LMP" firstAttribute="top" secondItem="GIQ-hX-gNY" secondAttribute="bottom" constant="-5" id="gaz-SS-ogE"/>
                 <constraint firstAttribute="trailing" secondItem="rmb-8S-pn8" secondAttribute="trailing" id="gdS-DF-3nE"/>
                 <constraint firstItem="rmb-8S-pn8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="u2C-jd-AtH"/>
             </constraints>
