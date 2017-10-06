@@ -44,7 +44,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             else {
                 list.append([Response_Key:"登錄日期", Response_Value:""])
             }
-            if let RVDAY = dic["RVDAY"] as? String {
+            if let RVDAY = dic[(isSpecific ? "RVDAY" : "DD")] as? String {
                 input.reservationTransDate = RVDAY
                 list.append([Response_Key:"預約轉帳日", Response_Value:RVDAY])
             }
