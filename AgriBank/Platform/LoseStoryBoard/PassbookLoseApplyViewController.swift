@@ -53,7 +53,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -73,10 +73,11 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
             
         case "COMM0502":
             if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
+                setLoading(true)
                 postRequest("LOSE/LOSE0101", "LOSE0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04001","Operate":"setLoseAcnt","TransactionId":transactionId,"REFNO":accountList?[accountIndex!].accountNO ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
-                getImageConfirm()
+                getImageConfirm(transactionId)
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
             

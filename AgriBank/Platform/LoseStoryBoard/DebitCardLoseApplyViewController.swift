@@ -56,7 +56,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -76,10 +76,11 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
             
         case "COMM0502":
             if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
+                setLoading(true)
                 postRequest("LOSE/LOSE0201", "LOSE0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04001","Operate":"setLoseAcnt","TransactionId":transactionId,"ACTNO":accountList?[accountIndex!].accountNO ?? "","PWD":m_tfWebBankPassword.text ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
-                getImageConfirm()
+                getImageConfirm(transactionId)
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
             
@@ -154,6 +155,10 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
             showErrorMessage(nil, "\(Enter_Title)\(m_tfWebBankPassword.placeholder ?? "")")
             return false
         }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(m_tfWebBankPassword.text!) {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+            return false
+        }
         return true
     }
     
@@ -183,14 +188,6 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     }
     
     // MARK: - UITextFieldDelegate
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-        if DetermineUtility.utility.checkStringContainIllegalCharacter( newString ) {
-            return false
-        }
-        return true
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

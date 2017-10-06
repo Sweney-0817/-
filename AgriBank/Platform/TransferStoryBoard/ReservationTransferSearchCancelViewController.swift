@@ -100,8 +100,21 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             if let TRACTNO = dic["TRACTNO"] as? String{
                 input.inAccount = TRACTNO
             }
+            if let TRMSEQ = dic["TRMSEQ"] as? String {
+                input.trmseq = TRMSEQ
+            }
+            
+            if isSpecific {
+                var canTrans = false
+                if let flag = dic["ENABLE"] as? String, flag == "Y" {
+                    canTrans = true
+                }
+                controller.setList(list, input, canTrans)
+            }
+            else {
+                controller.setList(list, input, true)
+            }
         }
-        controller.setList(list, input)
     }
     
     override func viewDidLoad() {
@@ -150,7 +163,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String {
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }

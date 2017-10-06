@@ -9,15 +9,15 @@
 import Foundation
 import UIKit
 
-//#if DEBUG
+#if DEBUG
 let URL_PROTOCOL = "http"
 //let URL_DOMAIN = "52.187.113.27/FFICMAPIFORMAL/api"
 //let URL_DOMAIN = "52.187.113.27/FFICMAPI/api"
 let URL_DOMAIN = "172.16.132.52/APP/api"
-//#else
-//let URL_PROTOCOL = "https"
-//let URL_DOMAIN = ""
-//#endif
+#else
+let URL_PROTOCOL = "https"
+let URL_DOMAIN = ""
+#endif
 
 let REQUEST_URL = "\(URL_PROTOCOL)://\(URL_DOMAIN)"
 let BarItem_Height_Weight = 30
@@ -31,7 +31,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     var transactionId = ""                      // 交易編號
     var headVarifyID = ""                       // 圖形驗證碼的「交易編號」
     var loginView:LoginView? = nil              // 登入頁面
-    var curFeatureID:PlatformFeatureID? = nil   // 目前要登入的功能ID
+    var curFeatureID:PlatformFeatureID? = nil   // 即將要登入的功能ID
     var touchTap:UITapGestureRecognizer? = nil  // 手勢: 用來關閉Textfield
     var tempTransactionId = ""                  // 暫存「繳費」「繳稅」的transactionId
     
@@ -219,13 +219,18 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                 loading.center = loadingView!.center
                 loadingView?.addSubview(loading)
     
-                UIApplication.shared.windows.last?.addSubview(loadingView!)
+//                UIApplication.shared.windows.last?.addSubview(loadingView!)
+                view.addSubview(loadingView!)
+                navigationItem.leftBarButtonItem?.isEnabled = false
+                navigationItem.rightBarButtonItem?.isEnabled = false
             }
         }
         else {
             if loadingView != nil {
                 loadingView?.removeFromSuperview()
                 loadingView = nil
+                navigationItem.leftBarButtonItem?.isEnabled = true
+                navigationItem.rightBarButtonItem?.isEnabled = true
             }
         }
     }
@@ -568,7 +573,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                             self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                         }
                         else {
-                            self.showErrorMessage(nil, ErrorMsg_Verification_Faild)
+                            self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode)")
                         }
                     }
                 }

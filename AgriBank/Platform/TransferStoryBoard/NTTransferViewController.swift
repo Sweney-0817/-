@@ -13,8 +13,10 @@ let NTTransfer_InAccount = "轉入帳號"
 let NTTransfer_OutAccount = "轉出帳號"
 let NTTransfer_Currency = "幣別"
 let NTTransfer_Balance = "餘額"
-let NTTransfer_Trans_Max_Amount:Int = 2000000
-let NTTransfer_Email_Max_Length:Int = 50
+let NTTransfer_PredesignatedTrans_Max_Amount:Int = 2000000
+let NTTransfer_NotPredesignatedTrans_Max_Amount:Int = 30000
+let NTTransfer_PredesignatedTrans_Max_Length:Int = 7
+let NTTransfer_NotPredesignatedTrans_Max_Length:Int = 5
 
 class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRowDropDownViewDelegate, TwoRowDropDownViewDelegate, OneRowDropDownViewDelegate, UIActionSheetDelegate {
     @IBOutlet weak var topCons: NSLayoutConstraint!
@@ -327,7 +329,25 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             showErrorMessage(nil, "\(Enter_Title)\(transAmountTextfield.placeholder ?? "")")
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(transAmountTextfield.text!) {
+        if let amount = Int(transAmountTextfield.text!) {
+            if isPredesignated {
+                if amount > NTTransfer_PredesignatedTrans_Max_Amount {
+                    showErrorMessage(nil, ErrorMsg_Predesignated_Amount)
+                    return false
+                }
+            }
+            else {
+                if amount > NTTransfer_NotPredesignatedTrans_Max_Amount {
+                    showErrorMessage(nil, ErrorMsg_NotPredesignated_Amount)
+                    return false
+                }
+            }
+        }
+        else {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+            return false
+        }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!, true) {
             showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }
@@ -427,7 +447,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                         }
                         else {
                             self.SetBtnColor(true)
-                            self.showErrorMessage(nil, ErrorMsg_Verification_Faild)
+                            self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode)")
                             self.setLoading(false)
                         }
                     }
@@ -509,14 +529,32 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
         if textField == transAmountTextfield {
-            if let amount = Int(transAmountTextfield.text!), amount > NTTransfer_Trans_Max_Amount {
+            let maxLength = isPredesignated ? NTTransfer_PredesignatedTrans_Max_Length : NTTransfer_NotPredesignatedTrans_Max_Length
+            if newLength > maxLength {
                 return false
             }
         }
-        if textField == emailTextfield {
-            let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
-            if newLength > NTTransfer_Email_Max_Length {
+        else if textField == emailTextfield  {
+            if newLength > Max_Email_Length {
+                return false
+            }
+        }
+        else if textField == memoTextfield {
+            if isPredesignated {
+                if newLength > Max19_Memo_Length {
+                    return false
+                }
+            }
+            else {
+                if newLength > Max50_Memo_Length {
+                    return false
+                }
+            }
+        }
+        else if textField == enterAccountTextfield {
+            if newLength > Max_Account_Length {
                 return false
             }
         }

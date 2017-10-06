@@ -21,8 +21,8 @@ class PersonalMessageViewController: BaseViewController, UITableViewDelegate, UI
         super.viewDidLoad()
 
         setAllSubView()
-        setLoading(true)
-        postRequest("COMM/COMM0303", "COMM0303", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"getList"], true), AuthorizationManage.manage.getHttpHead(true))
+        
+        getTransactionID("07061", TransactionID_Description)
     }
     
     override func didReceiveMemoryWarning() {
@@ -38,6 +38,16 @@ class PersonalMessageViewController: BaseViewController, UITableViewDelegate, UI
     
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                setLoading(true)
+                postRequest("COMM/COMM0303", "COMM0303", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"getList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
         case "COMM0303":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let list = data["Result"] as? [[String:Any]] {
                 m_Data.removeAll()

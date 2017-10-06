@@ -9,7 +9,6 @@
 import UIKit
 
 let UserChangeIDPwd_Seque = "GoChangeResult"
-let UserChangeIDPwd_MaxLength = Int(16)
 
 class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var sourceTextfield: TextField!
@@ -31,12 +30,31 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     
     // MARK: - Private
     private func inputIsCorrect() -> Bool {
-        if sourceTextfield.text == nil || newTextfield.text == nil || againTextfield.text == nil || transactionId.isEmpty {
+        if (sourceTextfield.text?.isEmpty)! {
+            showErrorMessage(nil, "\(Enter_Title)\(sourceTextfield.placeholder!)")
+            return false
+        }
+        if (newTextfield.text?.isEmpty)! {
+            showErrorMessage(nil, "\(Enter_Title)\(newTextfield.placeholder!)")
+            return false
+        }
+        if (againTextfield.text?.isEmpty)! {
+            showErrorMessage(nil, "\(Enter_Title)\(againTextfield.placeholder!)")
+            return false
+        }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(sourceTextfield.text!) || DetermineUtility.utility.checkStringContainIllegalCharacter(newTextfield.text!) || DetermineUtility.utility.checkStringContainIllegalCharacter(againTextfield.text!) {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+            return false
+        }
+        if sourceTextfield.text == newTextfield.text {
+            showErrorMessage(nil, isChangePassword ? ErrorMsg_PDNotSame : ErrorMsg_IDNotSame)
             return false
         }
         if newTextfield.text != againTextfield.text {
+            showErrorMessage(nil, isChangePassword ? ErrorMsg_PDAgainPDNeedSame : ErrorMsg_IDAgainIDNeedSame)
             return false
         }
+        
         return true
     }
     
@@ -91,6 +109,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
         if inputIsCorrect() {
             let idMd5 = SecurityUtility.utility.MD5(string: sourceTextfield.text!)
             let pdMd5 = SecurityUtility.utility.MD5(string: newTextfield.text!)
+            setLoading(true)
             if !isChangePassword {
                 postRequest("Usif/USIF0201", "USIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08002","Operate":"dataConfirm","TransactionId":transactionId,"ID":idMd5,"NewID":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
             }
@@ -109,13 +128,8 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
         switch textField {
-        case newTextfield:
-            if newLength > UserChangeIDPwd_MaxLength {
-                return false
-            }
-            
-        case againTextfield:
-            if newLength > UserChangeIDPwd_MaxLength {
+        case newTextfield, againTextfield:
+            if newLength > Max_ID_Password_Length {
                 return false
             }
             

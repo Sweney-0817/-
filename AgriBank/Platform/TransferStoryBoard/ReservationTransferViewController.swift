@@ -14,6 +14,8 @@ let ReservationTransfer_InAccount = "轉入帳號"
 let ReservationTransfer_OutAccount = "轉出帳號"
 let ReservationTransfer_Currency = "幣別"
 let ReservationTransfer_Balance = "餘額"
+let ReservationTransfer_Max_Amount:Int = 2000000
+let ReservationTransfer_TransAmount_Max_Length:Int = 7
 
 class ReservationTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRowDropDownViewDelegate, TwoRowDropDownViewDelegate, UIActionSheetDelegate {
     @IBOutlet weak var topView: UIView!
@@ -135,7 +137,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             dateView.frame = view.frame
             var componenets = Calendar.current.dateComponents([.day,.year,.month], from: Date())
             componenets.day = componenets.day!+1
-            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: componenets), maxDate: nil, curDate: nil)
+            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: componenets), maxDate: nil, curDate: Calendar.current.date(from: componenets))
             dateView.showOneDatePickerView(true, startDate) { start in
                 self.chooseDay = start.day
                 self.chooseMonth = start.month
@@ -169,6 +171,22 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     // MARK: - UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        if textField == transAmountTextfield {
+            if newLength > ReservationTransfer_TransAmount_Max_Length {
+                return false
+            }
+        }
+        else if textField == memoTextfield {
+            if newLength > Max19_Memo_Length {
+                return false
+            }
+        }
+        
         return true
     }
     
@@ -245,7 +263,16 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             showErrorMessage(nil, "\(Enter_Title)\(transAmountTextfield.placeholder ?? "")")
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(transAmountTextfield.text!) {
+        if let amount = Int(transAmountTextfield.text!) {
+            if amount > ReservationTransfer_Max_Amount {
+                showErrorMessage(nil, ErrorMsg_Reservation_Amount)
+            }
+        }
+        else {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+            return false
+        }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!, true) {
             showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }

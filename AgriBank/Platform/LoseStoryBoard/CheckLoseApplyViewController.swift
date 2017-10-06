@@ -14,6 +14,7 @@ let CheckLoseApply_CheckAccount_Title = "支票帳號"
 let CheckLoseApply_Date_Title = "發票日"
 let CheckLoseApply_TransAccount_Title = "手續費轉帳帳號"
 let CheckLoseApply_Memo = "請您本人攜帶身分證及原留印鑑來行辦理取消掛失或重新申請作業"
+let CheckLoseApply_Bill_Max_Length:Int = 10
 
 class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate, UITextFieldDelegate {
     @IBOutlet weak var m_vShadowView: UIView!
@@ -80,7 +81,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
                         if type == Account_Saving_Type {
                             accountList = [AccountStruct]()
                             for actInfo in result {
-                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
+                                if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String {
                                     accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                                 }
                             }
@@ -109,6 +110,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
             
         case "COMM0502":
             if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
+                setLoading(true)
                 if m_DDType?.m_lbFirstRowContent.text == CheckLoseApply_TypeList[0] {
                     postRequest("LOSE/LOSE0301", "LOSE0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"0403","Operate":"setLoseCheck1","TransactionId":transactionId,"TYPE":"11","REFNO":m_DDAccount?.getContentByType(.First) ?? "","CKNO":m_tfCheckNumber.text ?? "","TXAMT":m_tfCheckAmount.text ?? "","MACTNO":m_FeeAccount?.getContentByType(.First) ?? "","CKDAY":m_CheckDate?.getContentByType(.First).replacingOccurrences(of: "/", with: "") ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                 }
@@ -117,7 +119,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
                 }
             }
             else {
-                getImageConfirm()
+                getImageConfirm(transactionId)
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
             
@@ -343,6 +345,16 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     // MARK: - UITextFieldDelegate
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         curTextfield = textField
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        if textField == m_tfCheckNumber {
+            if newLength > CheckLoseApply_Bill_Max_Length {
+                return false
+            }
+        }
         return true
     }
 

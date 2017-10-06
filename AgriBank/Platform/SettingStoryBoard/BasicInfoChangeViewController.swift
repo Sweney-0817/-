@@ -66,6 +66,27 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
         getTransactionID("08001", TransactionID_Description)
         addObserverToKeyBoard()
         addGestureForKeyBoard()
+        
+        if !AuthorizationManage.manage.getChangeBaseInfoStaus() {
+            emailTextfield.text = teleAreaCode
+            emailTextfield.isEnabled = false
+            emailTextfield.backgroundColor = Disable_Color
+            mobliePhoneTextfield.text = teleAreaCode
+            mobliePhoneTextfield.isEnabled = false
+            mobliePhoneTextfield.backgroundColor = Disable_Color
+            teleAreaCodeTextfield.text = teleAreaCode
+            teleAreaCodeTextfield.isEnabled = false
+            teleAreaCodeTextfield.backgroundColor = Disable_Color
+            telePhoneTextfield.text = telePhone
+            telePhoneTextfield.isEnabled = false
+            telePhoneTextfield.backgroundColor = Disable_Color
+            addressTextfield.text = address
+            addressTextfield.isEnabled = false
+            addressTextfield.backgroundColor = Disable_Color
+            postalCodeTextfield.text = postalCode
+            postalCodeTextfield.isEnabled = false
+            postalCodeTextfield.backgroundColor = Disable_Color
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,43 +104,49 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
         case "USIF0101":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 if let email = data["EMAIL"] as? String {
-                    emailLabel.text = email
+                    emailLabel.text = email.trimmingCharacters(in: .whitespaces)
                 }
                 if let mobilePhone = data["MPHONE"] as? String {
-                    mobilePhoneLabel.text = mobilePhone
+                    mobilePhoneLabel.text = mobilePhone.trimmingCharacters(in: .whitespaces)
                 }
                 if let telePhone = data["TELNO1"] as? String, let teleAreaCode = data["AREA1"] as? String {
-                    telePhoneLabel.text = "\(teleAreaCode)-\(telePhone)"
-                    self.teleAreaCode = teleAreaCode
-                    self.telePhone = telePhone
+                    let phone = telePhone.trimmingCharacters(in: .whitespaces)
+                    let code = teleAreaCode.trimmingCharacters(in: .whitespaces)
+                    telePhoneLabel.text = "\(code)-\(phone)"
+                    self.teleAreaCode = code
+                    self.telePhone = phone
                 }
                 if let address = data["ADR2"] as? String, let postalCode = data["ZIPCD2"] as? String {
-                    addressLabel.text = "\(postalCode) \(address)"
-                    self.address = address
-                    self.postalCode = postalCode
+                    let addr = address.trimmingCharacters(in: .whitespaces)
+                    let code = postalCode.trimmingCharacters(in: .whitespaces)
+                    addressLabel.text = "\(code) \(addr)"
+                    self.address = addr
+                    self.postalCode = code
                 }
-                if let flage = data["EMAILFG"] as? Int {
-                    emailFG = "\(flage)"
+                if let flage = data["EMAILFG"] as? String {
+                    emailFG = flage
                 }
-                if let member = data["MEMBER"] as? Int {
+                if let member = data["MEMBER"] as? String {
                     // 會員別 = 0 為非會員 其他則為會員
-                    if member == 0 {
+                    if member == "0" {
                         funcd = "88"
                     }
                     else {
                         funcd = "89"
-                        teleAreaCodeTextfield.text = teleAreaCode
-                        teleAreaCodeTextfield.isEnabled = false
-                        teleAreaCodeTextfield.backgroundColor = Disable_Color
-                        telePhoneTextfield.text = telePhone
-                        telePhoneTextfield.isEnabled = false
-                        telePhoneTextfield.backgroundColor = Disable_Color
-                        addressTextfield.text = address
-                        addressTextfield.isEnabled = false
-                        addressTextfield.backgroundColor = Disable_Color
-                        postalCodeTextfield.text = postalCode
-                        postalCodeTextfield.isEnabled = false
-                        postalCodeTextfield.backgroundColor = Disable_Color
+                        if AuthorizationManage.manage.getChangeBaseInfoStaus() {
+                            teleAreaCodeTextfield.text = teleAreaCode
+                            teleAreaCodeTextfield.isEnabled = false
+                            teleAreaCodeTextfield.backgroundColor = Disable_Color
+                            telePhoneTextfield.text = telePhone
+                            telePhoneTextfield.isEnabled = false
+                            telePhoneTextfield.backgroundColor = Disable_Color
+                            addressTextfield.text = address
+                            addressTextfield.isEnabled = false
+                            addressTextfield.backgroundColor = Disable_Color
+                            postalCodeTextfield.text = postalCode
+                            postalCodeTextfield.isEnabled = false
+                            postalCodeTextfield.backgroundColor = Disable_Color
+                        }
                     }
                 }
             }
@@ -132,26 +159,6 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
                 transactionId = tranId
                 setLoading(true)
                 postRequest("Usif/USIF0101", "USIF0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08001","Operate":"queryData","TransactionId":tranId], true), AuthorizationManage.manage.getHttpHead(true))
-                if !AuthorizationManage.manage.getChangeBaseInfoStaus() {
-                    emailTextfield.text = teleAreaCode
-                    emailTextfield.isEnabled = false
-                    emailTextfield.backgroundColor = Disable_Color
-                    mobliePhoneTextfield.text = teleAreaCode
-                    mobliePhoneTextfield.isEnabled = false
-                    mobliePhoneTextfield.backgroundColor = Disable_Color
-                    teleAreaCodeTextfield.text = teleAreaCode
-                    teleAreaCodeTextfield.isEnabled = false
-                    teleAreaCodeTextfield.backgroundColor = Disable_Color
-                    telePhoneTextfield.text = telePhone
-                    telePhoneTextfield.isEnabled = false
-                    telePhoneTextfield.backgroundColor = Disable_Color
-                    addressTextfield.text = address
-                    addressTextfield.isEnabled = false
-                    addressTextfield.backgroundColor = Disable_Color
-                    postalCodeTextfield.text = postalCode
-                    postalCodeTextfield.isEnabled = false
-                    postalCodeTextfield.backgroundColor = Disable_Color
-                }
             }
             else {
                 super.didResponse(description, response)
@@ -159,15 +166,18 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
             
         case "USIF0102":
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
+                if let responseData = response.object(forKey: ReturnData_Key) as? [[String:String]] {
+                    resultList = responseData
+                }
                 changeSuccess = true
             }
-            if let data = response.object(forKey: ReturnData_Key) as? [[String:String]] {
-                resultList = data
-                performSegue(withIdentifier: GoBaseInfoChangeResult_Segue, sender: nil)
-            }
             else {
-                super.didResponse(description, response)
+                if let message = response.object(forKey:ReturnMessage_Key) as? String {
+                    resultList = [[String:String]]()
+                    resultList?.append([Response_Key:Error_Title,Response_Value:message])
+                }
             }
+            performSegue(withIdentifier: GoBaseInfoChangeResult_Segue, sender: nil)
             
         default: super.didResponse(description, response)
         }
@@ -190,27 +200,6 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
     // MARK: - UITextFieldDelegate
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         currentTextField = textField
-        if textField.keyboardType == .numberPad {
-            // ToolBar
-            let toolBar = UIToolbar()
-            toolBar.barTintColor = ToolBar_barTintColor
-            toolBar.tintColor = ToolBar_tintColor
-            toolBar.sizeToFit()
-            // Adding Button ToolBar
-            let doneButton = UIBarButtonItem(title: Determine_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
-            let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            let cancelButton = UIBarButtonItem(title: Cancel_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-            let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
-            titleLabel.textColor = .black
-            titleLabel.text = Choose_Title
-            titleLabel.textAlignment = .center
-            let titleButton = UIBarButtonItem(customView: titleLabel)
-            
-            toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
-            toolBar.isUserInteractionEnabled = true
-            textField.inputAccessoryView = toolBar
-        }
-
         return true
     }
     
@@ -219,14 +208,18 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
         return true
     }
     
-    // MARK: - selector
-    func clickCancelBtn(_ sender:Any) {
-        currentTextField?.text = ""
-        currentTextField?.resignFirstResponder()
-    }
-    
-    func clickDoneBtn(_ sender:Any) {
-        currentTextField?.resignFirstResponder()
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        switch textField {
+        case mobliePhoneTextfield:
+            if newLength > Max_MobliePhone_Length {
+                return false
+            }
+            
+        default: break
+        }
+        
+        return true
     }
     
     // MARK: - KeyBoard

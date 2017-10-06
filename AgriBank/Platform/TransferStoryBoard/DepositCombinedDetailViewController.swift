@@ -35,7 +35,7 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
         
         if AuthorizationManage.manage.canTerminationDeposit() {
             setLoading(true)
-            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
+            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
         }
     }
 
@@ -52,7 +52,7 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
     override func didResponse(_ description: String, _ response: NSDictionary) {
         switch description {
         case "COMM0701":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let status = array.first?["CanTrans"] as? String, status == Can_Transaction_Status {
                 canTransTime = true
             }
             

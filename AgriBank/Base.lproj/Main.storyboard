@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -77,13 +78,14 @@
                                         <color key="highlightedColor" red="0.1803921568627451" green="0.52549019607843139" blue="0.78823529411764703" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hUx-sD-TGu" customClass="FeatureWallView" customModule="AgriBank" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="115" width="375" height="306"/>
+                                        <rect key="frame" x="0.0" y="115" width="375" height="316"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="hUx-sD-TGu" secondAttribute="bottom" constant="10" id="7PK-fy-q6Z"/>
+                                    <constraint firstItem="AMg-Sk-J65" firstAttribute="height" secondItem="22X-cP-5eQ" secondAttribute="height" multiplier="25:431" id="6SP-jX-bAA"/>
+                                    <constraint firstAttribute="bottom" secondItem="hUx-sD-TGu" secondAttribute="bottom" id="7PK-fy-q6Z"/>
                                     <constraint firstItem="AMg-Sk-J65" firstAttribute="centerX" secondItem="22X-cP-5eQ" secondAttribute="centerX" id="Ct4-aB-DGg"/>
                                     <constraint firstItem="AMg-Sk-J65" firstAttribute="top" secondItem="22X-cP-5eQ" secondAttribute="top" constant="35" id="GtE-re-6xe"/>
                                     <constraint firstAttribute="trailing" secondItem="hUx-sD-TGu" secondAttribute="trailing" id="JWE-ju-fod"/>
@@ -101,14 +103,14 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login" translatesAutoresizingMaskIntoConstraints="NO" id="gJv-Eg-KzY">
-                                <rect key="frame" x="157.5" y="162" width="60" height="60"/>
+                                <rect key="frame" x="157.5" y="162.5" width="60" height="59.5"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" secondItem="gJv-Eg-KzY" secondAttribute="height" multiplier="1:1" id="K4p-mW-QBT"/>
                                     <constraint firstAttribute="width" constant="60" id="i7n-Xn-Hzi"/>
-                                    <constraint firstAttribute="height" constant="60" id="tFW-oe-tHC"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OEo-ZT-CoH">
-                                <rect key="frame" x="0.0" y="162" width="375" height="90"/>
+                                <rect key="frame" x="0.0" y="162.5" width="375" height="89.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                 <connections>
@@ -118,9 +120,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aQQ-gr-QgR">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" red="0.27058823529411763" green="0.65098039215686276" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="dCb-Yv-2yk"/>
-                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -149,10 +148,12 @@
                             <constraint firstAttribute="trailing" secondItem="OEo-ZT-CoH" secondAttribute="trailing" id="jia-mj-qNJ"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="aQQ-gr-QgR" secondAttribute="bottom" id="kdt-Rr-wRe"/>
                             <constraint firstAttribute="trailing" secondItem="vga-Qj-CIm" secondAttribute="trailing" id="mKg-pX-nXF"/>
+                            <constraint firstItem="aQQ-gr-QgR" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="44:667" id="moh-56-NkI"/>
                             <constraint firstItem="AMg-Sk-J65" firstAttribute="top" secondItem="gJv-Eg-KzY" secondAttribute="bottom" constant="5" id="nck-Tf-8sx"/>
                             <constraint firstItem="Ptf-ia-GhD" firstAttribute="height" secondItem="22X-cP-5eQ" secondAttribute="height" multiplier="1:4" id="pYe-YH-PQL"/>
                             <constraint firstItem="MfV-fU-wHy" firstAttribute="centerY" secondItem="bo1-rE-Ghf" secondAttribute="centerY" id="q2H-pF-2I9"/>
                             <constraint firstItem="gJv-Eg-KzY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="t6r-qI-5BK"/>
+                            <constraint firstItem="gJv-Eg-KzY" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="60:375" id="wgt-rd-lDi"/>
                             <constraint firstItem="JDV-py-Ofg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="15" id="yBX-sU-7gu"/>
                         </constraints>
                     </view>

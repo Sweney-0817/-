@@ -339,7 +339,7 @@ let ToolBar_Title_Weight:CGFloat = 100
 let PickView_Height:CGFloat = 200
 let NavigationBar_Color = UIColor(colorLiteralRed: 46/255, green: 134/255, blue: 201/255, alpha: 1)
 
-// MARK: - 字串定義
+// MARK: - Define
 let SystemCell_Identify = "System_Cell"
 let AES_Key = "hs3rwPsoYknnCCWjqIX57RgRflYGhKO1tmQxqWps21k="
 let File_IDList_Key = "IDlist"
@@ -374,6 +374,14 @@ let NextChange_Title = "下次變更"
 let PerformChange_Title = "執行變更"
 let SetNotification_Title = "您要打開系統應用通知才可收到推播通知"
 let Setting_Title = "設定"
+
+let Max_ID_Password_Length:Int = 16 // 使用者代號、使用者密碼的長度限制
+let Max_MobliePhone_Length:Int = 10 // 手機號碼
+//let Max_Identify_Length:Int = 10    // 身分證長度
+let Max19_Memo_Length:Int = 19      // 備註長度
+let Max50_Memo_Length:Int = 50      // 備註長度
+let Max_Email_Length:Int = 50       // Email長度
+let Max_Account_Length:Int = 16     // 輸入轉入帳號長度
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "agriBank_iOS"
@@ -416,7 +424,7 @@ let Response_Key = "Key"
 let Response_Value = "Value"
 let Currency_TWD = "00"             // 幣別代碼 00:台幣
 let Account_EnableTrans = "2"       // 此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
-let Can_Transaction_Status:Int = 1  // 是否可進行交易 0:不可交易 1:可交易
+let Can_Transaction_Status = "1"  // 是否可進行交易 0:不可交易 1:可交易
 let Account_Saving_Type = "P"       // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Check_Type = "K"        // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Deposit_Type = "M"      // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
@@ -445,8 +453,11 @@ let ErrorMsg_IsNot_TransTime = "非營業時間，不受理交易"
 let ErrorMsg_GetList_InAgreedAccount = "無法取得約定轉入帳戶"
 let ErrorMsg_GetList_InCommonAccount = "無法取得常用轉入帳戶"
 let ErrorMsg_Choose_InAccount = "請選擇轉入帳號"
+let ErrorMsg_Predesignated_Amount = "轉帳金額不得大於200萬"
+let ErrorMsg_NotPredesignated_Amount = "轉帳金額不得大於3萬"
 /*  用於「預約轉帳」 */
 let ErrorMsg_Transfer_Date = "請選擇轉出日期"
+let ErrorMsg_Reservation_Amount = "轉帳金額不得大於200萬"
 /*  用於「個人基本資料變更」 */
 let ErrorMsg_NeedChangeOne = "至少需修改一項"
 let ErrorMsg_Telephone = "「新區碼」及「新聯絡電話」必須一起修改"
@@ -463,8 +474,8 @@ let ErrorMsg_Not_Zero = "不得於0"
 /*  用於「繳稅」 */
 let ErrorMsg_Choose_PayDate = "請選擇繳費期間"
 /*  用於keyPasco */
-let ErrorMsg_Verification_Faild = "驗證失敗"
-let ErrorMsg_GetTasks_Faild = "Load task failed"
+let ErrorMsg_Verification_Faild = "authenticateOperation faild"
+let ErrorMsg_GetTasks_Faild = "getTasksOperation faild"
 let ErrorMsg_GenerateOTP_Faild = "generateGeoOTPCode faild"
 let ErrorMsg_SignTask_Faild = "signTaskOperation faild"
 let ErrorMsg_CancelTask_Faild = "cancelTaskOperation faild"
@@ -477,3 +488,10 @@ let ErrorMsg_Suggest_ChangePassword = "密碼已到期，建議變更密碼"
 let ErrorMsg_AntivirusSoftware_Title = "安裝防毒軟體"
 let ErrorMsg_AntivirusSoftware_Content = "請於行動裝置上安裝防毒軟體"
 let ErrorMsg_HaveNewVersion = "請更新農業金庫APP"
+/* 用於「使用者代號變更」「使用者密碼變更」「首次登入變更」 */
+let ErrorMsg_IDNotSame = "新使用者代號與舊使用者代號不得相同"
+let ErrorMsg_PDNotSame = "新密碼不得與舊密碼相同"
+let ErrorMsg_IDAgainIDNeedSame = "新使用者代號與再次輸入新使用者代號需要相同"
+let ErrorMsg_PDAgainPDNeedSame = "新密碼與再次輸入新密碼需要相同"
+/* 用於「綜存轉定存」 */
+let ErrorMsg_DepositCombinedToDeposit_MinAmount = "輸入金額不得少於1萬元"

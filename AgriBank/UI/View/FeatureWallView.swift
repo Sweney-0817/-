@@ -27,6 +27,7 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
     var horizontal = 0
     
     override func layoutSubviews() {
+        super.layoutSubviews()
         scrollview.frame = frame
         scrollview.frame.size.height = frame.size.height - FeatureWall_PageControl_BottomDistance/2
         scrollview.frame.origin = .zero

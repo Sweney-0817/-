@@ -18,20 +18,23 @@ struct ReservationTransDetailStruct {
     var inAccount = ""             // 轉入帳號
     var amount = ""                // 金額
     var memo = ""                  // 交易備註
+    var trmseq = ""                // 櫃檯機編號
 }
 
 class ReservationTransferDetailViewController: BaseViewController, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var bottomHeight: NSLayoutConstraint!
     private var input:ReservationTransDetailStruct? = nil
     private var list:[[String:String]]? = nil
     private var canTransTime = false    // 是否為交易時間
     
     // MARK: - Public
-    func setList(_ list:[[String:String]], _ input:ReservationTransDetailStruct) {
+    func setList(_ list:[[String:String]], _ input:ReservationTransDetailStruct, _ canTransTime:Bool) {
         self.list = list
         self.input = input
+        self.canTransTime = canTransTime
     }
     
     // MARK: - Override
@@ -41,10 +44,9 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
         tableView.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
         setShadowView(bottomView)
         cancelButton.layer.cornerRadius = Layer_BorderRadius
-        
-        if AuthorizationManage.manage.canCancelReservationTransfer() {
-            setLoading(true)
-            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
+        if !canTransTime {
+            bottomView.isHidden = true
+            bottomHeight.constant = 0
         }
     }
 
@@ -56,18 +58,6 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.topItem?.title = ReservationTransferDetailTitle
-    }
-    
-    override func didResponse(_ description:String, _ response: NSDictionary) {
-        switch description {
-        case "COMM0701":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status {
-                canTransTime = true
-            }
-            
-        default: super.didResponse(description, response)
-        }
-        
     }
     
     // MARK: - UITableViewDataSource
@@ -88,7 +78,7 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
     // MARK: - StoryBoard Touch Event
     @IBAction func clickCancelBtn(_ sender: Any) {
         if inputIsCorrect() {
-            let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0302", strSessionDescription: "TRAN0302", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"commitTxn","TransactionId":transactionId,"ACTNO":input?.outAccount ?? "","RGDAY":input?.loginDate ?? "","TXTNO":input?.serialNumber ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+            let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0302", strSessionDescription: "TRAN0302", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"commitTxn","TransactionId":transactionId,"ACTNO":input?.outAccount ?? "","RGDAY":(input?.loginDate ?? "").replacingOccurrences(of: "/", with: "") ,"TXTNO":input?.serialNumber ?? "","TRMSEQ":input?.trmseq ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
             
             var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認取消", resultBtnName: "繼續交易", checkRequest: confirmRequest)
             dataConfirm.list?.append([Response_Key:"轉出帳號",Response_Value:input?.outAccount ?? ""])
@@ -107,10 +97,6 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
     private func inputIsCorrect() -> Bool {
         if !AuthorizationManage.manage.canCancelReservationTransfer() {
             showErrorMessage(nil, ErrorMsg_NoAuth)
-            return false
-        }
-        if !canTransTime {
-            showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
             return false
         }
         return true

@@ -87,10 +87,10 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
                 super.didResponse(description, response)
             }
             setLoading(true)
-            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
+            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
             
         case "COMM0701":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let date = data["CurrentDate"] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let date = array.first?["CurrentDate"] as? String {
                 curDate = date.replacingOccurrences(of: "/", with: "")
             }
             else {
@@ -108,7 +108,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
             return false
         }
         if !AuthorizationManage.manage.getPayLoanStatus() {
-            showErrorMessage(nil, nil)
+            showErrorMessage(nil, ErrorMsg_NoAuth)
             return false
         }
         return true
@@ -187,10 +187,16 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
         if let array = list?["Result"] as? [[String:String]], let dic = array.first {
             calculatePeroidLabel.text = "\(dic["SDATE"] ?? "") - \(dic["EDATE"] ?? "")"
         }
-        if let FITIRT = list?["FITIRT"] as? String {
+//        if let FITIRT = list?["FITIRT"] as? String {
+//            rateLabel.text = FITIRT
+//        }
+//        if let DFDAYS = list?["DFDAYS"] as? String {
+//            breakContractDayLabel.text = DFDAYS
+//        }
+        if let array = list?["Result"] as? [[String:Any]], let FITIRT = array.first?["FITIRT"] as? String {
             rateLabel.text = FITIRT
         }
-        if let DFDAYS = list?["DFDAYS"] as? String {
+        if let array = list?["Result"] as? [[String:Any]], let DFDAYS = array.first?["DFDAYS"] as? String {
             breakContractDayLabel.text = DFDAYS
         }
         if let TPRIAMT = list?["TPRIAMT"] as? String {

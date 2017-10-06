@@ -1061,7 +1061,7 @@
                         <viewControllerLayoutGuide type="bottom" id="QZt-JZ-ezP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="CIM-ML-LxX">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="669"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UM6-Cw-rpM">
@@ -1103,7 +1103,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ddn-R2-aFF">
-                                <rect key="frame" x="0.0" y="225" width="375" height="382"/>
+                                <rect key="frame" x="0.0" y="225" width="375" height="384"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="fNw-Sc-TOs" id="VKF-tk-6dp"/>
@@ -1111,7 +1111,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7VS-B1-WeU">
-                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
+                                <rect key="frame" x="0.0" y="609" width="375" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09A-Tl-vuX">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
@@ -1262,7 +1262,7 @@
         <image name="Textfield" width="311" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="O0l-NN-0zP"/>
         <segue reference="sQ1-kh-MDu"/>
-        <segue reference="t9D-LU-j1P"/>
     </inferredMetricsTieBreakers>
 </document>

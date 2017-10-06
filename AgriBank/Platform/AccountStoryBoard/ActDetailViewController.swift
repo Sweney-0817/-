@@ -371,7 +371,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 }
             
             case .Type4:
-                if let TXDAY = dic["TXDAY"] as? String {
+                if let TXDAY = dic["TXDATE"] as? String {
                     cell.detail1Label.text = TXDAY
                 }
                 if let PRIAMT = dic["PRIAMT"] as? String {
@@ -445,14 +445,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                         if addType {
                             for actInfo in result {
                                 if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String {
-                                    if type == "P" {
-                                        if ebkfg == Account_EnableTrans {
-                                            categoryList[type]?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
-                                        }
-                                    }
-                                    else {
-                                        categoryList[type]?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
-                                    }
+                                    categoryList[type]?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                                 }
                             }
                         }
@@ -527,7 +520,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             let date = Date()
             let componenets = Calendar.current.dateComponents([.year, .month, .day], from: date)
             if let day = componenets.day, let month = componenets.month, let year = componenets.year {
-                endDate = "\(year)/\(String(format: "%02d", month))/\(day)"
+                endDate = "\(year)/\(String(format: "%02d", month))/\(String(format: "%02d", day))"
             }
             
             let newDate = Calendar.current.date(byAdding: .day, value: -7, to: date) ?? date

@@ -740,6 +740,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomHeight" destination="9fs-oU-IIB" id="Hmg-T7-MjZ"/>
                         <outlet property="bottomView" destination="CKC-qt-pr4" id="8te-92-Egg"/>
                         <outlet property="cancelButton" destination="dgZ-6f-mhk" id="FUP-bH-92U"/>
                         <outlet property="tableView" destination="4zv-WK-er2" id="75F-Hs-KCx"/>
@@ -1379,7 +1380,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hDG-cq-lAw">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hDG-cq-lAw">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>

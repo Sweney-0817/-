@@ -17,6 +17,7 @@ let DepositCombinedToDeposit_Rate_Title = "利率方式"
 let DepositCombinedToDeposit_AutoRateType_Title = "自動轉\n期利率"
 let DepositCombinedToDeposit_ExpireSaveType1 = "是，本金續存"
 let DepositCombinedToDeposit_ExpireSaveType2 = "不續存"
+let DepositCombinedToDeposit_Min_Amount:Int = 10000
 
 class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDelegate, ThreeRowDropDownViewDelegate, OneRowDropDownViewDelegate, UIActionSheetDelegate {
     @IBOutlet weak var topView: UIView!
@@ -94,6 +95,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
         
         setShadowView(bottomView)
         addObserverToKeyBoard()
+        addGestureForKeyBoard()
         getTransactionID("03004", TransactionID_Description)
     }
 
@@ -162,7 +164,8 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             }
             
         case "COMM0701":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let status = data["CanTrans"] as? Int, status == Can_Transaction_Status, let date = data["CurrentDate"] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let status = array.first?["CanTrans"] as? String, status == Can_Transaction_Status, let date = array.first?["CurrentDate"] as? String {
+
                 let TACTNO = topDropView?.getContentByType(.First) ?? ""
                 let TYPE = responseDepositList[curDepositTypeIndex!]["Type"] ?? ""
                 let PRDCD = periodDropView?.getContentByType(.First) ?? ""
@@ -192,7 +195,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                     }
                 }
                 let TXAMT = transAmountTextfield.text ?? ""
-                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
                 
                 var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
                 dataConfirm.list?.append([Response_Key: "綜合存款帳號", Response_Value:TACTNO])
@@ -209,7 +212,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             else {
                 showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
             }
-            
+        
         default: super.didResponse(description, response)
         }
     }
@@ -234,30 +237,12 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
     @IBAction func clickSendBtn(_ sender: Any) {
         if inputIsCorrect() {
             setLoading(true)
-            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
+            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
         }
     }
     
     // MARK: - UITextFieldDelegate
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        // ToolBar
-        let toolBar = UIToolbar()
-        toolBar.barTintColor = ToolBar_barTintColor
-        toolBar.tintColor = ToolBar_tintColor
-        toolBar.sizeToFit()
-        // Adding Button ToolBar
-        let doneButton = UIBarButtonItem(title: Determine_Title, style: .plain, target: self, action: #selector(clickDoneBtn(_:)))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: Cancel_Title, style: .plain, target: self, action: #selector(clickCancelBtn(_:)))
-        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: ToolBar_Title_Weight, height: toolBar.frame.height))
-        titleLabel.textColor = .black
-        titleLabel.text = Choose_Title
-        titleLabel.textAlignment = .center
-        let titleButton = UIBarButtonItem(customView: titleLabel)
-        
-        toolBar.setItems([cancelButton, spaceButton, titleButton, spaceButton, doneButton], animated: false)
-        toolBar.isUserInteractionEnabled = true
-        textField.inputAccessoryView = toolBar
         return true
     }
     
@@ -361,17 +346,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             
         }
     }
-    
-    // MARK: - Selector
-    func clickCancelBtn(_ sender:Any) {
-        transAmountTextfield?.text = ""
-        transAmountTextfield?.resignFirstResponder()
-    }
-    
-    func clickDoneBtn(_ sender:Any) {
-        transAmountTextfield?.resignFirstResponder()
-    }
-    
+
     // MARK: - UIActionSheetDelegate
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if buttonIndex != actionSheet.cancelButtonIndex {
@@ -439,7 +414,13 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             showErrorMessage(nil, "\(Enter_Title)\(transAmountTextfield.placeholder ?? "")")
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(transAmountTextfield.text!) {
+        if let amount = Int(transAmountTextfield.text!) {
+            if amount < DepositCombinedToDeposit_Min_Amount {
+                showErrorMessage(nil, ErrorMsg_DepositCombinedToDeposit_MinAmount)
+                return false
+            }
+        }
+        else {
             showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }

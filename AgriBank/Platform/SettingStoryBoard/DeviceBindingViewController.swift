@@ -10,9 +10,6 @@ import UIKit
 
 let DeviceBindingResult_Segue = "GoDeviceBindingResult"
 let DeviceBinding_Bank_Title = "農會"
-let DeviceBinding_ID_Length:Int = 10
-let DeviceBinding_UserCode_Length:Int = 16
-let DeviceBinding_Password_Length:Int = 16
 let DeviceBinding_CheckCode_Length:Int = 7
 let DeviceBinding_Binding_Success_Title = "綁定成功"
 let DeviceBinding_Binding_Faild_Title = "綁定失敗"
@@ -201,14 +198,11 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
         let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
         var maxLength = 0
         switch textField {
-        case identifyTextfield:
-            maxLength = DeviceBinding_ID_Length
+//        case identifyTextfield:
+//            maxLength = Max_Identify_Length
             
-        case userCodeTextfield:
-            maxLength = DeviceBinding_UserCode_Length
-            
-        case passwordTextfield:
-            maxLength = DeviceBinding_Password_Length
+        case userCodeTextfield, passwordTextfield:
+            maxLength = Max_ID_Password_Length
             
         case checkCodeTextfield:
             maxLength = DeviceBinding_CheckCode_Length
@@ -242,7 +236,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
                     self.postRequest("COMM/COMM0801", "COMM0801", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08011","Operate":"queryData","BR_CODE":bankCode,"ID_DATA":self.identifyTextfield.text!,"USER_ID":id,"PWD":pd,"ASSOCIATIONCODE":self.checkCodeTextfield.text!,"SessionId":uuid], true), AuthorizationManage.manage.getHttpHead(true))
                 }
                 else {
-                    self.showErrorMessage(nil, ErrorMsg_Verification_Faild)
+                    self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode)")
                     self.setLoading(false)
                 }
             }

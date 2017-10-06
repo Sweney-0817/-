@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 let Confirm_ImageConfirm_Cell_Height:CGFloat = 60
 let Confirm_Segue = "GoResult"
@@ -24,6 +25,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     private var checkRequest:RequestStruct? = nil
     private var curTextfield:UITextField? = nil
     private var isNeedOTP = false
+    private var locationManager:CLLocationManager? = nil   // OTP需要開啟定位點
     
     // MARK: - Public
     func setData(_ data:ConfirmResultStruct) {
@@ -43,6 +45,17 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
             m_ivTopImage.image = UIImage(named: dataOTP?.image ?? "")
             m_lbTopTitle.text = dataOTP?.title
             m_btnConfirm.setTitle(dataOTP?.confirmBtnName, for: .normal)
+            // 開啟定位
+            if CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+                locationManager = CLLocationManager()
+                locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+                if CLLocationManager.authorizationStatus() == .notDetermined  {
+                    locationManager?.requestWhenInUseAuthorization()
+                }
+            }
+            else {
+                locationManager?.requestWhenInUseAuthorization()
+            }
         }
         else {
             m_ivTopImage.image = UIImage(named: data?.image ?? "")
@@ -93,46 +106,51 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                                 self.dataOTP?.httpBodyList?["otp"] = otp?.otp
                                 self.dataOTP?.checkRequest?.httpBody = AuthorizationManage.manage.converInputToHttpBody((self.dataOTP?.httpBodyList!)!, true)
                                 self.setLoading(true)
-                                self.postRequest((self.dataOTP?.checkRequest?.strMethod)!, (self.dataOTP?.checkRequest?.strSessionDescription)!, self.dataOTP?.checkRequest?.httpBody, self.dataOTP?.checkRequest?.loginHttpHead, self.dataOTP?.checkRequest?.strURL, (self.data?.checkRequest?.needCertificate)!, (self.dataOTP?.checkRequest?.isImage)!)
+                                self.postRequest((self.dataOTP?.checkRequest?.strMethod)!, (self.dataOTP?.checkRequest?.strSessionDescription)!, self.dataOTP?.checkRequest?.httpBody, self.dataOTP?.checkRequest?.loginHttpHead, self.dataOTP?.checkRequest?.strURL, (self.dataOTP?.checkRequest?.needCertificate)!, (self.dataOTP?.checkRequest?.isImage)!)
                             }
                             else {
-                                self.showErrorMessage(nil, "\(ErrorMsg_GenerateOTP_Faild) \((otp?.resultCode)!)")
+                                let alert = UIAlertController(title: UIAlert_Default_Title, message: "\(ErrorMsg_GenerateOTP_Faild) \((otp?.resultCode)!)", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                                    self.enterFeatureByID(.FeatureID_Home, true)
+                                })
+                                self.present(alert, animated: false, completion: nil)
                             }
                         }
                         else {
-                            self.showErrorMessage(nil, "\(ErrorMsg_SignTask_Faild) \(resultCode)")
+                            let alert = UIAlertController(title: UIAlert_Default_Title, message: "\(ErrorMsg_SignTask_Faild) \(resultCode)", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                                self.enterFeatureByID(.FeatureID_Home, true)
+                            })
+                            self.present(alert, animated: false, completion: nil)
                         }
                     }
                 }
             }
             else {
-                getImageConfirm()
+                getImageConfirm(transactionId)
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
             
         default:
-            let checkRequest = isNeedOTP ? dataOTP?.checkRequest : data?.checkRequest
-            if checkRequest != nil && description == checkRequest?.strSessionDescription {
-                if isNeedOTP {
-                    data = ConfirmResultStruct(image: "", title: "", list: nil, memo: "", confirmBtnName: dataOTP?.confirmBtnName ?? "", resultBtnName: dataOTP?.resultBtnName ?? "", checkRequest: nil)
-                }
-                if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
-                    if let responseData = response.object(forKey: ReturnData_Key) as? [[String:String]] {
-                        data?.list = responseData
-                    }
-                    data?.title = Transaction_Successful_Title
-                    data?.image = ImageName.CowSuccess.rawValue
-                }
-                else {
-                    data?.title = Transaction_Faild_Title
-                    data?.image = ImageName.CowFailure.rawValue
-                    if let message = response.object(forKey:ReturnMessage_Key) as? String {
-                        data?.list = [[String:String]]()
-                        data?.list?.append([Response_Key:Error_Title,Response_Value:message])
-                    }
-                }
-                performSegue(withIdentifier: Confirm_Segue, sender: nil)
+            if isNeedOTP {
+                data = ConfirmResultStruct(image: "", title: "", list: nil, memo: "", confirmBtnName: dataOTP?.confirmBtnName ?? "", resultBtnName: dataOTP?.resultBtnName ?? "", checkRequest: nil)
             }
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
+                if let responseData = response.object(forKey: ReturnData_Key) as? [[String:String]] {
+                    data?.list = responseData
+                }
+                data?.title = Transaction_Successful_Title
+                data?.image = ImageName.CowSuccess.rawValue
+            }
+            else {
+                data?.title = Transaction_Faild_Title
+                data?.image = ImageName.CowFailure.rawValue
+                if let message = response.object(forKey:ReturnMessage_Key) as? String {
+                    data?.list = [[String:String]]()
+                    data?.list?.append([Response_Key:Error_Title,Response_Value:message])
+                }
+            }
+            performSegue(withIdentifier: Confirm_Segue, sender: nil)
         }
     }
     
@@ -154,6 +172,16 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
             }
             self.navigationController?.popViewController(animated: true)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        locationManager?.startUpdatingLocation()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        locationManager?.stopUpdatingLocation()
     }
     
     // MARK: - UITableViewDelegate

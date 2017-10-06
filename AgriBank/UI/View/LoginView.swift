@@ -8,9 +8,6 @@
 
 import UIKit
 
-//let Login_Account_Length = 10
-let Login_ID_Length = 16
-let Login_Password_Length = 10
 let Login_Mask_Range = NSRange(location: 4, length: 3)
 let Login_Mask = "***"
 
@@ -260,14 +257,11 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
             var maxLength = 0
             switch textField {
 //          case accountTextfield:
-//              maxLength = Login_Account_Length
+//              maxLength = Max_Identify_Length
                 
-            case idTextfield:
-                maxLength = Login_ID_Length
-                
-            case passwordTextfield:
-                maxLength = Login_Password_Length
-                
+            case idTextfield, passwordTextfield:
+                maxLength = Max_ID_Password_Length
+            
             default: break
             }
             

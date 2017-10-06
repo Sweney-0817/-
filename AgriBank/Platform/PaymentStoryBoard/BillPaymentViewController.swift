@@ -237,6 +237,10 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             showErrorMessage(nil, "\(Enter_Title)\(m_tfTransAmount.placeholder ?? "")")
             return false
         }
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(m_tfTransMemo.text!) {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+            return false
+        }
         if !DetermineUtility.utility.isValidEmail(m_tfEmail.text!) {
             showErrorMessage(nil, ErrorMsg_Invalid_Email)
             return false
@@ -346,7 +350,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
                 
             case ViewTag.View_AccountActionSheet.rawValue:
                 if let info = accountList?[buttonIndex-1] {
-                    m_DDTransOutAccount?.setThreeRow(BillPayment_OutAccout_Title, info.accountNO, BillPayment_Currency_Ttile, info.currency, BillPayment_Balance_Ttile, String(info.balance) )
+                    m_DDTransOutAccount?.setThreeRow(BillPayment_OutAccout_Title, info.accountNO, BillPayment_Currency_Ttile, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), BillPayment_Balance_Ttile, String(info.balance) )
                 }
                 
             default: break
@@ -362,6 +366,26 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         curTextfield = textField
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        if textField == m_vEmail {
+            if newLength > Max_Email_Length {
+                return false
+            }
+        }
+        else if textField == m_vTransMemo {
+            if newLength > Max19_Memo_Length {
+                return false
+            }
+        }
+        else if textField == m_tfTransInAccount {
+            if newLength > Max_Account_Length {
+                return false
+            }
+        }
         return true
     }
     
@@ -385,7 +409,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
                 inAccount = m_DDTransInBA?.getContentByType(.Second) ?? ""
             }
             setLoading(true)
-            postRequest("PAY/PAY0106", "PAY0106", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"OUTACT":m_DDTransOutAccount?.getContentByType(.First) ?? "","INACT":inAccount,"INBANK":bankCode,"TXAMT":m_tfTransAmount.text!,"MEMO":m_tfTransMemo.text!,"EMAIL":m_tfEmail.text!], true), AuthorizationManage.manage.getHttpHead(true))
+            postRequest("PAY/PAY0106", "PAY0106", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"05002","Operate":"dataConfirm","TransactionId":transactionId,"OUTACT":m_DDTransOutAccount?.getContentByType(.First) ?? "","INACT":inAccount,"INBANK":bankCode,"TXAMT":m_tfTransAmount.text!,"MEMO":m_tfTransMemo.text!,"EMAIL":m_tfEmail.text!], true), AuthorizationManage.manage.getHttpHead(true))
         }
     }
 }

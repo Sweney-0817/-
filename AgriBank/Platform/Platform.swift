@@ -12,7 +12,7 @@ import UIKit
 class Platform {
     static let plat:Platform = Platform()
     private var informationList = [PlatformFeatureID:FeatureStruct]()
-    private var currentFeatureID:PlatformFeatureID? = nil
+    private var currentFeatureID:PlatformFeatureID? = nil    // 目前的功能
     
     func getControllerByID(_ FeatureID:PlatformFeatureID) -> UIViewController {
         var controller:UIViewController? = nil

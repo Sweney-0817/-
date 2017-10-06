@@ -332,6 +332,16 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
         return true
     }
     
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+//        if textField == m_tfInput2 && curType == TaxPayment_Type1 {
+//            if newLength > Max_Identify_Length {
+//                return false
+//            }
+//        }
+//        return true
+//    }
+    
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnSendClick(_ sender: Any) {
         if inputIsCorrect() {

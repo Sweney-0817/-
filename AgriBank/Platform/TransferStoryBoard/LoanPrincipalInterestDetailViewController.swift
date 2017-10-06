@@ -50,5 +50,9 @@ class LoanPrincipalInterestDetailViewController: BaseViewController, UITableView
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
+    // MARK: - UITableViewDelegate
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return ResultCell.GetStringHeightByWidthAndFontSize((list?[indexPath.row][Response_Value])!, tableView.frame.size.width)
+    }
 }

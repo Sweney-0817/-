@@ -40,7 +40,7 @@ class AuthorizationManage {
     private var canReservationTransferCancel = false     // 是否可以「預約轉帳取消」
     private var canDepositTermination = false            // 是否可以「綜存戶轉存明細解約」
     private var canPayLoan = false                       // 是否可以「繳交放款本息」
-    private var canChangeBaseInfo = false                // 是否可以「繳交放款本息」
+    private var canChangeBaseInfo = false                // 是否可以「基本資料變更」
     
     func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info
@@ -61,7 +61,7 @@ class AuthorizationManage {
                     case "T36":
                         canPayLoan = true
                         
-                    case "37":
+                    case "T37":
                         canChangeBaseInfo = true
                         
                     default:
