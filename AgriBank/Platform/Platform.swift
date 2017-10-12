@@ -26,6 +26,9 @@ class Platform {
             (controller as! UserChangeIDPwdViewController).SetIsChangePassword()
             (controller as! BaseViewController).needShowBackBarItem = false
             currentFeatureID = FeatureID
+        case .FeatureID_Edit:
+            (controller as! BaseViewController).needShowBackBarItem = true
+            currentFeatureID = FeatureID
         default:
             (controller as! BaseViewController).needShowBackBarItem = false
             currentFeatureID = FeatureID

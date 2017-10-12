@@ -19,6 +19,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     private var m_Data1:[PromotionStruct] = [PromotionStruct]()
     private var m_Data2:[PromotionStruct] = [PromotionStruct]()
     private var m_curData:[PromotionStruct]? = nil
+    private var webContent:Data? = nil
 
     // MARK: - Public
     func SetNewsList(_ center:[PromotionStruct]?, _ bank:[PromotionStruct]?) {
@@ -48,7 +49,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let webContentViewController = segue.destination as! WebContentViewController
-        webContentViewController.setData((m_curData?[m_iSelectedIndex])!)
+        webContentViewController.setData((m_curData?[m_iSelectedIndex])!, webContent)
     }
     
     override func didResponse(_ description:String, _ response: NSDictionary) {
@@ -66,8 +67,8 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
             m_Data2.removeAll()
             if let data = response.object(forKey: ReturnData_Key) as? [String : Any], let list = data["CB_List"] as? [[String:Any]] {
                 for index in list {
-                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String {
-                        m_Data2.append(PromotionStruct(title, date, "", url, ""))
+                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String, let ID = index["CB_ID"] as? String {
+                        m_Data2.append(PromotionStruct(title, date, "", url, ID))
                     }
                 }
             }
@@ -77,15 +78,17 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
             m_curData = m_Data2
             m_tvData.reloadData()
             
+        case "INFO0102":
+            if let data = response.object(forKey: RESPONSE_Data_KEY) as? Data {
+                webContent = data
+                performSegue(withIdentifier: News_ShowDetail_Seque, sender: nil)
+            }
+            
         default: super.didResponse(description, response)
         }
     }
     
     // MARK: - Private
-    private func goDetail() {
-        performSegue(withIdentifier: News_ShowDetail_Seque, sender: nil)
-    }
-    
     private func initDataForType(_ type:String) {
         if type == News_TypeList.first! {
             m_curData = m_Data1
@@ -113,7 +116,11 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         m_iSelectedIndex = indexPath.row
-        goDetail()
+//        if let ID = m_curData?[m_iSelectedIndex].ID {
+//            setLoading(true)
+//            getRequest("Info/INFO0102?CMIID=\(ID)", "INFO0102", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .Data)
+//        }
+        performSegue(withIdentifier: News_ShowDetail_Seque, sender: nil)
     }
     
     // MARK: - UITableViewDataSource

@@ -15,6 +15,7 @@ let ServiceBaseDetail_Map_URL = "https://www.google.com.tw/maps?addr="
 class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var m_tvData: UITableView!
     @IBOutlet weak var callPhoneButton: UIButton!
+    @IBOutlet weak var bottomView: UIView!
     private var data:[[String:String]]? = nil
     private var telePhone = ""
     private var curLocation = CLLocationCoordinate2D()
@@ -32,6 +33,7 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
         super.viewDidLoad()
         
         m_tvData.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
+        setShadowView(bottomView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,11 +47,6 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        if let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as? ResultCell {
-//            if cell.m_lbTitle.text == telePhone {
-//                m_btnCallOutClick(callPhoneButton)
-//            }
-//        }
         if indexPath.row == 2 {
             m_btnCallOutClick(callPhoneButton)
         }

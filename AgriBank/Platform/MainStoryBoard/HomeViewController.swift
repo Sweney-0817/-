@@ -17,6 +17,8 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var loginImageView: UIImageView!
+    @IBOutlet weak var loginImageShadowView: UIView!
+    
     private var centerNewsList:[[String:Any]]? = nil
     private var bankNewsList:[[String:Any]]? = nil
     private var logoImage:UIImage? = nil
@@ -38,6 +40,15 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         bannerView.addSubview(banner)
         
         featureWall.setInitial(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!, setVertical: 3, setHorizontal: 2, SetDelegate: self)
+    
+        /*  UIImageView無法同時支援 陰影+cornerRadius */
+        loginImageView.layer.cornerRadius = loginImageView.frame.width/2
+        loginImageView.layer.masksToBounds = true
+        loginImageShadowView.layer.cornerRadius = loginImageShadowView.frame.width/2
+        loginImageShadowView.layer.shadowOffset = CGSize(width: 0, height: 10)
+        loginImageShadowView.layer.shadowRadius = Shadow_Radious
+        loginImageShadowView.layer.shadowOpacity = Shadow_Opacity
+        loginImageShadowView.layer.shadowColor = UIColor.gray.cgColor
         
         getVersionInfo()
         getBannerInfo()
@@ -165,16 +176,16 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             if centerNewsList != nil {
                 centerNews = [PromotionStruct]()
                 for index in centerNewsList! {
-                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String {
-                        centerNews?.append(PromotionStruct(title, date, "", url, ""))
+                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String, let ID = index["CB_ID"] as? String {
+                        centerNews?.append(PromotionStruct(title, date, "", url, ID))
                     }
                 }
             }
             if bankNewsList != nil {
                 bankNews = [PromotionStruct]()
                 for index in bankNewsList! {
-                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String {
-                        bankNews?.append(PromotionStruct(title, date, "", url, ""))
+                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String, let ID = index["CB_ID"] as? String {
+                        bankNews?.append(PromotionStruct(title, date, "", url, ID))
                     }
                 }
             }
@@ -205,8 +216,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         if AuthorizationManage.manage.IsLoginSuccess() {
             if let info = AuthorizationManage.manage.GetLoginInfo() {
                 loginImageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
-                loginImageView.layer.cornerRadius = loginImageView.frame.width/2
-                loginImageView.layer.masksToBounds = true
             }
             if let info = AuthorizationManage.manage.getResponseLoginInfo() {
                 accountBalanceLabel.text = "活存總餘額 \(String(info.Balance ?? 0).separatorThousand())"
@@ -227,13 +236,11 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             loginImageView.image = UIImage(named: ImageName.Login.rawValue)
             logoImage = nil
             logoImageView.image = UIImage(named: ImageName.DefaultLogo.rawValue)
-            loginImageView.layer.cornerRadius = 0
-            loginImageView.layer.masksToBounds = false
             loginStatusLabel.text = NoLogin_Title
             accountBalanceLabel.text = "-"
             list = centerNewsList
         }
-        
+
         if list != nil {
             var newsList = [String]()
             for dic in list! {

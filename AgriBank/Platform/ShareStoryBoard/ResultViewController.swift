@@ -9,8 +9,6 @@
 import UIKit
 
 class ResultViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
-    @IBOutlet weak var m_ivTopImage: UIImageView!
-    @IBOutlet weak var m_lbTopTitle: UILabel!
     @IBOutlet weak var m_tvData: UITableView!
     @IBOutlet weak var m_vBottomView: UIView!
     @IBOutlet weak var m_btnBackToFeature: UIButton!
@@ -36,10 +34,7 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = nil
         self.navigationItem.setHidesBackButton(true, animated:true);
-        
-        m_ivTopImage.image = UIImage(named: (data?.image)!)
-        m_lbTopTitle.text = data?.title
-
+    
         m_tvData.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
         m_tvData.allowsSelection = false
         m_tvData.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
@@ -59,32 +54,54 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if (data?.memo)!.isEmpty {
-            return 0
+        if section == 0 {
+            return tableView.sectionFooterHeight
         }
         else {
-            return MemoView.GetStringHeightByWidthAndFontSize((data?.memo)!, m_tvData.frame.width)
+            if (data?.memo)!.isEmpty {
+                return 0
+            }
+            else {
+                return MemoView.GetStringHeightByWidthAndFontSize((data?.memo)!, m_tvData.frame.width)
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if (data?.memo)!.isEmpty {
-            return nil
+        if section == 0 {
+            let head = getUIByID(.UIID_ShowMessageHeadView) as! ShowMessageHeadView
+            head.imageView.image = UIImage(named: (data?.image)!)
+            head.titleLabel.text = data?.title
+            return head
         }
         else {
-            let footer = getUIByID(.UIID_MemoView) as! MemoView
-            footer.set((data?.memo)!)
-            return footer
+            if (data?.memo)!.isEmpty {
+                return nil
+            }
+            else {
+                let footer = getUIByID(.UIID_MemoView) as! MemoView
+                footer.set((data?.memo)!)
+                return footer
+            }
         }
     }
     
     // MARK: - UITableViewDataSource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if data?.list?.count != nil {
-            return (data?.list?.count)!
+        if section == 0 {
+            return 0
         }
-        
-        return 0
+        else {
+            if data?.list?.count != nil {
+                return (data?.list?.count)!
+            }
+            
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

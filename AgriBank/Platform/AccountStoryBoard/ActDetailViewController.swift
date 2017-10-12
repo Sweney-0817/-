@@ -101,7 +101,14 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "交易日期", Response_Value:""])
                 }
                 if let CRDB = dic["CRDB"] as? String {
-                    list.append([Response_Key: "借貸紀號", Response_Value:CRDB == "1" ? "支出" : "存入"])
+                    var temp = ""
+                    if CRDB == "1" {
+                        temp = "支出"
+                    }
+                    else if CRDB == "2" {
+                        temp = "存入"
+                    }
+                    list.append([Response_Key: "借貸紀號", Response_Value:temp])
                 }
                 else {
                     list.append([Response_Key: "借貸紀號", Response_Value:""])
@@ -119,7 +126,14 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "交易摘要", Response_Value:""])
                 }
                 if let HCODE = dic["HCODE"] as? String {
-                    list.append([Response_Key: "更正記號", Response_Value:HCODE == "0" ? "-" : HCODE])
+                    var temp = ""
+                    if HCODE == "0" {
+                        temp = "-"
+                    }
+                    else if HCODE == "1" {
+                        temp = "更正"
+                    }
+                    list.append([Response_Key: "更正記號", Response_Value:temp])
                 }
                 else {
                     list.append([Response_Key: "更正記號", Response_Value:""])
@@ -157,7 +171,14 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "交易日期", Response_Value:""])
                 }
                 if let CKSRT = dic["CKSRT"] as? String {
-                    list.append([Response_Key: "票種", Response_Value:CKSRT == "1" ? "支票" : "本票"])
+                    var temp = ""
+                    if CKSRT == "1" {
+                        temp = "支票"
+                    }
+                    else if CKSRT == "2" {
+                        temp = "本票"
+                    }
+                    list.append([Response_Key: "票種", Response_Value:temp])
                 }
                 else {
                     list.append([Response_Key: "票種", Response_Value:""])
@@ -175,13 +196,27 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "交易摘要", Response_Value:""])
                 }
                 if let HCODE = dic["HCODE"] as? String {
-                    list.append([Response_Key: "更正記號", Response_Value:HCODE == "0" ? "-" : HCODE])
+                    var temp = ""
+                    if HCODE == "0" {
+                        temp = "-"
+                    }
+                    else if HCODE == "1" {
+                        temp = "更正"
+                    }
+                    list.append([Response_Key: "更正記號", Response_Value:temp])
                 }
                 else {
                     list.append([Response_Key: "更正記號", Response_Value:""])
                 }
                 if let CRDB = dic["CRDB"] as? String {
-                    list.append([Response_Key: "借貸紀號", Response_Value:CRDB == "1" ? "支出" : "存入"])
+                    var temp = ""
+                    if CRDB == "1" {
+                        temp = "支出"
+                    }
+                    else if CRDB == "2" {
+                        temp = "存入"
+                    }
+                    list.append([Response_Key: "借貸紀號", Response_Value:temp])
                 }
                 else {
                     list.append([Response_Key: "借貸紀號", Response_Value:""])
@@ -225,7 +260,14 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "交易代號", Response_Value:""])
                 }
                 if let HCODE = dic["HCODE"] as? String {
-                    list.append([Response_Key: "更正記號", Response_Value:HCODE == "0" ? "-" : HCODE])
+                    var temp = ""
+                    if HCODE == "0" {
+                        temp = "-"
+                    }
+                    else if HCODE == "1" {
+                        temp = "更正"
+                    }
+                    list.append([Response_Key: "更正記號", Response_Value:temp])
                 }
                 else {
                     list.append([Response_Key: "更正記號", Response_Value:""])
@@ -342,7 +384,14 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     cell.detail1Label.text = TXDAY
                 }
                 if let CRDB = dic["CRDB"] as? String {
-                    cell.detail2Label.text = CRDB == "1" ? "支出" : "存入"
+                    var temp = ""
+                    if CRDB == "1" {
+                        temp = "支出"
+                    }
+                    else if CRDB == "2" {
+                        temp = "存入"
+                    }
+                    cell.detail2Label.text = temp
                 }
                 if let TXAMT = dic["TXAMT"] as? String {
                     cell.detail3Label.text = TXAMT.separatorThousand()

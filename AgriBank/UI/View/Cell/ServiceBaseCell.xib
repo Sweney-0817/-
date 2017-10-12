@@ -8,6 +8,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -15,8 +20,8 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="宜蘭縣農會" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="18q-lV-USn">
-                    <rect key="frame" x="15" y="12" width="244" height="25"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="宜蘭縣農會宜蘭縣農會宜蘭縣農會宜蘭縣農會宜蘭縣農會" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="18q-lV-USn">
+                    <rect key="frame" x="15" y="12" width="248.5" height="25"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="cGO-Bo-hcr"/>
                     </constraints>
@@ -25,7 +30,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="800公尺外" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rnR-Bp-LHJ">
-                    <rect key="frame" x="258.5" y="12" width="77" height="22.5"/>
+                    <rect key="frame" x="263" y="12" width="77" height="22.5"/>
                     <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="16"/>
                     <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -62,7 +67,7 @@
                 <constraint firstItem="iDq-NC-CVD" firstAttribute="leading" secondItem="Hx3-if-qQN" secondAttribute="trailing" constant="4" id="PSm-39-Rss"/>
                 <constraint firstAttribute="trailing" secondItem="iDq-NC-CVD" secondAttribute="trailing" constant="15" id="RJ6-tM-usK"/>
                 <constraint firstItem="18q-lV-USn" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="Ziq-qT-vOD"/>
-                <constraint firstItem="iDq-NC-CVD" firstAttribute="leading" secondItem="rnR-Bp-LHJ" secondAttribute="trailing" constant="4" id="cse-tR-LGW"/>
+                <constraint firstItem="iDq-NC-CVD" firstAttribute="leading" secondItem="rnR-Bp-LHJ" secondAttribute="trailing" id="cse-tR-LGW"/>
                 <constraint firstItem="iDq-NC-CVD" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="l0W-Fm-6gh"/>
                 <constraint firstAttribute="bottom" secondItem="CkI-wq-oiT" secondAttribute="bottom" id="qgL-Wc-Ubd"/>
                 <constraint firstItem="Hx3-if-qQN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="wqK-gv-bpX"/>

@@ -8,20 +8,29 @@
 
 import UIKit
 
+let SetAvatar_Delete_Title = "確定刪除頭像？"
+
 class SetAvatarViewController: BasePhotoViewController {
     @IBOutlet weak var imageView: UIImageView!
-    
+    @IBOutlet weak var imageShadowView: UIView!
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         if let info = AuthorizationManage.manage.GetLoginInfo() {
             imageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
-            imageView.layer.cornerRadius = imageView.frame.width/2
-            imageView.layer.masksToBounds = true
         }
         /* UIImagePickerController 與 NotificationCenter.default.addObserver(forName: nil, object: nil, queue: nil) 有衝突*/
         (UIApplication.shared.delegate as! AppDelegate).removeNotificationAllEvent()
+        
+        imageView.layer.cornerRadius = imageView.frame.width/2
+        imageView.layer.masksToBounds = true
+        
+        imageShadowView.layer.cornerRadius = imageShadowView.frame.width/2
+        imageShadowView.layer.shadowOffset = CGSize(width: 0, height: 10)
+        imageShadowView.layer.shadowRadius = Shadow_Radious
+        imageShadowView.layer.shadowOpacity = Shadow_Opacity
+        imageShadowView.layer.shadowColor = UIColor.gray.cgColor
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,11 +60,19 @@ class SetAvatarViewController: BasePhotoViewController {
     }
     
     @IBAction func clickDeleteBtn(_ sender: Any) {
-        imageView.layer.cornerRadius = 0
-        imageView.layer.masksToBounds = false
-        imageView.image = UIImage(named: ImageName.Login.rawValue)
-        if let info = AuthorizationManage.manage.GetLoginInfo() {
-            savePersonalImage(nil, SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
+        if let info = AuthorizationManage.manage.GetLoginInfo(), getPersonalImage(SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id) != nil {
+            let alert = UIAlertController(title: UIAlert_Default_Title, message: SetAvatar_Delete_Title, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                DispatchQueue.main.async {
+                    self.imageView.image = UIImage(named: ImageName.Login.rawValue)
+                    self.savePersonalImage(nil, SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
+                }
+            })
+            present(alert, animated: false, completion: nil)
+        }
+        else {
+            showErrorMessage(nil, ErrorMsg_NoImage)
         }
     }
     
@@ -70,10 +87,7 @@ class SetAvatarViewController: BasePhotoViewController {
     // MARK: - VPImageCropperDelegate
     override func imageCropper(_ cropperViewController: VPImageCropperViewController!, didFinished editedImage: UIImage!) {
         cropperViewController.dismiss(animated: true, completion: nil)
-        imageView.layer.cornerRadius = imageView.frame.width/2
-        imageView.layer.masksToBounds = true
         imageView.image = editedImage
-        imageView.clipsToBounds = true
         if let info = AuthorizationManage.manage.GetLoginInfo() {
             savePersonalImage(editedImage, SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
         }

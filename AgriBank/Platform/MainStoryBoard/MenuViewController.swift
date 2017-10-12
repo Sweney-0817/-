@@ -13,6 +13,7 @@ let Menu_Cell_Identify = "MenuCellIdentify"
 class MenuViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, SideMenuViewDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var versionLabel: UILabel!
     private var featureList = [PlatformFeatureID]()
     private var expandList = Set<Int>()
     private var currentID:PlatformFeatureID? = nil
@@ -24,6 +25,7 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
         tableView.register(UINib(nibName: UIID.UIID_MenuCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuCell.NibName()!)
         tableView.register(UINib(nibName: UIID.UIID_MenuExpandCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuExpandCell.NibName()!)
         setShadowView(topView)
+        versionLabel.text = AgriBank_Version
     }
     
     override func viewWillAppear(_ animated: Bool) {

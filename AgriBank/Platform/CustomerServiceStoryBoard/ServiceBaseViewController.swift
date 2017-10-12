@@ -299,7 +299,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ServiceBaseCell.NibName()!, for: indexPath) as! ServiceBaseCell
         if indexPath.row < curData.count {
-            cell.setData(curData[indexPath.row].name ?? "", curData[indexPath.row].address ?? "", m_strSearchRange == ServiceBase_Default_SearchRange ? (curData[indexPath.row].distance ?? "") : "")
+            cell.setData(curData[indexPath.row].name ?? "", curData[indexPath.row].address ?? "", m_strSearchRange == ServiceBase_Default_SearchRange ? "\(curData[indexPath.row].distance ?? "")公里外" : "")
         }
         cell.selectionStyle = .none
         return cell

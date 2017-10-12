@@ -207,6 +207,7 @@ enum UIID: Int {
     case UIID_NewsCell                  // NewsCell for最新消息、個人訊息
     case UIID_ServiceBaseCell           // ServiceBaseCell for農漁會據點
     case UIID_DatePickerView          // DatePickerView class
+    case UIID_ShowMessageHeadView     // ShowMessageHeadView class
     
     func NibName() -> String? {
         switch self {
@@ -252,6 +253,8 @@ enum UIID: Int {
             return "NewsCell"
         case .UIID_ServiceBaseCell:
             return "ServiceBaseCell"
+        case .UIID_ShowMessageHeadView:
+            return "ShowMessageHeadView"
         default:
             return nil
         }
@@ -337,7 +340,7 @@ let ToolBar_tintColor = UIColor.blue
 let ToolBar_barTintColor = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
 let ToolBar_Title_Weight:CGFloat = 100
 let PickView_Height:CGFloat = 200
-let NavigationBar_Color = UIColor(colorLiteralRed: 46/255, green: 134/255, blue: 201/255, alpha: 1)
+let NavigationBar_Color = UIColor(red: 46/255, green: 134/255, blue: 201/255, alpha: 1)
 
 // MARK: - Define
 let SystemCell_Identify = "System_Cell"
@@ -495,3 +498,5 @@ let ErrorMsg_IDAgainIDNeedSame = "新使用者代號與再次輸入新使用者�
 let ErrorMsg_PDAgainPDNeedSame = "新密碼與再次輸入新密碼需要相同"
 /* 用於「綜存轉定存」 */
 let ErrorMsg_DepositCombinedToDeposit_MinAmount = "輸入金額不得少於1萬元"
+/* 用於「登入頭像設定」 */
+let ErrorMsg_NoImage = "您尚未設定頭像"

@@ -10,6 +10,8 @@
 		6109C02F1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6109C02E1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift */; };
 		6117CF3D1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6117CF3C1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift */; };
 		611B8EC91EE966BE003FCFDF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 611B8EC71EE966BE003FCFDF /* Main.storyboard */; };
+		6122726F1F8F5046001FA028 /* ShowMessageHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6122726E1F8F5046001FA028 /* ShowMessageHeadView.swift */; };
+		612272711F8F5065001FA028 /* ShowMessageHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 612272701F8F5065001FA028 /* ShowMessageHeadView.xib */; };
 		6125ABF21EF5509C00A2A9A3 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6125ABF11EF5509C00A2A9A3 /* TextField.swift */; };
 		6129E6AE1F038DED00C23D67 /* Lose.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6129E6AC1F038DED00C23D67 /* Lose.storyboard */; };
 		6129E6B21F038E7900C23D67 /* DebitCardLoseApplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6129E6B01F038E7900C23D67 /* DebitCardLoseApplyViewController.swift */; };
@@ -24,6 +26,7 @@
 		612BDA421F6151C00036B443 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 612BDA411F6151C00036B443 /* SystemConfiguration.framework */; };
 		612BDA441F6151D70036B443 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 612BDA431F6151D70036B443 /* CoreTelephony.framework */; };
 		612BDA481F6152080036B443 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 612BDA471F6152080036B443 /* libc++.tbd */; };
+		613DA77A1F8DC12A0005E6CC /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613DA7791F8DC1280005E6CC /* EditViewController.swift */; };
 		6148D9CF1EDFD10000C02CA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6148D9CE1EDFD10000C02CA3 /* AppDelegate.swift */; };
 		6148D9D61EDFD10000C02CA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6148D9D51EDFD10000C02CA3 /* Assets.xcassets */; };
 		6148D9D91EDFD10000C02CA3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6148D9D71EDFD10000C02CA3 /* LaunchScreen.storyboard */; };
@@ -76,7 +79,6 @@
 		617318191EEFCB4B00133F7A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617318181EEFCB4B00133F7A /* LoginView.swift */; };
 		6173181B1EEFD12100133F7A /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6173181A1EEFD12100133F7A /* LoginView.xib */; };
 		61B7CD0B1F458B5200145517 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B7CD0A1F458B5200145517 /* DatePickerView.swift */; };
-		61C64FCC1EE8FB2000C6766A /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C64FCB1EE8FB2000C6766A /* EditViewController.swift */; };
 		61DAE3481F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DAE3471F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift */; };
 		61DB5C381F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DB5C371F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift */; };
 		61DB5C3A1F0E0D85006622EC /* DepositCombinedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DB5C391F0E0D85006622EC /* DepositCombinedDetailViewController.swift */; };
@@ -145,6 +147,8 @@
 		6109C02E1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheckLoseApplyViewController.swift; path = Platform/LoseStoryBoard/CheckLoseApplyViewController.swift; sourceTree = "<group>"; };
 		6117CF3C1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PayLoanPrincipalInterestViewController.swift; path = Platform/TransferStoryBoard/PayLoanPrincipalInterestViewController.swift; sourceTree = "<group>"; };
 		611B8EC81EE966BE003FCFDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6122726E1F8F5046001FA028 /* ShowMessageHeadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShowMessageHeadView.swift; path = UI/View/ShowMessageHeadView.swift; sourceTree = "<group>"; };
+		612272701F8F5065001FA028 /* ShowMessageHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ShowMessageHeadView.xib; path = UI/View/ShowMessageHeadView.xib; sourceTree = "<group>"; };
 		6125ABF11EF5509C00A2A9A3 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextField.swift; path = UI/Component/TextField.swift; sourceTree = "<group>"; };
 		6129E6AD1F038DED00C23D67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Lose.storyboard; sourceTree = "<group>"; };
 		6129E6B01F038E7900C23D67 /* DebitCardLoseApplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DebitCardLoseApplyViewController.swift; path = Platform/LoseStoryBoard/DebitCardLoseApplyViewController.swift; sourceTree = "<group>"; };
@@ -161,6 +165,7 @@
 		612BDA431F6151D70036B443 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		612BDA451F6151E50036B443 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		612BDA471F6152080036B443 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		613DA7791F8DC1280005E6CC /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EditViewController.swift; path = Platform/MainStoryBoard/EditViewController.swift; sourceTree = "<group>"; };
 		6148D9CB1EDFD10000C02CA3 /* AgriBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgriBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6148D9CE1EDFD10000C02CA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6148D9D51EDFD10000C02CA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -223,7 +228,6 @@
 		617318181EEFCB4B00133F7A /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginView.swift; path = UI/View/LoginView.swift; sourceTree = "<group>"; };
 		6173181A1EEFD12100133F7A /* LoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginView.xib; path = UI/View/LoginView.xib; sourceTree = "<group>"; };
 		61B7CD0A1F458B5200145517 /* DatePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatePickerView.swift; path = UI/View/DatePickerView.swift; sourceTree = "<group>"; };
-		61C64FCB1EE8FB2000C6766A /* EditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditViewController.swift; path = Platform/MainStoryBoard/EditViewController.swift; sourceTree = "<group>"; };
 		61D793FA1F3178D100DF02CD /* AgriBank.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AgriBank.entitlements; sourceTree = "<group>"; };
 		61DAE3471F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserFirstChangeIDPwdViewController.swift; path = Platform/SettingStoryBoard/UserFirstChangeIDPwdViewController.swift; sourceTree = "<group>"; };
 		61DB5C371F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DepositCombinedToDepositSearchViewController.swift; path = Platform/TransferStoryBoard/DepositCombinedToDepositSearchViewController.swift; sourceTree = "<group>"; };
@@ -416,7 +420,7 @@
 			children = (
 				6148DA021EDFE6C700C02CA3 /* HomeViewController.swift */,
 				6148DA411EE1428B00C02CA3 /* MenuViewController.swift */,
-				61C64FCB1EE8FB2000C6766A /* EditViewController.swift */,
+				613DA7791F8DC1280005E6CC /* EditViewController.swift */,
 			);
 			name = MainStoryBoard;
 			sourceTree = "<group>";
@@ -517,6 +521,8 @@
 				BE76753A1F0E3D1A00E1A461 /* ImageConfirmView.swift */,
 				BE76753C1F0E3D2F00E1A461 /* ImageConfirmView.xib */,
 				61B7CD0A1F458B5200145517 /* DatePickerView.swift */,
+				6122726E1F8F5046001FA028 /* ShowMessageHeadView.swift */,
+				612272701F8F5065001FA028 /* ShowMessageHeadView.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -822,6 +828,7 @@
 				612BDA301F61399E0036B443 /* agribank_dev_app_const.bin in Resources */,
 				6148DA261EDFE7A400C02CA3 /* AnnounceNews.xib in Resources */,
 				BE86EEA21F136715003C7A36 /* NewsCell.xib in Resources */,
+				612272711F8F5065001FA028 /* ShowMessageHeadView.xib in Resources */,
 				6148D9D61EDFD10000C02CA3 /* Assets.xcassets in Resources */,
 				61F4F41F1EF22AF8001E3872 /* Account.storyboard in Resources */,
 				BE86EEA61F149A42003C7A36 /* PromotionCell.xib in Resources */,
@@ -877,12 +884,14 @@
 				61FE9D151F15D23400FA32FE /* MessageSwitchViewController.swift in Sources */,
 				6148DA071EDFE6E500C02CA3 /* BasePhotoViewController.swift in Sources */,
 				61FE9D171F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift in Sources */,
+				6122726F1F8F5046001FA028 /* ShowMessageHeadView.swift in Sources */,
 				BE86EE9E1F136024003C7A36 /* ServiceBaseDetailViewController.swift in Sources */,
 				BE86EE921F135570003C7A36 /* PromotionViewController.swift in Sources */,
 				61FE9D131F15D23400FA32FE /* BasicInfoResultViewController.swift in Sources */,
 				61564A861F09E7D900CB6C4A /* OneRowDropDownView.swift in Sources */,
 				61DB5C381F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift in Sources */,
 				6148DA171EDFE76D00C02CA3 /* NSData+AESCrypt.m in Sources */,
+				613DA77A1F8DC12A0005E6CC /* EditViewController.swift in Sources */,
 				612A82D61F74DC7C002D280D /* extendString.swift in Sources */,
 				6148DA381EDFE84600C02CA3 /* SecurityUtility.swift in Sources */,
 				6117CF3D1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift in Sources */,
@@ -931,7 +940,6 @@
 				61564A8D1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift in Sources */,
 				61E374A01F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift in Sources */,
 				61F4F42E1EF2ADAD001E3872 /* ShowDetailViewController.swift in Sources */,
-				61C64FCC1EE8FB2000C6766A /* EditViewController.swift in Sources */,
 				61FE9D121F15D23400FA32FE /* BasicInfoChangeViewController.swift in Sources */,
 				BE86EE961F1355B5003C7A36 /* ServiceBaseViewController.swift in Sources */,
 				BE86EE981F1355CD003C7A36 /* PersonalMessageViewController.swift in Sources */,

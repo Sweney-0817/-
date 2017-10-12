@@ -219,12 +219,12 @@ class ResultCell: UITableViewCell {
     }
     
     static func GetStringHeightByWidthAndFontSize(_ content:String, _ width:CGFloat) -> CGFloat {
-        //.xib拉的 171:m_lbTitle的固定寬 剩下數字參考Xib
+        //.xib拉的 60:Cell高 171:m_lbTitle的固定寬 剩下數字參考Xib
         let dataWidth = width-171-(15*3)
-        let plusHeight:CGFloat = 17+18
+//        let plusHeight:CGFloat = 17+18
         
         let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSFontAttributeName: Default_Font], context: nil)
-        return boundingBox.height+plusHeight
+        return (boundingBox.height < CGFloat(60) ? CGFloat(60) : boundingBox.height)
     }
 }
 

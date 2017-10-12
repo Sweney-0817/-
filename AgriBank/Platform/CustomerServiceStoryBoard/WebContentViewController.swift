@@ -23,22 +23,17 @@ class WebContentViewController: BaseViewController {
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         m_lbTitle.text = m_Data?.title
-//        if contentData == nil {
-//            let req:URLRequest = URLRequest(url: URL(string: (m_Data?.url)!)!)
-//            m_wvContent.loadRequest(req)
-//        }
-//        else {
 //            m_wvContent.load(contentData!, mimeType: "text/html", textEncodingName: "UTF-8", baseURL:URL(string: (m_Data?.url)!)!)
 //            m_wvContent.loadHTMLString(String(data: contentData!, encoding: .utf8)!, baseURL: nil)
-            var request:URLRequest = URLRequest(url: URL(string: (m_Data?.url)!)!)
-            let dicHttpHead = AuthorizationManage.manage.getHttpHead(false)
-            for (key, value) in dicHttpHead {
-                request.addValue(value , forHTTPHeaderField: key)
-            }
-            m_wvContent.loadRequest(request)
-//        }
+        var request:URLRequest = URLRequest(url: URL(string: (m_Data?.url)!)!)
+        let dicHttpHead = AuthorizationManage.manage.getHttpHead(false)
+        for (key, value) in dicHttpHead {
+            request.addValue(value , forHTTPHeaderField: key)
+        }
+        m_wvContent.loadRequest(request)
+        m_wvContent.scalesPageToFit = true
     }
 
     override func didReceiveMemoryWarning() {

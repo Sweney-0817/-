@@ -8,6 +8,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -19,7 +24,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXi-5v-Pad">
-                        <rect key="frame" x="15" y="17" width="117" height="24"/>
+                        <rect key="frame" x="15" y="0.0" width="117" height="59"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="117" id="JdT-NN-6xx"/>
@@ -29,7 +34,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dLX-AU-QRY">
-                        <rect key="frame" x="147" y="17" width="212" height="24"/>
+                        <rect key="frame" x="147" y="0.0" width="212" height="59"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                         <nil key="textColor"/>
@@ -47,11 +52,10 @@
                 <constraints>
                     <constraint firstItem="dLX-AU-QRY" firstAttribute="leading" secondItem="uXi-5v-Pad" secondAttribute="trailing" constant="15" id="4jZ-g0-630"/>
                     <constraint firstItem="uXi-5v-Pad" firstAttribute="leading" secondItem="OsE-P8-ocG" secondAttribute="leading" constant="15" id="Au1-ee-I8K"/>
-                    <constraint firstItem="uXi-5v-Pad" firstAttribute="top" secondItem="OsE-P8-ocG" secondAttribute="top" constant="17" id="E4Z-ru-u6P"/>
-                    <constraint firstAttribute="bottom" secondItem="uXi-5v-Pad" secondAttribute="bottom" constant="18" id="FbI-0U-YUv"/>
-                    <constraint firstAttribute="bottom" secondItem="dLX-AU-QRY" secondAttribute="bottom" constant="18" id="NOH-gM-cTB"/>
+                    <constraint firstItem="uXi-5v-Pad" firstAttribute="top" secondItem="OsE-P8-ocG" secondAttribute="top" id="E4Z-ru-u6P"/>
+                    <constraint firstAttribute="bottom" secondItem="uXi-5v-Pad" secondAttribute="bottom" id="FbI-0U-YUv"/>
                     <constraint firstItem="CSd-8Q-7LA" firstAttribute="leading" secondItem="OsE-P8-ocG" secondAttribute="leading" id="RJ8-fF-E3I"/>
-                    <constraint firstItem="dLX-AU-QRY" firstAttribute="top" secondItem="OsE-P8-ocG" secondAttribute="top" constant="17" id="hKs-UN-ooo"/>
+                    <constraint firstItem="dLX-AU-QRY" firstAttribute="centerY" secondItem="uXi-5v-Pad" secondAttribute="centerY" id="XiO-PA-npd"/>
                     <constraint firstAttribute="trailing" secondItem="CSd-8Q-7LA" secondAttribute="trailing" id="ioB-ah-c7p"/>
                     <constraint firstAttribute="trailing" secondItem="dLX-AU-QRY" secondAttribute="trailing" constant="15" id="lwv-NY-Pou"/>
                     <constraint firstItem="uXi-5v-Pad" firstAttribute="height" secondItem="dLX-AU-QRY" secondAttribute="height" id="wj4-CD-KWV"/>

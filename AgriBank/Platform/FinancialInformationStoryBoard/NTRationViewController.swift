@@ -251,7 +251,7 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
-        textFieldShouldBeginEditing(m_tfPicker)
+        _ = textFieldShouldBeginEditing(m_tfPicker)
         m_tfPicker.becomeFirstResponder()
     }
     

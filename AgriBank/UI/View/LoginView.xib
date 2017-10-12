@@ -10,6 +10,11 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -24,13 +29,19 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ctq-ku-OMi">
                     <rect key="frame" x="17" y="68.5" width="341" height="530"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V4V-ak-80a">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Close" translatesAutoresizingMaskIntoConstraints="NO" id="KG7-43-0yH">
                             <rect key="frame" x="15" y="15" width="24" height="24"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="24" id="H0N-ni-mnF"/>
-                                <constraint firstAttribute="width" constant="24" id="iNr-AQ-HIJ"/>
+                                <constraint firstAttribute="height" constant="24" id="jgS-wb-HIm"/>
+                                <constraint firstAttribute="width" constant="24" id="zBj-nW-Qf2"/>
                             </constraints>
-                            <state key="normal" backgroundImage="Close"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V4V-ak-80a">
+                            <rect key="frame" x="15" y="15" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="H0N-ni-mnF"/>
+                                <constraint firstAttribute="width" constant="50" id="iNr-AQ-HIJ"/>
+                            </constraints>
                             <connections>
                                 <action selector="clickCloseBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="JfV-ZT-xMg"/>
                             </connections>
@@ -129,6 +140,8 @@
                         <constraint firstItem="0LC-lY-FRG" firstAttribute="top" secondItem="9Iu-uw-4Wn" secondAttribute="bottom" constant="10" id="aaZ-1F-U7N"/>
                         <constraint firstItem="NaA-w9-Z9a" firstAttribute="leading" secondItem="XbQ-Sb-po2" secondAttribute="leading" id="c7d-cF-0dK"/>
                         <constraint firstItem="XbQ-Sb-po2" firstAttribute="leading" secondItem="OI6-jV-582" secondAttribute="leading" id="dVZ-os-W7N"/>
+                        <constraint firstItem="KG7-43-0yH" firstAttribute="top" secondItem="Ctq-ku-OMi" secondAttribute="top" constant="15" id="dw3-Vm-Xjb"/>
+                        <constraint firstItem="KG7-43-0yH" firstAttribute="leading" secondItem="Ctq-ku-OMi" secondAttribute="leading" constant="15" id="e7a-ca-8c9"/>
                         <constraint firstAttribute="trailing" secondItem="ewn-RS-hQo" secondAttribute="trailing" id="ff8-PX-OyB"/>
                         <constraint firstItem="0LC-lY-FRG" firstAttribute="width" secondItem="9Iu-uw-4Wn" secondAttribute="width" id="giH-68-FBI"/>
                         <constraint firstItem="V4V-ak-80a" firstAttribute="leading" secondItem="Ctq-ku-OMi" secondAttribute="leading" constant="15" id="hi6-1N-ayD"/>

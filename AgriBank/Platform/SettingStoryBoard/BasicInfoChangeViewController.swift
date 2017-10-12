@@ -58,6 +58,14 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
         return true
     }
     
+    func setDiableTextfield(_ title:String, _ textfield:TextField) {
+        textfield.text = title
+        textfield.isEnabled = false
+//        textfield.background = nil
+//        textfield.backgroundColor = Disable_Color
+//        textfield.borderStyle = .line
+    }
+    
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,24 +76,13 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
         addGestureForKeyBoard()
         
         if !AuthorizationManage.manage.getChangeBaseInfoStaus() {
-            emailTextfield.text = teleAreaCode
-            emailTextfield.isEnabled = false
-            emailTextfield.backgroundColor = Disable_Color
-            mobliePhoneTextfield.text = teleAreaCode
-            mobliePhoneTextfield.isEnabled = false
-            mobliePhoneTextfield.backgroundColor = Disable_Color
-            teleAreaCodeTextfield.text = teleAreaCode
-            teleAreaCodeTextfield.isEnabled = false
-            teleAreaCodeTextfield.backgroundColor = Disable_Color
-            telePhoneTextfield.text = telePhone
-            telePhoneTextfield.isEnabled = false
-            telePhoneTextfield.backgroundColor = Disable_Color
-            addressTextfield.text = address
-            addressTextfield.isEnabled = false
-            addressTextfield.backgroundColor = Disable_Color
-            postalCodeTextfield.text = postalCode
-            postalCodeTextfield.isEnabled = false
-            postalCodeTextfield.backgroundColor = Disable_Color
+            setDiableTextfield("", emailTextfield)
+            setDiableTextfield("", mobliePhoneTextfield)
+            setDiableTextfield(telePhone, telePhoneTextfield)
+            setDiableTextfield(teleAreaCode, teleAreaCodeTextfield)
+            setDiableTextfield(telePhone, telePhoneTextfield)
+            setDiableTextfield(address, addressTextfield)
+            setDiableTextfield(postalCode, postalCodeTextfield)
         }
     }
 
@@ -134,18 +131,10 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
                     else {
                         funcd = "89"
                         if AuthorizationManage.manage.getChangeBaseInfoStaus() {
-                            teleAreaCodeTextfield.text = teleAreaCode
-                            teleAreaCodeTextfield.isEnabled = false
-                            teleAreaCodeTextfield.backgroundColor = Disable_Color
-                            telePhoneTextfield.text = telePhone
-                            telePhoneTextfield.isEnabled = false
-                            telePhoneTextfield.backgroundColor = Disable_Color
-                            addressTextfield.text = address
-                            addressTextfield.isEnabled = false
-                            addressTextfield.backgroundColor = Disable_Color
-                            postalCodeTextfield.text = postalCode
-                            postalCodeTextfield.isEnabled = false
-                            postalCodeTextfield.backgroundColor = Disable_Color
+                            setDiableTextfield(teleAreaCode, teleAreaCodeTextfield)
+                            setDiableTextfield(telePhone, telePhoneTextfield)
+                            setDiableTextfield(address, addressTextfield)
+                            setDiableTextfield(postalCode, postalCodeTextfield)
                         }
                     }
                 }

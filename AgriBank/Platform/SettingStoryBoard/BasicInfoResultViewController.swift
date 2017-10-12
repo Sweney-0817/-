@@ -34,9 +34,6 @@ class BasicInfoResultViewController: BaseViewController, UITableViewDataSource, 
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
         tableView.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
-
-        titleLabel.text = titleStatus
-        imageView.image = isSuccess ? UIImage(named: ImageName.CowSuccess.rawValue) : UIImage(named: ImageName.CowFailure.rawValue)
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,28 +53,50 @@ class BasicInfoResultViewController: BaseViewController, UITableViewDataSource, 
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if memo == nil {
-            return 0
+        if section == 0 {
+            return tableView.sectionFooterHeight
         }
         else {
-            return MemoView.GetStringHeightByWidthAndFontSize(memo!, tableView.frame.width)
+            if memo == nil {
+                return 0
+            }
+            else {
+                return MemoView.GetStringHeightByWidthAndFontSize(memo!, tableView.frame.width)
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if memo == nil {
-            return nil
+        if section == 0 {
+            let head = getUIByID(.UIID_ShowMessageHeadView) as! ShowMessageHeadView
+            head.titleLabel.text = titleStatus
+            head.imageView.image = isSuccess ? UIImage(named: ImageName.CowSuccess.rawValue) : UIImage(named: ImageName.CowFailure.rawValue)
+            return head
         }
         else {
-            let footer = getUIByID(.UIID_MemoView) as! MemoView
-            footer.set(memo!)
-            return footer
+            if memo == nil {
+                return nil
+            }
+            else {
+                let footer = getUIByID(.UIID_MemoView) as! MemoView
+                footer.set(memo!)
+                return footer
+            }
         }
     }
     
     // MARK: - UITableViewDataSource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return list?.count ?? 0
+        if section == 0 {
+            return 0
+        }
+        else {
+            return list?.count ?? 0
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

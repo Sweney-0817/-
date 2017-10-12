@@ -149,7 +149,7 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if m_PickerData.count > 0 {
-            textFieldShouldBeginEditing(m_tfPicker)
+            _ = textFieldShouldBeginEditing(m_tfPicker)
             m_tfPicker.becomeFirstResponder()
         }
     }

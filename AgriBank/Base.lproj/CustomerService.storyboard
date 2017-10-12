@@ -8,6 +8,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Promotion View Controller-->
         <scene sceneID="fvP-fw-Yjy">
@@ -150,6 +155,7 @@
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MNe-QW-ipf">
                                 <rect key="frame" x="0.0" y="80" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="yDU-Vd-1H5"/>
                                 </constraints>
@@ -166,7 +172,7 @@
                             <constraint firstItem="vvo-qC-7WN" firstAttribute="top" secondItem="qFH-M6-m8p" secondAttribute="bottom" id="GNE-8J-SsM"/>
                             <constraint firstItem="MNe-QW-ipf" firstAttribute="leading" secondItem="GD9-Zm-Rtg" secondAttribute="leading" id="H20-g5-RTC"/>
                             <constraint firstItem="qFH-M6-m8p" firstAttribute="top" secondItem="MNe-QW-ipf" secondAttribute="bottom" id="JDb-Zd-zbO"/>
-                            <constraint firstItem="MNe-QW-ipf" firstAttribute="top" secondItem="DdK-lo-rs8" secondAttribute="bottom" constant="60" id="OwC-79-lpG"/>
+                            <constraint firstItem="MNe-QW-ipf" firstAttribute="top" secondItem="nlA-ZC-qRn" secondAttribute="bottom" id="SFK-34-pX6"/>
                             <constraint firstItem="nlA-ZC-qRn" firstAttribute="top" secondItem="DdK-lo-rs8" secondAttribute="bottom" id="fyL-cI-M4k"/>
                             <constraint firstAttribute="trailing" secondItem="nlA-ZC-qRn" secondAttribute="trailing" id="iEJ-SX-hgU"/>
                             <constraint firstAttribute="trailing" secondItem="MNe-QW-ipf" secondAttribute="trailing" id="ibT-QM-gv0"/>
@@ -480,6 +486,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomView" destination="et3-fs-0IM" id="kxn-3E-Ybe"/>
                         <outlet property="callPhoneButton" destination="B3Y-fo-Bb0" id="nPp-9l-1wl"/>
                         <outlet property="m_tvData" destination="dPn-up-oOn" id="phf-Rn-rVA"/>
                     </connections>
@@ -493,6 +500,6 @@
         <image name="ButtonMedium" width="160" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="eYf-EU-ToP"/>
+        <segue reference="GAX-W5-Jhd"/>
     </inferredMetricsTieBreakers>
 </document>

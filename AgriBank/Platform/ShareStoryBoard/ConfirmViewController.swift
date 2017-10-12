@@ -13,8 +13,6 @@ let Confirm_ImageConfirm_Cell_Height:CGFloat = 60
 let Confirm_Segue = "GoResult"
 
 class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, ImageConfirmViewDelegate {
-    @IBOutlet weak var m_ivTopImage: UIImageView!
-    @IBOutlet weak var m_lbTopTitle: UILabel!
     @IBOutlet weak var m_tvData: UITableView!
     @IBOutlet weak var m_vBottomView: UIView!
     @IBOutlet weak var m_btnConfirm: UIButton!
@@ -42,8 +40,6 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         super.viewDidLoad()
         
         if isNeedOTP {
-            m_ivTopImage.image = UIImage(named: dataOTP?.image ?? "")
-            m_lbTopTitle.text = dataOTP?.title
             m_btnConfirm.setTitle(dataOTP?.confirmBtnName, for: .normal)
             // 開啟定位
             if CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
@@ -58,8 +54,6 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
             }
         }
         else {
-            m_ivTopImage.image = UIImage(named: data?.image ?? "")
-            m_lbTopTitle.text = data?.title
             m_btnConfirm.setTitle(data?.confirmBtnName, for: .normal)
         }
         
@@ -197,31 +191,59 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let memo = isNeedOTP ? dataOTP?.memo : data?.memo
-        if (memo?.isEmpty)! {
-            return 0
+        if section == 0 {
+            return tableView.sectionFooterHeight
         }
         else {
-            return MemoView.GetStringHeightByWidthAndFontSize(memo!, m_tvData.frame.width)
+            let memo = isNeedOTP ? dataOTP?.memo : data?.memo
+            if (memo?.isEmpty)! {
+                return 0
+            }
+            else {
+                return MemoView.GetStringHeightByWidthAndFontSize(memo!, m_tvData.frame.width)
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let memo = isNeedOTP ? dataOTP?.memo : data?.memo
-        if (memo?.isEmpty)! {
-            return nil
+        if section == 0 {
+            let head = getUIByID(.UIID_ShowMessageHeadView) as! ShowMessageHeadView
+            if isNeedOTP {
+                head.imageView.image = UIImage(named: dataOTP?.image ?? "")
+                head.titleLabel.text = dataOTP?.title
+            }
+            else {
+                head.imageView.image = UIImage(named: data?.image ?? "")
+                head.titleLabel.text = data?.title
+            }
+            return head
         }
         else {
-            let footer = getUIByID(.UIID_MemoView) as! MemoView
-            footer.set(memo!)
-            return footer
+            let memo = isNeedOTP ? dataOTP?.memo : data?.memo
+            if (memo?.isEmpty)! {
+                return nil
+            }
+            else {
+                let footer = getUIByID(.UIID_MemoView) as! MemoView
+                footer.set(memo!)
+                return footer
+            }
         }
     }
     
     // MARK: - UITableViewDataSource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let list = isNeedOTP ? dataOTP?.list : data?.list
-        return (list?.count)!+1
+        if section == 0 {
+            return 0
+        }
+        else {
+            let list = isNeedOTP ? dataOTP?.list : data?.list
+            return (list?.count)!+1
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

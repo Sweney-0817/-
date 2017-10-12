@@ -67,11 +67,11 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
                 }
             }
             
-//        case "INFO0102":
-//            if let data = response.object(forKey: RESPONSE_Data_KEY) as? Data {
-//                webContent = data
-//                performSegue(withIdentifier: Promotion_Segue, sender: nil)
-//            }
+        case "INFO0102":
+            if let data = response.object(forKey: RESPONSE_Data_KEY) as? Data {
+                webContent = data
+                performSegue(withIdentifier: Promotion_Segue, sender: nil)
+            }
             
         default: super.didResponse(description, response)
         }
