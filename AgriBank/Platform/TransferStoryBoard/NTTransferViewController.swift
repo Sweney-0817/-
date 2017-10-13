@@ -330,6 +330,10 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             return false
         }
         if let amount = Int(transAmountTextfield.text!) {
+            if amount == 0 {
+                showErrorMessage(nil, ErrorMsg_Input_Amount)
+                return false
+            }
             if isPredesignated {
                 if amount > NTTransfer_PredesignatedTrans_Max_Amount {
                     showErrorMessage(nil, ErrorMsg_Predesignated_Amount)

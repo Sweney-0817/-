@@ -20,7 +20,7 @@ let URL_DOMAIN = ""
 #endif
 
 let REQUEST_URL = "\(URL_PROTOCOL)://\(URL_DOMAIN)"
-let BarItem_Height_Weight = 30
+let BarItem_Height_Weight = 50
 let Loading_Weight = 100
 let Loading_Height = 100
 
@@ -359,28 +359,8 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     // MARK: - UIAlertViewDelegate
     func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
         switch alertView.tag {
-        case ViewTag.View_OptionModifyPassword.rawValue:
-            if alertView.cancelButtonIndex != buttonIndex {
-                AuthorizationManage.manage.setLoginStatus(true)
-                if curFeatureID != nil {
-                    enterFeatureByID(curFeatureID!, true)
-                }
-            }
-            else {
-                AuthorizationManage.manage.setLoginStatus(false)
-                enterFeatureByID(.FeatureID_UserPwdChange, true)
-                if let con = navigationController?.viewControllers.first {
-                    if con is HomeViewController {
-                        navigationController?.popToRootViewController(animated: true)
-                        (con as! HomeViewController).pushFeatureController(.FeatureID_UserPwdChange, true)
-                    }
-                }
-            }
-            curFeatureID = nil
-            
         default: navigationController?.popToRootViewController(animated: true)
         }
-        
     }
 }
 
@@ -512,8 +492,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         AuthorizationManage.manage.setLoginStatus(true)
                         if curFeatureID != nil {
                             enterFeatureByID(curFeatureID!, true)
+                            curFeatureID = nil
                         }
-                        curFeatureID = nil
                         
                     case "2":
                         showErrorMessage(nil, ErrorMsg_Force_ChangePassword)
@@ -527,9 +507,35 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         curFeatureID = nil
                         
                     case "3":
-                        let alert = UIAlertView(title: UIAlert_Default_Title, message: ErrorMsg_Suggest_ChangePassword, delegate: self, cancelButtonTitle: NextChange_Title, otherButtonTitles: PerformChange_Title)
-                        alert.tag = ViewTag.View_OptionModifyPassword.rawValue
-                        alert.show()
+                        let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_Suggest_ChangePassword, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: Cancel_Title, style: .default) { _ in
+                            DispatchQueue.main.async {
+                                AuthorizationManage.manage.setLoginStatus(true)
+                                if self.curFeatureID != nil {
+                                    self.enterFeatureByID(self.curFeatureID!, true)
+                                    self.curFeatureID = nil
+                                }
+                                else {
+                                    if self is HomeViewController {
+                                        (self as! HomeViewController).updateLoginStatus()
+                                    }
+                                }
+                            }
+                        })
+                        alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                            DispatchQueue.main.async {
+                                self.curFeatureID = nil
+                                AuthorizationManage.manage.setLoginStatus(false)
+                                self.enterFeatureByID(.FeatureID_UserPwdChange, true)
+                                if let con = self.navigationController?.viewControllers.first {
+                                    if con is HomeViewController {
+                                        self.navigationController?.popToRootViewController(animated: true)
+                                        (con as! HomeViewController).pushFeatureController(.FeatureID_UserPwdChange, true)
+                                    }
+                                }
+                            }
+                        })
+                        present(alert, animated: false, completion: nil)
                         
                     case "4":
                         showErrorMessage(nil, ErrorMsg_First_Login)
@@ -589,8 +595,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
             curFeatureID = nil
             tempTransactionId = ""
             
-        case "COMM0301":
-            print(response)
+//        case "COMM0301":
+//            print(response)
             
         default: break
         }

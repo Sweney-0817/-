@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WebContentViewController: BaseViewController {
+class WebContentViewController: BaseViewController, UIWebViewDelegate {
     @IBOutlet weak var m_lbTitle: UILabel!
     @IBOutlet weak var m_wvContent: UIWebView!
     private var m_Data:PromotionStruct? = nil
@@ -25,18 +25,20 @@ class WebContentViewController: BaseViewController {
         super.viewDidLoad()
     
         m_lbTitle.text = m_Data?.title
-//            m_wvContent.load(contentData!, mimeType: "text/html", textEncodingName: "UTF-8", baseURL:URL(string: (m_Data?.url)!)!)
-//            m_wvContent.loadHTMLString(String(data: contentData!, encoding: .utf8)!, baseURL: nil)
-        var request:URLRequest = URLRequest(url: URL(string: (m_Data?.url)!)!)
-        let dicHttpHead = AuthorizationManage.manage.getHttpHead(false)
-        for (key, value) in dicHttpHead {
-            request.addValue(value , forHTTPHeaderField: key)
-        }
+//        m_wvContent.stringByEvaluatingJavaScript(from: "document.characterSet='utf-8';")
+//        m_wvContent.load(contentData!, mimeType: "text/html", textEncodingName: "UTF-8", baseURL:URL(string: (m_Data?.url)!)!)
+//        m_wvContent.loadHTMLString(String(data: contentData!, encoding: .utf8)!, baseURL: URL(string: (m_Data?.url)!)!)
+        let request:URLRequest = URLRequest(url: URL(string: (m_Data?.url)!)!)
+        setLoading(true)
         m_wvContent.loadRequest(request)
-        m_wvContent.scalesPageToFit = true
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    // MARK: - UIWebViewDelegate
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        setLoading(false)
     }
 }

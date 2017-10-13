@@ -78,7 +78,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
             m_curData = m_Data2
             m_tvData.reloadData()
             
-        case "INFO0102":
+        case "INFO0202":
             if let data = response.object(forKey: RESPONSE_Data_KEY) as? Data {
                 webContent = data
                 performSegue(withIdentifier: News_ShowDetail_Seque, sender: nil)
@@ -118,7 +118,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
         m_iSelectedIndex = indexPath.row
 //        if let ID = m_curData?[m_iSelectedIndex].ID {
 //            setLoading(true)
-//            getRequest("Info/INFO0102?CMIID=\(ID)", "INFO0102", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .Data)
+//            getRequest("Info/INFO0202?CMIID=\(ID)", "INFO0202", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .Data)
 //        }
         performSegue(withIdentifier: News_ShowDetail_Seque, sender: nil)
     }

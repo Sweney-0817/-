@@ -184,6 +184,16 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
             showErrorMessage(nil, "\(Enter_Title)\(m_tfInput3.placeholder ?? "")")
             return false
         }
+        if let amount = Int(m_tfInput3.text!) {
+            if amount == 0 {
+                showErrorMessage(nil, ErrorMsg_Input_Amount)
+                return false
+            }
+        }
+        else {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+            return false
+        }
         return true
     }
     

@@ -220,10 +220,10 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "帳號", Response_Value:""])
             }
             if let SUBNO = resultList["SUBNO"] as? String {
-                list.append([Response_Key: "分號", Response_Value:SUBNO])
+                list.append([Response_Key: "支號", Response_Value:SUBNO])
             }
             else {
-                list.append([Response_Key: "分號", Response_Value:""])
+                list.append([Response_Key: "支號", Response_Value:""])
             }
             if let APAMT = resultList["APAMT"] as? String {
                 list.append([Response_Key: "初貸金額", Response_Value:APAMT.separatorThousand()])

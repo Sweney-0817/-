@@ -290,7 +290,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 else {
                     list.append([Response_Key: "淨利/結存本金", Response_Value:""])
                 }
-                if let PRIBAL = dic["PRIBAL"] as? String {
+                if let PRIBAL = dic["INSAMT"] as? String {
                     list.append([Response_Key: "補充保費", Response_Value:PRIBAL.separatorThousand()])
                 }
                 else {
@@ -613,13 +613,18 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if currentType != nil {
-            let act = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             if let type = categoryType[currentType!], let list = categoryList[type] {
-                for info in list {
-                    act.addButton(withTitle: info.accountNO)
+                if list.count > 0 {
+                    let act = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
+                    for info in list {
+                        act.addButton(withTitle: info.accountNO)
+                    }
+                    act.show(in: view)
+                }
+                else {
+                    showErrorMessage(nil, "\(Get_Null_Title)\(currentType ?? "")\(sender.m_lbFirstRowTitle.text!)")
                 }
             }
-            act.show(in: view)
         }
     }
     
@@ -659,5 +664,4 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         }
         return type
     }
-    
 }

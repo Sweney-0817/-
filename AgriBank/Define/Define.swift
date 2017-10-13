@@ -275,7 +275,6 @@ enum ViewTag: Int {
     case View_DepositTypeActionSheet        // 綜存戶轉定存-存款種類
     case View_RateTypeActionSheet           // 綜存戶轉定存-利率方式
     case View_TransPeriodActionSheet        // 綜存戶轉定存-轉存期別
-    case View_OptionModifyPassword          // 密碼已到期，建議變更密碼
     case View_LogOut                        // 登出
     case View_AlertActionType               // ReturnCode 電文response: ActionType = backHome
     case View_AlertForceUpdate              // 強制更新
@@ -367,7 +366,7 @@ let Check_Transaction_Title = "請確認本次交易資訊"
 let UIAlert_Default_Title = "注意"
 let Choose_Title = "請選擇"
 let Enter_Title = "請輸入"
-let Get_Null_Title = "無法取得"
+let Get_Null_Title = "您無"
 let Error_Title = "錯誤訊息"
 let Lose_Successful_Title = "掛失成功"
 let Lose_Faild_Title = "掛失失敗"
@@ -427,7 +426,7 @@ let Response_Key = "Key"
 let Response_Value = "Value"
 let Currency_TWD = "00"             // 幣別代碼 00:台幣
 let Account_EnableTrans = "2"       // 此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
-let Can_Transaction_Status = "1"  // 是否可進行交易 0:不可交易 1:可交易
+let Can_Transaction_Status = "1"    // 是否可進行交易 0:不可交易 1:可交易
 let Account_Saving_Type = "P"       // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Check_Type = "K"        // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Deposit_Type = "M"      // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
@@ -452,6 +451,7 @@ let ErrorMsg_IsJailBroken = "此功能無法在JB下使用"
 let ErrorMsg_DateMonthOnlyTwo = "查詢區間僅能兩個月"
 let ErrorMsg_NoAuth = "本單位目前尚未開放此功能"
 let ErrorMsg_IsNot_TransTime = "非營業時間，不受理交易"
+let ErrorMsg_Input_Amount = "輸入金額不得0元"
 /*  用於「即時轉帳」 */
 let ErrorMsg_GetList_InAgreedAccount = "無法取得約定轉入帳戶"
 let ErrorMsg_GetList_InCommonAccount = "無法取得常用轉入帳戶"

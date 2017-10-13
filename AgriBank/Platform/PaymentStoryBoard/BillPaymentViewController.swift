@@ -237,6 +237,16 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             showErrorMessage(nil, "\(Enter_Title)\(m_tfTransAmount.placeholder ?? "")")
             return false
         }
+        if let amount = Int(m_tfTransAmount.text!) {
+            if amount == 0 {
+                showErrorMessage(nil, ErrorMsg_Input_Amount)
+                return false
+            }
+        }
+        else {
+            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+            return false
+        }
         if DetermineUtility.utility.checkStringContainIllegalCharacter(m_tfTransMemo.text!) {
             showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false

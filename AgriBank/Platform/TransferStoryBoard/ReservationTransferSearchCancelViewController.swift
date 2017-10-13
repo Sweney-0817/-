@@ -10,8 +10,8 @@ import UIKit
 
 let ReservationTransferSearchCancel_Segue = "GoReservationDetail"
 let ReservationTransferSearchCancel_OutAccount = "轉出帳號"
-let ReservationTransferSearchCancel_LoginInterval = "登入區間"
-let ReservationTransferSearchCancel_CellTitle = ["登入日期","轉入帳號","金額"]
+let ReservationTransferSearchCancel_LoginInterval = "登錄區間"
+let ReservationTransferSearchCancel_CellTitle = ["登錄日期","轉入帳號","金額"]
 
 class ReservationTransferSearchCancelViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate {
     @IBOutlet weak var specificDateBtn: UIButton!
@@ -64,18 +64,18 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             else {
                 list.append([Response_Key:"登錄序號", Response_Value:""])
             }
-            if let TRACTNO = dic["TRACTNO"] as? String {
-                list.append([Response_Key:"轉入帳號", Response_Value:TRACTNO])
-            }
-            else {
-                list.append([Response_Key:"轉入帳號", Response_Value:""])
-            }
             if let TRBANK = dic["TRBANK"] as? String {
                 input.bankCode = TRBANK
                 list.append([Response_Key:"銀行代碼", Response_Value:TRBANK])
             }
             else {
                 list.append([Response_Key:"銀行代碼", Response_Value:""])
+            }
+            if let TRACTNO = dic["TRACTNO"] as? String {
+                list.append([Response_Key:"轉入帳號", Response_Value:TRACTNO])
+            }
+            else {
+                list.append([Response_Key:"轉入帳號", Response_Value:""])
             }
             if let AMOUNT = dic["AMOUNT"] as? String {
                 input.amount = AMOUNT

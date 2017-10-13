@@ -415,6 +415,10 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             return false
         }
         if let amount = Int(transAmountTextfield.text!) {
+            if amount == 0 {
+                showErrorMessage(nil, ErrorMsg_Input_Amount)
+                return false
+            }
             if amount < DepositCombinedToDeposit_Min_Amount {
                 showErrorMessage(nil, ErrorMsg_DepositCombinedToDeposit_MinAmount)
                 return false
