@@ -156,8 +156,8 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         if sAccount.isEmpty {
             return "\(Enter_Title)\(accountTextfield.placeholder ?? "")"
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(sAccount) {
-            return ErrorMsg_Illegal_Character
+        if sAccount.characters.count < Min_Identify_Length {
+            return ErrorMsg_ID_LackOfLength
         }
         if !DetermineUtility.utility.isValidIdentify(sAccount) {
             return ErrorMsg_Error_Identify
@@ -165,14 +165,8 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         if (idTextfield.text?.isEmpty)! {
             return "\(Enter_Title)\(idTextfield.placeholder ?? "")"
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(idTextfield.text!) {
-            return ErrorMsg_Illegal_Character
-        }
         if (passwordTextfield.text?.isEmpty)! {
             return "\(Enter_Title)\(passwordTextfield.placeholder ?? "")"
-        }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(passwordTextfield.text!) {
-            return ErrorMsg_Illegal_Character
         }
         
         return nil
@@ -248,16 +242,27 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == idTextfield || textField == passwordTextfield {
+            let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+            if !DetermineUtility.utility.isEnglishAndNumber(newString) {
+                return false
+            }
+        }
+    
         if textField == accountTextfield {
-            sAccount = (sAccount as NSString).replacingCharacters(in: range, with: string)
+            let newString = (sAccount as NSString).replacingCharacters(in: range, with: string)
+            if !DetermineUtility.utility.isEnglishAndNumber(newString) {
+                return false
+            }
+            sAccount = newString
             return true
         }
         else {
             let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
             var maxLength = 0
             switch textField {
-//          case accountTextfield:
-//              maxLength = Max_Identify_Length
+            case accountTextfield:
+                maxLength = Max_Identify_Length
                 
             case idTextfield, passwordTextfield:
                 maxLength = Max_ID_Password_Length

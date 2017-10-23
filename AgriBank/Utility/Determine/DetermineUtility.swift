@@ -47,6 +47,62 @@ class DetermineUtility {
         let Test = NSPredicate(format:"SELF MATCHES %@", RegEx)
         return Test.evaluate(with: input) ? false : true
     }
+    
+    // MARK: - 檢核輸入為英數字
+    func isEnglishAndNumber(_ input:String) -> Bool {
+        let RegEx = "[a-zA-Z0-9]*"
+        let Test = NSPredicate(format:"SELF MATCHES %@", RegEx)
+        return Test.evaluate(with: input)
+    }
+    
+    // MARK: - 檢核輸入為全英文or全數字 
+    func isAllEnglishOrNumber(_ input:String) -> Bool {
+        var RegEx = "[a-zA-Z]*"
+        let Test = NSPredicate(format:"SELF MATCHES %@", RegEx)
+        if Test.evaluate(with: input) {
+            return true
+        }
+        RegEx = "[0-9]*"
+        if Test.evaluate(with: input) {
+            return true
+        }
+        return false
+    }
+    
+    // MARK: - 檢核不得有三個以上相同的英數字、連續英文字或連號數字，例如aaa、abc、cba、aba、111、123、321、121等，且宜包含大小寫英文字母。
+    func checkInputNotContinuous(_ input:String) -> Bool {
+        var result = true
+        if isEnglishAndNumber(input) {
+            for index in 0...input.asciiArray.count-3 {
+                var number1 = Int(input.asciiArray[index+1]) - Int(input.asciiArray[index])
+                var number2 = Int(input.asciiArray[index+2]) - Int(input.asciiArray[index])
+                if number1 < 0 && number2 < 0 {
+                    number1 = -(number1)
+                    number2 = -(number2)
+                }
+                
+                //3碼連續,EX.123,321
+                if number1 == 0 && number2 == 0 {
+                    result = false
+                    break
+                }
+                //3碼連續,EX.123,321
+                else if number1 == 1 && number2 == 2 {
+                    result = false
+                    break
+                }
+                //3碼連續,EX.121
+                else if number1 == 1 && number2 == 0 {
+                    result = false
+                    break
+                }
+            }
+        }
+        else {
+            result = false
+        }
+        return result
+    }
 }
 
 //extension Character {
@@ -54,3 +110,10 @@ class DetermineUtility {
 //        return String(self).unicodeScalars.filter{$0.isASCII}.first?.value
 //    }
 //}
+
+extension String {
+    var asciiArray: [UInt32] {
+        return unicodeScalars.filter{$0.isASCII}.map{$0.value}
+    }
+}
+

@@ -260,8 +260,8 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             else {
                 list.append([Response_Key: "利率型態", Response_Value:""])
             }
-            if let IRT = resultList["IRT"] as? String {
-                list.append([Response_Key: "計息利率(%)", Response_Value:IRT])
+            if let IRT = resultList["IRT"] as? Double {
+                list.append([Response_Key: "計息利率(%)", Response_Value:String(IRT)])
             }
             else {
                 list.append([Response_Key: "計息利率(%)", Response_Value:""])
@@ -311,7 +311,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         default: break
         }
         
-        controller.setList("\(type.description())往來明細", list)
+        controller.setList("\(type.description())帳戶明細", list)
     }
     
     override func didResponse(_ description:String, _ response: NSDictionary) {

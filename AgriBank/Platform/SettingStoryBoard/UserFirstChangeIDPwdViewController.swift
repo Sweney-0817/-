@@ -90,12 +90,26 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
             showErrorMessage(nil, "\(Enter_Title)\(againPasswordTextfield.placeholder!)")
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(sourceIDTextfield.text!) || DetermineUtility.utility.checkStringContainIllegalCharacter(newIDTextfield.text!) || DetermineUtility.utility.checkStringContainIllegalCharacter(againIDTextfield.text!) || DetermineUtility.utility.checkStringContainIllegalCharacter(sourcePasswordTextfield.text!) || DetermineUtility.utility.checkStringContainIllegalCharacter(newPasswordTextfield.text!) || DetermineUtility.utility.checkStringContainIllegalCharacter(againPasswordTextfield.text!) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
-            return false
-        }
         if newIDTextfield.text! == sourceIDTextfield.text! {
             showErrorMessage(nil, ErrorMsg_IDNotSame)
+            return false
+        }
+        if (newIDTextfield.text?.characters.count)! < NewInput_MinLength || (newIDTextfield.text?.characters.count)! > NewInput_MaxLength {
+            showErrorMessage(nil, "\(newIDTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Length)")
+            return false
+        }
+        if let info = AuthorizationManage.manage.GetLoginInfo() {
+            if info.account == newIDTextfield.text! {
+                showErrorMessage(nil, "\(newIDTextfield.placeholder ?? "")\(ErrorMsg_IDPD_SameIdentify)")
+                return false
+            }
+        }
+        if DetermineUtility.utility.isAllEnglishOrNumber(newIDTextfield.text!) {
+            showErrorMessage(nil, "\(newIDTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Combine)")
+            return false
+        }
+        if !DetermineUtility.utility.checkInputNotContinuous(newIDTextfield.text!) {
+            showErrorMessage(nil, "\(newIDTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Continous)")
             return false
         }
         if againIDTextfield.text! != newIDTextfield.text! {
@@ -104,6 +118,24 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
         }
         if sourcePasswordTextfield.text! == newPasswordTextfield.text! {
             showErrorMessage(nil, ErrorMsg_PDNotSame)
+            return false
+        }
+        if (newPasswordTextfield.text?.characters.count)! < NewInput_MinLength || (newIDTextfield.text?.characters.count)! > NewInput_MaxLength {
+            showErrorMessage(nil, "\(newPasswordTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Length)")
+            return false
+        }
+        if let info = AuthorizationManage.manage.GetLoginInfo() {
+            if info.account == newIDTextfield.text! {
+                showErrorMessage(nil, "\(newPasswordTextfield.placeholder ?? "")\(ErrorMsg_IDPD_SameIdentify)")
+                return false
+            }
+        }
+        if DetermineUtility.utility.isAllEnglishOrNumber(newIDTextfield.text!) {
+            showErrorMessage(nil, "\(newPasswordTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Combine)")
+            return false
+        }
+        if !DetermineUtility.utility.checkInputNotContinuous(newIDTextfield.text!) {
+            showErrorMessage(nil, "\(newPasswordTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Continous)")
             return false
         }
         if againPasswordTextfield.text! != newPasswordTextfield.text! {
@@ -128,6 +160,11 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        if !DetermineUtility.utility.isEnglishAndNumber(newString) {
+            return false
+        }
+
         let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
         if newLength > Max_ID_Password_Length {
             return false

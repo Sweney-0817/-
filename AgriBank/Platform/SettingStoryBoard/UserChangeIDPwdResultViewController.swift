@@ -28,7 +28,9 @@ class UserChangeIDPwdResultViewController: BaseViewController {
         setShadowView(bottomView)
         titleLabel.text = errorMessage.isEmpty ? Change_Successful_Title : Change_Faild_Title
         imageView.image = errorMessage.isEmpty ? UIImage(named: ImageName.CowSuccess.rawValue) : UIImage(named: ImageName.CowFailure.rawValue)
-        
+        if errorMessage.isEmpty {
+            postLogout()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,18 +38,8 @@ class UserChangeIDPwdResultViewController: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func didResponse(_ description:String, _ response: NSDictionary) {
-        super.didResponse(description, response)
-        enterFeatureByID(.FeatureID_Home, true)
-    }
-    
     // MARK: - StoryBoard Touch Event
     @IBAction func clickConfirmBtn(_ sender: Any) {
-        if errorMessage.isEmpty {
-            postLogout()
-        }
-        else {
-            enterFeatureByID(.FeatureID_Home, true)
-        }
+        enterFeatureByID(.FeatureID_Home, true)
     }
 }

@@ -20,7 +20,7 @@ let URL_DOMAIN = ""
 #endif
 
 let REQUEST_URL = "\(URL_PROTOCOL)://\(URL_DOMAIN)"
-let BarItem_Height_Weight = 50
+let BarItem_Height_Weight = 40
 let Loading_Weight = 100
 let Loading_Height = 100
 
@@ -46,17 +46,13 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         rButton.setImage(UIImage(named: ImageName.RightBarItem.rawValue), for: .highlighted)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rButton)
         
-        if needShowBackBarItem {
-            let lButton = UIButton(type: .custom)
-            lButton.frame = CGRect(x: 0, y: 0, width: BarItem_Height_Weight, height: BarItem_Height_Weight)
-            lButton.addTarget(self, action: #selector(clickBackBarItem), for: .touchUpInside)
-            lButton.setImage(UIImage(named: ImageName.BackBarItem.rawValue), for: .normal)
-            lButton.setImage(UIImage(named: ImageName.BackBarItem.rawValue), for: .highlighted)
-            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: lButton)
-        }
-        else {
-            navigationItem.setHidesBackButton(true, animated:false);
-        }
+        let imageName = needShowBackBarItem ? ImageName.BackBarItem.rawValue : ImageName.LeftBarItem.rawValue
+        let lButton = UIButton(type: .custom)
+        lButton.frame = CGRect(x: 0, y: 0, width: BarItem_Height_Weight, height: BarItem_Height_Weight)
+        lButton.addTarget(self, action: #selector(clickBackBarItem), for: .touchUpInside)
+        lButton.setImage(UIImage(named: imageName), for: .normal)
+        lButton.setImage(UIImage(named: imageName), for: .highlighted)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: lButton)
         
         navigationController?.navigationBar.barTintColor = NavigationBar_Color
     }
@@ -318,7 +314,12 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     }
     
     func clickBackBarItem() {
-        navigationController?.popViewController(animated: true)
+        if needShowBackBarItem {
+            navigationController?.popViewController(animated: true)
+        }
+        else {
+            enterFeatureByID(.FeatureID_Home, true)
+        }
     }
     
     // MARK: - KeyBoard
@@ -387,10 +388,16 @@ extension BaseViewController: ConnectionUtilityDelegate {
     }
     
     func checkImageConfirm(_ passWord:String, _ varifyID:String? = nil) { // 驗證圖形驗證碼
-        setLoading(true)
+        if passWord.isEmpty {
+            showErrorMessage(nil, ErrorMsg_Image_Empty)
+        }
+        else {
+            setLoading(true)
 //        let ID = headVarifyID
-        let ID = varifyID == nil ? headVarifyID : varifyID!
-        getRequest("Comm/COMM0502?varifyId=\(ID)&captchaCode=\(passWord)", "COMM0502", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirmResult)
+            let ID = varifyID == nil ? headVarifyID : varifyID!
+            getRequest("Comm/COMM0502?varifyId=\(ID)&captchaCode=\(passWord)", "COMM0502", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirmResult)
+            
+        }
     }
     
     func getCanLoginBankInfo() { // 取得農、漁會可登入代碼清單
@@ -405,6 +412,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
     }
     
     func postLogout() { // 登出電文
+        AuthorizationManage.manage.setLoginStatus(false)
+        curFeatureID = nil
         postRequest("Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
@@ -496,15 +505,20 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         }
                         
                     case "2":
-                        showErrorMessage(nil, ErrorMsg_Force_ChangePassword)
-                        /* 此時尚未登入成功，使用enterFeatureByID會失敗 */
-                        if let con = navigationController?.viewControllers.first {
-                            if con is HomeViewController {
-                                navigationController?.popToRootViewController(animated: true)
-                                (con as! HomeViewController).pushFeatureController(.FeatureID_UserPwdChange, true)
+                        let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_Force_ChangePassword, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                            DispatchQueue.main.async {
+                                /* 此時尚未登入成功，使用enterFeatureByID會失敗 */
+                                if let con = self.navigationController?.viewControllers.first {
+                                    if con is HomeViewController {
+                                        self.navigationController?.popToRootViewController(animated: true)
+                                        (con as! HomeViewController).pushFeatureController(.FeatureID_UserPwdChange, true)
+                                    }
+                                }
+                                self.curFeatureID = nil
                             }
-                        }
-                        curFeatureID = nil
+                        })
+                        present(alert, animated: false, completion: nil)
                         
                     case "3":
                         let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_Suggest_ChangePassword, preferredStyle: .alert)
@@ -525,8 +539,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
                             DispatchQueue.main.async {
                                 self.curFeatureID = nil
-                                AuthorizationManage.manage.setLoginStatus(false)
-                                self.enterFeatureByID(.FeatureID_UserPwdChange, true)
+                                /* 此時尚未登入成功，使用enterFeatureByID會失敗 */
                                 if let con = self.navigationController?.viewControllers.first {
                                     if con is HomeViewController {
                                         self.navigationController?.popToRootViewController(animated: true)
@@ -557,14 +570,13 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 (UIApplication.shared.delegate as! AppDelegate).notificationAllEvent()
             }
             
-        case "COMM0102":
-            AuthorizationManage.manage.setLoginStatus(false)
-            curFeatureID = nil
+        case "COMM0102": break
+//            AuthorizationManage.manage.setLoginStatus(false)
+//            curFeatureID = nil
             
         case BaseTransactionID_Description:
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 tempTransactionId = tranId
-//                VaktenManager.sharedInstance().authenticateOperation(withSessionID: tranId) { resultCode in
                 if let info = AuthorizationManage.manage.getResponseLoginInfo() {
                     VaktenManager.sharedInstance().authenticateOperation(withSessionID: (info.Token ?? "")) { resultCode in
                         if VIsSuccessful(resultCode) {
@@ -576,7 +588,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                 workCode = "05002"
                             }
                             self.setLoading(true)
-                            self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                            self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                         }
                         else {
                             self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode)")
@@ -585,7 +597,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 }
             }
             
-        case "COMM0802":
+        case "BaseCOMM0802":
             if let con = navigationController?.viewControllers.first {
                 if con is HomeViewController {
                     (con as! HomeViewController).tempTransactionId = tempTransactionId
@@ -611,7 +623,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
              "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
              "PAY0103","PAY0105","PAY0107",
              "USIF0102","USIF0201","USIF0301",
-             "COMM0102":
+             "COMM0102","COMM0801":
             didResponse(description, response)
             
         default:
@@ -622,7 +634,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 else if returnCode == "E_COMM0101_05" {
                     let message = (response.object(forKey: ReturnMessage_Key) as? String) ?? ""
                     let alert = UIAlertController(title: UIAlert_Default_Title, message: message, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
+                    alert.addAction(UIAlertAction(title: Cancel_Title, style: .default) { _ in
+                        self.getImageConfirm()
+                    })
                     alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
                         if let info = AuthorizationManage.manage.GetLoginInfo() {
                             let idMd5 = SecurityUtility.utility.MD5(string: info.id)
@@ -644,8 +658,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                             
                         case "backHome":
                             if returnCode == "E_HEADER_04" || returnCode == "E_HEADER_05" {
-                                AuthorizationManage.manage.setLoginStatus(false)
-                                curFeatureID = nil
+                                postLogout()
                             }
                             if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
                                 if navigationController?.viewControllers.last is HomeViewController {

@@ -15,6 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     var window: UIWindow?
     var logoutTimer:Timer? = nil
     var notification:NSObjectProtocol? = nil
+    var enterBackgroundTime:Date? = nil
+    var interval:TimeInterval = 0
+    
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // 連線暫存檔清除
@@ -58,10 +61,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        if logoutTimer != nil {
+            enterBackgroundTime = Date()
+            interval = AgriBank_TimeOut - (logoutTimer?.fireDate.timeIntervalSince(enterBackgroundTime!))!
+            /* Timer 在背景不確定什麼時候會停止 */
+            logoutTimer?.invalidate()
+            logoutTimer = nil
+        }
+        
+        print("applicationDidEnterBackground \(String(describing: logoutTimer?.fireDate))  \(String(describing: enterBackgroundTime)) \(interval)")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        if enterBackgroundTime != nil {
+            if Date().timeIntervalSince(enterBackgroundTime!) + interval >= AgriBank_TimeOut {
+                if AuthorizationManage.manage.IsLoginSuccess() {
+                    let alert = UIAlertView(title: UIAlert_Default_Title, message: Timeout_Title, delegate: self, cancelButtonTitle: Determine_Title)
+                    alert.show()
+                }
+                removeNotificationAllEvent()
+            }
+            else {
+                logoutTimer = Timer.scheduledTimer(timeInterval: AgriBank_TimeOut, target: self, selector: #selector(timeOut(_:)), userInfo: nil, repeats: false)
+            }
+        }
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -84,10 +108,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     func timeOut(_ sender:Timer) {
         if sender == logoutTimer {
             if AuthorizationManage.manage.IsLoginSuccess() {
-                let alert = UIAlertView(title: UIAlert_Default_Title, message: "待機時間過長即將登出", delegate: self, cancelButtonTitle: Determine_Title)
+                let alert = UIAlertView(title: UIAlert_Default_Title, message: Timeout_Title, delegate: self, cancelButtonTitle: Determine_Title)
                 alert.show()
             }
-            logoutTimer?.invalidate()
+            removeNotificationAllEvent()
         }
     }
     

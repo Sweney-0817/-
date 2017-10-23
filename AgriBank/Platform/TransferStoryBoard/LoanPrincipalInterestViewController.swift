@@ -175,11 +175,20 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                 if let APAMT = result?["APAMT"] as? String {
                     loanAmountLabel.text = APAMT.separatorThousand()
                 }
+                else {
+                    loanAmountLabel.text = ""
+                }
                 if let ACTBAL = result?["ACTBAL"] as? String {
                     currentAmountLabel.text = ACTBAL.separatorThousand()
                 }
+                else {
+                    currentAmountLabel.text = ""
+                }
                 if let TOTAL = result?["TOTAL"] as? String {
                     needPayAmountLabel.text = TOTAL.separatorThousand()
+                }
+                else {
+                    needPayAmountLabel.text = ""
                 }
                 if let Memo = result?["Memo"] as? String {
                     memoStatus = Memo

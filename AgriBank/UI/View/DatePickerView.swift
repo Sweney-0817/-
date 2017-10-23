@@ -208,7 +208,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             }
             let startValue = Int(start.day.replacingOccurrences(of: "日", with: "")) ?? 0
             let endValue = Int(end.day.replacingOccurrences(of: "日", with: "")) ?? 0
-            if startValue < endValue {
+            if startValue <= endValue {
                 if getTwoDate != nil {
                     getTwoDate!(start, end, nil, nil)
                 }

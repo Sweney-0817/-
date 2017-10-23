@@ -8,7 +8,7 @@
 
 import Foundation
 
-let REQUEST_TIME_OUT:TimeInterval = 60  // Time out
+let REQUEST_TIME_OUT:TimeInterval = 65  // Time out
 let CERTIFICATE_NAME = ""               // 憑證名稱
 let CERTIFICATE_TYPE = "cer"            // 憑證副檔名
 

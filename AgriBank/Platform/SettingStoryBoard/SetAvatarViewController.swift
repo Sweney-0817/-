@@ -23,14 +23,15 @@ class SetAvatarViewController: BasePhotoViewController {
         /* UIImagePickerController 與 NotificationCenter.default.addObserver(forName: nil, object: nil, queue: nil) 有衝突*/
         (UIApplication.shared.delegate as! AppDelegate).removeNotificationAllEvent()
         
-        imageView.layer.cornerRadius = imageView.frame.width/2
+        /*  UIImageView無法同時支援 陰影+cornerRadius */
+//        imageView.layer.cornerRadius = imageView.frame.width/2
         imageView.layer.masksToBounds = true
-        
-        imageShadowView.layer.cornerRadius = imageShadowView.frame.width/2
-        imageShadowView.layer.shadowOffset = CGSize(width: 0, height: 10)
-        imageShadowView.layer.shadowRadius = Shadow_Radious
-        imageShadowView.layer.shadowOpacity = Shadow_Opacity
-        imageShadowView.layer.shadowColor = UIColor.gray.cgColor
+        /* 陰影效果不好將其移出 */
+//        imageShadowView.layer.cornerRadius = imageShadowView.frame.width/2
+//        imageShadowView.layer.shadowOffset = CGSize(width: 0, height: 10)
+//        imageShadowView.layer.shadowRadius = Shadow_Radious
+//        imageShadowView.layer.shadowOpacity = Shadow_Opacity
+//        imageShadowView.layer.shadowColor = UIColor.gray.cgColor
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,6 +66,7 @@ class SetAvatarViewController: BasePhotoViewController {
             alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
             alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
                 DispatchQueue.main.async {
+                    self.imageView.layer.cornerRadius = 0
                     self.imageView.image = UIImage(named: ImageName.Login.rawValue)
                     self.savePersonalImage(nil, SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
                 }
@@ -87,6 +89,7 @@ class SetAvatarViewController: BasePhotoViewController {
     // MARK: - VPImageCropperDelegate
     override func imageCropper(_ cropperViewController: VPImageCropperViewController!, didFinished editedImage: UIImage!) {
         cropperViewController.dismiss(animated: true, completion: nil)
+        imageView.layer.cornerRadius = imageView.frame.width/2
         imageView.image = editedImage
         if let info = AuthorizationManage.manage.GetLoginInfo() {
             savePersonalImage(editedImage, SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)

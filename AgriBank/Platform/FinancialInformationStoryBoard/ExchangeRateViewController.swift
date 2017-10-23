@@ -8,7 +8,7 @@
 
 import UIKit
 
-let ExchangeRate_Bank_Title = "農會"
+let ExchangeRate_Bank_Title = "農漁會"
 let ExchangeRate_Cell_Height:CGFloat = 60
 
 class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {

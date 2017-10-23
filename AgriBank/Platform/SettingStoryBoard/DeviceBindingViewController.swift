@@ -9,7 +9,7 @@
 import UIKit
 
 let DeviceBindingResult_Segue = "GoDeviceBindingResult"
-let DeviceBinding_Bank_Title = "農會"
+let DeviceBinding_Bank_Title = "農漁會"
 let DeviceBinding_CheckCode_Length:Int = 7
 let DeviceBinding_Binding_Success_Title = "綁定成功"
 let DeviceBinding_Binding_Faild_Title = "綁定失敗"
@@ -29,6 +29,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     private var bankCode = [String:String]()
     private var cityCode = [String:String]()
     private var bindingSuccess = false
+    private var resultList:[[String:String]]? = nil
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -54,7 +55,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let controller = segue.destination as! BasicInfoResultViewController
-        controller.setInitial(nil, bindingSuccess, bindingSuccess ? DeviceBinding_Binding_Success_Title : DeviceBinding_Binding_Faild_Title, DeviceBinding_Memo)
+        controller.setInitial(resultList, bindingSuccess, bindingSuccess ? DeviceBinding_Binding_Success_Title : DeviceBinding_Binding_Faild_Title, bindingSuccess ? DeviceBinding_Memo : "")
     }
     
     override func didResponse(_ description:String, _ response: NSDictionary) {
@@ -76,9 +77,6 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
                         cityCode[city] = cityID
                     }
                 }
-            }
-            else {
-                super.didRecvdResponse(description, response)
             }
             
             if let cCode = SecurityUtility.utility.readFileByKey(SetKey: File_CityCode_Key, setDecryptKey: AES_Key) as? String, let bCode = SecurityUtility.utility.readFileByKey(SetKey: File_BankCode_Key, setDecryptKey: AES_Key) as? String {
@@ -102,11 +100,27 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
             }
             
         case "COMM0801":
-            VaktenManager.sharedInstance().associationOperation(withAssociationCode: checkCodeTextfield.text ?? "") { resultCode in
-                if VIsSuccessful(resultCode) {
-                    self.bindingSuccess = true
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
+                setLoading(true)
+                VaktenManager.sharedInstance().associationOperation(withAssociationCode: checkCodeTextfield.text ?? "") { resultCode in
+                    self.setLoading(false)
+                    if VIsSuccessful(resultCode) {
+                        self.bindingSuccess = true
+                        self.performSegue(withIdentifier: DeviceBindingResult_Segue, sender: self)
+                    }
+                    else {
+                        self.resultList = [[String:String]]()
+                        self.resultList?.append([Response_Key:Error_Title,Response_Value:"\(resultCode)"])
+                        self.performSegue(withIdentifier: DeviceBindingResult_Segue, sender: self)
+                    }
                 }
-                self.performSegue(withIdentifier: DeviceBindingResult_Segue, sender: self)
+            }
+            else {
+                if let message = response.object(forKey:ReturnMessage_Key) as? String {
+                    resultList = [[String:String]]()
+                    resultList?.append([Response_Key:Error_Title,Response_Value:message])
+                    self.performSegue(withIdentifier: DeviceBindingResult_Segue, sender: self)
+                }
             }
             
         default: break
@@ -158,24 +172,16 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
             showErrorMessage(nil, ErrorMsg_Error_Identify)
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(identifyTextfield.text!) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+        if (identifyTextfield.text?.characters.count)! < Min_Identify_Length {
+            showErrorMessage(nil, ErrorMsg_ID_LackOfLength)
             return false
         }
         if (userCodeTextfield.text?.isEmpty)! {
             showErrorMessage(nil, "\(Enter_Title)\(userCodeTextfield.placeholder ?? "")")
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(userCodeTextfield.text!) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
-            return false
-        }
         if (passwordTextfield.text?.isEmpty)! {
             showErrorMessage(nil, "\(Enter_Title)\(passwordTextfield.placeholder ?? "")")
-            return false
-        }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(passwordTextfield.text!) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }
         if (checkCodeTextfield.text?.isEmpty)! {
@@ -195,11 +201,17 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == identifyTextfield || textField == userCodeTextfield || textField == passwordTextfield {
+            let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+            if !DetermineUtility.utility.isEnglishAndNumber(newString) {
+                return false
+            }
+        }
         let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
         var maxLength = 0
         switch textField {
-//        case identifyTextfield:
-//            maxLength = Max_Identify_Length
+        case identifyTextfield:
+            maxLength = Max_Identify_Length
             
         case userCodeTextfield, passwordTextfield:
             maxLength = Max_ID_Password_Length

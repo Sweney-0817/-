@@ -9,7 +9,7 @@
 import UIKit
 
 let DepositCombinedToDepositSearch_Segue = "GoDepositDetail"
-let DepositCombinedToDepositSearch_Account_Title = "活存帳號"
+let DepositCombinedToDepositSearch_Account_Title = "綜存帳號"
 let DepositCombinedToDepositSearch_Cell_Title = ["定存帳號","定存金額","到期日"]
 
 class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate {
@@ -51,7 +51,12 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
             list.append([Response_Key: "到期日", Response_Value:dic["EDAY"] ?? ""])
             list.append([Response_Key: "起存日", Response_Value:dic["CIDAY"] ?? ""])
             list.append([Response_Key: "存單期別(月)", Response_Value:dic["PRDMM"] ?? ""])
-            list.append([Response_Key: "開戶利率", Response_Value:dic["YRATE"] ?? ""])
+            if let YRATE = dic["YRATE"] {
+                list.append([Response_Key: "開戶利率", Response_Value:"\(YRATE)%"])
+            }
+            else {
+                list.append([Response_Key: "開戶利率", Response_Value:""])
+            }
             controller.setList(list, dic["Deposit"], topDropView?.getContentByType(.First))
         }
     }

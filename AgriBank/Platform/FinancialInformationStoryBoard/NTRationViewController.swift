@@ -21,7 +21,7 @@ struct NTRationStruct {
 }
 
 let NTRationView_TypeList = ["活存","定期","定儲","其他"]
-let NTRationView_Bank_Title = "農會"
+let NTRationView_Bank_Title = "農漁會"
 
 class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, ChooseTypeDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var m_vPlace: UIView!

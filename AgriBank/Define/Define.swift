@@ -318,7 +318,7 @@ struct RequestStruct {
 
 // MARK: - 圖片名稱
 enum ImageName: String {
-    case BackBarItem, BackHome, ButtonLarge, ButtonSmall, ButtonMedium, Close, CowCheck, CowFailure, CowSuccess, DefaultLogo, DropDown, DropUp, EntryRight, HintDownArrow, Locker, Login, Vegetable, Refresh, RightBarItem, RadioOn, RadioOff, Textfield, Unlocker
+    case BackBarItem, BackHome, ButtonLarge, ButtonSmall, ButtonMedium, Close, CowCheck, CowFailure, CowSuccess, DefaultLogo, DropDown, DropUp, EntryRight, HintDownArrow, Locker, Login, LeftBarItem, Vegetable, Refresh, RightBarItem, RadioOn, RadioOff, Textfield, Unlocker
 }
 
 // MARK: - 顏色定義
@@ -352,10 +352,11 @@ let TransactionID_Description = "TrID"
 let TransactionID_Key = "TransactionId"
 let LogoImage_Description = "LogoImage"
 let BaseTransactionID_Description = "BaseTrID"
+let File_FirstOpen_Key = "firstOpen"
 
 let Login_Title = "登出"
 let NoLogin_Title  = "登入"
-let LogOut_Title = "確定是否登出"
+let Logout_Title = "確定是否登出"
 let Determine_Title = "確定"
 let Cancel_Title = "取消"
 let Transaction_Successful_Title = "交易成功"
@@ -376,14 +377,18 @@ let NextChange_Title = "下次變更"
 let PerformChange_Title = "執行變更"
 let SetNotification_Title = "您要打開系統應用通知才可收到推播通知"
 let Setting_Title = "設定"
+let Timeout_Title = "待機時間過長即將登出"
 
 let Max_ID_Password_Length:Int = 16 // 使用者代號、使用者密碼的長度限制
 let Max_MobliePhone_Length:Int = 10 // 手機號碼
-//let Max_Identify_Length:Int = 10    // 身分證長度
+let Max_Identify_Length:Int = 11    // 身分證長度
+let Min_Identify_Length:Int = 10    // 身分證長度
 let Max19_Memo_Length:Int = 19      // 備註長度
 let Max50_Memo_Length:Int = 50      // 備註長度
 let Max_Email_Length:Int = 50       // Email長度
 let Max_Account_Length:Int = 16     // 輸入轉入帳號長度
+let NewInput_MinLength:Int = 8      // 新輸入代號or密碼最小長度
+let NewInput_MaxLength:Int = 16     // 新輸入代號or密碼最大長度
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "agriBank_iOS"
@@ -442,6 +447,7 @@ enum DropDownType:Int {
 
 // MARK: - 錯誤訊息
 let ErrorMsg_Image_ConfirmFaild = "圖形驗證碼錯誤"
+let ErrorMsg_Image_Empty = "請輸入圖形驗證碼"
 let ErrorMsg_Illegal_Character = "不得輸入非法字元"
 let ErrorMsg_Invalid_Email = "E-mail格式不合"
 let ErrorMsg_Choose_Date = "起始日不可大於截止日"
@@ -452,6 +458,7 @@ let ErrorMsg_DateMonthOnlyTwo = "查詢區間僅能兩個月"
 let ErrorMsg_NoAuth = "本單位目前尚未開放此功能"
 let ErrorMsg_IsNot_TransTime = "非營業時間，不受理交易"
 let ErrorMsg_Input_Amount = "輸入金額不得0元"
+let ErrorMsg_ID_LackOfLength = "身分證字號長度不足"
 /*  用於「即時轉帳」 */
 let ErrorMsg_GetList_InAgreedAccount = "無法取得約定轉入帳戶"
 let ErrorMsg_GetList_InCommonAccount = "無法取得常用轉入帳戶"
@@ -465,7 +472,7 @@ let ErrorMsg_Reservation_Amount = "轉帳金額不得大於200萬"
 let ErrorMsg_NeedChangeOne = "至少需修改一項"
 let ErrorMsg_Telephone = "「新區碼」及「新聯絡電話」必須一起修改"
 let ErrorMsg_Address = "「新郵遞區號」及「新聯絡地址」必須一起修改"
-/*  用於「登入」 */
+/*  用於「登入頁」 */
 let ErrorMsg_Choose_CityBank = "請選擇地區"
 /*  用於「定期儲蓄試算」 */
 let ErrorMsg_Enter_SaveAmount = "請輸入存款金額"
@@ -496,6 +503,10 @@ let ErrorMsg_IDNotSame = "新使用者代號與舊使用者代號不得相同"
 let ErrorMsg_PDNotSame = "新密碼不得與舊密碼相同"
 let ErrorMsg_IDAgainIDNeedSame = "新使用者代號與再次輸入新使用者代號需要相同"
 let ErrorMsg_PDAgainPDNeedSame = "新密碼與再次輸入新密碼需要相同"
+let ErrorMsg_IDPD_Length = "組成必須為8至16位英數字"
+let ErrorMsg_IDPD_Combine = "組成必須為英數夾雜"
+let ErrorMsg_IDPD_Continous = "不得有三個以上相同的英數字、連續英文字或連號數字"
+let ErrorMsg_IDPD_SameIdentify = "不可與身分證號相同"
 /* 用於「綜存轉定存」 */
 let ErrorMsg_DepositCombinedToDeposit_MinAmount = "輸入金額不得少於1萬元"
 /* 用於「登入頭像設定」 */

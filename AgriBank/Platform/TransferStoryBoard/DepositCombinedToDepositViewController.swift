@@ -380,7 +380,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                 curPeriodIndex = buttonIndex-1
                 periodDropView?.setOneRow(DepositCombinedToDeposit_Period_Title, actionSheet.buttonTitle(at: buttonIndex) ?? "")
                 if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]], let DetailRate = Detail[curRateTypeIndex!]["DetailRate"] as? [[String:String]], let INTRT = DetailRate[curPeriodIndex!]["INTRT"] {
-                    currentRateLabel.text = INTRT
+                    currentRateLabel.text = INTRT + "%"
                 }
                 
             default: break

@@ -231,7 +231,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     
     // MARK: - Private
     private func showInAccountList() {
-        if agreedAccountList != nil {
+        if agreedAccountList != nil && (agreedAccountList?.count)! > 0 {
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for info in agreedAccountList! {
                 if let account = info["TRAC"] as? String, let bankCode = info["BKNO"] as? String {
@@ -297,6 +297,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
                     showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, "")
                     transAmountTextfield.text = ""
                     memoTextfield.text = ""
+                    agreedAccountList = nil
                 }
                 
             case ViewTag.View_InAccountActionSheet.rawValue:

@@ -42,12 +42,26 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
             showErrorMessage(nil, "\(Enter_Title)\(againTextfield.placeholder!)")
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(sourceTextfield.text!) || DetermineUtility.utility.checkStringContainIllegalCharacter(newTextfield.text!) || DetermineUtility.utility.checkStringContainIllegalCharacter(againTextfield.text!) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
-            return false
-        }
         if sourceTextfield.text == newTextfield.text {
             showErrorMessage(nil, isChangePassword ? ErrorMsg_PDNotSame : ErrorMsg_IDNotSame)
+            return false
+        }
+        if (newTextfield.text?.characters.count)! < NewInput_MinLength || (newTextfield.text?.characters.count)! > NewInput_MaxLength {
+            showErrorMessage(nil, "\(newTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Length)")
+            return false
+        }
+        if let info = AuthorizationManage.manage.GetLoginInfo() {
+            if info.account == newTextfield.text! {
+                showErrorMessage(nil, "\(newTextfield.placeholder ?? "")\(ErrorMsg_IDPD_SameIdentify)")
+                return false
+            }
+        }
+        if DetermineUtility.utility.isAllEnglishOrNumber(newTextfield.text!) {
+            showErrorMessage(nil, "\(newTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Combine)")
+            return false
+        }
+        if !DetermineUtility.utility.checkInputNotContinuous(newTextfield.text!) {
+            showErrorMessage(nil, "\(newTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Continous)")
             return false
         }
         if newTextfield.text != againTextfield.text {
@@ -126,6 +140,11 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        if !DetermineUtility.utility.isEnglishAndNumber(newString) {
+            return false
+        }
+        
         let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
         switch textField {
         case newTextfield, againTextfield:

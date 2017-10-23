@@ -42,7 +42,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         topDropView = getUIByID(.UIID_ThreeRowDropDownView) as? ThreeRowDropDownView
-        topDropView?.setThreeRow(PayLoanPrincipalInterest_OutAccount_Title, "", PayLoanPrincipalInterest_Currency_Title, "", PayLoanPrincipalInterest_Balance_Title, "")
+        topDropView?.setThreeRow(PayLoanPrincipalInterest_OutAccount_Title, Choose_Title, PayLoanPrincipalInterest_Currency_Title, "", PayLoanPrincipalInterest_Balance_Title, "")
         topDropView?.frame = topView.frame
         topDropView?.frame.origin = .zero
         topDropView?.delegate = self
@@ -137,7 +137,10 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
             if let value = list?["ACRECAMT"] as? String {
                 ACRECAMT = value
             }
-            let FITIRT = rateLabel.text ?? ""
+            var FITIRT = ""
+            if let array = list?["Result"] as? [[String:Any]], let fitirt = array.first?["FITIRT"] as? String {
+                FITIRT = fitirt
+            }
             let DFDAYS = breakContractDayLabel.text ?? ""
             
             let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0602", strSessionDescription: "TRAN0602", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"commitTxn","TransactionId":transactionId,"PAYACTNO":outAccount,"ACTNOSQNO":inAccount,"APAMT":APAMT,"ACTBAL":ACTBAL,"TOTAL":TOTAL.replacingOccurrences(of: ",", with: ""),"TPRIAMT":TPRIAMT.replacingOccurrences(of: ",", with: ""),"TINTAMT":TINTAMT.replacingOccurrences(of: ",", with: ""),"TODIAMT":TODIAMT.replacingOccurrences(of: ",", with: ""),"TDFAMT":TDFAMT.replacingOccurrences(of: ",", with: ""),"SINTAMT":SINTAMT.replacingOccurrences(of: ",", with: ""),"ACRECAMT":ACRECAMT,"FITIRT":FITIRT,"DFDAYS":DFDAYS,"VLDATE":curDate], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
@@ -146,7 +149,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
             dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:outAccount])
             dataConfirm.list?.append([Response_Key: "放款帳號", Response_Value:inAccount])
             dataConfirm.list?.append([Response_Key: "計算期間", Response_Value:calculatePeroidLabel.text ?? ""])
-            dataConfirm.list?.append([Response_Key: "利率", Response_Value:FITIRT])
+            dataConfirm.list?.append([Response_Key: "利率", Response_Value:rateLabel.text ?? ""])
             dataConfirm.list?.append([Response_Key: "違約天數", Response_Value:DFDAYS])
             dataConfirm.list?.append([Response_Key: "應繳本金", Response_Value:TPRIAMT])
             dataConfirm.list?.append([Response_Key: "應繳違約金", Response_Value:TDFAMT])
@@ -194,7 +197,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
 //            breakContractDayLabel.text = DFDAYS
 //        }
         if let array = list?["Result"] as? [[String:Any]], let FITIRT = array.first?["FITIRT"] as? String {
-            rateLabel.text = FITIRT
+            rateLabel.text = FITIRT + "%"
         }
         if let array = list?["Result"] as? [[String:Any]], let DFDAYS = array.first?["DFDAYS"] as? String {
             breakContractDayLabel.text = DFDAYS

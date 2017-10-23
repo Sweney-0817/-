@@ -16,6 +16,8 @@ class OneRowDropDownView: UIView {
     @IBOutlet weak var m_lbFirstRowTitle: UILabel!
     @IBOutlet weak var m_lbFirstRowContent: UILabel!
     var delegate:OneRowDropDownViewDelegate? = nil
+    /* 為了帳戶往來明細特別設置 */
+    @IBOutlet weak var titleWeight: NSLayoutConstraint!
     
     @IBAction func m_btnClick(_ sender: Any) {
         delegate?.clickOneRowDropDownView(self)

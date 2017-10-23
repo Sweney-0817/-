@@ -76,8 +76,9 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
             
         case "COMM0502":
             if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
+                let pdMd5 = SecurityUtility.utility.MD5(string: m_tfWebBankPassword.text!)
                 setLoading(true)
-                postRequest("LOSE/LOSE0201", "LOSE0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04001","Operate":"setLoseAcnt","TransactionId":transactionId,"ACTNO":accountList?[accountIndex!].accountNO ?? "","PWD":m_tfWebBankPassword.text ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("LOSE/LOSE0201", "LOSE0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04001","Operate":"setLoseAcnt","TransactionId":transactionId,"ACTNO":accountList?[accountIndex!].accountNO ?? "","PWD":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
                 getImageConfirm(transactionId)
@@ -155,20 +156,24 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
             showErrorMessage(nil, "\(Enter_Title)\(m_tfWebBankPassword.placeholder ?? "")")
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(m_tfWebBankPassword.text!) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
-            return false
-        }
         return true
     }
     
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
-            accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
-            actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
-            actSheet.show(in: view)
+            if (accountList?.count)! > 0 {
+                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
+                accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
+                actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
+                actSheet.show(in: view)
+            }
+            else {
+                showErrorMessage(nil, "\(Get_Null_Title)\(sender.m_lbFirstRowTitle.text!)")
+            }
+        }
+        else {
+            showErrorMessage(nil, "\(Get_Null_Title)\(sender.m_lbFirstRowTitle.text!)")
         }
     }
 
@@ -190,6 +195,16 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     // MARK: - UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == m_tfWebBankPassword {
+            let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+            if !DetermineUtility.utility.isEnglishAndNumber(newString) {
+                return false
+            }
+        }
         return true
     }
     

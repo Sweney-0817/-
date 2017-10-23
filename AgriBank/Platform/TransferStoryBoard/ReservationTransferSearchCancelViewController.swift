@@ -10,7 +10,7 @@ import UIKit
 
 let ReservationTransferSearchCancel_Segue = "GoReservationDetail"
 let ReservationTransferSearchCancel_OutAccount = "轉出帳號"
-let ReservationTransferSearchCancel_LoginInterval = "登錄區間"
+let ReservationTransferSearchCancel_LoginInterval = "預約交易日"
 let ReservationTransferSearchCancel_CellTitle = ["登錄日期","轉入帳號","金額"]
 
 class ReservationTransferSearchCancelViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate {

@@ -14,6 +14,7 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var versionLabel: UILabel!
+    @IBOutlet weak var logoutView: UIView!
     private var featureList = [PlatformFeatureID]()
     private var expandList = Set<Int>()
     private var currentID:PlatformFeatureID? = nil
@@ -34,6 +35,7 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
             featureList = list
         }
         tableView.reloadData()
+        logoutView.isHidden = !AuthorizationManage.manage.IsLoginSuccess()
     }
 
     override func didReceiveMemoryWarning() {
@@ -117,6 +119,10 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
         if center is BaseViewController {
             if currentID != nil {
                 (center as! BaseViewController).enterFeatureByID(currentID!, false)
+                /* 避免原本center就是在首頁，導致首頁不會call viewWillAppear */
+                if currentID == .FeatureID_Home && center is HomeViewController {
+                    (center as! HomeViewController).updateLoginStatus()
+                }
                 currentID = nil
             }
         }
@@ -128,5 +134,20 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
             currentID = .FeatureID_Home
             (parent as! SideMenuViewController).ShowSideMenu(true)
         }
+    }
+    
+    @IBAction func clickLogoutBtn(_ sender: Any) {
+        let alert = UIAlertController(title: UIAlert_Default_Title, message: Logout_Title, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+            DispatchQueue.main.async {
+                self.postLogout()
+                if self.parent is SideMenuViewController {
+                    self.currentID = .FeatureID_Home
+                    (self.parent as! SideMenuViewController).ShowSideMenu(true)
+                }
+            }
+        })
+        present(alert, animated: true, completion: nil)
     }
 }

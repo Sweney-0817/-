@@ -443,7 +443,6 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         setLoading(true)
         if AuthorizationManage.manage.canEnterNTNonAgreedTransfer() {
             if !SecurityUtility.utility.isJailBroken() {
-//            VaktenManager.sharedInstance().authenticateOperation(withSessionID: transactionId) { resultCode in
                 if let info = AuthorizationManage.manage.getResponseLoginInfo() {
                     VaktenManager.sharedInstance().authenticateOperation(withSessionID: info.Token ?? "") { resultCode in
                         if VIsSuccessful(resultCode) {

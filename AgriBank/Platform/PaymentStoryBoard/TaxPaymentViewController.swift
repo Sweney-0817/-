@@ -170,6 +170,14 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
                 return false
             }
         }
+        else {
+            if curType == TaxPayment_Type1 {
+                if (m_tfInput2.text?.characters.count)! < Min_Identify_Length {
+                    showErrorMessage(nil, ErrorMsg_ID_LackOfLength)
+                    return false
+                }
+            }
+        }
         if curType == TaxPayment_Type1 {
             if !DetermineUtility.utility.isValidIdentify(m_tfInput2.text!) {
                 showErrorMessage(nil, ErrorMsg_Error_Identify)
@@ -342,15 +350,15 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
         return true
     }
     
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
-//        if textField == m_tfInput2 && curType == TaxPayment_Type1 {
-//            if newLength > Max_Identify_Length {
-//                return false
-//            }
-//        }
-//        return true
-//    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        if textField == m_tfInput2 && curType == TaxPayment_Type1 {
+            if newLength > Max_Identify_Length {
+                return false
+            }
+        }
+        return true
+    }
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnSendClick(_ sender: Any) {
@@ -361,8 +369,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
             let PAYTYPE = typeItemList[ACTTYPE]?[typeItemIndex!]["PAYTYPE"] ?? ""
             let PAYTYPECODE = typeItemList[ACTTYPE]?[typeItemIndex!]["PAYCODE"] ?? ""
             if curType == TaxPayment_Type1 {
-                
-                postRequest("PAY/PAY0102", "PAY0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"05001","Operate":"dataConfirm","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","CORP":m_tfInput1.text!,"IDNO":m_tfInput2.text!,"TXAMT":m_tfInput3.text!], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("PAY/PAY0102", "PAY0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"05001","Operate":"dataConfirm","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","CORP":m_tfInput1.text!,"IDNO":m_tfInput2.text!.uppercased(),"TXAMT":m_tfInput3.text!], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
                 postRequest("PAY/PAY0104", "PAY0104", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"05001","Operate":"dataConfirm","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":curType,"OUTACT":m_DDAccount?.getContentByType(.First) ?? "","BILLNO":m_tfInput1.text!,"DATELINE":endDate,"TXAMT":m_tfInput3.text!], true), AuthorizationManage.manage.getHttpHead(true))

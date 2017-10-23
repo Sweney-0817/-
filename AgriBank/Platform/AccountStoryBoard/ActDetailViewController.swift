@@ -62,6 +62,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         view.frame.origin = .zero
         view.delegate = self
         view.setOneRow(ActDetailView_ShowAccount_Title, Choose_Title)
+        view.titleWeight.constant = view.titleWeight.constant / 2
         chooseAccountView.addSubview(view)
         
         getTransactionID("02041", TransactionID_Description)
@@ -99,6 +100,12 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 }
                 else {
                     list.append([Response_Key: "交易日期", Response_Value:""])
+                }
+                if let TXTIME = dic["TXTIME"] as? String {
+                    list.append([Response_Key: "交易時間", Response_Value:TXTIME])
+                }
+                else {
+                    list.append([Response_Key: "交易時間", Response_Value:""])
                 }
                 if let CRDB = dic["CRDB"] as? String {
                     var temp = ""
@@ -452,7 +459,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 typeList = [String]()
                 for category in array {
-                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]] {
+                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], result.count > 0 {
                         var addType = false
                         // "ACTTYPE"->帳號類別: 活存：P, 支存：K, 定存：T, 放款：L, 綜存：M
                         switch type {

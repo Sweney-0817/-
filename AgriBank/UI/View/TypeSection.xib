@@ -8,6 +8,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -16,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgK-ih-yLT">
-                    <rect key="frame" x="20" y="7" width="335" height="25"/>
+                    <rect key="frame" x="20" y="11.5" width="335" height="25"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="oWo-v4-avJ"/>
                     </constraints>
@@ -24,7 +29,7 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OWL-hH-j9R">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OWL-hH-j9R">
                     <rect key="frame" x="0.0" y="37" width="375" height="1"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -38,8 +43,8 @@
                 <constraint firstAttribute="trailing" secondItem="OWL-hH-j9R" secondAttribute="trailing" id="Hxp-j6-3B5"/>
                 <constraint firstAttribute="trailing" secondItem="cgK-ih-yLT" secondAttribute="trailing" constant="20" id="MdV-Tg-k90"/>
                 <constraint firstItem="cgK-ih-yLT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="NjQ-ME-UJL"/>
-                <constraint firstItem="OWL-hH-j9R" firstAttribute="top" secondItem="cgK-ih-yLT" secondAttribute="bottom" constant="5" id="P4w-jk-3kq"/>
                 <constraint firstAttribute="bottom" secondItem="OWL-hH-j9R" secondAttribute="bottom" constant="10" id="Puj-Et-ag0"/>
+                <constraint firstItem="cgK-ih-yLT" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="qMg-0e-fsF"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>

@@ -42,13 +42,14 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         featureWall.setInitial(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!, setVertical: 3, setHorizontal: 2, SetDelegate: self)
     
         /*  UIImageView無法同時支援 陰影+cornerRadius */
-        loginImageView.layer.cornerRadius = loginImageView.frame.width/2
+//        loginImageView.layer.cornerRadius = loginImageView.frame.width/2
         loginImageView.layer.masksToBounds = true
-        loginImageShadowView.layer.cornerRadius = loginImageShadowView.frame.width/2
-        loginImageShadowView.layer.shadowOffset = CGSize(width: 0, height: 10)
-        loginImageShadowView.layer.shadowRadius = Shadow_Radious
-        loginImageShadowView.layer.shadowOpacity = Shadow_Opacity
-        loginImageShadowView.layer.shadowColor = UIColor.gray.cgColor
+        /* 陰影效果不好將其移出 */
+//        loginImageShadowView.layer.cornerRadius = loginImageShadowView.frame.width/2
+//        loginImageShadowView.layer.shadowOffset = CGSize(width: 0, height: 10)
+//        loginImageShadowView.layer.shadowRadius = Shadow_Radious
+//        loginImageShadowView.layer.shadowOpacity = Shadow_Opacity
+//        loginImageShadowView.layer.shadowColor = UIColor.gray.cgColor
         
         getVersionInfo()
         getBannerInfo()
@@ -78,7 +79,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         case "COMM0101", "COMM0102":
             super.didResponse(description, response)
             featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
-            updateLoginStatus()
+            updateLoginStatus(false)
             
         case "COMM0201":
             var bannerList = [BannerStructure]()
@@ -121,8 +122,9 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                         }
                     }
                 }
-                if let showLaunchAppMsg = data["showLaunchAppMsg"] as? String, showLaunchAppMsg == "Y" { //App啟動時是否顯示金管會要求訊息
+                if let showLaunchAppMsg = data["showLaunchAppMsg"] as? String, showLaunchAppMsg == "Y", SecurityUtility.utility.readFileByKey(SetKey: File_FirstOpen_Key) == nil { //App啟動時是否顯示金管會要求訊息
                     showErrorMessage(ErrorMsg_AntivirusSoftware_Title, ErrorMsg_AntivirusSoftware_Content)
+                    SecurityUtility.utility.writeFileByKey("N", SetKey: File_FirstOpen_Key)
                 }
             }
             else {
@@ -159,6 +161,21 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             logoImage = UIImage(named: ImageName.DefaultLogo.rawValue)
             super.didResponse(description, response)
             
+        case "Home\(TransactionID_Description)":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                getCurrentAmount(tranId)
+            }
+            else {
+                super.didResponse(description, response)
+            }
+        case "ACCT0103":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let TotalBalance = data["TotalBalance"] as? String {
+                accountBalanceLabel.text = "活存總餘額 \(TotalBalance.separatorThousand())"
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
         default: super.didResponse(description, response)
         }
     }
@@ -170,26 +187,26 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         case .FeatureID_Edit:
             (controller as! EditViewController).setInitial(true, setShowList: AuthorizationManage.manage.GetPlatformList(.Edit_Type)!, setAddList: AuthorizationManage.manage.GetPlatformList(.User_Type) ?? AuthorizationManage.manage.GetPlatformList(.Default_Type)!)
             
-        case .FeatureID_News:
-            var centerNews:[PromotionStruct]? = nil
-            var bankNews:[PromotionStruct]? = nil
-            if centerNewsList != nil {
-                centerNews = [PromotionStruct]()
-                for index in centerNewsList! {
-                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String, let ID = index["CB_ID"] as? String {
-                        centerNews?.append(PromotionStruct(title, date, "", url, ID))
-                    }
-                }
-            }
-            if bankNewsList != nil {
-                bankNews = [PromotionStruct]()
-                for index in bankNewsList! {
-                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String, let ID = index["CB_ID"] as? String {
-                        bankNews?.append(PromotionStruct(title, date, "", url, ID))
-                    }
-                }
-            }
-            (controller as! NewsViewController).SetNewsList(centerNews, bankNews)
+//        case .FeatureID_News:
+//            var centerNews:[PromotionStruct]? = nil
+//            var bankNews:[PromotionStruct]? = nil
+//            if centerNewsList != nil {
+//                centerNews = [PromotionStruct]()
+//                for index in centerNewsList! {
+//                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String, let ID = index["CB_ID"] as? String {
+//                        centerNews?.append(PromotionStruct(title, date, "", url, ID))
+//                    }
+//                }
+//            }
+//            if bankNewsList != nil {
+//                bankNews = [PromotionStruct]()
+//                for index in bankNewsList! {
+//                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String, let ID = index["CB_ID"] as? String {
+//                        bankNews?.append(PromotionStruct(title, date, "", url, ID))
+//                    }
+//                }
+//            }
+//            (controller as! NewsViewController).SetNewsList(centerNews, bankNews)
             
         case .FeatureID_TaxPayment:
             (controller as! TaxPaymentViewController).transactionId = tempTransactionId
@@ -204,7 +221,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         navigationController?.pushViewController(controller, animated: animated)
     }
 
-    func updateLoginStatus() {
+    func updateLoginStatus(_ getAmount:Bool = true) {
         /* Time out登出，不會viewWillAppear */
         navigationController?.navigationBar.isHidden = true
         if let statusView = UIApplication.shared.windows.first?.viewWithTag(ViewTag.View_Status.rawValue) {
@@ -215,6 +232,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         var list:[[String:Any]]? = nil
         if AuthorizationManage.manage.IsLoginSuccess() {
             if let info = AuthorizationManage.manage.GetLoginInfo() {
+                loginImageView.layer.cornerRadius = loginImageView.frame.width/2
                 loginImageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
             }
             if let info = AuthorizationManage.manage.getResponseLoginInfo() {
@@ -231,8 +249,13 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 getBankLogoInfo()
             }
             list = bankNewsList
+            /* 登入成功不需要發送 */
+            if getAmount {
+                getTransactionID("03001", "Home\(TransactionID_Description)")
+            }
         }
         else {
+            loginImageView.layer.cornerRadius = 0
             loginImageView.image = UIImage(named: ImageName.Login.rawValue)
             logoImage = nil
             logoImageView.image = UIImage(named: ImageName.DefaultLogo.rawValue)
@@ -247,6 +270,15 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 newsList.append("\(dic["CB_Title"] ?? "")")
             }
             (newsView.subviews.first as! AnnounceNews).setContentList(newsList, self)
+        }
+    }
+    /* 為了在「最新消息」中更新的列表，更新回首頁 */
+    func setNewsList(_ isCenter:Bool, _ list:[[String:Any]]?) {
+        if isCenter {
+            centerNewsList = list
+        }
+        else {
+            bankNewsList = list
         }
     }
     
@@ -280,6 +312,10 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             postRequest("Comm/COMM0404", "COMM0404", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07004","Operate":"queryData","hsienCode":loginInfo.cityCode,"bankCode":loginInfo.bankCode], false), AuthorizationManage.manage.getHttpHead(false))
         }
     }
+    
+    private func getCurrentAmount(_ tranID:String) { // 取得金額
+        postRequest("ACCT/ACCT0103", "ACCT0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"queryData","TransactionId":tranID], true), AuthorizationManage.manage.getHttpHead(true))
+    }
 
     // MARK: - StoryBoard Touch Event
     @IBAction func clickLoginBtn(_ sender: Any) {
@@ -287,7 +323,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             showLoginView()
         }
         else {
-            let alert = UIAlertView(title: LogOut_Title, message: "", delegate: self, cancelButtonTitle: Cancel_Title, otherButtonTitles: Determine_Title)
+            let alert = UIAlertView(title: UIAlert_Default_Title, message: Logout_Title, delegate: self, cancelButtonTitle: Cancel_Title, otherButtonTitles: Determine_Title)
             alert.tag = ViewTag.View_LogOut.rawValue
             alert.show()
         }
