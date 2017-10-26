@@ -165,7 +165,6 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             
         case "COMM0701":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let status = array.first?["CanTrans"] as? String, status == Can_Transaction_Status, let date = array.first?["CurrentDate"] as? String {
-
                 let TACTNO = topDropView?.getContentByType(.First) ?? ""
                 let TYPE = responseDepositList[curDepositTypeIndex!]["Type"] ?? ""
                 let PRDCD = periodDropView?.getContentByType(.First) ?? ""

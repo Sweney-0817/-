@@ -62,17 +62,21 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         setShadowView(m_vChooseTypeView)
         
         // 開啟定位
-        if CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            locationManager = CLLocationManager()
-            locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager?.delegate = self
-            if CLLocationManager.authorizationStatus() == .notDetermined  {
-                locationManager?.requestWhenInUseAuthorization()
-            }
-        }
-        else {
-            locationManager?.requestWhenInUseAuthorization()
-        }
+//        if CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+//            locationManager = CLLocationManager()
+//            locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+//            locationManager?.delegate = self
+//            if CLLocationManager.authorizationStatus() == .notDetermined  {
+//                locationManager?.requestWhenInUseAuthorization()
+//            }
+//        }
+//        else {
+//            locationManager?.requestWhenInUseAuthorization()
+//        }
+        locationManager = CLLocationManager()
+        locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        locationManager?.delegate = self
+        locationManager?.requestWhenInUseAuthorization()
         
         setLoading(true)
         postRequest("Info/INFO0302", "INFO0302", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07053","Operate":"getListInfo"], false), AuthorizationManage.manage.getHttpHead(false))
@@ -100,7 +104,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
             list.append([Response_Key:"地址",Response_Value:curData[m_iSelectedIndex!].address ?? ""])
             list.append([Response_Key:"電話",Response_Value:curData[m_iSelectedIndex!].phone ?? ""])
             list.append([Response_Key:"傳真",Response_Value:curData[m_iSelectedIndex!].fax ?? ""])
-            controller.setData(list, curData[m_iSelectedIndex!].phone ?? "", curLocation)
+            controller.setData(list, curData[m_iSelectedIndex!].phone ?? "", curData[m_iSelectedIndex!].location ?? curLocation)
         }
     }
     

@@ -331,15 +331,20 @@ let Memo_Color = UIColor(red: 130/255, green: 179/255, blue: 66/255, alpha: 1)
 let Cell_Title_Color = UIColor(red: 127/255, green: 127/255, blue: 127/255, alpha: 1)
 let Cell_Detail_Color = UIColor.black
 let Loading_Background_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 0.3)
-let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFont.systemFont(ofSize: CGFloat(18))
 let Disable_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 0.6)
-let Layer_BorderWidth:CGFloat = 1
-let Layer_BorderRadius:CGFloat = 5
 let ToolBar_tintColor = UIColor.blue
 let ToolBar_barTintColor = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
+let NavigationBar_Color = UIColor(red: 46/255, green: 134/255, blue: 201/255, alpha: 1)
+
+// MARK: - 畫面顯示定義
+let Layer_BorderWidth:CGFloat = 1
+let Layer_BorderRadius:CGFloat = 5
 let ToolBar_Title_Weight:CGFloat = 100
 let PickView_Height:CGFloat = 200
-let NavigationBar_Color = UIColor(red: 46/255, green: 134/255, blue: 201/255, alpha: 1)
+let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFont.systemFont(ofSize: CGFloat(18))
+/*  為了因應4吋以下而做的調整 */
+let AgriBank_Scale = UIScreen.main.bounds.width / CGFloat(375)
+let Scale_Default_Size = UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(18)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(18))
 
 // MARK: - Define
 let SystemCell_Identify = "System_Cell"
@@ -405,7 +410,6 @@ let AgriBank_AppUid = Bundle.main.bundleIdentifier ?? ""
 let AgriBank_TimeOut:TimeInterval = 300
 
 // MARK: - Cell定義
-let Cell_Font_Size = UIFont.systemFont(ofSize: 18)
 enum CellStatus {
     case Hide
     case Expanding
@@ -431,7 +435,7 @@ let Response_Key = "Key"
 let Response_Value = "Value"
 let Currency_TWD = "00"             // 幣別代碼 00:台幣
 let Account_EnableTrans = "2"       // 此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
-let Can_Transaction_Status = "1"    // 是否可進行交易 0:不可交易 1:可交易
+let Can_Transaction_Status = "0"    // 是否可進行交易 0:可交易 1:不可交易
 let Account_Saving_Type = "P"       // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Check_Type = "K"        // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Deposit_Type = "M"      // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M

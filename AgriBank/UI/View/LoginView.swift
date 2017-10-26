@@ -44,6 +44,8 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     private var loginInfo = LoginStrcture()
     private var imgConfirm:ImageConfirmView? = nil
     private var sAccount = ""
+    private var curPickerRow1 = 0
+    private var curPickerRow2 = 0
     
     // MARK: - Override
     override func layoutSubviews() {
@@ -88,6 +90,18 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
                     break
                 }
             }
+            for index in 0..<list.count {
+                if let array = list[index][city] {
+                    curPickerRow1 = index
+                    for i in 0..<array.count {
+                        if array[i] == bank {
+                            curPickerRow2 = i
+                            break
+                        }
+                    }
+                    break
+                }
+            }
             if !city.isEmpty && !bank.isEmpty {
                 locationTextfield.text = city + " " + bank
             }
@@ -127,7 +141,8 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         pickerView.dataSource = self
         pickerView.delegate = self
         pickerView.backgroundColor = .white
-        pickerView.selectRow(0, inComponent: 0, animated: false)
+        pickerView.selectRow(curPickerRow1, inComponent: 0, animated: false)
+        pickerView.selectRow(curPickerRow2, inComponent: 1, animated: false)
         // ToolBar
         let toolBar = UIToolbar()
         toolBar.barTintColor = ToolBar_barTintColor
@@ -289,9 +304,9 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
             return list.count
         }
         else {
-            let dic = list[pickerView.selectedRow(inComponent: 0)]
+            let dic = list[curPickerRow1]
             let city = [String](dic.keys).first ?? ""
-            return (dic[city]?.count)!
+            return dic[city]?.count ?? 0
         }
     }
     
@@ -302,15 +317,26 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
             return [String](dic.keys).first
         }
         else {
-            let dic = list[pickerView.selectedRow(inComponent: 0)]
-            let city = [String](dic.keys).first ?? ""
-            return dic[city]?[row]
+            if pickerView.selectedRow(inComponent: 0) < list.count {
+                let dic = list[pickerView.selectedRow(inComponent: 0)]
+                let city = [String](dic.keys).first ?? ""
+                if let count = dic[city]?.count, row < count {
+                    return dic[city]?[row]
+                }
+            }
         }
+        return nil
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if component == 0 {
+            curPickerRow1 = row
+            curPickerRow2 = 0
             pickerView.reloadComponent(1)
+            pickerView.selectRow(curPickerRow2, inComponent: 1, animated: false)
+        }
+        else {
+            curPickerRow2 = row
         }
     }
     

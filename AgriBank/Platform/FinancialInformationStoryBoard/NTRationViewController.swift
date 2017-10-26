@@ -40,6 +40,8 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     private let m_tfPicker:UITextField = UITextField()
     private var m_PickerData = [[String:[String]]]()
     private var bankCode = [String:String]()
+    private var curPickerRow1 = 0
+    private var curPickerRow2 = 0
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -155,6 +157,18 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
                     }
                 }
                 if cCity != nil && cBank != nil {
+                    for index in 0..<m_PickerData.count {
+                        if let array = m_PickerData[index][cCity!] {
+                            curPickerRow1 = index
+                            for i in 0..<array.count {
+                                if array[i] == cBank! {
+                                    curPickerRow2 = i
+                                    break
+                                }
+                            }
+                            break
+                        }
+                    }
                     m_DDPlace?.setOneRow(NTRationView_Bank_Title, cCity!+" "+cBank!)
                     setLoading(true)
                     postRequest("Mang/MANG0101", "MANG0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"06001","Operate":"queryData","BR_CODE":"\(bCode)"], false), AuthorizationManage.manage.getHttpHead(false))
@@ -200,9 +214,6 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
     }
     
     private func setPicker() {
-        if m_PickerData.count == 0 {
-            return
-        }
         m_tfPicker.delegate = self
         m_vPlace.addSubview(m_tfPicker)
 
@@ -211,7 +222,8 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         pickerView.dataSource = self
         pickerView.delegate = self
         pickerView.backgroundColor = .white
-        pickerView.selectRow(0, inComponent: 0, animated: false)
+        pickerView.selectRow(curPickerRow1, inComponent: 0, animated: false)
+        pickerView.selectRow(curPickerRow2, inComponent: 1, animated: false)
         // ToolBar
         let toolBar = UIToolbar()
         toolBar.barTintColor = ToolBar_barTintColor
@@ -348,9 +360,9 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
             return m_PickerData.count
         }
         else {
-            let a = m_PickerData[pickerView.selectedRow(inComponent: 0)]
+            let a = m_PickerData[curPickerRow1]
             let city = [String](a.keys).first ?? ""
-            return (a[city]?.count)!
+            return a[city]?.count ?? 0
         }
     }
     
@@ -361,15 +373,26 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
             return [String](a.keys).first
         }
         else {
-            let a = m_PickerData[pickerView.selectedRow(inComponent: 0)]
-            let city = [String](a.keys).first ?? ""
-            return a[city]?[row]
+            if pickerView.selectedRow(inComponent: 0) < m_PickerData.count {
+                let a = m_PickerData[pickerView.selectedRow(inComponent: 0)]
+                let city = [String](a.keys).first ?? ""
+                if let count = a[city]?.count, row < count {
+                    return a[city]?[row]
+                }
+            }
         }
+        return nil
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if component == 0 {
+            curPickerRow1 = row
+            curPickerRow2 = 0
             pickerView.reloadComponent(1)
+            pickerView.selectRow(curPickerRow2, inComponent: 1, animated: false)
+        }
+        else {
+            curPickerRow2 = row
         }
     }
 }

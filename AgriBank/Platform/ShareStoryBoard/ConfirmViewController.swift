@@ -42,16 +42,19 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         if isNeedOTP {
             m_btnConfirm.setTitle(dataOTP?.confirmBtnName, for: .normal)
             // 開啟定位
-            if CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-                locationManager = CLLocationManager()
-                locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-                if CLLocationManager.authorizationStatus() == .notDetermined  {
-                    locationManager?.requestWhenInUseAuthorization()
-                }
-            }
-            else {
-                locationManager?.requestWhenInUseAuthorization()
-            }
+//            if CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+//                locationManager = CLLocationManager()
+//                locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+//                if CLLocationManager.authorizationStatus() == .notDetermined  {
+//                    locationManager?.requestWhenInUseAuthorization()
+//                }
+//            }
+//            else {
+//                locationManager?.requestWhenInUseAuthorization()
+//            }
+            locationManager = CLLocationManager()
+            locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager?.requestWhenInUseAuthorization()
         }
         else {
             m_btnConfirm.setTitle(data?.confirmBtnName, for: .normal)
@@ -72,7 +75,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         
         getImageConfirm(transactionId)
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -103,7 +106,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                                 self.postRequest((self.dataOTP?.checkRequest?.strMethod)!, (self.dataOTP?.checkRequest?.strSessionDescription)!, self.dataOTP?.checkRequest?.httpBody, self.dataOTP?.checkRequest?.loginHttpHead, self.dataOTP?.checkRequest?.strURL, (self.dataOTP?.checkRequest?.needCertificate)!, (self.dataOTP?.checkRequest?.isImage)!)
                             }
                             else {
-                                let alert = UIAlertController(title: UIAlert_Default_Title, message: "\(ErrorMsg_GenerateOTP_Faild) \((otp?.resultCode)!)", preferredStyle: .alert)
+                                let alert = UIAlertController(title: UIAlert_Default_Title, message: "\(ErrorMsg_GenerateOTP_Faild) \((otp?.resultCode)!.rawValue)", preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
                                     self.enterFeatureByID(.FeatureID_Home, true)
                                 })
@@ -111,7 +114,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                             }
                         }
                         else {
-                            let alert = UIAlertController(title: UIAlert_Default_Title, message: "\(ErrorMsg_SignTask_Faild) \(resultCode)", preferredStyle: .alert)
+                            let alert = UIAlertController(title: UIAlert_Default_Title, message: "\(ErrorMsg_SignTask_Faild) \(resultCode.rawValue)", preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
                                 self.enterFeatureByID(.FeatureID_Home, true)
                             })
@@ -161,7 +164,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         else {
             VaktenManager.sharedInstance().cancelTaskOperation(with: dataOTP?.task) { resultCode in
                 if !VIsSuccessful(resultCode) {
-                    self.showErrorMessage(nil, "\(ErrorMsg_CancelTask_Faild) \(resultCode)")
+                    self.showErrorMessage(nil, "\(ErrorMsg_CancelTask_Faild) \(resultCode.rawValue)")
                 }
             }
             self.navigationController?.popViewController(animated: true)

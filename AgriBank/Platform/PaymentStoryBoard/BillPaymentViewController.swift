@@ -139,7 +139,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
                         self.payBill(tasks! as! [VTask], Id)
                     }
                     else {
-                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode)")
+                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode.rawValue)")
                     }
                 }
             }

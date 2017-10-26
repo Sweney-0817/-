@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     var enterBackgroundTime:Date? = nil
     var interval:TimeInterval = 0
     
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // 連線暫存檔清除
         SecurityUtility.utility.removeConnectCatche()
@@ -69,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
             logoutTimer = nil
         }
         
-        print("applicationDidEnterBackground \(String(describing: logoutTimer?.fireDate))  \(String(describing: enterBackgroundTime)) \(interval)")
+//        print("applicationDidEnterBackground \(String(describing: logoutTimer?.fireDate))  \(String(describing: enterBackgroundTime)) \(interval)")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

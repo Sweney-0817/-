@@ -412,9 +412,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
     }
     
     func postLogout() { // 登出電文
+        postRequest("Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(false))
         AuthorizationManage.manage.setLoginStatus(false)
         curFeatureID = nil
-        postRequest("Comm/COMM0102", "COMM0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01012","Operate":"commitTxn"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
     func didResponse(_ description:String, _ response: NSDictionary) {
@@ -591,7 +591,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                             self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                         }
                         else {
-                            self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode)")
+                            self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode.rawValue)")
                         }
                     }
                 }

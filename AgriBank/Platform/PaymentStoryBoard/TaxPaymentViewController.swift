@@ -120,7 +120,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
                         self.payTax(tasks! as! [VTask], Id)
                     }
                     else {
-                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode)")
+                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode.rawValue)")
                     }
                 }
             }
@@ -230,8 +230,8 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
         else if m_curDropDownView == m_DDKind {
             if let item = typeItemList[m_DDType?.getContentByType(.First) ?? ""] {
                 for dic in item {
-                    if let name = dic["PAYTYPE"] {
-                        actionSheet.addButton(withTitle: name)
+                    if let name = dic["PAYTYPE"], let code = dic["PAYCODE"] {
+                        actionSheet.addButton(withTitle: code+"-"+name)
                     }
                 }
             }
@@ -296,7 +296,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
                     var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":TYPE,"OUTACT":OUTACT,"CORP":CORP,"IDNO":IDNO,"TXAMT":TXAMT,"taskId":taskID,"otp":""],task: task)
                     
                     dataConfirm.list?.append([Response_Key: "繳稅總類", Response_Value:ACTTYPE])
-                    dataConfirm.list?.append([Response_Key: "繳稅類別", Response_Value:PAYTYPE])
+                    dataConfirm.list?.append([Response_Key: "繳稅類別", Response_Value:PAYTYPECODE+"-"+PAYTYPE])
                     dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:OUTACT])
                     dataConfirm.list?.append([Response_Key: "機關代號", Response_Value:CORP])
                     dataConfirm.list?.append([Response_Key: "身分證號碼", Response_Value:IDNO])

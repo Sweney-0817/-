@@ -182,7 +182,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "期間", Response_Value:""])
             }
             if let INTRT = resultList["INTRT"] as? String {
-                list.append([Response_Key: "利率", Response_Value:INTRT])
+                list.append([Response_Key: "利率", Response_Value:INTRT+"%"])
             }
             else {
                 list.append([Response_Key: "利率", Response_Value:""])
@@ -261,7 +261,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "利率型態", Response_Value:""])
             }
             if let IRT = resultList["IRT"] as? Double {
-                list.append([Response_Key: "計息利率(%)", Response_Value:String(IRT)])
+                list.append([Response_Key: "計息利率(%)", Response_Value:String(IRT)+"%"])
             }
             else {
                 list.append([Response_Key: "計息利率(%)", Response_Value:""])

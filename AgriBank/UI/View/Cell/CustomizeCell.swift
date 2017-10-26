@@ -228,8 +228,6 @@ class ResultCell: UITableViewCell {
     }
 }
 
-let NTRationCell_ScaleSize = (UIScreen.main.bounds.width / CGFloat(375)) * CGFloat(18)
-let NTRationCell_Font = UIFont(name: "PingFangTC-Medium", size: FeatureWall_PageControl_ScaleSize) ?? UIFont.systemFont(ofSize: FeatureWall_PageControl_ScaleSize)
 class NTRationCell: UITableViewCell {
     @IBOutlet weak var m_lbTitle: UILabel!
     @IBOutlet weak var m_lbData1: UILabel!
@@ -247,9 +245,9 @@ class NTRationCell: UITableViewCell {
         m_lbTitle.text = title
         m_lbData1.text = data1
         m_lbData2.text = data2
-        m_lbTitle.font = NTRationCell_Font
-        m_lbData1.font = NTRationCell_Font
-        m_lbData2.font = NTRationCell_Font
+        m_lbTitle.font = Scale_Default_Size
+        m_lbData1.font = Scale_Default_Size
+        m_lbData2.font = Scale_Default_Size
     }
 }
 

@@ -89,6 +89,7 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
                     do {
                         let jsonDic = try JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as! NSDictionary
                         self.delegate?.didRecvdResponse(session.sessionDescription!, jsonDic)
+                        print( String(data: jsonData, encoding: .utf8) ?? session.sessionDescription!)
                     }
                     catch {
                         self.delegate?.didFailedWithError(error)

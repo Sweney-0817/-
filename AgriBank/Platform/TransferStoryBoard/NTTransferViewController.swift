@@ -220,7 +220,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                         self.transNonPredesignated(tasks! as! [VTask], Id)
                     }
                     else {
-                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode)")
+                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode.rawValue)")
                     }
                 }
             }
@@ -450,7 +450,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                         }
                         else {
                             self.SetBtnColor(true)
-                            self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode)")
+                            self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode.rawValue)")
                             self.setLoading(false)
                         }
                     }

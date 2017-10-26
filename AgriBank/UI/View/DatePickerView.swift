@@ -50,7 +50,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         
         let startLabel = UILabel(frame: CGRect(x: xStrart, y: yStart, width: pickerWidth, height: titleHeight))
         startLabel.text = "起始日"
-        startLabel.font = Cell_Font_Size
+        startLabel.font = Default_Font
         startLabel.backgroundColor = Green_Color
         startLabel.textAlignment = .center
         startLabel.textColor = .white
@@ -63,7 +63,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             if inputDate1 != nil {
                 (startDatePicker as! UIDatePicker).minimumDate = inputDate1!.minDate
                 (startDatePicker as! UIDatePicker).maximumDate = inputDate1!.maxDate
-                (startDatePicker as! UIDatePicker).date = inputDate1!.curDate ?? Date()
+                (startDatePicker as! UIDatePicker).date = inputDate1!.curDate ?? Date(timeIntervalSinceNow: TimeInterval(NSTimeZone.system.secondsFromGMT(for: Date())))
             }
         }
         else {
@@ -77,7 +77,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         
         let endLabel = UILabel(frame: CGRect(x: xStrart, y: startDatePicker.frame.maxY+space, width: pickerWidth, height: titleHeight))
         endLabel.text = "截止日"
-        endLabel.font = Cell_Font_Size
+        endLabel.font = Default_Font
         endLabel.backgroundColor = Green_Color
         endLabel.textAlignment = .center
         endLabel.textColor = .white
@@ -90,7 +90,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             if inputDate2 != nil {
                 (endDatePicker as! UIDatePicker).minimumDate = inputDate2!.minDate
                 (endDatePicker as! UIDatePicker).maximumDate = inputDate2!.maxDate
-                (endDatePicker as! UIDatePicker).date = inputDate2!.curDate ?? Date()
+                (endDatePicker as! UIDatePicker).date = inputDate2!.curDate ?? Date(timeIntervalSinceNow: TimeInterval(NSTimeZone.system.secondsFromGMT(for: Date())))
             }
         }
         else {
@@ -125,7 +125,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         
         let startLabel = UILabel(frame: CGRect(x: xStrart, y: yStart, width: pickerWidth, height: titleHeight))
         startLabel.text = "特定日期"
-        startLabel.font = Cell_Font_Size
+        startLabel.font = Default_Font
         startLabel.backgroundColor = Green_Color
         startLabel.textAlignment = .center
         startLabel.textColor = .white
@@ -138,7 +138,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             if inputDate != nil {
                 (startDatePicker as! UIDatePicker).minimumDate = inputDate!.minDate
                 (startDatePicker as! UIDatePicker).maximumDate = inputDate!.maxDate
-                (startDatePicker as! UIDatePicker).date = inputDate!.curDate ?? Date()
+                (startDatePicker as! UIDatePicker).date = inputDate!.curDate ?? Date(timeIntervalSinceNow: TimeInterval(NSTimeZone.system.secondsFromGMT(for: Date())))
             }
         }
         else {

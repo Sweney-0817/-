@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -135,18 +135,17 @@
                                 <color key="backgroundColor" red="0.27058823529411763" green="0.65098039215686276" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.27058823529411763" green="0.65098039215686276" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="aQQ-gr-QgR" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="00a-sg-fcp"/>
                             <constraint firstItem="OEo-ZT-CoH" firstAttribute="bottom" secondItem="AMg-Sk-J65" secondAttribute="bottom" id="6y3-4H-pBq"/>
-                            <constraint firstItem="vga-Qj-CIm" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="8M6-bu-Qgq"/>
                             <constraint firstItem="aQQ-gr-QgR" firstAttribute="top" secondItem="22X-cP-5eQ" secondAttribute="bottom" id="946-Ge-V5O"/>
                             <constraint firstAttribute="trailing" secondItem="22X-cP-5eQ" secondAttribute="trailing" id="9gh-5N-ngq"/>
                             <constraint firstAttribute="trailingMargin" secondItem="MfV-fU-wHy" secondAttribute="trailing" constant="5" id="9ph-w0-IwS"/>
                             <constraint firstItem="OEo-ZT-CoH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Ajm-Nw-T1q"/>
                             <constraint firstItem="bo1-rE-Ghf" firstAttribute="top" secondItem="1Vv-uv-oXM" secondAttribute="bottom" id="CAb-zv-JHr"/>
-                            <constraint firstItem="O8R-Zi-iV9" firstAttribute="top" secondItem="vga-Qj-CIm" secondAttribute="bottom" id="CMt-rj-iAY"/>
                             <constraint firstItem="22X-cP-5eQ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="FUB-Ni-sva"/>
+                            <constraint firstItem="vga-Qj-CIm" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="IIW-aY-7Mv"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Ptf-ia-GhD" secondAttribute="leading" id="KhX-vz-6g1"/>
                             <constraint firstAttribute="trailing" secondItem="bo1-rE-Ghf" secondAttribute="trailing" id="L6y-K6-V9I"/>
                             <constraint firstItem="22X-cP-5eQ" firstAttribute="top" secondItem="Ptf-ia-GhD" secondAttribute="bottom" constant="10" id="R97-xE-BWN"/>
@@ -168,6 +167,7 @@
                             <constraint firstItem="MfV-fU-wHy" firstAttribute="centerY" secondItem="bo1-rE-Ghf" secondAttribute="centerY" id="q2H-pF-2I9"/>
                             <constraint firstItem="AMg-Sk-J65" firstAttribute="top" secondItem="hHo-em-gMq" secondAttribute="bottom" constant="5" id="vbj-m1-fUJ"/>
                             <constraint firstItem="JDV-py-Ofg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="15" id="yBX-sU-7gu"/>
+                            <constraint firstItem="O8R-Zi-iV9" firstAttribute="top" secondItem="vga-Qj-CIm" secondAttribute="bottom" id="z9M-vj-E7b"/>
                         </constraints>
                     </view>
                     <connections>
@@ -280,6 +280,7 @@
                                     <constraint firstAttribute="height" constant="140" id="Rqn-5G-bIS"/>
                                     <constraint firstAttribute="trailing" secondItem="9tB-JY-1NN" secondAttribute="trailing" constant="5" id="Twt-BV-Piw"/>
                                     <constraint firstAttribute="bottom" secondItem="kL9-03-c5d" secondAttribute="bottom" id="V1d-m6-kkq"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kL9-03-c5d" secondAttribute="trailing" constant="20" symbolic="YES" id="W3s-7n-IFG"/>
                                     <constraint firstItem="kL9-03-c5d" firstAttribute="top" secondItem="Lop-mb-AFg" secondAttribute="bottom" id="YEC-mt-QMw"/>
                                     <constraint firstItem="oIP-SP-GCV" firstAttribute="centerX" secondItem="8uE-He-Zg3" secondAttribute="centerX" id="cCl-tH-WNe"/>
                                     <constraint firstItem="9tB-JY-1NN" firstAttribute="centerY" secondItem="kL9-03-c5d" secondAttribute="centerY" id="j3p-FD-8UM"/>
@@ -289,7 +290,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.74509803921568629" green="0.74509803921568629" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="GaG-j6-0Rn" firstAttribute="top" secondItem="8uE-He-Zg3" secondAttribute="bottom" constant="1" id="Lio-rr-Y4e"/>
                             <constraint firstAttribute="trailing" secondItem="GaG-j6-0Rn" secondAttribute="trailing" id="M42-xn-tq4"/>

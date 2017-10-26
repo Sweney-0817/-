@@ -29,7 +29,6 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
     private var accountList:[AccountStruct]? = nil      // 帳號列表
     private var list:[String:Any]? = nil                // 由LoanPrincipalInterestViewController將資訊傳進來
     private var inAccount:String? = nil                 // 放款帳戶
-    private var curDate = ""                            // 目前時間
     
     // MARK: - Public
     func setList(_ list:[String:Any]?, _ inAccount:String?) {
@@ -86,12 +85,52 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
             else {
                 super.didResponse(description, response)
             }
-            setLoading(true)
-            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
             
         case "COMM0701":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let date = array.first?["CurrentDate"] as? String {
-                curDate = date.replacingOccurrences(of: "/", with: "")
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let date = array.first?["CurrentDate"] as? String, let status = array.first?["CanTrans"] as? String, status == Can_Transaction_Status {
+                let curDate = date.replacingOccurrences(of: "/", with: "")
+                
+                let outAccount = topDropView?.getContentByType(.First) ?? ""
+                let inAccount = self.inAccount ?? ""
+                var APAMT = ""
+                if let value = list?["APAMT"] as? String {
+                    APAMT = value
+                }
+                var ACTBAL = ""
+                if let value = list?["ACTBAL"] as? String {
+                    ACTBAL = value
+                }
+                let TOTAL = needPayAmountLabel.text ?? ""
+                let TPRIAMT = needPayPrincipalLabel.text ?? ""
+                let TINTAMT = needPayInterestLabel.text ?? ""
+                let TODIAMT = needPayDelayInterestLabel.text ?? ""
+                let TDFAMT = needPayBreakContractLabel.text ?? ""
+                let SINTAMT = lastShortAmountLabel.text ?? ""
+                var ACRECAMT = ""
+                if let value = list?["ACRECAMT"] as? String {
+                    ACRECAMT = value
+                }
+                var FITIRT = ""
+                if let array = list?["Result"] as? [[String:Any]], let fitirt = array.first?["FITIRT"] as? String {
+                    FITIRT = fitirt
+                }
+                let DFDAYS = breakContractDayLabel.text ?? ""
+                
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0602", strSessionDescription: "TRAN0602", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"commitTxn","TransactionId":transactionId,"PAYACTNO":outAccount,"ACTNOSQNO":inAccount,"APAMT":APAMT,"ACTBAL":ACTBAL,"TOTAL":TOTAL.replacingOccurrences(of: ",", with: ""),"TPRIAMT":TPRIAMT.replacingOccurrences(of: ",", with: ""),"TINTAMT":TINTAMT.replacingOccurrences(of: ",", with: ""),"TODIAMT":TODIAMT.replacingOccurrences(of: ",", with: ""),"TDFAMT":TDFAMT.replacingOccurrences(of: ",", with: ""),"SINTAMT":SINTAMT.replacingOccurrences(of: ",", with: ""),"ACRECAMT":ACRECAMT,"FITIRT":FITIRT,"DFDAYS":DFDAYS,"VLDATE":curDate], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                
+                var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認繳交", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+                dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:outAccount])
+                dataConfirm.list?.append([Response_Key: "放款帳號", Response_Value:inAccount])
+                dataConfirm.list?.append([Response_Key: "計算期間", Response_Value:calculatePeroidLabel.text ?? ""])
+                dataConfirm.list?.append([Response_Key: "利率", Response_Value:rateLabel.text ?? ""])
+                dataConfirm.list?.append([Response_Key: "違約天數", Response_Value:DFDAYS])
+                dataConfirm.list?.append([Response_Key: "應繳本金", Response_Value:TPRIAMT])
+                dataConfirm.list?.append([Response_Key: "應繳違約金", Response_Value:TDFAMT])
+                dataConfirm.list?.append([Response_Key: "應繳利息", Response_Value:TINTAMT])
+                dataConfirm.list?.append([Response_Key: "應繳逾期息", Response_Value:TODIAMT])
+                dataConfirm.list?.append([Response_Key: "上次短收金額", Response_Value:SINTAMT])
+                dataConfirm.list?.append([Response_Key: "應繳總額", Response_Value:TOTAL])
+                enterConfirmResultController(true, dataConfirm, true)
             }
             else {
                 showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
@@ -103,12 +142,12 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
     
     // MARK: - Private
     private func inputIsCorrect() -> Bool {
-        if topDropView?.getContentByType(.First) == Choose_Title {
-            showErrorMessage(nil, "\(Choose_Title)\(topDropView?.m_lbFirstRowTitle.text ?? "")")
-            return false
-        }
         if !AuthorizationManage.manage.getPayLoanStatus() {
             showErrorMessage(nil, ErrorMsg_NoAuth)
+            return false
+        }
+        if topDropView?.getContentByType(.First) == Choose_Title {
+            showErrorMessage(nil, "\(Choose_Title)\(topDropView?.m_lbFirstRowTitle.text ?? "")")
             return false
         }
         return true
@@ -117,47 +156,8 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
     // MARK: - StoryBoard Touch Event
     @IBAction func clickSendBtn(_ sender: Any) {
         if inputIsCorrect() {
-            let outAccount = topDropView?.getContentByType(.First) ?? ""
-            let inAccount = self.inAccount ?? ""
-            var APAMT = ""
-            if let value = list?["APAMT"] as? String {
-                APAMT = value
-            }
-            var ACTBAL = ""
-            if let value = list?["ACTBAL"] as? String {
-                ACTBAL = value
-            }
-            let TOTAL = needPayAmountLabel.text ?? ""
-            let TPRIAMT = needPayPrincipalLabel.text ?? ""
-            let TINTAMT = needPayInterestLabel.text ?? ""
-            let TODIAMT = needPayDelayInterestLabel.text ?? ""
-            let TDFAMT = needPayBreakContractLabel.text ?? ""
-            let SINTAMT = lastShortAmountLabel.text ?? ""
-            var ACRECAMT = ""
-            if let value = list?["ACRECAMT"] as? String {
-                ACRECAMT = value
-            }
-            var FITIRT = ""
-            if let array = list?["Result"] as? [[String:Any]], let fitirt = array.first?["FITIRT"] as? String {
-                FITIRT = fitirt
-            }
-            let DFDAYS = breakContractDayLabel.text ?? ""
-            
-            let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0602", strSessionDescription: "TRAN0602", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"commitTxn","TransactionId":transactionId,"PAYACTNO":outAccount,"ACTNOSQNO":inAccount,"APAMT":APAMT,"ACTBAL":ACTBAL,"TOTAL":TOTAL.replacingOccurrences(of: ",", with: ""),"TPRIAMT":TPRIAMT.replacingOccurrences(of: ",", with: ""),"TINTAMT":TINTAMT.replacingOccurrences(of: ",", with: ""),"TODIAMT":TODIAMT.replacingOccurrences(of: ",", with: ""),"TDFAMT":TDFAMT.replacingOccurrences(of: ",", with: ""),"SINTAMT":SINTAMT.replacingOccurrences(of: ",", with: ""),"ACRECAMT":ACRECAMT,"FITIRT":FITIRT,"DFDAYS":DFDAYS,"VLDATE":curDate], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
-            
-            var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認繳交", resultBtnName: "繼續交易", checkRequest: confirmRequest)
-            dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:outAccount])
-            dataConfirm.list?.append([Response_Key: "放款帳號", Response_Value:inAccount])
-            dataConfirm.list?.append([Response_Key: "計算期間", Response_Value:calculatePeroidLabel.text ?? ""])
-            dataConfirm.list?.append([Response_Key: "利率", Response_Value:rateLabel.text ?? ""])
-            dataConfirm.list?.append([Response_Key: "違約天數", Response_Value:DFDAYS])
-            dataConfirm.list?.append([Response_Key: "應繳本金", Response_Value:TPRIAMT])
-            dataConfirm.list?.append([Response_Key: "應繳違約金", Response_Value:TDFAMT])
-            dataConfirm.list?.append([Response_Key: "應繳利息", Response_Value:TINTAMT])
-            dataConfirm.list?.append([Response_Key: "應繳逾期息", Response_Value:TODIAMT])
-            dataConfirm.list?.append([Response_Key: "上次短收金額", Response_Value:SINTAMT])
-            dataConfirm.list?.append([Response_Key: "應繳總額", Response_Value:TOTAL])
-            enterConfirmResultController(true, dataConfirm, true)
+            setLoading(true)
+            postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
         }
     }
 

@@ -33,7 +33,7 @@
                             <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UR9-g9-rkL">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="UR9-g9-rkL">
                             <rect key="frame" x="120.5" y="-0.5" width="219.5" height="61"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
@@ -85,6 +85,7 @@
                 <outlet property="m_lbFirstRowTitle" destination="BUZ-Gc-JxA" id="Tvf-SA-t3g"/>
                 <outlet property="titleWeight" destination="Ubr-SF-wx5" id="2pT-R9-VL0"/>
             </connections>
+            <point key="canvasLocation" x="35.5" y="54"/>
         </view>
     </objects>
     <resources>

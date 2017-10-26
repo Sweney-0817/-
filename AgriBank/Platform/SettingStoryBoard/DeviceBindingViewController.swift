@@ -30,6 +30,8 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     private var cityCode = [String:String]()
     private var bindingSuccess = false
     private var resultList:[[String:String]]? = nil
+    private var curPickerRow1 = 0
+    private var curPickerRow2 = 0
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -94,6 +96,18 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
                         break
                     }
                 }
+                for index in 0..<bankList.count {
+                    if let array = bankList[index][city] {
+                        curPickerRow1 = index
+                        for i in 0..<array.count {
+                            if array[i] == bank {
+                                curPickerRow2 = i
+                                break
+                            }
+                        }
+                        break
+                    }
+                }
                 if !city.isEmpty && !bank.isEmpty {
                     topDropView?.setOneRow(DeviceBinding_Bank_Title, city + " " + bank)
                 }
@@ -110,7 +124,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
                     }
                     else {
                         self.resultList = [[String:String]]()
-                        self.resultList?.append([Response_Key:Error_Title,Response_Value:"\(resultCode)"])
+                        self.resultList?.append([Response_Key:Error_Title,Response_Value:"\(resultCode.rawValue)"])
                         self.performSegue(withIdentifier: DeviceBindingResult_Segue, sender: self)
                     }
                 }
@@ -137,7 +151,8 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
         pickerView.dataSource = self
         pickerView.delegate = self
         pickerView.backgroundColor = .white
-        pickerView.selectRow(0, inComponent: 0, animated: false)
+        pickerView.selectRow(curPickerRow1, inComponent: 0, animated: false)
+        pickerView.selectRow(curPickerRow2, inComponent: 1, animated: false)
         // ToolBar
         let toolBar = UIToolbar()
         toolBar.barTintColor = ToolBar_barTintColor
@@ -248,7 +263,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
                     self.postRequest("COMM/COMM0801", "COMM0801", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08011","Operate":"queryData","BR_CODE":bankCode,"ID_DATA":self.identifyTextfield.text!,"USER_ID":id,"PWD":pd,"ASSOCIATIONCODE":self.checkCodeTextfield.text!,"SessionId":uuid], true), AuthorizationManage.manage.getHttpHead(true))
                 }
                 else {
-                    self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode)")
+                    self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode.rawValue)")
                     self.setLoading(false)
                 }
             }
@@ -265,9 +280,9 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
             return bankList.count
         }
         else {
-            let dic = bankList[pickerView.selectedRow(inComponent: 0)]
+            let dic = bankList[curPickerRow1]
             let city = [String](dic.keys).first ?? ""
-            return (dic[city]?.count)!
+            return dic[city]?.count ?? 0
         }
     }
     
@@ -278,15 +293,26 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
             return [String](dic.keys).first
         }
         else {
-            let dic = bankList[pickerView.selectedRow(inComponent: 0)]
-            let city = [String](dic.keys).first ?? ""
-            return dic[city]?[row]
+            if pickerView.selectedRow(inComponent: 0) < bankList.count {
+                let dic = bankList[pickerView.selectedRow(inComponent: 0)]
+                let city = [String](dic.keys).first ?? ""
+                if let count = dic[city]?.count, row < count {
+                    return dic[city]?[row]
+                }
+            }
         }
+        return nil
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if component == 0 {
+            curPickerRow1 = row
+            curPickerRow2 = 0
             pickerView.reloadComponent(1)
+            pickerView.selectRow(curPickerRow2, inComponent: 1, animated: false)
+        }
+        else {
+            curPickerRow2 = row
         }
     }
     

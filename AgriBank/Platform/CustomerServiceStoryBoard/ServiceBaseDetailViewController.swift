@@ -10,9 +10,9 @@ import UIKit
 import CoreLocation
 
 let ServiceBaseDetail_Cell_Title_Weight:CGFloat = 50
-let ServiceBaseDetail_Map_URL = "https://www.google.com.tw/maps?addr="
+let ServiceBaseDetail_Map_URL = "https://maps.google.com/?q=@"
 
-class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
+class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UIWebViewDelegate {
     @IBOutlet weak var m_tvData: UITableView!
     @IBOutlet weak var callPhoneButton: UIButton!
     @IBOutlet weak var bottomView: UIView!
@@ -69,8 +69,10 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
     @IBAction func m_btnShowMapClick(_ sender: Any) {
         if mapWebView == nil {
             mapWebView = UIWebView(frame: view.frame)
+            mapWebView?.delegate = self
             view.addSubview(mapWebView!)
         }
+        setLoading(true)
         mapWebView?.loadRequest(URLRequest(url: URL(string: "\(ServiceBaseDetail_Map_URL)\(curLocation.latitude),\(curLocation.longitude)")!))
     }
     
@@ -94,5 +96,10 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
             mapWebView?.removeFromSuperview()
             mapWebView = nil
         }
+    }
+    
+    // MARK: - UIWebViewDelegate
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        setLoading(false)
     }
 }

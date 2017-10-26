@@ -17,8 +17,8 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     @IBOutlet weak var m_tfWebBankPassword: TextField!
     @IBOutlet weak var m_vWebBankPasswordView: UIView!
     @IBOutlet weak var m_vImageConfirmView: UIView!
-    var m_OneRow: OneRowDropDownView? = nil
-    var m_ImageConfirmView: ImageConfirmView? = nil
+    private var m_OneRow: OneRowDropDownView? = nil
+    private var m_ImageConfirmView: ImageConfirmView? = nil
     private var accountList:[AccountStruct]? = nil      // 帳號列表
     private var accountIndex:Int? = nil                 // 目前選擇轉出帳號
     private var password = ""

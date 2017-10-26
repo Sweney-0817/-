@@ -68,7 +68,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         getTransactionID("02041", TransactionID_Description)
         
         /*  規格需求  */
-        let date = Date()
+        let date = Date(timeIntervalSinceNow: TimeInterval(NSTimeZone.system.secondsFromGMT(for: Date())))
         let componenets = Calendar.current.dateComponents([.year, .month, .day], from: date)
         if let day = componenets.day, let month = componenets.month, let year = componenets.year {
             endDate = "\(year)/\(String(format: "%02d", month))/\(String(format: "%02d", day))"
@@ -564,7 +564,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         dateTypeLabel.text = btn.titleLabel?.text
         switch btn {
         case theDayButton:
-            let componenets = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            let componenets = Calendar.current.dateComponents([.year, .month, .day], from: Date(timeIntervalSinceNow: TimeInterval(NSTimeZone.system.secondsFromGMT(for: Date()))))
             if let day = componenets.day, let month = componenets.month, let year = componenets.year {
                 startDate = "\(year)/\(String(format: "%02d", month))/\(String(format: "%02d", day))"
             }
@@ -573,7 +573,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             dateLabel.text = startDate + (endDate != "" ? "- \(endDate)" : "")
             
         case weekDayButton:
-            let date = Date()
+            let date = Date(timeIntervalSinceNow: TimeInterval(NSTimeZone.system.secondsFromGMT(for: Date())))
             let componenets = Calendar.current.dateComponents([.year, .month, .day], from: date)
             if let day = componenets.day, let month = componenets.month, let year = componenets.year {
                 endDate = "\(year)/\(String(format: "%02d", month))/\(String(format: "%02d", day))"

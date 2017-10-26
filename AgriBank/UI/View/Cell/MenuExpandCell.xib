@@ -9,6 +9,11 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -19,8 +24,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DgS-u6-ScY">
-                        <rect key="frame" x="38" y="8" width="329" height="43.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DgS-u6-ScY">
+                        <rect key="frame" x="38" y="0.0" width="329" height="59.5"/>
                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -36,9 +41,8 @@
                 <color key="backgroundColor" red="0.89411764705882346" green="0.89411764705882346" blue="0.89411764705882346" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="PSg-3v-p5Q" secondAttribute="trailing" id="CyW-Di-hVp"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="DgS-u6-ScY" secondAttribute="bottom" id="GfJ-sC-Fb2"/>
-                    <constraint firstItem="DgS-u6-ScY" firstAttribute="top" secondItem="pC8-UA-NIZ" secondAttribute="topMargin" id="HLT-Rp-AzU"/>
                     <constraint firstAttribute="bottom" secondItem="PSg-3v-p5Q" secondAttribute="bottom" constant="1" id="I21-MP-jwq"/>
+                    <constraint firstItem="DgS-u6-ScY" firstAttribute="height" secondItem="pC8-UA-NIZ" secondAttribute="height" id="WVZ-mh-whX"/>
                     <constraint firstAttribute="trailingMargin" secondItem="DgS-u6-ScY" secondAttribute="trailing" id="dAu-Td-d1b"/>
                     <constraint firstItem="DgS-u6-ScY" firstAttribute="centerY" secondItem="pC8-UA-NIZ" secondAttribute="centerY" id="f0H-3i-fmp"/>
                     <constraint firstItem="DgS-u6-ScY" firstAttribute="leading" secondItem="pC8-UA-NIZ" secondAttribute="leadingMargin" constant="30" id="iJX-bK-Hvj"/>
