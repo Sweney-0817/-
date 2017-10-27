@@ -26,6 +26,7 @@ struct ResponseLoginInfo {
     var Token:String? = nil         // Token
     var USUDID:String? = nil        // 使用者ID
     var Balance:Double? = nil       // 餘額
+    var STATUS:String? = nil        // 帳戶狀態 
 }
 
 class AuthorizationManage {

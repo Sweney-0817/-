@@ -33,7 +33,7 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = nil
-        self.navigationItem.setHidesBackButton(true, animated:true);
+        navigationItem.setHidesBackButton(true, animated:true)
     
         m_tvData.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
         m_tvData.allowsSelection = false

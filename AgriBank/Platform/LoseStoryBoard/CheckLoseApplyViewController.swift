@@ -295,7 +295,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
                 list = CheckLoseApply_TypeList
             }
             else if m_curDropDownView == m_DDAccount {
-                if checkAccountList != nil {
+                if checkAccountList != nil && (checkAccountList?.count)! > 0 {
                     for index in checkAccountList! {
                         list.append(index.accountNO)
                     }
@@ -305,7 +305,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
                 }
             }
             else if m_curDropDownView == m_FeeAccount {
-                if accountList != nil {
+                if accountList != nil && (accountList?.count)! > 0 {
                     for index in accountList! {
                         list.append(index.accountNO)
                     }

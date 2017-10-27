@@ -81,6 +81,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="clickBtn" destination="6WR-5w-lQG" id="2oI-bc-mYk"/>
                 <outlet property="m_lbFirstRowContent" destination="UR9-g9-rkL" id="LBH-JR-VfK"/>
                 <outlet property="m_lbFirstRowTitle" destination="BUZ-Gc-JxA" id="Tvf-SA-t3g"/>
                 <outlet property="titleWeight" destination="Ubr-SF-wx5" id="2pT-R9-VL0"/>

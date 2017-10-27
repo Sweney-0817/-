@@ -91,7 +91,7 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
     }
     
     func getPersonalImage(SetAESKey key:String, SetIdentify identify:String, setAccount account:String? = nil) -> UIImage? {
-        var image:UIImage? = UIImage(named: ImageName.Login.rawValue)
+        var image:UIImage? = UIImage(named: ImageName.LoginLogo.rawValue)
         let documentPaths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory,
                                                                 FileManager.SearchPathDomainMask.userDomainMask, true)
         let documnetPath = documentPaths[0] as NSString

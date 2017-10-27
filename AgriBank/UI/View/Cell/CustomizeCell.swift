@@ -245,9 +245,9 @@ class NTRationCell: UITableViewCell {
         m_lbTitle.text = title
         m_lbData1.text = data1
         m_lbData2.text = data2
-        m_lbTitle.font = Scale_Default_Size
-        m_lbData1.font = Scale_Default_Size
-        m_lbData2.font = Scale_Default_Size
+        m_lbTitle.font = Scale_Default_Font
+        m_lbData1.font = Scale_Default_Font
+        m_lbData2.font = Scale_Default_Font
     }
 }
 

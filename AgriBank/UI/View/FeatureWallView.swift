@@ -76,7 +76,7 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
                     if let info = Platform.plat.getFeatureInfoByID(featureIDList[current]) {
                         wallCell.imageView.image = UIImage(named: String(featureIDList[current].rawValue))
                         wallCell.titleLabel.text = info.name
-                        wallCell.titleLabel.font = Scale_Default_Size
+                        wallCell.titleLabel.font = Scale_Default_Font
                         wallCell.button.addTarget(self, action: #selector(clickFeatureBtn(_:)), for: .touchUpInside)
                         wallCell.button.tag = featureIDList[current].rawValue
                     }

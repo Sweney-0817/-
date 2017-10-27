@@ -112,12 +112,16 @@ class MessageSwitchViewController: BaseViewController {
     private func showAlertViewController() {
         let alert = UIAlertController(title: UIAlert_Default_Title, message: SetNotification_Title, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Cancel_Title, style: .default) { _ in
-            self.setLoading(true)
-            self.postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":self.transactionId,"action":"0"], true), AuthorizationManage.manage.getHttpHead(true))
-            self.messageSwitch.isOn = false
+            DispatchQueue.main.async {
+                self.setLoading(true)
+                self.postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":self.transactionId,"action":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+                self.messageSwitch.isOn = false
+            }
         })
         alert.addAction(UIAlertAction(title: Setting_Title, style: .default) { _ in
-            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            DispatchQueue.main.async {
+                UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            }
         })
         present(alert, animated: false, completion: nil)
     }

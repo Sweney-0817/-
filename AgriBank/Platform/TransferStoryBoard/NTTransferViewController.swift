@@ -254,7 +254,8 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for index in bankNameList! {
                 if let name = index["bankName"], let code = index["bankCode"] {
-                    actSheet.addButton(withTitle: "\(code) \(name)")
+                    let temp = "\(code) \(name)".trimmingCharacters(in: .whitespaces)
+                    actSheet.addButton(withTitle: temp)
                 }
             }
             actSheet.tag = ViewTag.View_BankActionSheet.rawValue
@@ -264,7 +265,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     
     private func showInAccountList(_ isAgreedAccount:Bool) {
         if isAgreedAccount {
-            if agreedAccountList != nil {
+            if agreedAccountList != nil && (agreedAccountList?.count)! > 0 {
                 let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
                 for info in agreedAccountList! {
                     if let account = info["TRAC"] as? String, let bankCode = info["BKNO"] as? String {
@@ -279,7 +280,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             }
         }
         else {
-            if commonAccountList != nil {
+            if commonAccountList != nil && (commonAccountList?.count)! > 0 {
                 let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
                 for info in commonAccountList! {
                     if let account = info["ACTNO"] as? String, let bankCode = info["IN_BR_CODE"] as? String {
@@ -351,8 +352,8 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!, true) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
+            showErrorMessage(nil, "\(memoTextfield.placeholder ?? "")\(ErrorMsg_Illegal_Character)")
             return false
         }
         if !DetermineUtility.utility.isValidEmail(emailTextfield.text!) {

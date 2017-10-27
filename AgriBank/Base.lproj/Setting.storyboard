@@ -392,6 +392,16 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ndG-u1-jfF">
                                 <rect key="frame" x="0.0" y="607" width="375" height="60"/>
                                 <subviews>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sde-iC-sW8">
+                                        <rect key="frame" x="-355" y="8" width="345" height="44"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="取消" backgroundImage="ButtonMedium">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clickCancelBtn:" destination="pv8-gn-tzj" eventType="touchUpInside" id="tt5-5M-bIQ"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rhh-uv-tVI">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
@@ -406,6 +416,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="rhh-uv-tVI" secondAttribute="bottom" constant="8" id="6ev-hN-lwA"/>
+                                    <constraint firstItem="Sde-iC-sW8" firstAttribute="centerY" secondItem="rhh-uv-tVI" secondAttribute="centerY" id="IS0-CC-SdE"/>
+                                    <constraint firstItem="rhh-uv-tVI" firstAttribute="leading" secondItem="Sde-iC-sW8" secondAttribute="trailing" constant="25" id="Q75-ur-6UL"/>
+                                    <constraint firstItem="Sde-iC-sW8" firstAttribute="height" secondItem="rhh-uv-tVI" secondAttribute="height" id="UZC-bf-phv"/>
+                                    <constraint firstItem="Sde-iC-sW8" firstAttribute="width" secondItem="rhh-uv-tVI" secondAttribute="width" id="YQQ-P4-aiD"/>
                                     <constraint firstAttribute="trailing" secondItem="rhh-uv-tVI" secondAttribute="trailing" constant="15" id="hJk-YB-qKr"/>
                                     <constraint firstItem="rhh-uv-tVI" firstAttribute="leading" secondItem="ndG-u1-jfF" secondAttribute="leading" constant="15" id="qF7-dN-hKx"/>
                                     <constraint firstAttribute="height" constant="60" id="rq8-xo-76S"/>
@@ -453,8 +467,12 @@
                     <connections>
                         <outlet property="againTextfield" destination="KRD-MC-YRh" id="80L-Lo-jLW"/>
                         <outlet property="bottomView" destination="ndG-u1-jfF" id="ABT-O9-GBU"/>
+                        <outlet property="cancelBtn" destination="Sde-iC-sW8" id="UYW-Kg-jiU"/>
+                        <outlet property="changeBtn" destination="rhh-uv-tVI" id="QM3-09-9E6"/>
+                        <outlet property="leadingCons" destination="qF7-dN-hKx" id="w6A-ed-AjH"/>
                         <outlet property="newTextfield" destination="hVb-yh-4El" id="uXK-Xb-ZgU"/>
                         <outlet property="sourceTextfield" destination="eoe-yM-Dp1" id="sBb-MD-nj5"/>
+                        <outlet property="trailingCons" destination="hJk-YB-qKr" id="Yeo-EH-LBw"/>
                         <segue destination="YAN-UG-VO6" kind="show" identifier="GoChangeResult" id="M9s-Rc-gg6"/>
                     </connections>
                 </viewController>
@@ -533,7 +551,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i5J-LB-0UN">
                                 <rect key="frame" x="150" y="80" width="75" height="75"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login" translatesAutoresizingMaskIntoConstraints="NO" id="muC-tT-iqF">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LoginLogo" translatesAutoresizingMaskIntoConstraints="NO" id="muC-tT-iqF">
                                         <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
                                     </imageView>
                                 </subviews>
@@ -976,10 +994,23 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YBG-4d-b3Q">
                                 <rect key="frame" x="0.0" y="607" width="375" height="60"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZ5-5c-WXd">
-                                        <rect key="frame" x="15" y="8" width="345" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Npx-XD-RUb">
+                                        <rect key="frame" x="15" y="8" width="160" height="44"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                        <state key="normal" title="確定" backgroundImage="ButtonLarge">
+                                        <state key="normal" title="取消" backgroundImage="ButtonMedium">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clickCloseBtn:" destination="iYs-6J-J52" eventType="touchUpInside" id="Ejh-Ha-Liq"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZ5-5c-WXd">
+                                        <rect key="frame" x="200" y="8" width="160" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="gDA-Xa-ZA1"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                                        <state key="normal" title="確定" backgroundImage="ButtonMedium">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -989,11 +1020,14 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="dZ5-5c-WXd" secondAttribute="bottom" constant="8" id="9EC-GK-48e"/>
-                                    <constraint firstItem="dZ5-5c-WXd" firstAttribute="leading" secondItem="YBG-4d-b3Q" secondAttribute="leading" constant="15" id="HEW-Cf-tO2"/>
+                                    <constraint firstItem="Npx-XD-RUb" firstAttribute="height" secondItem="dZ5-5c-WXd" secondAttribute="height" id="C3P-7X-WMs"/>
+                                    <constraint firstItem="dZ5-5c-WXd" firstAttribute="leading" secondItem="Npx-XD-RUb" secondAttribute="trailing" constant="25" id="WR1-Yd-SsI"/>
                                     <constraint firstAttribute="height" constant="60" id="Xxf-SR-nLH"/>
-                                    <constraint firstItem="dZ5-5c-WXd" firstAttribute="top" secondItem="YBG-4d-b3Q" secondAttribute="top" constant="8" id="n5i-pe-qjC"/>
-                                    <constraint firstAttribute="trailing" secondItem="dZ5-5c-WXd" secondAttribute="trailing" constant="15" id="uTE-HO-NST"/>
+                                    <constraint firstItem="Npx-XD-RUb" firstAttribute="leading" secondItem="YBG-4d-b3Q" secondAttribute="leading" constant="15" id="fil-lK-9re"/>
+                                    <constraint firstItem="Npx-XD-RUb" firstAttribute="centerY" secondItem="dZ5-5c-WXd" secondAttribute="centerY" id="mEl-dm-QsJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="dZ5-5c-WXd" secondAttribute="trailing" constant="15" id="pdN-Z4-1Gs"/>
+                                    <constraint firstItem="Npx-XD-RUb" firstAttribute="width" secondItem="dZ5-5c-WXd" secondAttribute="width" id="uFv-F3-Vgc"/>
+                                    <constraint firstItem="dZ5-5c-WXd" firstAttribute="centerY" secondItem="YBG-4d-b3Q" secondAttribute="centerY" id="uKP-mW-mSD"/>
                                 </constraints>
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="再次輸入新使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="tg3-Xz-s37" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
@@ -1068,7 +1102,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MFn-J0-gHx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="233" y="514"/>
+            <point key="canvasLocation" x="232.80000000000001" y="513.19340329835086"/>
         </scene>
         <!--Basic Info Result View Controller-->
         <scene sceneID="pcE-PX-qbF">
@@ -1231,13 +1265,14 @@
     </scenes>
     <resources>
         <image name="ButtonLarge" width="346" height="44"/>
+        <image name="ButtonMedium" width="160" height="44"/>
         <image name="CowSuccess" width="140" height="140"/>
         <image name="EntryRight" width="20" height="20"/>
-        <image name="Login" width="60" height="60"/>
+        <image name="LoginLogo" width="60" height="60"/>
         <image name="Textfield" width="311" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="O0l-NN-0zP"/>
-        <segue reference="sQ1-kh-MDu"/>
+        <segue reference="M9s-Rc-gg6"/>
     </inferredMetricsTieBreakers>
 </document>

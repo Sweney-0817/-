@@ -96,29 +96,35 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                     }
                 }
                 else {
+                    setLoading(true)
                     VaktenManager.sharedInstance().signTaskOperation(with: dataOTP?.task) { resultCode in
                         if VIsSuccessful(resultCode) {
                             let otp = VaktenManager.sharedInstance().generateGeoOTPCode()
                             if VIsSuccessful((otp?.resultCode)!) {
                                 self.dataOTP?.httpBodyList?["otp"] = otp?.otp
                                 self.dataOTP?.checkRequest?.httpBody = AuthorizationManage.manage.converInputToHttpBody((self.dataOTP?.httpBodyList!)!, true)
-                                self.setLoading(true)
                                 self.postRequest((self.dataOTP?.checkRequest?.strMethod)!, (self.dataOTP?.checkRequest?.strSessionDescription)!, self.dataOTP?.checkRequest?.httpBody, self.dataOTP?.checkRequest?.loginHttpHead, self.dataOTP?.checkRequest?.strURL, (self.dataOTP?.checkRequest?.needCertificate)!, (self.dataOTP?.checkRequest?.isImage)!)
                             }
                             else {
                                 let alert = UIAlertController(title: UIAlert_Default_Title, message: "\(ErrorMsg_GenerateOTP_Faild) \((otp?.resultCode)!.rawValue)", preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
-                                    self.enterFeatureByID(.FeatureID_Home, true)
+                                    DispatchQueue.main.async {
+                                        self.enterFeatureByID(.FeatureID_Home, true)
+                                    }
                                 })
                                 self.present(alert, animated: false, completion: nil)
+                                self.setLoading(false)
                             }
                         }
                         else {
                             let alert = UIAlertController(title: UIAlert_Default_Title, message: "\(ErrorMsg_SignTask_Faild) \(resultCode.rawValue)", preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
-                                self.enterFeatureByID(.FeatureID_Home, true)
+                                DispatchQueue.main.async {
+                                    self.enterFeatureByID(.FeatureID_Home, true)
+                                }
                             })
                             self.present(alert, animated: false, completion: nil)
+                            self.setLoading(false)
                         }
                     }
                 }

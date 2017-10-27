@@ -23,13 +23,19 @@ class UserChangeIDPwdResultViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = nil
-        navigationItem.setHidesBackButton(true, animated:true);
+        navigationItem.setHidesBackButton(true, animated:true)
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
         titleLabel.text = errorMessage.isEmpty ? Change_Successful_Title : Change_Faild_Title
         imageView.image = errorMessage.isEmpty ? UIImage(named: ImageName.CowSuccess.rawValue) : UIImage(named: ImageName.CowFailure.rawValue)
         if errorMessage.isEmpty {
             postLogout()
+        }
+        else {
+            /* 帳戶狀態在「已過期，需要強制變更」「首登」，不管是否成功都需要登出(前後台資訊要清除) */
+            if let info = AuthorizationManage.manage.getResponseLoginInfo(), let STATUS = info.STATUS, STATUS == Account_Status_ForcedChange_Password, STATUS == Account_Status_FirstLogin {
+                postLogout()
+            }
         }
     }
 

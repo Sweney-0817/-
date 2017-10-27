@@ -74,7 +74,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             endDate = "\(year)/\(String(format: "%02d", month))/\(String(format: "%02d", day))"
         }
         
-        let newDate = Calendar.current.date(byAdding: .day, value: -7, to: date) ?? date
+        let newDate = Calendar.current.date(byAdding: .day, value: -6, to: date) ?? date
         let startComponenets = Calendar.current.dateComponents([.year, .month, .day], from: newDate)
         if let day = startComponenets.day, let month = startComponenets.month, let year = startComponenets.year {
             startDate = "\(year)/\(String(format: "%02d", month))/\(String(format: "%02d", day))"
@@ -579,7 +579,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 endDate = "\(year)/\(String(format: "%02d", month))/\(String(format: "%02d", day))"
             }
             
-            let newDate = Calendar.current.date(byAdding: .day, value: -7, to: date) ?? date
+            let newDate = Calendar.current.date(byAdding: .day, value: -6, to: date) ?? date
             let startComponenets = Calendar.current.dateComponents([.year, .month, .day], from: newDate)
             if let day = startComponenets.day, let month = startComponenets.month, let year = startComponenets.year {
                 startDate = "\(year)/\(String(format: "%02d", month))/\(String(format: "%02d", day))"

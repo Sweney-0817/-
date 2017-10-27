@@ -18,6 +18,7 @@ class OneRowDropDownView: UIView {
     var delegate:OneRowDropDownViewDelegate? = nil
     /* 為了帳戶往來明細特別設置 */
     @IBOutlet weak var titleWeight: NSLayoutConstraint!
+    @IBOutlet weak var clickBtn: UIButton!
     
     @IBAction func m_btnClick(_ sender: Any) {
         delegate?.clickOneRowDropDownView(self)
@@ -27,10 +28,11 @@ class OneRowDropDownView: UIView {
         return 60
     }
     
-    func setOneRow(_ firstTitle:String, _ firstContent:String) {
+    func setOneRow(_ firstTitle:String, _ firstContent:String, _ isEnable:Bool = true) {
         m_lbFirstRowTitle.text = firstTitle
         m_lbFirstRowContent.text = firstContent
-//        self.setNeedsLayout()
+        clickBtn.isEnabled = isEnable
+        m_lbFirstRowContent.textColor = isEnable ? .black : m_lbFirstRowTitle.textColor
     }
     
     func getContentByType(_ index:DropDownType) -> String {

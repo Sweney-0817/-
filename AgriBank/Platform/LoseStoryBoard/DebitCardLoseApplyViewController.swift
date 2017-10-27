@@ -161,16 +161,11 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
-        if accountList != nil {
-            if (accountList?.count)! > 0 {
-                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
-                accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
-                actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
-                actSheet.show(in: view)
-            }
-            else {
-                showErrorMessage(nil, "\(Get_Null_Title)\(sender.m_lbFirstRowTitle.text!)")
-            }
+        if accountList != nil && (accountList?.count)! > 0 {
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
+            accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
+            actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
+            actSheet.show(in: view)
         }
         else {
             showErrorMessage(nil, "\(Get_Null_Title)\(sender.m_lbFirstRowTitle.text!)")

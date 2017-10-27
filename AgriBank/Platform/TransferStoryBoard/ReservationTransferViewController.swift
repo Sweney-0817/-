@@ -277,8 +277,8 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             showErrorMessage(nil, ErrorMsg_Illegal_Character)
             return false
         }
-        if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!, true) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+        if DetermineUtility.utility.checkStringContainIllegalCharacter(memoTextfield.text!) {
+            showErrorMessage(nil, "\(memoTextfield.placeholder ?? "")\(ErrorMsg_Illegal_Character)")
             return false
         }
         

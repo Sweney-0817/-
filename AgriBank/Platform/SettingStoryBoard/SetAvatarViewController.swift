@@ -67,7 +67,7 @@ class SetAvatarViewController: BasePhotoViewController {
             alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
                 DispatchQueue.main.async {
                     self.imageView.layer.cornerRadius = 0
-                    self.imageView.image = UIImage(named: ImageName.Login.rawValue)
+                    self.imageView.image = UIImage(named: ImageName.LoginLogo.rawValue)
                     self.savePersonalImage(nil, SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
                 }
             })

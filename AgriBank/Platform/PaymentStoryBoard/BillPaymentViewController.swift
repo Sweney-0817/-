@@ -176,13 +176,16 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     }
     
     private func showOutAccountList() {
-        if accountList != nil {
+        if accountList != nil && (accountList?.count)! > 0 {
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for index in accountList! {
                 actSheet.addButton(withTitle: index.accountNO)
             }
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
+        }
+        else {
+            showErrorMessage(nil, "\(Get_Null_Title)\(m_DDTransOutAccount?.m_lbFirstRowTitle.text ?? "")")
         }
     }
     
@@ -191,7 +194,8 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for index in bankNameList! {
                 if let name = index["bankName"], let code = index["bankCode"] {
-                    actSheet.addButton(withTitle: "\(code) \(name)")
+                    let temp = "\(code) \(name)".trimmingCharacters(in: .whitespaces)
+                    actSheet.addButton(withTitle: temp)
                 }
             }
             actSheet.tag = ViewTag.View_BankActionSheet.rawValue
@@ -248,7 +252,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             return false
         }
         if DetermineUtility.utility.checkStringContainIllegalCharacter(m_tfTransMemo.text!) {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+            showErrorMessage(nil, "\(m_tfTransMemo.placeholder ?? "")\(ErrorMsg_Illegal_Character)")
             return false
         }
         if !DetermineUtility.utility.isValidEmail(m_tfEmail.text!) {

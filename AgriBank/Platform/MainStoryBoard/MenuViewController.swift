@@ -14,10 +14,13 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var versionLabel: UILabel!
-    @IBOutlet weak var logoutView: UIView!
+    @IBOutlet weak var loginStatusImg: UIImageView!
+    @IBOutlet weak var loginStatusLabel: UILabel!
+    
     private var featureList = [PlatformFeatureID]()
     private var expandList = Set<Int>()
     private var currentID:PlatformFeatureID? = nil
+    private var showLoginView = false
 
     // MARK: - Override
     override func viewDidLoad() {
@@ -26,16 +29,23 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
         tableView.register(UINib(nibName: UIID.UIID_MenuCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuCell.NibName()!)
         tableView.register(UINib(nibName: UIID.UIID_MenuExpandCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuExpandCell.NibName()!)
         setShadowView(topView)
-        versionLabel.text = AgriBank_Version
+        versionLabel.text = "版本"+AgriBank_Version
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if AuthorizationManage.manage.IsLoginSuccess() {
+            loginStatusLabel.text = Login_Title
+            loginStatusImg.image = UIImage(named: ImageName.Logout.rawValue)
+        }
+        else {
+            loginStatusLabel.text = NoLogin_Title
+            loginStatusImg.image = UIImage(named: ImageName.Login.rawValue)
+        }
         if let list = AuthorizationManage.manage.GetPlatformList(.Menu_Type) {
             featureList = list
         }
         tableView.reloadData()
-        logoutView.isHidden = !AuthorizationManage.manage.IsLoginSuccess()
     }
 
     override func didReceiveMemoryWarning() {
@@ -125,6 +135,10 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
                 }
                 currentID = nil
             }
+            if showLoginView {
+                (center as! BaseViewController).showLoginView()
+                showLoginView = false
+            }
         }
     }
     
@@ -137,17 +151,23 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
     }
     
     @IBAction func clickLogoutBtn(_ sender: Any) {
-        let alert = UIAlertController(title: UIAlert_Default_Title, message: Logout_Title, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
-        alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
-            DispatchQueue.main.async {
-                self.postLogout()
-                if self.parent is SideMenuViewController {
-                    self.currentID = .FeatureID_Home
-                    (self.parent as! SideMenuViewController).ShowSideMenu(true)
+        if AuthorizationManage.manage.IsLoginSuccess() {
+            let alert = UIAlertController(title: UIAlert_Default_Title, message: Logout_Title, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                DispatchQueue.main.async {
+                    self.postLogout()
+                    if self.parent is SideMenuViewController {
+                        self.currentID = .FeatureID_Home
+                        (self.parent as! SideMenuViewController).ShowSideMenu(true)
+                    }
                 }
-            }
-        })
-        present(alert, animated: true, completion: nil)
+            })
+            present(alert, animated: true, completion: nil)
+        }
+        else {
+            showLoginView = true
+            (parent as! SideMenuViewController).ShowSideMenu(true)
+        }
     }
 }

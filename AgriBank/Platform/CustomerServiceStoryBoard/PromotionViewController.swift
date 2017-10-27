@@ -33,8 +33,9 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
     private var m_DDPlace: OneRowDropDownView? = nil
     private var promotionList = [String:[PromotionStruct]]()
     private var cityList = [String]()
-    private var chooseCity = ""
+    private var chooseCity:String? = nil
     private var webContent:Data? = nil
+    private var recentList = [PromotionStruct]()
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -60,12 +61,16 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
                         var pList = [PromotionStruct]()
                         for info in promotion {
                             pList.append( PromotionStruct.init( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "", info["CMI_ID"] ?? "" ) )
+                            if recentList.count < 20 {
+                                recentList.append(PromotionStruct.init( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "", info["CMI_ID"] ?? "" ))
+                            }
                         }
                         promotionList[city] = pList
                         cityList.append(city)
                     }
                 }
             }
+            m_tvData.reloadData()
             
         case "INFO0102":
             if let data = response.object(forKey: RESPONSE_Data_KEY) as? Data {
@@ -80,8 +85,13 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let webContentViewController = segue.destination as! WebContentViewController
-        if let list = promotionList[chooseCity] {
-            webContentViewController.setData(list[m_iSelectedIndex], webContent)
+        if chooseCity != nil {
+            if let list = promotionList[chooseCity!] {
+                webContentViewController.setData(list[m_iSelectedIndex], webContent)
+            }
+        }
+        else {
+            webContentViewController.setData(recentList[m_iSelectedIndex], webContent)
         }
     }
     
@@ -137,16 +147,28 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
 
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let list = promotionList[chooseCity] {
-            return list.count
+        if chooseCity != nil {
+            if let list = promotionList[chooseCity!] {
+                return list.count
+            }
         }
-        return 0;
+        else {
+            return recentList.count
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_PromotionCell.NibName()!, for: indexPath) as! PromotionCell
-        if let list = promotionList[chooseCity], let title = list[indexPath.row].title, let date = list[indexPath.row].date, let place = list[indexPath.row].place  {
-            cell.setData(title, date, place)
+        if chooseCity != nil {
+            if let list = promotionList[chooseCity!], let title = list[indexPath.row].title, let date = list[indexPath.row].date, let place = list[indexPath.row].place  {
+                cell.setData(title, date, place)
+            }
+        }
+        else {
+            if let title = recentList[indexPath.row].title, let date = recentList[indexPath.row].date, let place = recentList[indexPath.row].place  {
+                cell.setData(title, date, place)
+            }
         }
         cell.selectionStyle = .none
         return cell

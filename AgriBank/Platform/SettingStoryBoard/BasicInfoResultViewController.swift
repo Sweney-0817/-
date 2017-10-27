@@ -30,7 +30,7 @@ class BasicInfoResultViewController: BaseViewController, UITableViewDataSource, 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = nil
-        navigationItem.setHidesBackButton(true, animated:true);
+        navigationItem.setHidesBackButton(true, animated:true)
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
         tableView.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)

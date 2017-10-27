@@ -105,7 +105,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
     
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
-        if accountList != nil {
+        if accountList != nil && (accountList?.count)! > 0 {
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue

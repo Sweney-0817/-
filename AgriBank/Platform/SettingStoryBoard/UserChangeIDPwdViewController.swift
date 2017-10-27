@@ -9,14 +9,21 @@
 import UIKit
 
 let UserChangeIDPwd_Seque = "GoChangeResult"
+let UserChangeIDPwd_ClickCancel_Title = "您尚未完成強制變更密碼，系統將執行登出"
 
 class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var sourceTextfield: TextField!
     @IBOutlet weak var newTextfield: TextField!
     @IBOutlet weak var againTextfield: TextField!
     @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var leadingCons: NSLayoutConstraint!  //「變更」Button的leading
+    @IBOutlet weak var trailingCons: NSLayoutConstraint! //「變更」Button的trailing
+    @IBOutlet weak var cancelBtn: UIButton!
+    @IBOutlet weak var changeBtn: UIButton!
     private var isChangePassword = false
     private var errorMessage = ""
+    private var isClickChangeBtn = false
+    private var gesture:UIPanGestureRecognizer? = nil
     
     // MARK: - Public
     func SetIsChangePassword() {
@@ -75,11 +82,27 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view.
         if !isChangePassword {
             getTransactionID("08002", TransactionID_Description)
         }
         else {
+            /* 帳戶狀態在「已過期，需要強制變更」下，只能回首頁並登出 or 變更密碼  */
+            if let info = AuthorizationManage.manage.getResponseLoginInfo(), let STATUS = info.STATUS, STATUS == Account_Status_ForcedChange_Password {
+                navigationItem.leftBarButtonItem = nil
+                navigationItem.hidesBackButton = true
+                navigationItem.rightBarButtonItem = nil
+                gesture = UIPanGestureRecognizer(target: self, action: #selector(HandlePanGesture))
+                navigationController?.view.addGestureRecognizer(gesture!)
+                
+                /*   左邊界| --15-- 「取消」 --25-- 「變更」 -- 15 -- |右邊界  */
+                leadingCons.constant = view.frame.width / 2 + 12.5
+                trailingCons.constant = 15
+                cancelBtn.isHidden = false
+                changeBtn.setBackgroundImage(UIImage(named: ImageName.ButtonMedium.rawValue), for: .normal)
+            }
+            
             getTransactionID("08003", TransactionID_Description)
             sourceTextfield.placeholder = "原使用者密碼"
             sourceTextfield.isSecureTextEntry = true
@@ -94,6 +117,13 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if gesture != nil {
+            navigationController?.view.removeGestureRecognizer(gesture!)
+        }
+        super.viewWillDisappear(animated)
     }
     
     override func didResponse(_ description:String, _ response: NSDictionary) {
@@ -121,6 +151,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     // MARK: - StoryBoard Touch Event
     @IBAction func clickChangeBtn(_ sender: Any) {
         if inputIsCorrect() {
+            isClickChangeBtn = true
             let idMd5 = SecurityUtility.utility.MD5(string: sourceTextfield.text!)
             let pdMd5 = SecurityUtility.utility.MD5(string: newTextfield.text!)
             setLoading(true)
@@ -131,6 +162,18 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
                 postRequest("Usif/USIF0301", "USIF0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08003","Operate":"dataConfirm","TransactionId":transactionId,"PWD":idMd5,"NewPWD":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
             }
         }
+    }
+    
+    @IBAction func clickCancelBtn(_ sender: Any) {
+        let alert = UIAlertController(title: UIAlert_Default_Title, message: UserChangeIDPwd_ClickCancel_Title, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+            DispatchQueue.main.async {
+                self.postLogout()
+                self.navigationController?.popViewController(animated: true)
+            }
+        })
+        present(alert, animated: false, completion: nil)
     }
     
     // MARK: - UITextFieldDelegate
@@ -158,4 +201,6 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
         return true
     }
     
+    // MARK: - GestureRecognizer Selector
+    func HandlePanGesture(_ sender: UIPanGestureRecognizer) {}
 }

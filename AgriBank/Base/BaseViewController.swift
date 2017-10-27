@@ -480,9 +480,13 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 if let balance = data["TotalBalance"] as? Double {
                     info.Balance = balance
                 }
+                if let STATUS = data["STATUS"] as? String {
+                    info.STATUS = STATUS
+                }
                 if let Auth = data["Auth"] as? [String: Any], let list = Auth["AuthList"] as? [[String:String]] {
                     authList = list
                 }
+                
                 AuthorizationManage.manage.setResponseLoginInfo(info, authList)
                 
                 loginView?.saveDataInFile()
@@ -494,24 +498,24 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     touchTap = nil
                 }
                 
-                if let status = data["STATUS"] as? String {
+                if let status = info.STATUS {
                     // 帳戶狀態  (1.沒過期，2已過期，需要強制變更，3.已過期，不需要強制變更，4.首登，5.此ID已無有效帳戶)
                     switch status {
-                    case "1":
+                    case Account_Status_Normal:
                         AuthorizationManage.manage.setLoginStatus(true)
                         if curFeatureID != nil {
                             enterFeatureByID(curFeatureID!, true)
                             curFeatureID = nil
                         }
                         
-                    case "2":
+                    case Account_Status_ForcedChange_Password:
                         let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_Force_ChangePassword, preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
                             DispatchQueue.main.async {
                                 /* 此時尚未登入成功，使用enterFeatureByID會失敗 */
                                 if let con = self.navigationController?.viewControllers.first {
                                     if con is HomeViewController {
-                                        self.navigationController?.popToRootViewController(animated: true)
+                                        self.navigationController?.popToRootViewController(animated: false)
                                         (con as! HomeViewController).pushFeatureController(.FeatureID_UserPwdChange, true)
                                     }
                                 }
@@ -520,7 +524,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         })
                         present(alert, animated: false, completion: nil)
                         
-                    case "3":
+                    case Account_Status_Change_Password:
                         let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_Suggest_ChangePassword, preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: Cancel_Title, style: .default) { _ in
                             DispatchQueue.main.async {
@@ -542,7 +546,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                 /* 此時尚未登入成功，使用enterFeatureByID會失敗 */
                                 if let con = self.navigationController?.viewControllers.first {
                                     if con is HomeViewController {
-                                        self.navigationController?.popToRootViewController(animated: true)
+                                        self.navigationController?.popToRootViewController(animated: false)
                                         (con as! HomeViewController).pushFeatureController(.FeatureID_UserPwdChange, true)
                                     }
                                 }
@@ -550,18 +554,27 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         })
                         present(alert, animated: false, completion: nil)
                         
-                    case "4":
-                        showErrorMessage(nil, ErrorMsg_First_Login)
-                        /* 此時尚未登入成功，使用enterFeatureByID會失敗 */
-                        if let con = navigationController?.viewControllers.first {
-                            if con is HomeViewController {
-                                navigationController?.popToRootViewController(animated: true)
-                                (con as! HomeViewController).pushFeatureController(.FeatureID_FirstLoginChange, true)
+                    case Account_Status_FirstLogin:
+                        let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_First_Login, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                            DispatchQueue.main.async {
+                                self.curFeatureID = nil
+                                /* 此時尚未登入成功，使用enterFeatureByID會失敗 */
+                                if let con = self.navigationController?.viewControllers.first {
+                                    if con is HomeViewController {
+                                        self.navigationController?.popToRootViewController(animated: false)
+                                        (con as! HomeViewController).pushFeatureController(.FeatureID_FirstLoginChange, true)
+                                    }
+                                }
                             }
-                        }
-                        curFeatureID = nil
+                        })
+                        present(alert, animated: false, completion: nil)
                         
-//                    case "5": curFeatureID = nil
+                    case Account_Status_Invaild:
+                        let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_InvalidAccount, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
+                        present(alert, animated: false, completion: nil)
+                        postLogout()
                         
                     default: curFeatureID = nil
                     }
@@ -578,20 +591,23 @@ extension BaseViewController: ConnectionUtilityDelegate {
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 tempTransactionId = tranId
                 if let info = AuthorizationManage.manage.getResponseLoginInfo() {
+                    setLoading(true)
                     VaktenManager.sharedInstance().authenticateOperation(withSessionID: (info.Token ?? "")) { resultCode in
                         if VIsSuccessful(resultCode) {
-                            var workCode = ""
-                            if self.curFeatureID! == .FeatureID_TaxPayment {
-                                workCode = "05001"
+                            if self.curFeatureID != nil {
+                                var workCode = ""
+                                if self.curFeatureID! == .FeatureID_TaxPayment {
+                                    workCode = "05001"
+                                }
+                                else if self.curFeatureID! == .FeatureID_BillPayment {
+                                    workCode = "05002"
+                                }
+                                self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                             }
-                            else if self.curFeatureID! == .FeatureID_BillPayment {
-                                workCode = "05002"
-                            }
-                            self.setLoading(true)
-                            self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                         }
                         else {
                             self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode.rawValue)")
+                            self.setLoading(false)
                         }
                     }
                 }
@@ -623,7 +639,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
              "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
              "PAY0103","PAY0105","PAY0107",
              "USIF0102","USIF0201","USIF0301",
-             "COMM0102","COMM0801":
+             "COMM0102","COMM0801","COMM0103":
             didResponse(description, response)
             
         default:
@@ -635,14 +651,18 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     let message = (response.object(forKey: ReturnMessage_Key) as? String) ?? ""
                     let alert = UIAlertController(title: UIAlert_Default_Title, message: message, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: Cancel_Title, style: .default) { _ in
-                        self.getImageConfirm()
+                        DispatchQueue.main.async {
+                            self.getImageConfirm()
+                        }
                     })
                     alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
-                        if let info = AuthorizationManage.manage.GetLoginInfo() {
-                            let idMd5 = SecurityUtility.utility.MD5(string: info.id)
-                            let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
-                            self.setLoading(true)
-                            self.postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                        DispatchQueue.main.async {
+                            if let info = AuthorizationManage.manage.GetLoginInfo() {
+                                let idMd5 = SecurityUtility.utility.MD5(string: info.id)
+                                let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
+                                self.setLoading(true)
+                                self.postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                            }
                         }
                     })
                     present(alert, animated: false, completion: nil)

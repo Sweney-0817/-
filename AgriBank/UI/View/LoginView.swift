@@ -33,13 +33,14 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     @IBOutlet weak var passwordTextfield: UITextField!  // 使用者密碼
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var imageConfirmView: UIView!
-    @IBOutlet weak var lockButton: UIButton!
+    @IBOutlet weak var chcekButton: UIButton!
+    
     var delegate:LoginDelegate? = nil
     private var request:ConnectionUtility? = nil
     private var list = [[String:[String]]]()
     private var bankCode = [String:String]()
     private var cityCode = [String:String]()
-    private var isLocker = false
+    private var isCheckon = false
     private var currentTextField:UITextField? = nil
     private var loginInfo = LoginStrcture()
     private var imgConfirm:ImageConfirmView? = nil
@@ -57,15 +58,15 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         imageConfirmView.addSubview(imgConfirm!)
         contentView.layer.cornerRadius = Layer_BorderRadius
         if let account = SecurityUtility.utility.readFileByKey(SetKey: File_Account_Key, setDecryptKey: AES_Key) as? String {
-            isLocker = true
-            if isLocker {
-                lockButton.setBackgroundImage(UIImage(named: ImageName.Locker.rawValue), for: .normal)
-            }
-            else {
-                lockButton.setBackgroundImage(UIImage(named: ImageName.Unlocker.rawValue), for: .normal)
-            }
+            isCheckon = true
             sAccount = account
             accountTextfield.text = (account as NSString).replacingCharacters(in: Login_Mask_Range, with: Login_Mask)
+        }
+        if isCheckon {
+            chcekButton.setBackgroundImage(UIImage(named: ImageName.Checkon.rawValue), for: .normal)
+        }
+        else {
+            chcekButton.setBackgroundImage(UIImage(named: ImageName.Checkoff.rawValue), for: .normal)
         }
     }
     
@@ -121,7 +122,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     }
     
     func saveDataInFile() { // 登入成功後，儲存登入成功的農漁會代碼
-        if isLocker {
+        if isCheckon {
             SecurityUtility.utility.writeFileByKey(loginInfo.account, SetKey: File_Account_Key, setEncryptKey: AES_Key)
         }
         else {
@@ -209,16 +210,16 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         }
     }
     
-    @IBAction func clickLockBtn(_ sender: Any) {
+    @IBAction func clickCheckBtn(_ sender: Any) {
         let btn = sender as! UIButton
-        if isLocker {
-            btn.setBackgroundImage(UIImage(named: ImageName.Unlocker.rawValue), for: .normal)
+        if isCheckon {
+            btn.setBackgroundImage(UIImage(named: ImageName.Checkon.rawValue), for: .normal)
         }
         else {
-            btn.setBackgroundImage(UIImage(named: ImageName.Locker.rawValue), for: .normal)
+            btn.setBackgroundImage(UIImage(named: ImageName.Checkoff.rawValue), for: .normal)
         }
         
-        isLocker = !isLocker
+        isCheckon = !isCheckon
     }
 
     // MARK: - selector

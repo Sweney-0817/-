@@ -73,8 +73,8 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
     // MARK: - XIB Event
     @IBAction func clickBannerBtn(_ sender: Any) {
         if let content = contentList?[pageControl.currentPage].link {
-            if UIApplication.shared.canOpenURL(URL(string: content)!) {
-                UIApplication.shared.openURL(URL(string: content)!)
+            if let url = URL(string: content), UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.openURL(url)
             }
         }
     }

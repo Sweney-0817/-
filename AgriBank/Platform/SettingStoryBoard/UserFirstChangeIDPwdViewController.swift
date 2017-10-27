@@ -9,6 +9,7 @@
 import UIKit
 
 let UserFirstChangeIDPwd_Seque = "GoFirstChangeResult"
+let UserFirstChangeID_ClickCancel_Title = "您尚未完成首次登入變更帳密，系統將執行登出"
 
 class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var sourceIDTextfield: TextField!
@@ -19,10 +20,17 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     @IBOutlet weak var againPasswordTextfield: TextField!
     @IBOutlet weak var bottomView: UIView!
     private var errorMessage = ""
+    private var gesture:UIPanGestureRecognizer? = nil
     
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
+        /* 帳戶狀態在「首登」時，只能回首頁並登出 or 變更帳號密碼 */
+        navigationItem.leftBarButtonItem = nil
+        navigationItem.hidesBackButton = true
+        navigationItem.rightBarButtonItem = nil
+        gesture = UIPanGestureRecognizer(target: self, action: #selector(HandlePanGesture))
+        navigationController?.view.addGestureRecognizer(gesture!)
 
         // Do any additional setup after loading the view.
         setShadowView(bottomView)
@@ -61,6 +69,13 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
             
         default: super.didResponse(description, response)
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if gesture != nil {
+            navigationController?.view.removeGestureRecognizer(gesture!)
+        }
+        super.viewWillDisappear(animated)
     }
     
     // MARK: - Private
@@ -153,6 +168,18 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
         }
     }
     
+    @IBAction func clickCloseBtn(_ sender: Any) {
+        let alert = UIAlertController(title: UIAlert_Default_Title, message: UserFirstChangeID_ClickCancel_Title, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+            DispatchQueue.main.async {
+                self.postLogout()
+                self.navigationController?.popViewController(animated: true)
+            }
+        })
+        present(alert, animated: false, completion: nil)
+    }
+    
     // MARK: - UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -172,4 +199,7 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
         
         return true
     }
+    
+    // MARK: - GestureRecognizer Selector
+    func HandlePanGesture(_ sender: UIPanGestureRecognizer) {}
 }

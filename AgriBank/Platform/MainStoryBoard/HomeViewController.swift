@@ -28,6 +28,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.leftBarButtonItem = nil
+        navigationItem.setHidesBackButton(true, animated:true)
         
         let news = getUIByID(.UIID_AnnounceNews) as! AnnounceNews
         news.frame = newsView.frame
@@ -256,7 +257,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         }
         else {
             loginImageView.layer.cornerRadius = 0
-            loginImageView.image = UIImage(named: ImageName.Login.rawValue)
+            loginImageView.image = UIImage(named: ImageName.LoginLogo.rawValue)
             logoImage = nil
             logoImageView.image = UIImage(named: ImageName.DefaultLogo.rawValue)
             loginStatusLabel.text = NoLogin_Title

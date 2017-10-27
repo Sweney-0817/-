@@ -318,7 +318,7 @@ struct RequestStruct {
 
 // MARK: - 圖片名稱
 enum ImageName: String {
-    case BackBarItem, BackHome, ButtonLarge, ButtonSmall, ButtonMedium, Close, CowCheck, CowFailure, CowSuccess, DefaultLogo, DropDown, DropUp, EntryRight, HintDownArrow, Locker, Login, LeftBarItem, Vegetable, Refresh, RightBarItem, RadioOn, RadioOff, Textfield, Unlocker
+    case BackBarItem, BackHome, ButtonLarge, ButtonSmall, ButtonMedium, Close, CowCheck, CowFailure, CowSuccess, DefaultLogo, DropDown, DropUp, EntryRight, HintDownArrow, Login, LoginLogo, Logout, LeftBarItem, Vegetable, Refresh, RightBarItem, RadioOn, RadioOff, Textfield, Checkon, Checkoff
 }
 
 // MARK: - 顏色定義
@@ -344,7 +344,7 @@ let PickView_Height:CGFloat = 200
 let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFont.systemFont(ofSize: CGFloat(18))
 /*  為了因應4吋以下而做的調整 */
 let AgriBank_Scale = UIScreen.main.bounds.width / CGFloat(375)
-let Scale_Default_Size = UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(18)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(18))
+let Scale_Default_Font = UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(18)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(18))
 
 // MARK: - Define
 let SystemCell_Identify = "System_Cell"
@@ -440,7 +440,11 @@ let Account_Saving_Type = "P"       // 帳號類別 活存：P , 支存：K , �
 let Account_Check_Type = "K"        // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Deposit_Type = "M"      // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
 let Account_Loan_Type = "L"         // 帳號類別 活存：P , 支存：K , 定存：T , 放款：L , 綜存：M
-let Kepasco_userIP = ""
+let Account_Status_Normal = "1"     // 帳戶狀態  (1.沒過期，2已過期，需要強制變更，3.已過期，不需要強制變更，4.首登，5.此ID已無有效帳戶)
+let Account_Status_ForcedChange_Password = "2"
+let Account_Status_Change_Password = "3"
+let Account_Status_FirstLogin = "4"
+let Account_Status_Invaild = "5"
 
 // MARK: - DropDownType
 enum DropDownType:Int {
@@ -498,6 +502,7 @@ let ErrorMsg_No_TaskId = "無法取得TaskID"
 let ErrorMsg_First_Login = "首次登入請變更代號"
 let ErrorMsg_Force_ChangePassword = "請強制變更密碼"
 let ErrorMsg_Suggest_ChangePassword = "密碼已到期，建議變更密碼"
+let ErrorMsg_InvalidAccount = "此身分證字號已無有效帳戶"
 /* 用於「首頁」 */
 let ErrorMsg_AntivirusSoftware_Title = "安裝防毒軟體"
 let ErrorMsg_AntivirusSoftware_Content = "請於行動裝置上安裝防毒軟體"

@@ -174,23 +174,23 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                 }
                 var AUTTRN = ""
                 var AIRTID = ""
-                var index:Int? = nil
+                var autoTransRateContent = ""
                 if isExpireSaveType1 {
                     if responseExpireSaveList.count > 0 {
-                        index = 0
+                        if let Value = responseExpireSaveList[0]["Value"] as? String {
+                            AUTTRN = Value
+                        }
+                        if let array = responseExpireSaveList[0]["AIRTID"] as? [[String:Any]], let Value = array[autoTransRateTypeIndex!]["Value"] as? String {
+                            AIRTID = Value
+                        }
                     }
+                    autoTransRateContent = autoTransRateTypeDropView?.getContentByType(.First) ?? ""
                 }
                 else {
                     if responseExpireSaveList.count > 1 {
-                        index = 1
-                    }
-                }
-                if index != nil {
-                    if let Value = responseExpireSaveList[index!]["Value"] as? String {
-                        AUTTRN = Value
-                    }
-                    if let array = responseExpireSaveList[index!]["AIRTID"] as? [[String:Any]], let Value = array[autoTransRateTypeIndex!]["Value"] as? String {
-                        AIRTID = Value
+                        if let Value = responseExpireSaveList[1]["Value"] as? String {
+                            AUTTRN = Value
+                        }
                     }
                 }
                 let TXAMT = transAmountTextfield.text ?? ""
@@ -205,7 +205,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                 dataConfirm.list?.append([Response_Key: "目前利率", Response_Value:currentRateLabel.text ?? ""])
                 dataConfirm.list?.append([Response_Key: "轉存金額", Response_Value:transAmountTextfield.text?.separatorThousand() ?? ""])
                 dataConfirm.list?.append([Response_Key: "到期續存", Response_Value:isExpireSaveType1 ? DepositCombinedToDeposit_ExpireSaveType1 : DepositCombinedToDeposit_ExpireSaveType2])
-                dataConfirm.list?.append([Response_Key: "自動轉期利率", Response_Value:autoTransRateTypeDropView?.getContentByType(.First) ?? ""])
+                dataConfirm.list?.append([Response_Key: "自動轉期利率", Response_Value:autoTransRateContent])
                 enterConfirmResultController(true, dataConfirm, true)
             }
             else {
@@ -223,14 +223,15 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             isExpireSaveType1 = true
             expireSaveType1tBtn.setImage(UIImage(named: ImageName.RadioOn.rawValue), for: .normal)
             expireSaveType2tBtn.setImage(UIImage(named: ImageName.RadioOff.rawValue), for: .normal)
+            autoTransRateTypeDropView?.setOneRow(DepositCombinedToDeposit_AutoRateType_Title, Choose_Title)
         }
         else {
             isExpireSaveType1 = false
             expireSaveType2tBtn.setImage(UIImage(named: ImageName.RadioOn.rawValue), for: .normal)
             expireSaveType1tBtn.setImage(UIImage(named: ImageName.RadioOff.rawValue), for: .normal)
+            autoTransRateTypeDropView?.setOneRow(DepositCombinedToDeposit_AutoRateType_Title, Choose_Title, false)
         }
         autoTransRateTypeIndex = nil
-        autoTransRateTypeDropView?.setOneRow(DepositCombinedToDeposit_AutoRateType_Title, Choose_Title)
     }
     
     @IBAction func clickSendBtn(_ sender: Any) {
@@ -405,8 +406,8 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             showErrorMessage(nil, "\(Choose_Title)\(periodDropView?.m_lbFirstRowTitle.text ?? "")")
             return false
         }
-        if autoTransRateTypeIndex == nil {
-            showErrorMessage(nil, "\(Choose_Title)\(autoTransRateTypeDropView?.m_lbFirstRowTitle.text ?? "")")
+        if isExpireSaveType1 && autoTransRateTypeIndex == nil {
+            showErrorMessage(nil, "\(Choose_Title)\((autoTransRateTypeDropView?.m_lbFirstRowTitle.text ?? "").replacingOccurrences(of: "\n", with: ""))")
             return false
         }
         if (transAmountTextfield.text?.isEmpty)! {

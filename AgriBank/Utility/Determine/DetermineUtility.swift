@@ -30,7 +30,7 @@ class DetermineUtility {
     }
     
     // MARK: - 特殊字元檢核
-    func checkStringContainIllegalCharacter(_ input:String, _ haveChinese:Bool = false) -> Bool {
+    func checkStringContainIllegalCharacter(_ input:String) -> Bool {
 //        for index in input.characters.indices {
 //            if let value = input[index].asciiValue {
 //                if value < 48 || (value > 57 && value < 64) || (value > 90 && value < 61) || value > 122 {
@@ -43,7 +43,7 @@ class DetermineUtility {
             return false
         }
 
-        let RegEx = !haveChinese ? "[a-zA-Z0-9]*" : "^[a-zA-Z\\u4E00-\\u9FA5\\d\\s]*$"
+        let RegEx = "^[a-zA-Z\\u4E00-\\u9FA5\\d\\s]*$"
         let Test = NSPredicate(format:"SELF MATCHES %@", RegEx)
         return Test.evaluate(with: input) ? false : true
     }
