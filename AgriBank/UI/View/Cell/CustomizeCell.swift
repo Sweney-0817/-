@@ -258,6 +258,7 @@ class LoanPrincipalInterestCell: UITableViewCell {
     @IBOutlet weak var breachContractLabel: UILabel!
     @IBOutlet weak var delayInterestLabel: UILabel!
     @IBOutlet weak var payBtn: UIButton!
+    @IBOutlet weak var entryRightImg: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
