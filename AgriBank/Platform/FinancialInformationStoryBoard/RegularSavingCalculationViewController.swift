@@ -26,6 +26,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
     @IBOutlet weak var m_vResult: UIView!
     @IBOutlet weak var m_lbResultTitle: UILabel!
     @IBOutlet weak var m_lbResult: UILabel!
+    @IBOutlet weak var bottomView: UIView!
     private var currentType = RegularSavingCalculation_TypeList[0]
     private var currentTextField:UITextField? = nil
     
@@ -76,6 +77,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
         setShadowView(m_vChooseTypeView)
         setShadowView(m_vShadowView)
         setShadowView(m_vResult)
+        setShadowView(bottomView, .Top)
         addGestureForKeyBoard()
     }
     

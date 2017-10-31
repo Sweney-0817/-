@@ -28,7 +28,7 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
         // Do any additional setup after loading the view.
         tableView.register(UINib(nibName: UIID.UIID_MenuCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuCell.NibName()!)
         tableView.register(UINib(nibName: UIID.UIID_MenuExpandCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuExpandCell.NibName()!)
-        setShadowView(topView)
+        setShadowView(topView, .Bottom)
         versionLabel.text = "版本"+AgriBank_Version
     }
     

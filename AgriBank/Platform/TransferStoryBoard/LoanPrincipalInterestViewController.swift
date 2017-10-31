@@ -227,9 +227,11 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
         if let array = result?["Result"] as? [[String:String]] {
             if let Order = array[indexPath.row]["Order"], Order == "Y" {
                 cell.payBtn.isHidden = false
+                cell.entryRightImg.isHidden = false
             }
             else {
                 cell.payBtn.isHidden = true
+                cell.entryRightImg.isHidden = true
             }
             if let SDATE = array[indexPath.row]["SDATE"], let EDATE = array[indexPath.row]["EDATE"] {
                 cell.calculatePeriodLabel.text = "\(SDATE) - \(EDATE)"

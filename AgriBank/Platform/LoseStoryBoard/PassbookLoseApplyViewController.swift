@@ -15,6 +15,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
     @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vDropDownView: UIView!
     @IBOutlet weak var m_vImageConfirmView: UIView!
+    @IBOutlet weak var bottomView: UIView!
     private var m_OneRow:OneRowDropDownView? = nil
     private var m_ImageConfirmView:ImageConfirmView? = nil
     private var accountList:[AccountStruct]? = nil      // 帳號列表
@@ -26,6 +27,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
         super.viewDidLoad()
         setAllSubView()
         setShadowView(m_vShadowView)
+        setShadowView(bottomView, .Top)
         getTransactionID("04001", TransactionID_Description)
         addGestureForKeyBoard()
     }

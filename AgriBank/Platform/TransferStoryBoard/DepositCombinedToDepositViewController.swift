@@ -93,7 +93,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
         middleView.layer.borderWidth = Layer_BorderWidth
         middleView.layer.borderColor = Gray_Color.cgColor
         
-        setShadowView(bottomView)
+        setShadowView(bottomView, .Top)
         addObserverToKeyBoard()
         addGestureForKeyBoard()
         getTransactionID("03004", TransactionID_Description)
@@ -190,6 +190,9 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                     if responseExpireSaveList.count > 1 {
                         if let Value = responseExpireSaveList[1]["Value"] as? String {
                             AUTTRN = Value
+                        }
+                        if let array = responseExpireSaveList[1]["AIRTID"] as? [[String:Any]], array.count > 0, let Value = array.first!["Value"] as? String {
+                            AIRTID = Value
                         }
                     }
                 }

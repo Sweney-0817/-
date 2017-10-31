@@ -25,7 +25,7 @@ class UserChangeIDPwdResultViewController: BaseViewController {
         navigationItem.leftBarButtonItem = nil
         navigationItem.setHidesBackButton(true, animated:true)
         // Do any additional setup after loading the view.
-        setShadowView(bottomView)
+        setShadowView(bottomView, .Top)
         titleLabel.text = errorMessage.isEmpty ? Change_Successful_Title : Change_Faild_Title
         imageView.image = errorMessage.isEmpty ? UIImage(named: ImageName.CowSuccess.rawValue) : UIImage(named: ImageName.CowFailure.rawValue)
         if errorMessage.isEmpty {

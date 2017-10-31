@@ -44,7 +44,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
         topDropView?.m_lbFirstRowTitle.textAlignment = .center
         topView.addSubview(topDropView!)
         
-        setShadowView(bottomVIew)
+        setShadowView(bottomVIew, .Top)
         addGestureForKeyBoard()
         
         getCanLoginBankInfo()

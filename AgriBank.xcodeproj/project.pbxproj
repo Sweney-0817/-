@@ -75,6 +75,7 @@
 		615B8D7D1EFD0CA5002B4B53 /* ConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615B8D7B1EFD0CA5002B4B53 /* ConfirmViewController.swift */; };
 		615B8D7E1EFD0CA5002B4B53 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615B8D7C1EFD0CA5002B4B53 /* ResultViewController.swift */; };
 		615B8D801EFD0CC2002B4B53 /* NTTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615B8D7F1EFD0CC2002B4B53 /* NTTransferViewController.swift */; };
+		6168B4F21FA8537F00809924 /* ExchangeRateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6168B4F11FA8537F00809924 /* ExchangeRateCell.xib */; };
 		617318171EEFC89300133F7A /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 617318161EEFC89300133F7A /* VPImageCropperViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		617318191EEFCB4B00133F7A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617318181EEFCB4B00133F7A /* LoginView.swift */; };
 		6173181B1EEFD12100133F7A /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6173181A1EEFD12100133F7A /* LoginView.xib */; };
@@ -223,6 +224,7 @@
 		615B8D7B1EFD0CA5002B4B53 /* ConfirmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfirmViewController.swift; path = Platform/ShareStoryBoard/ConfirmViewController.swift; sourceTree = "<group>"; };
 		615B8D7C1EFD0CA5002B4B53 /* ResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResultViewController.swift; path = Platform/ShareStoryBoard/ResultViewController.swift; sourceTree = "<group>"; };
 		615B8D7F1EFD0CC2002B4B53 /* NTTransferViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NTTransferViewController.swift; path = Platform/TransferStoryBoard/NTTransferViewController.swift; sourceTree = "<group>"; };
+		6168B4F11FA8537F00809924 /* ExchangeRateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ExchangeRateCell.xib; path = UI/View/Cell/ExchangeRateCell.xib; sourceTree = "<group>"; };
 		617318151EEFC89300133F7A /* VPImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPImageCropperViewController.h; path = ThirdParty/PersonalImageDealWith/VPImageCropperViewController.h; sourceTree = "<group>"; };
 		617318161EEFC89300133F7A /* VPImageCropperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPImageCropperViewController.m; path = ThirdParty/PersonalImageDealWith/VPImageCropperViewController.m; sourceTree = "<group>"; };
 		617318181EEFCB4B00133F7A /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginView.swift; path = UI/View/LoginView.swift; sourceTree = "<group>"; };
@@ -619,6 +621,7 @@
 				BE86EEA51F149A42003C7A36 /* PromotionCell.xib */,
 				BE86EEA11F136715003C7A36 /* NewsCell.xib */,
 				BE86EEA31F136B9A003C7A36 /* ServiceBaseCell.xib */,
+				6168B4F11FA8537F00809924 /* ExchangeRateCell.xib */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -822,6 +825,7 @@
 				61564A891F09E7D900CB6C4A /* ThreeRowDropDownView.xib in Resources */,
 				61FE9D1B1F15D24500FA32FE /* Setting.storyboard in Resources */,
 				6148D9D91EDFD10000C02CA3 /* LaunchScreen.storyboard in Resources */,
+				6168B4F21FA8537F00809924 /* ExchangeRateCell.xib in Resources */,
 				614FB4281EF9039400DDD270 /* MenuCell.xib in Resources */,
 				61E374A21F0F597E0044EE3A /* LoanPrincipalInterestCell.xib in Resources */,
 				BE7675391F0CD09C00E1A461 /* NTRationCell.xib in Resources */,

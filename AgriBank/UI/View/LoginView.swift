@@ -212,14 +212,13 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     
     @IBAction func clickCheckBtn(_ sender: Any) {
         let btn = sender as! UIButton
+        isCheckon = !isCheckon
         if isCheckon {
             btn.setBackgroundImage(UIImage(named: ImageName.Checkon.rawValue), for: .normal)
         }
         else {
             btn.setBackgroundImage(UIImage(named: ImageName.Checkoff.rawValue), for: .normal)
         }
-        
-        isCheckon = !isCheckon
     }
 
     // MARK: - selector
@@ -265,21 +264,24 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
             }
         }
     
+        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        var maxLength = 0
+        
         if textField == accountTextfield {
             let newString = (sAccount as NSString).replacingCharacters(in: range, with: string)
             if !DetermineUtility.utility.isEnglishAndNumber(newString) {
                 return false
             }
-            sAccount = newString
-            return true
+            if newLength <= Max_Identify_Length {
+                sAccount = newString
+                return true
+            }
+            else {
+                return false
+            }
         }
         else {
-            let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
-            var maxLength = 0
             switch textField {
-            case accountTextfield:
-                maxLength = Max_Identify_Length
-                
             case idTextfield, passwordTextfield:
                 maxLength = Max_ID_Password_Length
             

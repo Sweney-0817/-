@@ -208,6 +208,7 @@ enum UIID: Int {
     case UIID_ServiceBaseCell           // ServiceBaseCell for農漁會據點
     case UIID_DatePickerView          // DatePickerView class
     case UIID_ShowMessageHeadView     // ShowMessageHeadView class
+    case UIID_ExchangeRateCell        // ExchangeRateCell class for牌告匯率
     
     func NibName() -> String? {
         switch self {
@@ -255,6 +256,8 @@ enum UIID: Int {
             return "ServiceBaseCell"
         case .UIID_ShowMessageHeadView:
             return "ShowMessageHeadView"
+        case .UIID_ExchangeRateCell:
+            return "ExchangeRateCell"
         default:
             return nil
         }
@@ -322,7 +325,8 @@ enum ImageName: String {
 }
 
 // MARK: - 顏色定義
-let Shadow_Radious = CGFloat(15)
+let Shadow_Radious10 = CGFloat(10)
+let Shadow_Radious15 = CGFloat(15)
 let Shadow_Opacity = Float(0.5)
 let Shadow_Color = UIColor(red: 219/255, green: 217/255, blue: 217/255, alpha: 1)
 let Green_Color = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha: 1)
@@ -340,7 +344,7 @@ let NavigationBar_Color = UIColor(red: 46/255, green: 134/255, blue: 201/255, al
 let Layer_BorderWidth:CGFloat = 1
 let Layer_BorderRadius:CGFloat = 5
 let ToolBar_Title_Weight:CGFloat = 100
-let PickView_Height:CGFloat = 200
+let PickView_Height:CGFloat = 220
 let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFont.systemFont(ofSize: CGFloat(18))
 /*  為了因應4吋以下而做的調整 */
 let AgriBank_Scale = UIScreen.main.bounds.width / CGFloat(375)
@@ -502,7 +506,7 @@ let ErrorMsg_No_TaskId = "無法取得TaskID"
 let ErrorMsg_First_Login = "首次登入請變更代號"
 let ErrorMsg_Force_ChangePassword = "請強制變更密碼"
 let ErrorMsg_Suggest_ChangePassword = "密碼已到期，建議變更密碼"
-let ErrorMsg_InvalidAccount = "此身分證字號已無有效帳戶"
+let ErrorMsg_InvalidAccount = "帳號已停用，請至臨櫃重新申請"
 /* 用於「首頁」 */
 let ErrorMsg_AntivirusSoftware_Title = "安裝防毒軟體"
 let ErrorMsg_AntivirusSoftware_Content = "請於行動裝置上安裝防毒軟體"
@@ -520,3 +524,10 @@ let ErrorMsg_IDPD_SameIdentify = "不可與身分證號相同"
 let ErrorMsg_DepositCombinedToDeposit_MinAmount = "輸入金額不得少於1萬元"
 /* 用於「登入頭像設定」 */
 let ErrorMsg_NoImage = "您尚未設定頭像"
+
+// MARK: - Shadow Direction:
+enum ShadowDirection {
+    case All
+    case Top
+    case Bottom
+}

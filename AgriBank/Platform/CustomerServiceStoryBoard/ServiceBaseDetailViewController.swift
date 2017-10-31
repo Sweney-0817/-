@@ -33,7 +33,7 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
         super.viewDidLoad()
         
         m_tvData.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
-        setShadowView(bottomView)
+        setShadowView(bottomView, .Top)
     }
 
     override func didReceiveMemoryWarning() {

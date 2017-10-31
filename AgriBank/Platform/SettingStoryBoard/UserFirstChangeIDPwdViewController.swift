@@ -33,7 +33,7 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
         navigationController?.view.addGestureRecognizer(gesture!)
 
         // Do any additional setup after loading the view.
-        setShadowView(bottomView)
+        setShadowView(bottomView, .Top)
         addGestureForKeyBoard()
         
         getTransactionID("01013", TransactionID_Description)

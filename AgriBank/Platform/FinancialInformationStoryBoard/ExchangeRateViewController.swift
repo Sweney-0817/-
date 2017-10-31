@@ -41,7 +41,7 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
         m_vPlace.layer.borderColor = Gray_Color.cgColor
         m_vPlace.layer.borderWidth = 1
         
-        m_tvData.register(UINib(nibName: UIID.UIID_NTRationCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_NTRationCell.NibName()!)
+        m_tvData.register(UINib(nibName: UIID.UIID_ExchangeRateCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ExchangeRateCell.NibName()!)
         
         setShadowView(m_vPlace)
         setLoading(true)
@@ -180,7 +180,7 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_NTRationCell.NibName()!, for: indexPath) as! NTRationCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ExchangeRateCell.NibName()!, for: indexPath) as! ExchangeRateCell
         let data = m_Data1[indexPath.row]
         cell.setData(data.title!, data.data1!, data.data2!)
         return cell

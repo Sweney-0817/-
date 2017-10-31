@@ -134,7 +134,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         middleView.layer.borderWidth = Layer_BorderWidth
         middleView.layer.borderColor = Gray_Color.cgColor
         
-        setShadowView(bottomView)
+        setShadowView(bottomView, .Top)
         
         addObserverToKeyBoard()
         addGestureForKeyBoard()

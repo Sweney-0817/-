@@ -81,7 +81,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     
         m_segAccountType.setTitleTextAttributes([NSFontAttributeName:Default_Font], for: .normal)
         
-        setShadowView(bottomView)
+        setShadowView(bottomView, .Top)
         bottomView.layer.borderWidth = Layer_BorderWidth
         bottomView.layer.borderColor = Gray_Color.cgColor
         

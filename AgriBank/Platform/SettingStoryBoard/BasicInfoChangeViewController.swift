@@ -70,7 +70,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        setShadowView(bottomView)
+        setShadowView(bottomView, .Top)
         getTransactionID("08001", TransactionID_Description)
         addObserverToKeyBoard()
         addGestureForKeyBoard()

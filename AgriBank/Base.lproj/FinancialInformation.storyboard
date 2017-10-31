@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Ration View Controller-->
         <scene sceneID="Hg1-Qn-tWX">
@@ -26,19 +31,19 @@
                                 <rect key="frame" x="0.0" y="138" width="375" height="40"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="類別" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FmQ-xa-YUg">
-                                        <rect key="frame" x="15" y="7.5" width="36.5" height="25.5"/>
+                                        <rect key="frame" x="15" y="0.5" width="36.5" height="40"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="固定利率" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z6H-t7-QZv">
-                                        <rect key="frame" x="170.5" y="7.5" width="72.5" height="25.5"/>
+                                        <rect key="frame" x="170.5" y="0.0" width="72.5" height="40"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="機動利率" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2f-NX-EA6">
-                                        <rect key="frame" x="287" y="7" width="72.5" height="25.5"/>
+                                        <rect key="frame" x="287" y="0.5" width="72.5" height="40"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -49,10 +54,17 @@
                                     <constraint firstAttribute="height" constant="40" id="4Bs-G0-6HO"/>
                                     <constraint firstItem="s2f-NX-EA6" firstAttribute="trailing" secondItem="z6H-t7-QZv" secondAttribute="trailing" constant="117" id="6dt-IH-CBn"/>
                                     <constraint firstAttribute="trailing" secondItem="s2f-NX-EA6" secondAttribute="trailing" constant="15" id="BJQ-2R-9u0"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="FmQ-xa-YUg" secondAttribute="trailing" constant="20" symbolic="YES" id="ESM-Lo-4qG"/>
                                     <constraint firstItem="s2f-NX-EA6" firstAttribute="centerY" secondItem="5ks-83-g28" secondAttribute="centerY" id="Fu0-Qp-H9t"/>
                                     <constraint firstItem="FmQ-xa-YUg" firstAttribute="leading" secondItem="5ks-83-g28" secondAttribute="leading" constant="15" id="JIO-Hs-bD1"/>
+                                    <constraint firstItem="FmQ-xa-YUg" firstAttribute="height" secondItem="5ks-83-g28" secondAttribute="height" id="OiM-Io-llk"/>
+                                    <constraint firstItem="z6H-t7-QZv" firstAttribute="width" secondItem="s2f-NX-EA6" secondAttribute="width" id="aRt-mf-sXI"/>
+                                    <constraint firstItem="z6H-t7-QZv" firstAttribute="height" secondItem="5ks-83-g28" secondAttribute="height" id="fhw-FN-qJ1"/>
                                     <constraint firstItem="FmQ-xa-YUg" firstAttribute="centerY" secondItem="5ks-83-g28" secondAttribute="centerY" id="qCr-8G-M6c"/>
                                     <constraint firstItem="z6H-t7-QZv" firstAttribute="centerY" secondItem="5ks-83-g28" secondAttribute="centerY" id="tE8-cm-zXf"/>
+                                    <constraint firstItem="z6H-t7-QZv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5ks-83-g28" secondAttribute="leading" constant="20" symbolic="YES" id="usH-3z-Z1c"/>
+                                    <constraint firstItem="s2f-NX-EA6" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5ks-83-g28" secondAttribute="leading" constant="20" symbolic="YES" id="uue-Ic-pwU"/>
+                                    <constraint firstItem="s2f-NX-EA6" firstAttribute="height" secondItem="5ks-83-g28" secondAttribute="height" id="vbr-bt-6GL"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Cs-73-lSz" customClass="ChooseTypeView" customModule="AgriBank" customModuleProvider="target">
@@ -133,20 +145,23 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7L-HI-4zg">
                                 <rect key="frame" x="0.0" y="79" width="375" height="40"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="幣別" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="46B-c0-Hvd">
-                                        <rect key="frame" x="15" y="7.5" width="36.5" height="25.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="幣別" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="46B-c0-Hvd">
+                                        <rect key="frame" x="15" y="0.0" width="80" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="80" id="azX-t0-URk"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="現鈔買入" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UzE-nV-tgH">
-                                        <rect key="frame" x="170.5" y="7.5" width="72.5" height="25.5"/>
-                                        <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="18"/>
+                                        <rect key="frame" x="95" y="0.5" width="132.5" height="40"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="現鈔賣出" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ujD-cq-opg">
-                                        <rect key="frame" x="287" y="7" width="72.5" height="25.5"/>
+                                        <rect key="frame" x="227.5" y="0.5" width="132" height="40"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -156,9 +171,14 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="ujD-cq-opg" secondAttribute="trailing" constant="15" id="07o-kV-GBZ"/>
                                     <constraint firstItem="UzE-nV-tgH" firstAttribute="centerY" secondItem="Q7L-HI-4zg" secondAttribute="centerY" id="61F-CE-90o"/>
-                                    <constraint firstItem="ujD-cq-opg" firstAttribute="trailing" secondItem="UzE-nV-tgH" secondAttribute="trailing" constant="117" id="DIO-V4-uhx"/>
+                                    <constraint firstItem="UzE-nV-tgH" firstAttribute="height" secondItem="Q7L-HI-4zg" secondAttribute="height" id="GGc-rT-z3n"/>
+                                    <constraint firstItem="ujD-cq-opg" firstAttribute="height" secondItem="Q7L-HI-4zg" secondAttribute="height" id="Hb0-e1-pUj"/>
+                                    <constraint firstItem="46B-c0-Hvd" firstAttribute="height" secondItem="Q7L-HI-4zg" secondAttribute="height" id="R0m-SQ-qSH"/>
                                     <constraint firstItem="ujD-cq-opg" firstAttribute="centerY" secondItem="Q7L-HI-4zg" secondAttribute="centerY" id="TRg-iZ-zqv"/>
+                                    <constraint firstItem="ujD-cq-opg" firstAttribute="width" secondItem="UzE-nV-tgH" secondAttribute="width" id="YRc-hX-l8w"/>
                                     <constraint firstItem="46B-c0-Hvd" firstAttribute="leading" secondItem="Q7L-HI-4zg" secondAttribute="leading" constant="15" id="YzH-QZ-ptj"/>
+                                    <constraint firstItem="ujD-cq-opg" firstAttribute="leading" secondItem="UzE-nV-tgH" secondAttribute="trailing" id="bcW-vD-WTP"/>
+                                    <constraint firstItem="UzE-nV-tgH" firstAttribute="leading" secondItem="46B-c0-Hvd" secondAttribute="trailing" id="lMm-Vf-8Mf"/>
                                     <constraint firstAttribute="height" constant="40" id="laG-St-VmZ"/>
                                     <constraint firstItem="46B-c0-Hvd" firstAttribute="centerY" secondItem="Q7L-HI-4zg" secondAttribute="centerY" id="vMb-w0-nM5"/>
                                 </constraints>
@@ -210,7 +230,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MZv-mW-0hx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="302" y="144"/>
+            <point key="canvasLocation" x="301.60000000000002" y="143.47826086956522"/>
         </scene>
         <!--Regular Saving Calculation View Controller-->
         <scene sceneID="x8x-fr-Dt4">
@@ -369,6 +389,7 @@
                                                             <constraint firstItem="rPo-9o-u6Y" firstAttribute="centerY" secondItem="Dqt-Kx-kwj" secondAttribute="centerY" id="1IU-cQ-4QX"/>
                                                             <constraint firstItem="78t-5i-ofo" firstAttribute="leading" secondItem="rPo-9o-u6Y" secondAttribute="trailing" constant="15" id="4ZS-tr-HXS"/>
                                                             <constraint firstAttribute="height" constant="25" id="ajS-HA-ksf"/>
+                                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="78t-5i-ofo" secondAttribute="trailing" constant="20" symbolic="YES" id="gGt-eD-c0N"/>
                                                             <constraint firstItem="78t-5i-ofo" firstAttribute="centerY" secondItem="Dqt-Kx-kwj" secondAttribute="centerY" id="hLG-f4-mlH"/>
                                                             <constraint firstItem="rPo-9o-u6Y" firstAttribute="leading" secondItem="Dqt-Kx-kwj" secondAttribute="leading" constant="15" id="lcu-XK-1Y1"/>
                                                         </constraints>
@@ -472,6 +493,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomView" destination="oCU-QK-Tce" id="5d3-Kf-Ga2"/>
                         <outlet property="m_consDurationHeight" destination="oA7-Xb-TFW" id="Zhy-1I-xqp"/>
                         <outlet property="m_lbResult" destination="78t-5i-ofo" id="Lkl-Ff-RQk"/>
                         <outlet property="m_lbResultTitle" destination="rPo-9o-u6Y" id="wlp-wF-rlk"/>

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Passbook Lose Apply View Controller-->
         <scene sceneID="mOk-gK-q44">
@@ -55,13 +60,13 @@
                                         </constraints>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HintDownArrow" translatesAutoresizingMaskIntoConstraints="NO" id="76j-LJ-KJL">
-                                        <rect key="frame" x="0.0" y="129" width="414" height="40"/>
+                                        <rect key="frame" x="0.0" y="129" width="414" height="39.666666666666657"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="76j-LJ-KJL" secondAttribute="height" multiplier="375:36" id="l0K-On-tEA"/>
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BankBookLost" translatesAutoresizingMaskIntoConstraints="NO" id="y3N-VE-KWH">
-                                        <rect key="frame" x="18" y="179" width="379" height="253"/>
+                                        <rect key="frame" x="18" y="178.66666666666663" width="379" height="253"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="253" id="CRi-45-gwK"/>
                                         </constraints>
@@ -118,6 +123,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomView" destination="Og4-iS-gDS" id="kYp-Nl-WIh"/>
                         <outlet property="m_vDropDownView" destination="a3w-3F-yrv" id="kL1-ae-ayv"/>
                         <outlet property="m_vImageConfirmView" destination="ynG-bp-F1d" id="sRM-uE-uDO"/>
                         <outlet property="m_vShadowView" destination="0ns-os-c5Y" id="8sW-Oz-cOP"/>
@@ -198,14 +204,14 @@
                                         </constraints>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HintDownArrow" translatesAutoresizingMaskIntoConstraints="NO" id="3ZQ-C5-ClB">
-                                        <rect key="frame" x="0.0" y="188" width="414" height="40"/>
+                                        <rect key="frame" x="0.0" y="188" width="414" height="39.666666666666657"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="3ZQ-C5-ClB" secondAttribute="height" multiplier="375:36" id="UFl-9V-8He"/>
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CardLost" translatesAutoresizingMaskIntoConstraints="NO" id="n7u-zq-iu9">
-                                        <rect key="frame" x="18" y="238" width="379" height="253"/>
+                                        <rect key="frame" x="18" y="237.66666666666669" width="379" height="253"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="253" id="DeB-Ie-bj2"/>
@@ -264,9 +270,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomView" destination="hrY-zb-Okj" id="Zsf-ET-E0y"/>
                         <outlet property="m_tfWebBankPassword" destination="eS3-Cg-VAS" id="hdK-ZG-3aQ"/>
                         <outlet property="m_vDropDownView" destination="wtN-bu-bmR" id="7Gh-ES-OCD"/>
-                        <outlet property="m_vImageConfirmView" destination="4GA-gh-qQR" id="GcM-v2-XKc"/>
+                        <outlet property="m_vImageConfirmView" destination="4GA-gh-qQR" id="5aq-V7-5en"/>
                         <outlet property="m_vShadowView" destination="Bgp-Cz-08O" id="zWq-Pm-rQ9"/>
                         <outlet property="m_vWebBankPasswordView" destination="7Hh-vE-v9n" id="jET-fj-ZlU"/>
                     </connections>
@@ -294,7 +301,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="676"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JN2-Wa-c8E">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="737"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="736.66666666666663"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hpb-04-6XC">
                                                         <rect key="frame" x="18" y="0.0" width="379" height="414"/>
@@ -410,13 +417,13 @@
                                                         </constraints>
                                                     </view>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HintDownArrow" translatesAutoresizingMaskIntoConstraints="NO" id="aNz-wF-yBs">
-                                                        <rect key="frame" x="0.0" y="424" width="414" height="40"/>
+                                                        <rect key="frame" x="0.0" y="424" width="414" height="39.666666666666686"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="aNz-wF-yBs" secondAttribute="height" multiplier="375:36" id="8Tj-Ue-swc"/>
                                                         </constraints>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CheckLost" translatesAutoresizingMaskIntoConstraints="NO" id="eXO-Lw-HYQ">
-                                                        <rect key="frame" x="18" y="474" width="379" height="253"/>
+                                                        <rect key="frame" x="18" y="473.66666666666674" width="379" height="253"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="253" id="ujq-az-dNv"/>
                                                         </constraints>
@@ -491,6 +498,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomView" destination="Etg-9c-YRo" id="soY-wR-Gvv"/>
                         <outlet property="m_consCheckAmountHeight" destination="o19-dJ-Bdc" id="I9h-Gd-J9P"/>
                         <outlet property="m_consCheckDateHeight" destination="9Rw-Wv-Y0k" id="IKE-ix-OVi"/>
                         <outlet property="m_consFeeAccountHeight" destination="utg-bc-fwP" id="RE4-wp-KJb"/>

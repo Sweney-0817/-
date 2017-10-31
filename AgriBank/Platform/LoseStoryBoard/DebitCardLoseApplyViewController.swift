@@ -17,6 +17,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     @IBOutlet weak var m_tfWebBankPassword: TextField!
     @IBOutlet weak var m_vWebBankPasswordView: UIView!
     @IBOutlet weak var m_vImageConfirmView: UIView!
+    @IBOutlet weak var bottomView: UIView!
     private var m_OneRow: OneRowDropDownView? = nil
     private var m_ImageConfirmView: ImageConfirmView? = nil
     private var accountList:[AccountStruct]? = nil      // 帳號列表
@@ -28,6 +29,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
         super.viewDidLoad()
         setAllSubView()
         setShadowView(m_vShadowView)
+        setShadowView(bottomView, .Top)
         
         getTransactionID("04002", TransactionID_Description)
         addGestureForKeyBoard()

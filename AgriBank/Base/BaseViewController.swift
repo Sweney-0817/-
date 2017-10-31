@@ -170,10 +170,18 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         }
     }
     
-    func setShadowView(_ view:UIView) {
-        view.layer.shadowRadius = Shadow_Radious
+    func setShadowView(_ view:UIView, _ direction:ShadowDirection = .All) {
+        view.layer.shadowRadius = Shadow_Radious15
         view.layer.shadowOpacity = Shadow_Opacity
         view.layer.shadowColor = UIColor.black.cgColor
+        if direction == .Bottom {
+            view.layer.shadowRadius = Shadow_Radious10
+            view.layer.shadowPath = CGPath(rect: CGRect(x: 0, y: view.frame.height, width: view.frame.width, height: Shadow_Radious10), transform: nil)
+        }
+        else if direction == .Top {
+            view.layer.shadowRadius = Shadow_Radious10
+            view.layer.shadowPath = CGPath(rect: CGRect(x: 0, y: -(Shadow_Radious10/2), width: view.frame.width, height: Shadow_Radious10), transform: nil)
+        }
     }
     
     func enterConfirmResultController(_ isConfirm:Bool, _ data:ConfirmResultStruct, _ animated:Bool) {
@@ -572,9 +580,12 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         
                     case Account_Status_Invaild:
                         let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_InvalidAccount, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
+                        alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in 
+                            DispatchQueue.main.async {
+                                self.navigationController?.popToRootViewController(animated: true)
+                            }
+                        })
                         present(alert, animated: false, completion: nil)
-                        postLogout()
                         
                     default: curFeatureID = nil
                     }

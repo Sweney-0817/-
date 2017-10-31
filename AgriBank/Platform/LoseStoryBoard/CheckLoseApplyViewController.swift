@@ -30,6 +30,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     @IBOutlet weak var m_vFeeAccount: UIView!
     @IBOutlet weak var m_consFeeAccountHeight: NSLayoutConstraint!
     @IBOutlet weak var m_vImageConfirmView: UIView!
+    @IBOutlet weak var bottomView: UIView!
     private var m_DDType: OneRowDropDownView? = nil
     private var m_DDAccount: OneRowDropDownView? = nil
     private var m_CheckDate: OneRowDropDownView? = nil
@@ -46,6 +47,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         super.viewDidLoad()
         setAllSubView()
         setShadowView(m_vShadowView)
+        setShadowView(bottomView, .Top)
         getTransactionID("04003", TransactionID_Description)
         addObserverToKeyBoard()
         addGestureForKeyBoard()

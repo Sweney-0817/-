@@ -221,7 +221,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         }
         else {
             if chooseAccountDorpView?.getContentByType(.First) != Choose_Title {
-                var componenets = Calendar.current.dateComponents([.day,.year,.month], from: Date(timeIntervalSinceNow: TimeInterval(NSTimeZone.system.secondsFromGMT(for: Date()))))
+                var componenets = Calendar.current.dateComponents([.day,.year,.month], from: Date())
                 componenets.day = componenets.day!+1
                 let curDate = InputDatePickerStruct(minDate: nil, maxDate: nil, curDate: Calendar.current.date(from: componenets))
                 if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {

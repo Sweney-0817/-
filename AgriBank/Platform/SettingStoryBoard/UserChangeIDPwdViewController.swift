@@ -112,6 +112,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
             againTextfield.isSecureTextEntry = true
         }
         addGestureForKeyBoard()
+        setShadowView(bottomView, .Top)
     }
 
     override func didReceiveMemoryWarning() {

@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+            <string>PingFangTC-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Transfer View Controller-->
         <scene sceneID="9jq-Gm-qUy">
@@ -298,14 +304,15 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Cx0-rb-nzD" secondAttribute="trailing" constant="15" id="9mV-s0-9Ie"/>
                                     <constraint firstAttribute="trailing" secondItem="Cx0-rb-nzD" secondAttribute="trailing" constant="15" id="GDJ-ie-aNZ"/>
                                     <constraint firstAttribute="height" constant="60" id="KDJ-mu-T4R"/>
                                     <constraint firstItem="Cx0-rb-nzD" firstAttribute="centerX" secondItem="8Mw-tQ-gII" secondAttribute="centerX" id="PLH-Rj-9N4"/>
                                     <constraint firstItem="Cx0-rb-nzD" firstAttribute="centerY" secondItem="8Mw-tQ-gII" secondAttribute="centerY" id="TBw-dD-zfU"/>
-                                    <constraint firstItem="Cx0-rb-nzD" firstAttribute="leading" secondItem="8Mw-tQ-gII" secondAttribute="leading" constant="15" id="Tkw-6c-CXh"/>
                                 </constraints>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="8Mw-tQ-gII" secondAttribute="trailing" id="APW-j1-1qQ"/>
                             <constraint firstItem="sya-QO-zJ3" firstAttribute="width" secondItem="tur-81-OR2" secondAttribute="width" id="E21-Kb-M99"/>

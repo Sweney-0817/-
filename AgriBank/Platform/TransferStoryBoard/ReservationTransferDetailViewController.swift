@@ -42,7 +42,7 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         tableView.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
-        setShadowView(bottomView)
+        setShadowView(bottomView, .Top)
         cancelButton.layer.cornerRadius = Layer_BorderRadius
         if !canTransTime {
             bottomView.isHidden = true

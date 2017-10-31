@@ -54,7 +54,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
         middleView.layer.borderColor = Gray_Color.cgColor
         setShadowView(middleView)
         
-        setShadowView(bottomView)
+        setShadowView(bottomView, .Top)
         
         fillDetailData()
         

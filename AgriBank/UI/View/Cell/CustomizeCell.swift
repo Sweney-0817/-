@@ -66,6 +66,7 @@ class OverviewCell: UITableViewCell {
     @IBOutlet weak var detail3Label: UILabel!
     @IBOutlet weak var trailingCons: NSLayoutConstraint!
     @IBOutlet weak var leadingCons: NSLayoutConstraint!
+    
     private var Button_Width:CGFloat = 0
     private var status:CellStatus = .none
     private var sTrailing:CGFloat = 0
@@ -237,17 +238,16 @@ class NTRationCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
     }
+    
     func setData(_ title:String, _ data1:String, _ data2:String) {
         m_lbTitle.text = title
         m_lbData1.text = data1
         m_lbData2.text = data2
-        m_lbTitle.font = Scale_Default_Font
-        m_lbData1.font = Scale_Default_Font
-        m_lbData2.font = Scale_Default_Font
     }
 }
 
@@ -331,5 +331,26 @@ class ServiceBaseCell: UITableViewCell {
         m_lbTitle.text = title
         m_lbAddress.text = address
         m_lbDistance.text = distance
+    }
+}
+
+class ExchangeRateCell: UITableViewCell {
+    @IBOutlet weak var m_lbTitle: UILabel!
+    @IBOutlet weak var m_lbData1: UILabel!
+    @IBOutlet weak var m_lbData2: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        // Configure the view for the selected state
+    }
+    
+    func setData(_ title:String, _ data1:String, _ data2:String) {
+        m_lbTitle.text = title
+        m_lbData1.text = data1
+        m_lbData2.text = data2
     }
 }
