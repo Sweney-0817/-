@@ -130,6 +130,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 }
             }
             else {
+                imageConfirmView?.m_tfInput.text = ""
                 getImageConfirm(transactionId)
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }

@@ -44,16 +44,26 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T04-w8-Rex">
+                        <rect key="frame" x="0.0" y="58.5" width="375" height="1"/>
+                        <color key="backgroundColor" red="0.74509803921568629" green="0.74509803921568629" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="tMN-pU-GFa"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Lad-ul-N5g" firstAttribute="width" secondItem="9p7-W7-OS5" secondAttribute="width" id="02f-Ve-CV7"/>
                     <constraint firstItem="Gfs-az-PXH" firstAttribute="leading" secondItem="sQx-0U-1mN" secondAttribute="leading" constant="15" id="2Ma-ix-eYZ"/>
+                    <constraint firstAttribute="trailing" secondItem="T04-w8-Rex" secondAttribute="trailing" id="4iZ-om-GMm"/>
                     <constraint firstAttribute="bottom" secondItem="Lad-ul-N5g" secondAttribute="bottom" id="9S7-xE-okT"/>
                     <constraint firstItem="Lad-ul-N5g" firstAttribute="leading" secondItem="Gfs-az-PXH" secondAttribute="trailing" id="DKO-bb-K3e"/>
                     <constraint firstAttribute="trailing" secondItem="9p7-W7-OS5" secondAttribute="trailing" constant="15" id="HdI-m7-G0C"/>
                     <constraint firstAttribute="bottom" secondItem="Gfs-az-PXH" secondAttribute="bottom" id="Mo7-Hr-PJG"/>
                     <constraint firstItem="9p7-W7-OS5" firstAttribute="top" secondItem="sQx-0U-1mN" secondAttribute="top" id="RaA-2C-kmJ"/>
                     <constraint firstItem="9p7-W7-OS5" firstAttribute="leading" secondItem="Lad-ul-N5g" secondAttribute="trailing" id="V02-BU-leU"/>
+                    <constraint firstAttribute="bottom" secondItem="T04-w8-Rex" secondAttribute="bottom" id="bcn-Hq-Dbx"/>
+                    <constraint firstItem="T04-w8-Rex" firstAttribute="leading" secondItem="sQx-0U-1mN" secondAttribute="leading" id="fgU-I9-f5e"/>
                     <constraint firstItem="Lad-ul-N5g" firstAttribute="top" secondItem="sQx-0U-1mN" secondAttribute="top" id="p8g-be-sZv"/>
                     <constraint firstAttribute="bottom" secondItem="9p7-W7-OS5" secondAttribute="bottom" id="tIW-jC-80b"/>
                     <constraint firstItem="Gfs-az-PXH" firstAttribute="top" secondItem="sQx-0U-1mN" secondAttribute="top" id="tnl-Jo-00l"/>

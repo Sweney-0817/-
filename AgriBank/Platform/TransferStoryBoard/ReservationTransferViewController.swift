@@ -25,6 +25,8 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var transAmountTextfield: TextField!
     @IBOutlet weak var memoTextfield: TextField!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var middleHeight: NSLayoutConstraint!
     private var topDropView:ThreeRowDropDownView? = nil
     private var showBankAccountDropView:TwoRowDropDownView? = nil
     private var accountList:[AccountStruct]? = nil      // 帳號列表
@@ -71,6 +73,15 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        /*  為了因應3.5吋而做的調整 */
+        if middleView.frame.maxY < bottomView.frame.minY {
+            middleHeight.constant += (bottomView.frame.minY - middleView.frame.maxY)
+            scrollView.isScrollEnabled = false
+        }
     }
     
     override func didResponse(_ description:String, _ response: NSDictionary) {

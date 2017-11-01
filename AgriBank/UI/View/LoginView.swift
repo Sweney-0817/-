@@ -33,7 +33,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     @IBOutlet weak var passwordTextfield: UITextField!  // 使用者密碼
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var imageConfirmView: UIView!
-    @IBOutlet weak var chcekButton: UIButton!
+    @IBOutlet weak var checkImg: UIImageView!
     
     var delegate:LoginDelegate? = nil
     private var request:ConnectionUtility? = nil
@@ -63,10 +63,10 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
             accountTextfield.text = (account as NSString).replacingCharacters(in: Login_Mask_Range, with: Login_Mask)
         }
         if isCheckon {
-            chcekButton.setBackgroundImage(UIImage(named: ImageName.Checkon.rawValue), for: .normal)
+            checkImg.image = UIImage(named: ImageName.Checkon.rawValue)
         }
         else {
-            chcekButton.setBackgroundImage(UIImage(named: ImageName.Checkoff.rawValue), for: .normal)
+            checkImg.image = UIImage(named: ImageName.Checkoff.rawValue)
         }
     }
     
@@ -119,6 +119,10 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     
     func setImageConfirm(_ image:UIImage?) { // 設圖形驗證碼
         imgConfirm?.m_ivShow.image = image
+    }
+    
+    func cleanImageConfirmText() { // 重設圖形驗證碼文字
+        imgConfirm?.m_tfInput.text = ""
     }
     
     func saveDataInFile() { // 登入成功後，儲存登入成功的農漁會代碼
@@ -214,10 +218,10 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         let btn = sender as! UIButton
         isCheckon = !isCheckon
         if isCheckon {
-            btn.setBackgroundImage(UIImage(named: ImageName.Checkon.rawValue), for: .normal)
+            checkImg.image = UIImage(named: ImageName.Checkon.rawValue)
         }
         else {
-            btn.setBackgroundImage(UIImage(named: ImageName.Checkoff.rawValue), for: .normal)
+            checkImg.image = UIImage(named: ImageName.Checkoff.rawValue)
         }
     }
 

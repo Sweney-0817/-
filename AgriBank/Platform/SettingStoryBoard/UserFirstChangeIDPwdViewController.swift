@@ -145,11 +145,11 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
                 return false
             }
         }
-        if DetermineUtility.utility.isAllEnglishOrNumber(newIDTextfield.text!) {
+        if DetermineUtility.utility.isAllEnglishOrNumber(newPasswordTextfield.text!) {
             showErrorMessage(nil, "\(newPasswordTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Combine)")
             return false
         }
-        if !DetermineUtility.utility.checkInputNotContinuous(newIDTextfield.text!) {
+        if !DetermineUtility.utility.checkInputNotContinuous(newPasswordTextfield.text!) {
             showErrorMessage(nil, "\(newPasswordTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Continous)")
             return false
         }

@@ -445,6 +445,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 }
             }
             else {
+                loginView?.cleanImageConfirmText()
                 getImageConfirm()
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
@@ -533,10 +534,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         present(alert, animated: false, completion: nil)
                         
                     case Account_Status_Change_Password:
+                        AuthorizationManage.manage.setLoginStatus(true)
                         let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_Suggest_ChangePassword, preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: Cancel_Title, style: .default) { _ in
                             DispatchQueue.main.async {
-                                AuthorizationManage.manage.setLoginStatus(true)
                                 if self.curFeatureID != nil {
                                     self.enterFeatureByID(self.curFeatureID!, true)
                                     self.curFeatureID = nil
@@ -692,13 +693,18 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                 postLogout()
                             }
                             if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
-                                if navigationController?.viewControllers.last is HomeViewController {
-                                    (navigationController?.viewControllers.last as! HomeViewController).updateLoginStatus()
-                                }
-                                else {
-                                    navigationController?.popToRootViewController(animated: true)
-                                }
-                                showErrorMessage(nil, returnMsg)
+                                let alert = UIAlertController(title: UIAlert_Default_Title, message: returnMsg, preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                                    DispatchQueue.main.async {
+                                        if self.navigationController?.viewControllers.last is HomeViewController {
+                                            (self.navigationController?.viewControllers.last as! HomeViewController).updateLoginStatus()
+                                        }
+                                        else {
+                                            self.navigationController?.popToRootViewController(animated: true)
+                                        }
+                                    }
+                                })
+                                present(alert, animated: false, completion: nil)
                             }
                             
                         default:

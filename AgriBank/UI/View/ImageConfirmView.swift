@@ -23,6 +23,7 @@ class ImageConfirmView: UIView, UITextFieldDelegate {
     
     
     @IBAction func m_btnRefreshClick(_ sender: Any) {
+        m_tfInput.text = ""
         delegate?.clickRefreshBtn()
     }
 

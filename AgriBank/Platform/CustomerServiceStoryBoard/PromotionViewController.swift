@@ -60,9 +60,9 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
                     if let city = dic["CC_CityName"] as? String, let promotion = dic["LocalPromo"] as? [[String:String]] {
                         var pList = [PromotionStruct]()
                         for info in promotion {
-                            pList.append( PromotionStruct.init( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "", info["CMI_ID"] ?? "" ) )
+                            pList.append(PromotionStruct( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "", info["CMI_ID"] ?? "" ))
                             if recentList.count < 20 {
-                                recentList.append(PromotionStruct.init( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "", info["CMI_ID"] ?? "" ))
+                                recentList.append(PromotionStruct( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "", info["CMI_ID"] ?? "" ))
                             }
                         }
                         promotionList[city] = pList

@@ -79,6 +79,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
                 postRequest("LOSE/LOSE0101", "LOSE0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04001","Operate":"setLoseAcnt","TransactionId":transactionId,"REFNO":accountList?[accountIndex!].accountNO ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
+                m_ImageConfirmView?.m_tfInput.text = ""
                 getImageConfirm(transactionId)
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
