@@ -471,6 +471,7 @@ let ErrorMsg_NoAuth = "本單位目前尚未開放此功能"
 let ErrorMsg_IsNot_TransTime = "非營業時間，不受理交易"
 let ErrorMsg_Input_Amount = "輸入金額不得0元"
 let ErrorMsg_ID_LackOfLength = "身分證字號長度不足"
+let ErrorMsg_NoPositioning = "此交易需開啟定位權限"
 /*  用於「即時轉帳」 */
 let ErrorMsg_GetList_InAgreedAccount = "無法取得約定轉入帳戶"
 let ErrorMsg_GetList_InCommonAccount = "無法取得常用轉入帳戶"

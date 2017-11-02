@@ -63,6 +63,10 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case "COMM0403":
+            if loginView != nil {
+                super.didResponse(description, response)
+                return
+            }
             if let data = response.object(forKey: ReturnData_Key) as? [String : Any], let array = data["Result"] as? [[String:Any]] {
                 for dic in array {
                     var bankNameList = [String]()
@@ -137,7 +141,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
                 }
             }
             
-        default: break
+        default: super.didResponse(description, response)
         }
     }
     

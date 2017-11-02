@@ -364,7 +364,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
                 
             case ViewTag.View_AccountActionSheet.rawValue:
                 if let info = accountList?[buttonIndex-1] {
-                    m_DDTransOutAccount?.setThreeRow(BillPayment_OutAccout_Title, info.accountNO, BillPayment_Currency_Ttile, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), BillPayment_Balance_Ttile, String(info.balance) )
+                    m_DDTransOutAccount?.setThreeRow(BillPayment_OutAccout_Title, info.accountNO, BillPayment_Currency_Ttile, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), BillPayment_Balance_Ttile, String(info.balance).separatorThousand())
                 }
                 
             default: break

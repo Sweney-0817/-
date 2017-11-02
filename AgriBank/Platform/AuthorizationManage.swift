@@ -104,9 +104,15 @@ class AuthorizationManage {
     
     func setLoginStatus(_ status:Bool) {
         isLoginSuccess = status
+        /* 登出後，狀態要更新 */
         if status == false {
             AuthorizationManage.manage.setResponseLoginInfo(nil, nil)
             (UIApplication.shared.delegate as! AppDelegate).removeNotificationAllEvent()
+            canNTNonAgreedTransfer = false
+            canReservationTransferCancel = false
+            canDepositTermination = false
+            canPayLoan = false
+            canChangeBaseInfo = false
         }
     }
     

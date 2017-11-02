@@ -17,12 +17,12 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
     @IBOutlet weak var callPhoneButton: UIButton!
     @IBOutlet weak var bottomView: UIView!
     private var data:[[String:String]]? = nil
-    private var telePhone = ""
-    private var curLocation = CLLocationCoordinate2D()
+    private var telePhone:String? = nil
+    private var curLocation:CLLocationCoordinate2D? = nil
     private var mapWebView:UIWebView? = nil
     
     // MARK: - Public
-    func setData(_ data:[[String:String]]?, _ telePhone:String, _ curLocation:CLLocationCoordinate2D) {
+    func setData(_ data:[[String:String]]?, _ telePhone:String?, _ curLocation:CLLocationCoordinate2D?) {
         self.data = data
         self.telePhone = telePhone
         self.curLocation = curLocation
@@ -67,23 +67,33 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnShowMapClick(_ sender: Any) {
-        if mapWebView == nil {
-            mapWebView = UIWebView(frame: view.frame)
-            mapWebView?.delegate = self
-            view.addSubview(mapWebView!)
+        if curLocation != nil {
+            if mapWebView == nil {
+                mapWebView = UIWebView(frame: view.frame)
+                mapWebView?.delegate = self
+                view.addSubview(mapWebView!)
+            }
+            setLoading(true)
+            mapWebView?.loadRequest(URLRequest(url: URL(string: "\(ServiceBaseDetail_Map_URL)\(curLocation!.latitude),\(curLocation!.longitude)")!))
         }
-        setLoading(true)
-        mapWebView?.loadRequest(URLRequest(url: URL(string: "\(ServiceBaseDetail_Map_URL)\(curLocation.latitude),\(curLocation.longitude)")!))
+        else {
+            showErrorMessage(nil, "")
+        }
     }
     
     @IBAction func m_btnCallOutClick(_ sender: Any) {
-        if let url = URL(string: "tel://\(telePhone)"), UIApplication.shared.canOpenURL(url) {
-            if #available(iOS 10, *) {
-                UIApplication.shared.open(url)
+        if telePhone != nil && !telePhone!.isEmpty {
+            if let url = URL(string: "tel://\(telePhone!)"), UIApplication.shared.canOpenURL(url) {
+                if #available(iOS 10, *) {
+                    UIApplication.shared.open(url)
+                }
+                else {
+                    UIApplication.shared.openURL(url)
+                }
             }
-            else {
-                UIApplication.shared.openURL(url)
-            }
+        }
+        else {
+            showErrorMessage(nil, "")
         }
     }
     

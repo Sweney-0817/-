@@ -12,7 +12,7 @@ import CoreLocation
 let Confirm_ImageConfirm_Cell_Height:CGFloat = 60
 let Confirm_Segue = "GoResult"
 
-class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, ImageConfirmViewDelegate {
+class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, ImageConfirmViewDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var m_tvData: UITableView!
     @IBOutlet weak var m_vBottomView: UIView!
     @IBOutlet weak var m_btnConfirm: UIButton!
@@ -38,23 +38,22 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         if isNeedOTP {
-            m_btnConfirm.setTitle(dataOTP?.confirmBtnName, for: .normal)
-            // 開啟定位
-//            if CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-//                locationManager = CLLocationManager()
-//                locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-//                if CLLocationManager.authorizationStatus() == .notDetermined  {
-//                    locationManager?.requestWhenInUseAuthorization()
-//                }
-//            }
-//            else {
-//                locationManager?.requestWhenInUseAuthorization()
-//            }
-            locationManager = CLLocationManager()
-            locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager?.requestWhenInUseAuthorization()
+            if CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+                m_btnConfirm.setTitle(dataOTP?.confirmBtnName, for: .normal)
+                // 開啟定位
+                locationManager = CLLocationManager()
+                locationManager?.delegate = self
+                locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+                locationManager?.requestWhenInUseAuthorization()
+            }
+            else {
+                let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_NoPositioning, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                    self.navigationController?.popViewController(animated: true)
+                })
+                present(alert, animated: true, completion: nil)
+            }
         }
         else {
             m_btnConfirm.setTitle(data?.confirmBtnName, for: .normal)
@@ -288,5 +287,16 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     @IBAction func clickCheckBtn(_ sender: Any) {
         curTextfield?.resignFirstResponder()
         checkImageConfirm(password, transactionId)
+    }
+    
+    // MARK: - CLLocationManagerDelegate
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status != .notDetermined && status != .authorizedAlways && status != .authorizedWhenInUse {
+            let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_NoPositioning, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                self.navigationController?.popViewController(animated: true)
+            })
+            present(alert, animated: true, completion: nil)
+        }
     }
 }

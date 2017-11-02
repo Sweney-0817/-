@@ -102,9 +102,11 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
             var list = [[String:String]]()
             list.append([Response_Key:"名稱",Response_Value:curData[m_iSelectedIndex!].name ?? ""])
             list.append([Response_Key:"地址",Response_Value:curData[m_iSelectedIndex!].address ?? ""])
-            list.append([Response_Key:"電話",Response_Value:curData[m_iSelectedIndex!].phone ?? ""])
-            list.append([Response_Key:"傳真",Response_Value:curData[m_iSelectedIndex!].fax ?? ""])
-            controller.setData(list, curData[m_iSelectedIndex!].phone ?? "", curData[m_iSelectedIndex!].location ?? curLocation)
+            if curData[m_iSelectedIndex!].type == ServiceBase_Unit_Type {
+                list.append([Response_Key:"電話",Response_Value:curData[m_iSelectedIndex!].phone ?? ""])
+                list.append([Response_Key:"傳真",Response_Value:curData[m_iSelectedIndex!].fax ?? ""])
+            }
+            controller.setData(list, curData[m_iSelectedIndex!].phone, curData[m_iSelectedIndex!].location)
         }
     }
     

@@ -21,6 +21,7 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
     private var expandList = Set<Int>()
     private var currentID:PlatformFeatureID? = nil
     private var showLoginView = false
+    private var curLoginStatus = false
 
     // MARK: - Override
     override func viewDidLoad() {
@@ -30,6 +31,7 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
         tableView.register(UINib(nibName: UIID.UIID_MenuExpandCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuExpandCell.NibName()!)
         setShadowView(topView, .Bottom)
         versionLabel.text = "版本"+AgriBank_Version
+        curLoginStatus = AuthorizationManage.manage.IsLoginSuccess()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +43,10 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
         else {
             loginStatusLabel.text = NoLogin_Title
             loginStatusImg.image = UIImage(named: ImageName.Login.rawValue)
+        }
+        if curLoginStatus != AuthorizationManage.manage.IsLoginSuccess() {
+            curLoginStatus = AuthorizationManage.manage.IsLoginSuccess()
+            expandList.removeAll()
         }
         if let list = AuthorizationManage.manage.GetPlatformList(.Menu_Type) {
             featureList = list
@@ -61,7 +67,6 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
                 count += list.count
             }
         }
-        
         return count
     }
     
@@ -76,7 +81,12 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
             cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_MenuCell.NibName()!, for: indexPath)
             (cell as! MenuCell).nameLabel.text = getFeatureName(featureList[indexPath.section])
             if expandList.contains(indexPath.section) {
-                (cell as! MenuCell).directionImage.image = UIImage(named: ImageName.DropUp.rawValue)
+                if list != nil && (list?.count)! > 0 {
+                    (cell as! MenuCell).directionImage.image = UIImage(named: ImageName.DropUp.rawValue)
+                }
+                else {
+                    (cell as! MenuCell).directionImage.image = nil
+                }
             }
             else {
                 if list != nil && (list?.count)! > 0 {

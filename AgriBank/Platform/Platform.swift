@@ -86,7 +86,7 @@ class Platform {
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "預約轉帳")
         informationList[.FeatureID_ReservationTransfer] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "預約轉帳查詢取消")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "預約轉帳查詢/取消")
         informationList[.FeatureID_ReservationTransferSearchCancel] = feature
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_NTAccountTransfer, name: "綜存轉定存")
