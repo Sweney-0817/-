@@ -17,9 +17,6 @@
 		6129E6B21F038E7900C23D67 /* DebitCardLoseApplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6129E6B01F038E7900C23D67 /* DebitCardLoseApplyViewController.swift */; };
 		6129E6B31F038E7900C23D67 /* PassbookLoseApplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6129E6B11F038E7900C23D67 /* PassbookLoseApplyViewController.swift */; };
 		612A82D61F74DC7C002D280D /* extendString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612A82D51F74DC7C002D280D /* extendString.swift */; };
-		612BDA2F1F61399E0036B443 /* 1-proto5-pub.der in Resources */ = {isa = PBXBuildFile; fileRef = 612BDA2C1F61399E0036B443 /* 1-proto5-pub.der */; };
-		612BDA301F61399E0036B443 /* agribank_dev_app_const.bin in Resources */ = {isa = PBXBuildFile; fileRef = 612BDA2D1F61399E0036B443 /* agribank_dev_app_const.bin */; };
-		612BDA311F61399E0036B443 /* agribank_dev_credential.bin in Resources */ = {isa = PBXBuildFile; fileRef = 612BDA2E1F61399E0036B443 /* agribank_dev_credential.bin */; };
 		612BDA371F614FC80036B443 /* VaktenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 612BDA361F614FC80036B443 /* VaktenManager.m */; };
 		612BDA3E1F6151910036B443 /* Vakten.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 612BDA391F6150F70036B443 /* Vakten.framework */; };
 		612BDA401F6151B80036B443 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 612BDA3F1F6151B80036B443 /* Security.framework */; };
@@ -69,6 +66,12 @@
 		61564A8A1F09E7D900CB6C4A /* TwoRowDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61564A841F09E7D900CB6C4A /* TwoRowDropDownView.swift */; };
 		61564A8B1F09E7D900CB6C4A /* TwoRowDropDownView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61564A851F09E7D900CB6C4A /* TwoRowDropDownView.xib */; };
 		61564A8D1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61564A8C1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift */; };
+		615A77F71FB436A900D0D03C /* agribank_dev_credential.bin in Resources */ = {isa = PBXBuildFile; fileRef = 615A77F41FB436A900D0D03C /* agribank_dev_credential.bin */; };
+		615A77F81FB436A900D0D03C /* 1-proto5-pub.der in Resources */ = {isa = PBXBuildFile; fileRef = 615A77F51FB436A900D0D03C /* 1-proto5-pub.der */; };
+		615A77F91FB436A900D0D03C /* agribank_dev_app_const.bin in Resources */ = {isa = PBXBuildFile; fileRef = 615A77F61FB436A900D0D03C /* agribank_dev_app_const.bin */; };
+		615A77FD1FB4371000D0D03C /* agribank_pro_app_const.bin in Resources */ = {isa = PBXBuildFile; fileRef = 615A77FA1FB4370F00D0D03C /* agribank_pro_app_const.bin */; };
+		615A77FE1FB4371000D0D03C /* agribank_pro_credential.bin in Resources */ = {isa = PBXBuildFile; fileRef = 615A77FB1FB4371000D0D03C /* agribank_pro_credential.bin */; };
+		615A77FF1FB4371000D0D03C /* 1-proto5-pub_pro.der in Resources */ = {isa = PBXBuildFile; fileRef = 615A77FC1FB4371000D0D03C /* 1-proto5-pub_pro.der */; };
 		615B8D731EFCDDA8002B4B53 /* MemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615B8D711EFCDDA8002B4B53 /* MemoView.swift */; };
 		615B8D741EFCDDA8002B4B53 /* MemoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 615B8D721EFCDDA8002B4B53 /* MemoView.xib */; };
 		615B8D771EFCEADE002B4B53 /* Transfer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 615B8D751EFCEADE002B4B53 /* Transfer.storyboard */; };
@@ -155,9 +158,6 @@
 		6129E6B01F038E7900C23D67 /* DebitCardLoseApplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DebitCardLoseApplyViewController.swift; path = Platform/LoseStoryBoard/DebitCardLoseApplyViewController.swift; sourceTree = "<group>"; };
 		6129E6B11F038E7900C23D67 /* PassbookLoseApplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PassbookLoseApplyViewController.swift; path = Platform/LoseStoryBoard/PassbookLoseApplyViewController.swift; sourceTree = "<group>"; };
 		612A82D51F74DC7C002D280D /* extendString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = extendString.swift; path = UI/Component/extendString.swift; sourceTree = "<group>"; };
-		612BDA2C1F61399E0036B443 /* 1-proto5-pub.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = "1-proto5-pub.der"; path = "Resource/1-proto5-pub.der"; sourceTree = "<group>"; };
-		612BDA2D1F61399E0036B443 /* agribank_dev_app_const.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = agribank_dev_app_const.bin; path = Resource/agribank_dev_app_const.bin; sourceTree = "<group>"; };
-		612BDA2E1F61399E0036B443 /* agribank_dev_credential.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = agribank_dev_credential.bin; path = Resource/agribank_dev_credential.bin; sourceTree = "<group>"; };
 		612BDA351F614FC80036B443 /* VaktenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VaktenManager.h; path = ThirdParty/KeyPasco/VaktenManager.h; sourceTree = "<group>"; };
 		612BDA361F614FC80036B443 /* VaktenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VaktenManager.m; path = ThirdParty/KeyPasco/VaktenManager.m; sourceTree = "<group>"; };
 		612BDA391F6150F70036B443 /* Vakten.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vakten.framework; path = AgriBank/ThirdParty/KeyPasco/Vakten.framework; sourceTree = "<group>"; };
@@ -218,6 +218,12 @@
 		61564A841F09E7D900CB6C4A /* TwoRowDropDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwoRowDropDownView.swift; path = UI/View/TwoRowDropDownView.swift; sourceTree = "<group>"; };
 		61564A851F09E7D900CB6C4A /* TwoRowDropDownView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TwoRowDropDownView.xib; path = UI/View/TwoRowDropDownView.xib; sourceTree = "<group>"; };
 		61564A8C1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReservationTransferSearchCancelViewController.swift; path = Platform/TransferStoryBoard/ReservationTransferSearchCancelViewController.swift; sourceTree = "<group>"; };
+		615A77F41FB436A900D0D03C /* agribank_dev_credential.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = agribank_dev_credential.bin; path = Resource/KeyPasco/Develop/agribank_dev_credential.bin; sourceTree = "<group>"; };
+		615A77F51FB436A900D0D03C /* 1-proto5-pub.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = "1-proto5-pub.der"; path = "Resource/KeyPasco/Develop/1-proto5-pub.der"; sourceTree = "<group>"; };
+		615A77F61FB436A900D0D03C /* agribank_dev_app_const.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = agribank_dev_app_const.bin; path = Resource/KeyPasco/Develop/agribank_dev_app_const.bin; sourceTree = "<group>"; };
+		615A77FA1FB4370F00D0D03C /* agribank_pro_app_const.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = agribank_pro_app_const.bin; path = Resource/KeyPasco/Release/agribank_pro_app_const.bin; sourceTree = "<group>"; };
+		615A77FB1FB4371000D0D03C /* agribank_pro_credential.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = agribank_pro_credential.bin; path = Resource/KeyPasco/Release/agribank_pro_credential.bin; sourceTree = "<group>"; };
+		615A77FC1FB4371000D0D03C /* 1-proto5-pub_pro.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = "1-proto5-pub_pro.der"; path = "Resource/KeyPasco/Release/1-proto5-pub_pro.der"; sourceTree = "<group>"; };
 		615B8D711EFCDDA8002B4B53 /* MemoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemoView.swift; path = UI/View/MemoView.swift; sourceTree = "<group>"; };
 		615B8D721EFCDDA8002B4B53 /* MemoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MemoView.xib; path = UI/View/MemoView.xib; sourceTree = "<group>"; };
 		615B8D761EFCEADE002B4B53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Transfer.storyboard; sourceTree = "<group>"; };
@@ -591,9 +597,7 @@
 		6148DA3C1EDFE8A400C02CA3 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				612BDA2C1F61399E0036B443 /* 1-proto5-pub.der */,
-				612BDA2D1F61399E0036B443 /* agribank_dev_app_const.bin */,
-				612BDA2E1F61399E0036B443 /* agribank_dev_credential.bin */,
+				615A77F11FB4367B00D0D03C /* Keypasco */,
 			);
 			name = Resource;
 			sourceTree = "<group>";
@@ -624,6 +628,35 @@
 				6168B4F11FA8537F00809924 /* ExchangeRateCell.xib */,
 			);
 			name = Cell;
+			sourceTree = "<group>";
+		};
+		615A77F11FB4367B00D0D03C /* Keypasco */ = {
+			isa = PBXGroup;
+			children = (
+				615A77F31FB4369500D0D03C /* Release */,
+				615A77F21FB4368800D0D03C /* Develop */,
+			);
+			name = Keypasco;
+			sourceTree = "<group>";
+		};
+		615A77F21FB4368800D0D03C /* Develop */ = {
+			isa = PBXGroup;
+			children = (
+				615A77F51FB436A900D0D03C /* 1-proto5-pub.der */,
+				615A77F61FB436A900D0D03C /* agribank_dev_app_const.bin */,
+				615A77F41FB436A900D0D03C /* agribank_dev_credential.bin */,
+			);
+			name = Develop;
+			sourceTree = "<group>";
+		};
+		615A77F31FB4369500D0D03C /* Release */ = {
+			isa = PBXGroup;
+			children = (
+				615A77FC1FB4371000D0D03C /* 1-proto5-pub_pro.der */,
+				615A77FA1FB4370F00D0D03C /* agribank_pro_app_const.bin */,
+				615A77FB1FB4371000D0D03C /* agribank_pro_credential.bin */,
+			);
+			name = Release;
 			sourceTree = "<group>";
 		};
 		615B8D781EFCF27B002B4B53 /* TransferStoryBoard */ = {
@@ -820,16 +853,17 @@
 				61564A8B1F09E7D900CB6C4A /* TwoRowDropDownView.xib in Resources */,
 				6129E6AE1F038DED00C23D67 /* Lose.storyboard in Resources */,
 				614FB42B1EF9039400DDD270 /* ResultCell.xib in Resources */,
+				615A77FD1FB4371000D0D03C /* agribank_pro_app_const.bin in Resources */,
 				BE86EE8F1F135292003C7A36 /* CustomerService.storyboard in Resources */,
 				6148DA281EDFE7A400C02CA3 /* BannerView.xib in Resources */,
 				61564A891F09E7D900CB6C4A /* ThreeRowDropDownView.xib in Resources */,
 				61FE9D1B1F15D24500FA32FE /* Setting.storyboard in Resources */,
 				6148D9D91EDFD10000C02CA3 /* LaunchScreen.storyboard in Resources */,
+				615A77F91FB436A900D0D03C /* agribank_dev_app_const.bin in Resources */,
 				6168B4F21FA8537F00809924 /* ExchangeRateCell.xib in Resources */,
 				614FB4281EF9039400DDD270 /* MenuCell.xib in Resources */,
 				61E374A21F0F597E0044EE3A /* LoanPrincipalInterestCell.xib in Resources */,
 				BE7675391F0CD09C00E1A461 /* NTRationCell.xib in Resources */,
-				612BDA301F61399E0036B443 /* agribank_dev_app_const.bin in Resources */,
 				6148DA261EDFE7A400C02CA3 /* AnnounceNews.xib in Resources */,
 				BE86EEA21F136715003C7A36 /* NewsCell.xib in Resources */,
 				612272711F8F5065001FA028 /* ShowMessageHeadView.xib in Resources */,
@@ -839,19 +873,21 @@
 				611B8EC91EE966BE003FCFDF /* Main.storyboard in Resources */,
 				6148DA291EDFE7A400C02CA3 /* FeatureWallCellView.xib in Resources */,
 				614FB42A1EF9039400DDD270 /* OverviewCell.xib in Resources */,
+				615A77FF1FB4371000D0D03C /* 1-proto5-pub_pro.der in Resources */,
 				6173181B1EEFD12100133F7A /* LoginView.xib in Resources */,
 				BEB38A6E1F0A2800006094AC /* Payment.storyboard in Resources */,
 				61F019091EF8006A00849E94 /* ExpandView.xib in Resources */,
 				61564A871F09E7D900CB6C4A /* OneRowDropDownView.xib in Resources */,
+				615A77FE1FB4371000D0D03C /* agribank_pro_credential.bin in Resources */,
 				615B8D741EFCDDA8002B4B53 /* MemoView.xib in Resources */,
+				615A77F71FB436A900D0D03C /* agribank_dev_credential.bin in Resources */,
+				615A77F81FB436A900D0D03C /* 1-proto5-pub.der in Resources */,
 				614FB4131EF9013100DDD270 /* Share.storyboard in Resources */,
-				612BDA311F61399E0036B443 /* agribank_dev_credential.bin in Resources */,
 				BE76753D1F0E3D2F00E1A461 /* ImageConfirmView.xib in Resources */,
 				61F4F42A1EF27B9F001E3872 /* TypeSection.xib in Resources */,
 				BE7675301F0CC71400E1A461 /* FinancialInformation.storyboard in Resources */,
 				614FB4291EF9039400DDD270 /* MenuExpandCell.xib in Resources */,
 				614FB4261EF9039400DDD270 /* EditCell.xib in Resources */,
-				612BDA2F1F61399E0036B443 /* 1-proto5-pub.der in Resources */,
 				BE86EEA41F136B9A003C7A36 /* ServiceBaseCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1275,6 +1311,106 @@
 			};
 			name = Release;
 		};
+		615A78001FB441A000D0D03C /* Release_SIT */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release_SIT;
+		};
+		615A78011FB441A000D0D03C /* Release_SIT */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SYSTEX Corporation";
+				DEVELOPMENT_TEAM = 95E44WWFM7;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AgriBank/Resource",
+					"$(PROJECT_DIR)/AgriBank/ThirdParty/KeyPasco",
+				);
+				INFOPLIST_FILE = AgriBank/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.softmobile.agribank;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3ff1620c-451a-4552-b64a-b2317efd610e";
+				PROVISIONING_PROFILE_SPECIFIER = forComAll;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = R_SIT;
+				SWIFT_OBJC_BRIDGING_HEADER = "AgriBank/AgriBank-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release_SIT;
+		};
+		615A78021FB441A000D0D03C /* Release_SIT */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = AgriBankTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Systex.AgriBankTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AgriBank.app/AgriBank";
+			};
+			name = Release_SIT;
+		};
+		615A78031FB441A000D0D03C /* Release_SIT */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = AgriBankUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Systex.AgriBankUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = AgriBank;
+			};
+			name = Release_SIT;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1283,6 +1419,7 @@
 			buildConfigurations = (
 				6148D9F11EDFD10100C02CA3 /* Debug */,
 				6148D9F21EDFD10100C02CA3 /* Release */,
+				615A78001FB441A000D0D03C /* Release_SIT */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1292,6 +1429,7 @@
 			buildConfigurations = (
 				6148D9F41EDFD10100C02CA3 /* Debug */,
 				6148D9F51EDFD10100C02CA3 /* Release */,
+				615A78011FB441A000D0D03C /* Release_SIT */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1301,6 +1439,7 @@
 			buildConfigurations = (
 				6148D9F71EDFD10100C02CA3 /* Debug */,
 				6148D9F81EDFD10100C02CA3 /* Release */,
+				615A78021FB441A000D0D03C /* Release_SIT */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1310,6 +1449,7 @@
 			buildConfigurations = (
 				6148D9FA1EDFD10100C02CA3 /* Debug */,
 				6148D9FB1EDFD10100C02CA3 /* Release */,
+				615A78031FB441A000D0D03C /* Release_SIT */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

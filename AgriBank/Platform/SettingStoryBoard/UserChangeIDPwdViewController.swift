@@ -53,7 +53,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
             showErrorMessage(nil, isChangePassword ? ErrorMsg_PDNotSame : ErrorMsg_IDNotSame)
             return false
         }
-        if (newTextfield.text?.characters.count)! < NewInput_MinLength || (newTextfield.text?.characters.count)! > NewInput_MaxLength {
+        if (newTextfield.text?.count)! < NewInput_MinLength || (newTextfield.text?.count)! > NewInput_MaxLength {
             showErrorMessage(nil, "\(newTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Length)")
             return false
         }
@@ -189,7 +189,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
             return false
         }
         
-        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        let newLength = (textField.text?.count)! - range.length + string.count
         switch textField {
         case newTextfield, againTextfield:
             if newLength > Max_ID_Password_Length {

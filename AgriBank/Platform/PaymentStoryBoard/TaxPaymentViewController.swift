@@ -172,7 +172,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
         }
         else {
             if curType == TaxPayment_Type1 {
-                if (m_tfInput2.text?.characters.count)! < Min_Identify_Length {
+                if (m_tfInput2.text?.count)! < Min_Identify_Length {
                     showErrorMessage(nil, ErrorMsg_ID_LackOfLength)
                     return false
                 }
@@ -351,7 +351,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        let newLength = (textField.text?.count)! - range.length + string.count
         if textField == m_tfInput2 && curType == TaxPayment_Type1 {
             if newLength > Max_Identify_Length {
                 return false

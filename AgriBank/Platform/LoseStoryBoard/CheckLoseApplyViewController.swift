@@ -352,7 +352,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        let newLength = (textField.text?.count)! - range.length + string.count
         if textField == m_tfCheckNumber {
             if newLength > CheckLoseApply_Bill_Max_Length {
                 return false

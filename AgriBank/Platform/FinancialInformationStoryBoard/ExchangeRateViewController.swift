@@ -10,6 +10,7 @@ import UIKit
 
 let ExchangeRate_Bank_Title = "農漁會"
 let ExchangeRate_Cell_Height:CGFloat = 60
+let ExchangeRate_Memo = "本資料僅供參考，實際匯率以臨櫃交易當時匯率為準"
 
 class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var m_vPlace: UIView!
@@ -184,6 +185,18 @@ class ExchangeRateViewController: BaseViewController, OneRowDropDownViewDelegate
         let data = m_Data1[indexPath.row]
         cell.setData(data.title!, data.data1!, data.data2!)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: tableView.sectionFooterHeight))
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.width-20, height: view.frame.height))
+        label.text = ExchangeRate_Memo
+        label.font = Default_Font
+        label.textColor = Green_Color
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        view.addSubview(label)
+        return view
     }
     
     // MARK: - For Picker

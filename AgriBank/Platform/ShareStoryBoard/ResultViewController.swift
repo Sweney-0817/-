@@ -14,10 +14,12 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var m_btnBackToFeature: UIButton!
     @IBOutlet weak var m_btnBackToHome: UIButton!
     private var data:ConfirmResultStruct? = nil
+    private var barTitle:String? = nil
     
     // MARK: - Public
-    func setData(_ data:ConfirmResultStruct) {
+    func setData(_ data:ConfirmResultStruct, _ barTitle:String? = nil) {
         self.data = data
+        self.barTitle = barTitle
     }
     
     // MARK: - StoryBoard Touch Event
@@ -45,6 +47,14 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        /* 「即時轉帳」結果頁，沿用確認頁的Title */
+        if barTitle != nil {
+            navigationController?.navigationBar.topItem?.title = barTitle
+        }
     }
     
     // MARK: - UITableViewDelegate

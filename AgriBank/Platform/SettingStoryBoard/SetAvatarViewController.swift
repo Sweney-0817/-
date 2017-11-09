@@ -17,14 +17,14 @@ class SetAvatarViewController: BasePhotoViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if let info = AuthorizationManage.manage.GetLoginInfo() {
-            imageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
+        if let info = AuthorizationManage.manage.getResponseLoginInfo(), let USUDID = info.USUDID {
+            imageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: USUDID, setAccount: USUDID)
         }
         /* UIImagePickerController 與 NotificationCenter.default.addObserver(forName: nil, object: nil, queue: nil) 有衝突*/
         (UIApplication.shared.delegate as! AppDelegate).removeNotificationAllEvent()
         
         /*  UIImageView無法同時支援 陰影+cornerRadius */
-//        imageView.layer.cornerRadius = imageView.frame.width/2
+        imageView.layer.cornerRadius = imageView.frame.width/2
         imageView.layer.masksToBounds = true
         /* 陰影效果不好將其移出 */
 //        imageShadowView.layer.cornerRadius = imageShadowView.frame.width/2
@@ -61,14 +61,14 @@ class SetAvatarViewController: BasePhotoViewController {
     }
     
     @IBAction func clickDeleteBtn(_ sender: Any) {
-        if let info = AuthorizationManage.manage.GetLoginInfo(), getPersonalImage(SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id) != nil {
+        if let info = AuthorizationManage.manage.getResponseLoginInfo(), let USUDID = info.USUDID, getPersonalImage(SetAESKey: AES_Key, SetIdentify: USUDID, setAccount: USUDID) != nil {
             let alert = UIAlertController(title: UIAlert_Default_Title, message: SetAvatar_Delete_Title, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: Cancel_Title, style: .default, handler: nil))
             alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
                 DispatchQueue.main.async {
                     self.imageView.layer.cornerRadius = 0
                     self.imageView.image = UIImage(named: ImageName.LoginLogo.rawValue)
-                    self.savePersonalImage(nil, SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
+                    self.savePersonalImage(nil, SetAESKey: AES_Key, SetIdentify: USUDID, setAccount: USUDID)
                 }
             })
             present(alert, animated: false, completion: nil)
@@ -91,8 +91,8 @@ class SetAvatarViewController: BasePhotoViewController {
         cropperViewController.dismiss(animated: true, completion: nil)
         imageView.layer.cornerRadius = imageView.frame.width/2
         imageView.image = editedImage
-        if let info = AuthorizationManage.manage.GetLoginInfo() {
-            savePersonalImage(editedImage, SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
+        if let info = AuthorizationManage.manage.getResponseLoginInfo(), let USUDID = info.USUDID {
+            savePersonalImage(editedImage, SetAESKey: AES_Key, SetIdentify: USUDID, setAccount: USUDID)
         }
         if let statusView = UIApplication.shared.windows.first?.viewWithTag(ViewTag.View_Status.rawValue) {
             statusView.isHidden = false

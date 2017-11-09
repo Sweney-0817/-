@@ -37,6 +37,7 @@ class AuthorizationManage {
     private var apnsToken:String? = nil                  // APNS回傳的token
     private var needReAddList = [PlatformFeatureID:Int]()// 使用者加入的功能，但功能授權未開啟
     private var isLoginSuccess = false                   // 判斷是否登入成功
+    /* 與當初預期不同，只能特殊處理 */
     private var canNTNonAgreedTransfer = false           // 是否可以「非約轉」
     private var canReservationTransferCancel = false     // 是否可以「預約轉帳取消」
     private var canDepositTermination = false            // 是否可以「綜存戶轉存明細解約」
@@ -236,7 +237,8 @@ class AuthorizationManage {
         let ID = IDList.joined(separator: AuthorizationManage_IDList_Separator)
         if IsLoginSuccess() {
             if loginInfo != nil {
-                let key = SecurityUtility.utility.AES256Encrypt("\(loginInfo!.bankCode)\(loginInfo!.account)", AES_Key)
+                /* 因大小寫身分證都是同一人，統一轉成大寫當key值 */
+                let key = SecurityUtility.utility.AES256Encrypt("\(loginInfo!.bankCode)\(loginInfo!.account.uppercased())", AES_Key)
                 SecurityUtility.utility.writeFileByKey(ID, SetKey: key)
             }
         }

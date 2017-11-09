@@ -533,7 +533,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        let newLength = (textField.text?.count)! - range.length + string.count
         if textField == transAmountTextfield {
             let maxLength = isPredesignated ? NTTransfer_PredesignatedTrans_Max_Length : NTTransfer_NotPredesignatedTrans_Max_Length
             if newLength > maxLength {

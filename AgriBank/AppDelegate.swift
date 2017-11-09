@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         if logoutTimer != nil {
-            enterBackgroundTime = Date()
+            enterBackgroundTime = Date() // Date(timeIntervalSinceNow: TimeInterval(NSTimeZone.system.secondsFromGMT(for: Date())))
             interval = AgriBank_TimeOut - (logoutTimer?.fireDate.timeIntervalSince(enterBackgroundTime!))!
             /* Timer 在背景不確定什麼時候會停止 */
             logoutTimer?.invalidate()

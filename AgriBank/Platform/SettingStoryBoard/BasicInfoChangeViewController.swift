@@ -198,7 +198,7 @@ class BasicInfoChangeViewController: BaseViewController, UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        let newLength = (textField.text?.count)! - range.length + string.count
         switch textField {
         case mobliePhoneTextfield:
             if newLength > Max_MobliePhone_Length {

@@ -176,7 +176,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         if sAccount.isEmpty {
             return "\(Enter_Title)\(accountTextfield.placeholder ?? "")"
         }
-        if sAccount.characters.count < Min_Identify_Length {
+        if sAccount.count < Min_Identify_Length {
             return ErrorMsg_ID_LackOfLength
         }
         if !DetermineUtility.utility.isValidIdentify(sAccount) {
@@ -215,7 +215,6 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     }
     
     @IBAction func clickCheckBtn(_ sender: Any) {
-        let btn = sender as! UIButton
         isCheckon = !isCheckon
         if isCheckon {
             checkImg.image = UIImage(named: ImageName.Checkon.rawValue)
@@ -268,7 +267,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
             }
         }
     
-        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        let newLength = (textField.text?.count)! - range.length + string.count
         var maxLength = 0
         
         if textField == accountTextfield {

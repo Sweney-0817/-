@@ -331,7 +331,6 @@ let Shadow_Opacity = Float(0.5)
 let Shadow_Color = UIColor(red: 219/255, green: 217/255, blue: 217/255, alpha: 1)
 let Green_Color = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha: 1)
 let Gray_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
-let Memo_Color = UIColor(red: 130/255, green: 179/255, blue: 66/255, alpha: 1)
 let Cell_Title_Color = UIColor(red: 127/255, green: 127/255, blue: 127/255, alpha: 1)
 let Cell_Detail_Color = UIColor.black
 let Loading_Background_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 0.3)
@@ -346,7 +345,9 @@ let Layer_BorderRadius:CGFloat = 5
 let ToolBar_Title_Weight:CGFloat = 100
 let PickView_Height:CGFloat = 220
 let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFont.systemFont(ofSize: CGFloat(18))
-/*  為了因應4吋以下而做的調整 */
+/*  為了因應3.5吋而做的調整 */
+let AgriBank_4sInchSize:CGFloat = 480
+let AgriBank_4sInchFont =  UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(15)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(15))
 let AgriBank_Scale = UIScreen.main.bounds.width / CGFloat(375)
 let Scale_Default_Font = UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(18)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(18))
 

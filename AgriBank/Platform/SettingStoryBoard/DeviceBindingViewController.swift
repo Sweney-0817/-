@@ -191,7 +191,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
             showErrorMessage(nil, ErrorMsg_Error_Identify)
             return false
         }
-        if (identifyTextfield.text?.characters.count)! < Min_Identify_Length {
+        if (identifyTextfield.text?.count)! < Min_Identify_Length {
             showErrorMessage(nil, ErrorMsg_ID_LackOfLength)
             return false
         }
@@ -213,7 +213,9 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     // MARK: - UITextFieldDelegate
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField == topTextfield {
-            addPickerView(textField)
+            if bankList.count > 0 {
+                addPickerView(textField)
+            }
             textField.tintColor = .clear
         }
         return true
@@ -226,7 +228,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
                 return false
             }
         }
-        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        let newLength = (textField.text?.count)! - range.length + string.count
         var maxLength = 0
         switch textField {
         case identifyTextfield:

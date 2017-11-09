@@ -186,7 +186,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let newLength = (textField.text?.characters.count)! - range.length + string.characters.count
+        let newLength = (textField.text?.count)! - range.length + string.count
         if textField == transAmountTextfield {
             if newLength > ReservationTransfer_TransAmount_Max_Length {
                 return false

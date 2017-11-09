@@ -79,6 +79,9 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
                         wallCell.titleLabel.font = Scale_Default_Font
                         wallCell.button.addTarget(self, action: #selector(clickFeatureBtn(_:)), for: .touchUpInside)
                         wallCell.button.tag = featureIDList[current].rawValue
+                        if UIScreen.main.bounds.height == AgriBank_4sInchSize {
+                            wallCell.titleLabel.font = AgriBank_4sInchFont
+                        }
                     }
                     scrollview.addSubview(wallCell)
                 }

@@ -232,9 +232,9 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
         var list:[[String:Any]]? = nil
         if AuthorizationManage.manage.IsLoginSuccess() {
-            if let info = AuthorizationManage.manage.GetLoginInfo() {
+            if let info = AuthorizationManage.manage.getResponseLoginInfo(), let USUDID = info.USUDID {
                 loginImageView.layer.cornerRadius = loginImageView.frame.width/2
-                loginImageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: info.id, setAccount: info.id)
+                loginImageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: USUDID, setAccount: USUDID)
             }
             if let info = AuthorizationManage.manage.getResponseLoginInfo() {
                 accountBalanceLabel.text = "活存總餘額 \(String(info.Balance ?? 0).separatorThousand())"

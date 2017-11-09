@@ -134,8 +134,8 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
                                 unitList.append(city)
                             }
                             if let name = info["CUM_FullBankChineseName"], let address = info["CUM_Address"], let tel = info["CUM_Telephone"], let fax = info["CUM_Fax"], let longitude = info["CUM_Longitude"], let latitude = info["CUM_Latitude"] {
-                                if var array = unitInfoList[city] {
-                                    array.append(ServiceBaseStruct(name, address, tel, fax, "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
+                                if unitInfoList[city] != nil {
+                                    unitInfoList[city]?.append(ServiceBaseStruct(name, address, tel, fax, "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
                                 }
                                 else {
                                     unitInfoList[city] = [ServiceBaseStruct(name, address, tel, fax, "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0))]
@@ -153,8 +153,8 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
                                 ATMList.append(city)
                             }
                             if let name = info["CAM_ATMName"], let address = info["CAM_Address"],let longitude = info["CAM_Longitude"], let latitude = info["CAM_Latitude"] {
-                                if var array = ATMInfoList[city] {
-                                    array.append(ServiceBaseStruct(name, address, "", "", "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
+                                if ATMInfoList[city] != nil {
+                                    ATMInfoList[city]?.append(ServiceBaseStruct(name, address, "", "", "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0)))
                                 }
                                 else {
                                     ATMInfoList[city] = [ServiceBaseStruct(name, address, "", "", "", "", CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude) ?? 0, longitude: CLLocationDegrees(longitude) ?? 0))]

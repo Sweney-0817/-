@@ -161,6 +161,13 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         super.prepare(for: segue, sender: sender)
         let controller = segue.destination as! ResultViewController
         controller.setData(data!)
+         /* 「即時轉帳」結果頁特殊處理 */
+        if getCurrentFeatureID() == .FeatureID_NTTransfer {
+            controller.setData(data!, isNeedOTP ? "非約定轉帳" : "約定轉帳")
+        }
+        else {
+            controller.setData(data!)
+        }
     }
     
     override func clickBackBarItem() {
@@ -185,6 +192,14 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         locationManager?.stopUpdatingLocation()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        /* 「即時轉帳」確認頁特殊處理 */
+        if getCurrentFeatureID() == .FeatureID_NTTransfer {
+            navigationController?.navigationBar.topItem?.title = isNeedOTP ? "非約定轉帳" : "約定轉帳"
+        }
     }
     
     // MARK: - UITableViewDelegate

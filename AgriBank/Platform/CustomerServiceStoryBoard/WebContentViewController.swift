@@ -41,4 +41,13 @@ class WebContentViewController: BaseViewController, UIWebViewDelegate {
     func webViewDidFinishLoad(_ webView: UIWebView) {
         setLoading(false)
     }
+    
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        if navigationType == .linkClicked {
+            guard let url = request.url else { return true }
+            UIApplication.shared.openURL(url)
+            return false
+        }
+        return true
+    }
 }

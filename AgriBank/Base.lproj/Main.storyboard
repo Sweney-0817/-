@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -59,7 +59,7 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ptf-ia-GhD">
-                                <rect key="frame" x="16" y="74" width="343" height="108"/>
+                                <rect key="frame" x="0.0" y="74" width="375" height="108"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22X-cP-5eQ">
                                 <rect key="frame" x="0.0" y="192" width="375" height="431"/>
@@ -146,10 +146,8 @@
                             <constraint firstItem="bo1-rE-Ghf" firstAttribute="top" secondItem="1Vv-uv-oXM" secondAttribute="bottom" id="CAb-zv-JHr"/>
                             <constraint firstItem="22X-cP-5eQ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="FUB-Ni-sva"/>
                             <constraint firstItem="vga-Qj-CIm" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="IIW-aY-7Mv"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="Ptf-ia-GhD" secondAttribute="leading" id="KhX-vz-6g1"/>
                             <constraint firstAttribute="trailing" secondItem="bo1-rE-Ghf" secondAttribute="trailing" id="L6y-K6-V9I"/>
                             <constraint firstItem="22X-cP-5eQ" firstAttribute="top" secondItem="Ptf-ia-GhD" secondAttribute="bottom" constant="10" id="R97-xE-BWN"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Ptf-ia-GhD" secondAttribute="trailing" id="T24-wH-Nhy"/>
                             <constraint firstItem="JDV-py-Ofg" firstAttribute="height" secondItem="bo1-rE-Ghf" secondAttribute="height" id="Ugh-UM-StG"/>
                             <constraint firstItem="vga-Qj-CIm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WOx-X5-cGv"/>
                             <constraint firstItem="Ptf-ia-GhD" firstAttribute="top" secondItem="bo1-rE-Ghf" secondAttribute="bottom" constant="10" id="ZMd-RT-zVd"/>
@@ -165,7 +163,9 @@
                             <constraint firstItem="OEo-ZT-CoH" firstAttribute="top" secondItem="hHo-em-gMq" secondAttribute="top" id="nZp-zF-pHq"/>
                             <constraint firstItem="Ptf-ia-GhD" firstAttribute="height" secondItem="22X-cP-5eQ" secondAttribute="height" multiplier="1:4" id="pYe-YH-PQL"/>
                             <constraint firstItem="MfV-fU-wHy" firstAttribute="centerY" secondItem="bo1-rE-Ghf" secondAttribute="centerY" id="q2H-pF-2I9"/>
+                            <constraint firstItem="Ptf-ia-GhD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="q5B-Sp-rJ6"/>
                             <constraint firstItem="AMg-Sk-J65" firstAttribute="top" secondItem="hHo-em-gMq" secondAttribute="bottom" constant="5" id="vbj-m1-fUJ"/>
+                            <constraint firstAttribute="trailing" secondItem="Ptf-ia-GhD" secondAttribute="trailing" id="wre-mZ-4rn"/>
                             <constraint firstItem="JDV-py-Ofg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="15" id="yBX-sU-7gu"/>
                             <constraint firstItem="O8R-Zi-iV9" firstAttribute="top" secondItem="vga-Qj-CIm" secondAttribute="bottom" id="z9M-vj-E7b"/>
                         </constraints>

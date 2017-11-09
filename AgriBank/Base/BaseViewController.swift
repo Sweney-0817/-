@@ -9,14 +9,12 @@
 import Foundation
 import UIKit
 
-#if DEBUG
+#if R_SIT || DEBUG
 let URL_PROTOCOL = "http"
-//let URL_DOMAIN = "52.187.113.27/FFICMAPIFORMAL/api"
-//let URL_DOMAIN = "52.187.113.27/FFICMAPI/api"
 let URL_DOMAIN = "172.16.132.52/APP/api"
 #else
 let URL_PROTOCOL = "https"
-let URL_DOMAIN = ""
+let URL_DOMAIN = "mbapi.naffic.org.tw/APP/api"
 #endif
 
 let REQUEST_URL = "\(URL_PROTOCOL)://\(URL_DOMAIN)"
@@ -386,11 +384,6 @@ extension BaseViewController: ConnectionUtilityDelegate {
             getRequest("Comm/COMM0501", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
         }
         else {
-//            let componenets = Calendar.current.dateComponents([.month, .day, .hour, .minute, .second], from: Date())
-//            if let day = componenets.day, let month = componenets.month, let minute = componenets.minute, let second = componenets.second, let hour = componenets.hour {
-//                headVarifyID = "\(month)\(day)\(hour)\(minute)\(second)"
-//                getRequest("Comm/COMM0501?varifyId=\(headVarifyID)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
-//           }
            getRequest("Comm/COMM0501?varifyId=\(varifyID!)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
         }
     }
@@ -401,10 +394,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
         }
         else {
             setLoading(true)
-//        let ID = headVarifyID
             let ID = varifyID == nil ? headVarifyID : varifyID!
             getRequest("Comm/COMM0502?varifyId=\(ID)&captchaCode=\(passWord)", "COMM0502", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirmResult)
-            
         }
     }
     
@@ -544,7 +535,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                 }
                                 else {
                                     if self is HomeViewController {
-                                        (self as! HomeViewController).updateLoginStatus()
+                                        (self as! HomeViewController).updateLoginStatus(false)
                                     }
                                 }
                             }
