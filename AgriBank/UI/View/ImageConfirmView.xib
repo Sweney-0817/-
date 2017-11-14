@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -18,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="圖形驗證碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="B6D-AY-Ncn" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
-                    <rect key="frame" x="15" y="8" width="167" height="44"/>
+                    <rect key="frame" x="15" y="8" width="163.5" height="44"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                     <textInputTraits key="textInputTraits"/>
@@ -27,14 +32,16 @@
                     </connections>
                 </textField>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="8qk-ZR-nJc">
-                    <rect key="frame" x="192" y="8" width="134" height="44"/>
+                    <rect key="frame" x="188.5" y="8" width="131.5" height="44"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Refresh" translatesAutoresizingMaskIntoConstraints="NO" id="69v-5Y-c1Y">
+                    <rect key="frame" x="330" y="18" width="24" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="69v-5Y-c1Y" secondAttribute="height" multiplier="1:1" id="p7D-oq-89J"/>
+                    </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gJj-jo-eTJ">
-                    <rect key="frame" x="336" y="18" width="24" height="24"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="gJj-jo-eTJ" secondAttribute="height" multiplier="1:1" id="6VB-HD-mv5"/>
-                    </constraints>
-                    <state key="normal" image="Refresh"/>
+                    <rect key="frame" x="320" y="0.0" width="55" height="59"/>
                     <connections>
                         <action selector="m_btnRefreshClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="TEl-TY-b9i"/>
                     </connections>
@@ -50,20 +57,24 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="69v-5Y-c1Y" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="24:60" id="0Xa-4u-Rls"/>
+                <constraint firstItem="69v-5Y-c1Y" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="2K4-Vw-Nek"/>
                 <constraint firstItem="B6D-AY-Ncn" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="44:60" id="9sh-zw-aKX"/>
                 <constraint firstItem="B6D-AY-Ncn" firstAttribute="width" secondItem="8qk-ZR-nJc" secondAttribute="width" multiplier="1.25:1" id="B11-Pv-kcx"/>
                 <constraint firstAttribute="bottom" secondItem="Phe-s0-1x7" secondAttribute="bottom" id="DK1-us-vnw"/>
                 <constraint firstItem="8qk-ZR-nJc" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Fp0-eT-hMc"/>
-                <constraint firstItem="gJj-jo-eTJ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="GVS-8d-5zL"/>
                 <constraint firstItem="B6D-AY-Ncn" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="LNT-dF-693"/>
+                <constraint firstItem="69v-5Y-c1Y" firstAttribute="leading" secondItem="8qk-ZR-nJc" secondAttribute="trailing" constant="10" id="P2N-wK-QQT"/>
+                <constraint firstAttribute="trailing" secondItem="69v-5Y-c1Y" secondAttribute="trailing" constant="21" id="QvP-Zb-WKE"/>
                 <constraint firstItem="Phe-s0-1x7" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="UbH-76-Iui"/>
                 <constraint firstAttribute="trailing" secondItem="Phe-s0-1x7" secondAttribute="trailing" id="VHM-nC-OZf"/>
                 <constraint firstItem="8qk-ZR-nJc" firstAttribute="height" secondItem="B6D-AY-Ncn" secondAttribute="height" id="bHK-Dy-qfI"/>
-                <constraint firstItem="gJj-jo-eTJ" firstAttribute="leading" secondItem="8qk-ZR-nJc" secondAttribute="trailing" constant="10" id="rmd-4B-mEV"/>
+                <constraint firstItem="Phe-s0-1x7" firstAttribute="top" secondItem="gJj-jo-eTJ" secondAttribute="bottom" id="ize-3q-IDT"/>
+                <constraint firstItem="gJj-jo-eTJ" firstAttribute="leading" secondItem="8qk-ZR-nJc" secondAttribute="trailing" id="rmd-4B-mEV"/>
                 <constraint firstItem="8qk-ZR-nJc" firstAttribute="leading" secondItem="B6D-AY-Ncn" secondAttribute="trailing" constant="10" id="utV-82-5Vu"/>
-                <constraint firstItem="gJj-jo-eTJ" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="24:60" id="wDP-Sa-sO7"/>
+                <constraint firstItem="gJj-jo-eTJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="vol-TC-FQz"/>
                 <constraint firstItem="B6D-AY-Ncn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="x8A-9T-bMK"/>
-                <constraint firstAttribute="trailing" secondItem="gJj-jo-eTJ" secondAttribute="trailing" constant="15" id="z3R-Nl-x3J"/>
+                <constraint firstAttribute="trailing" secondItem="gJj-jo-eTJ" secondAttribute="trailing" id="z3R-Nl-x3J"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>

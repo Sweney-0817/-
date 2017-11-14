@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -735,7 +735,7 @@
                                     <constraint firstAttribute="height" constant="1" id="kXo-BQ-cJ0"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="a123456789" placeholder="身分證字號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="nKt-yB-iBo" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="身分證字號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="nKt-yB-iBo" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="89" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
@@ -751,7 +751,7 @@
                                     <constraint firstAttribute="height" constant="1" id="lw5-TL-fwZ"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="agribank" placeholder="使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="jLJ-tI-Y2k" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="使用者代號" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="jLJ-tI-Y2k" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="150" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
@@ -767,7 +767,7 @@
                                     <constraint firstAttribute="height" constant="1" id="BPc-gZ-Rzq"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="agri2968" placeholder="使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="GBF-Nq-HcX" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="GBF-Nq-HcX" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                 <rect key="frame" x="15" y="211" width="345" height="44"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
@@ -1113,11 +1113,11 @@
                         <viewControllerLayoutGuide type="bottom" id="QZt-JZ-ezP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="CIM-ML-LxX">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="669"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="205" translatesAutoresizingMaskIntoConstraints="NO" id="Ddn-R2-aFF">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="609"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="607"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="fNw-Sc-TOs" id="VKF-tk-6dp"/>
@@ -1125,7 +1125,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7VS-B1-WeU">
-                                <rect key="frame" x="0.0" y="609" width="375" height="60"/>
+                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09A-Tl-vuX">
                                         <rect key="frame" x="15" y="8" width="345" height="44"/>
@@ -1272,7 +1272,7 @@
         <image name="Textfield" width="311" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="O0l-NN-0zP"/>
         <segue reference="M9s-Rc-gg6"/>
+        <segue reference="t9D-LU-j1P"/>
     </inferredMetricsTieBreakers>
 </document>

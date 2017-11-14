@@ -363,6 +363,7 @@ let TransactionID_Key = "TransactionId"
 let LogoImage_Description = "LogoImage"
 let BaseTransactionID_Description = "BaseTrID"
 let File_FirstOpen_Key = "firstOpen"
+let Default_IP_Address = "127.0.0.1"
 
 let Login_Title = "登出"
 let NoLogin_Title  = "登入"
@@ -526,6 +527,9 @@ let ErrorMsg_IDPD_SameIdentify = "不可與身分證號相同"
 let ErrorMsg_DepositCombinedToDeposit_MinAmount = "輸入金額不得少於1萬元"
 /* 用於「登入頭像設定」 */
 let ErrorMsg_NoImage = "您尚未設定頭像"
+/* 用於「服務據點」 */
+let ErrorMsg_NoTelephone = "此單位尚無提供電話"
+let ErrorMsg_NoMapAddress = "此單位尚無提供位址"
 
 // MARK: - Shadow Direction:
 enum ShadowDirection {

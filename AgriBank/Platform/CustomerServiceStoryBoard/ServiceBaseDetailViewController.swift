@@ -77,7 +77,7 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
             mapWebView?.loadRequest(URLRequest(url: URL(string: "\(ServiceBaseDetail_Map_URL)\(curLocation!.latitude),\(curLocation!.longitude)")!))
         }
         else {
-            showErrorMessage(nil, "")
+            showErrorMessage(nil, ErrorMsg_NoMapAddress)
         }
     }
     
@@ -93,7 +93,7 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
             }
         }
         else {
-            showErrorMessage(nil, "")
+            showErrorMessage(nil, ErrorMsg_NoTelephone)
         }
     }
     

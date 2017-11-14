@@ -25,7 +25,7 @@ struct ResponseLoginInfo {
     var CNAME:String? = nil         // 用戶名稱
     var Token:String? = nil         // Token
     var USUDID:String? = nil        // 使用者ID
-    var Balance:Double? = nil       // 餘額
+    var Balance:String? = nil       // 餘額
     var STATUS:String? = nil        // 帳戶狀態 
 }
 
@@ -265,7 +265,7 @@ class AuthorizationManage {
             needReAddList.removeAll()
             if IsLoginSuccess() {
                 if loginInfo != nil {
-                    let key = SecurityUtility.utility.AES256Encrypt("\(loginInfo!.bankCode)\(loginInfo!.account)", AES_Key)
+                    let key = SecurityUtility.utility.AES256Encrypt("\(loginInfo!.bankCode)\(loginInfo!.account.uppercased())", AES_Key)
                     if let IDString = SecurityUtility.utility.readFileByKey(SetKey: key) {
                         if !(IDString as! String).isEmpty {
                             let IDStringList = (IDString as! String).components(separatedBy: AuthorizationManage_IDList_Separator)

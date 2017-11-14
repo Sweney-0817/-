@@ -237,7 +237,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 loginImageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: USUDID, setAccount: USUDID)
             }
             if let info = AuthorizationManage.manage.getResponseLoginInfo() {
-                accountBalanceLabel.text = "活存總餘額 \(String(info.Balance ?? 0).separatorThousand())"
+                accountBalanceLabel.text = "活存總餘額 \(String(info.Balance ?? "0").separatorThousand())"
             }
             loginStatusLabel.text = Login_Title
             if centerNewsList == nil {

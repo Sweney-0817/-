@@ -447,7 +447,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 if let info = AuthorizationManage.manage.getResponseLoginInfo() {
                     VaktenManager.sharedInstance().authenticateOperation(withSessionID: info.Token ?? "") { resultCode in
                         if VIsSuccessful(resultCode) {
-                            self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                            self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
                         }
                         else {
                             self.SetBtnColor(true)

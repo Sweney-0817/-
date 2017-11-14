@@ -11,21 +11,20 @@
 static VaktenManager *sharedInstance;
 
 //static NSString *const kDefaultKAPI = @"https://118.163.101.205:16790/";
-static NSString *const kDefaultKAPI = @"http://172.16.132.52/OTP";
-//static NSString *const kDefaultKAPI = @"https://mbapi.naffic.org.tw/OTP";
 static NSString *const kCustomerID = @"agribank.com.tw";
-
 static NSString *const kAppLable = @"AGRIBANK-APPLICATION";
 
-//#if R_SIT
+#if DEBUG
+static NSString *const kDefaultKAPI = @"http://172.16.132.52/OTP";
 static NSString *const kCredentialFile =  @"agribank_dev_credential";
 static NSString *const kAppConstFile = @"agribank_dev_app_const";
 static NSString *const kApiKeyFile = @"1-proto5-pub";
-//#else
-//static NSString *const kCredentialFile =  @"agribank_pro_credential";
-//static NSString *const kAppConstFile = @"agribank_pro_app_const";
-//static NSString *const kApiKeyFile = @"1-proto5-pub_pro";
-//#endif
+#else
+static NSString *const kDefaultKAPI = @"https://mbapi.naffic.org.tw/OTP";
+static NSString *const kCredentialFile =  @"agribank_pro_credential";
+static NSString *const kAppConstFile = @"agribank_pro_app_const";
+static NSString *const kApiKeyFile = @"1-proto5-pub_pro";
+#endif
 
 static NSString *const kApiKeyLabel = @"1-proto5";
 

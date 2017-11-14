@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-#if R_SIT || DEBUG
+#if DEBUG
 let URL_PROTOCOL = "http"
 let URL_DOMAIN = "172.16.132.52/APP/api"
 #else
@@ -257,27 +257,27 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         }
     }
     
-    func getLocalIPAddressForCurrentWiFi() -> String? {
-        var address:String? = nil
+    func getLocalIPAddressForCurrentWiFi() -> String {
+        var address:String = Default_IP_Address
         // get list of all interfaces on the local machine
         var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
         guard getifaddrs(&ifaddr) == 0 else {
-            return nil
+            return address
         }
         guard let firstAddr = ifaddr else {
-            return nil
+            return address
         }
         for ifptr in sequence(first: firstAddr, next: { $0.pointee.ifa_next }) {
-            
+
             let interface = ifptr.pointee
-            
+
             // Check for IPV4 or IPV6 interface
             let addrFamily = interface.ifa_addr.pointee.sa_family
             if addrFamily == UInt8(AF_INET) || addrFamily == UInt8(AF_INET6) {
                 // Check interface name
                 let name = String(cString: interface.ifa_name)
                 if name == "en0" {
-                    
+
                     // Convert interface address to a human readable string
                     var addr = interface.ifa_addr.pointee
                     var hostName = [CChar](repeating: 0, count: Int(NI_MAXHOST))
@@ -286,7 +286,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                 }
             }
         }
-        
+
         freeifaddrs(ifaddr)
         return address
     }
@@ -477,7 +477,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 if let ID = data["USUDID"] as? String {
                     info.USUDID = ID
                 }
-                if let balance = data["TotalBalance"] as? Double {
+                if let balance = data["TotalBalance"] as? String {
                     info.Balance = balance
                 }
                 if let STATUS = data["STATUS"] as? String {
@@ -605,7 +605,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                 else if self.curFeatureID! == .FeatureID_BillPayment {
                                     workCode = "05002"
                                 }
-                                self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                                self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
                             }
                         }
                         else {
