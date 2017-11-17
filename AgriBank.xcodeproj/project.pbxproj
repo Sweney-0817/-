@@ -808,7 +808,7 @@
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -1207,7 +1207,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = AgriBank/AgriBank.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: chinyi yang (78Y846SAUN)";
 				DEVELOPMENT_TEAM = 95E44WWFM7;
 				ENABLE_BITCODE = NO;
@@ -1219,10 +1218,10 @@
 				INFOPLIST_FILE = AgriBank/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.softmobile.1MS20M;
+				PRODUCT_BUNDLE_IDENTIFIER = com.agribank.mbank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f145a2db-4434-4017-82d8-db22b7edd126";
-				PROVISIONING_PROFILE_SPECIFIER = 1MS20M;
+				PROVISIONING_PROFILE = "bd7fb641-0d25-476f-9deb-c10ac921fddd";
+				PROVISIONING_PROFILE_SPECIFIER = forComAll_Dev;
 				SWIFT_OBJC_BRIDGING_HEADER = "AgriBank/AgriBank-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1235,8 +1234,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = AgriBank/AgriBank.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: chinyi yang (78Y846SAUN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SYSTEX Corporation";
 				DEVELOPMENT_TEAM = 95E44WWFM7;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1247,10 +1245,12 @@
 				INFOPLIST_FILE = AgriBank/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.softmobile.1MS20M;
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.agribank.mbank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f145a2db-4434-4017-82d8-db22b7edd126";
-				PROVISIONING_PROFILE_SPECIFIER = 1MS20M;
+				PROVISIONING_PROFILE = "3ff1620c-451a-4552-b64a-b2317efd610e";
+				PROVISIONING_PROFILE_SPECIFIER = forComAll;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AgriBank/AgriBank-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1373,11 +1373,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.softmobile.agribank;
+				PRODUCT_BUNDLE_IDENTIFIER = com.agribank.mbank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "3ff1620c-451a-4552-b64a-b2317efd610e";
 				PROVISIONING_PROFILE_SPECIFIER = forComAll;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = R_SIT;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "AgriBank/AgriBank-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

@@ -354,7 +354,14 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             
         case ViewTag.View_AlertForceUpdate.rawValue:
             if let title = alertView.buttonTitle(at: buttonIndex), title == Update_Title {
-                
+                if let url = URL(string: AgriBank_AppURL), UIApplication.shared.canOpenURL(url) {
+                    if #available(iOS 10, *) {
+                        UIApplication.shared.open(url)
+                    }
+                    else {
+                        UIApplication.shared.openURL(url)
+                    }
+                }
             }
             
         default: super.alertView(alertView, clickedButtonAt: buttonIndex)

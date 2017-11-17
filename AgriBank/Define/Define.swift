@@ -414,6 +414,7 @@ let AgriBank_Platform = "1"
 let AgriBank_DeviceID = UIDevice.current.identifierForVendor!.uuidString
 let AgriBank_AppUid = Bundle.main.bundleIdentifier ?? ""
 let AgriBank_TimeOut:TimeInterval = 300
+let AgriBank_AppURL = "https://itunes.apple.com/tw/app/id1312705740?l=zh&mt=8"
 
 // MARK: - Cell定義
 enum CellStatus {
