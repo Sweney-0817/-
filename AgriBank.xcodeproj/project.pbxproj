@@ -23,6 +23,11 @@
 		612BDA421F6151C00036B443 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 612BDA411F6151C00036B443 /* SystemConfiguration.framework */; };
 		612BDA441F6151D70036B443 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 612BDA431F6151D70036B443 /* CoreTelephony.framework */; };
 		612BDA481F6152080036B443 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 612BDA471F6152080036B443 /* libc++.tbd */; };
+		61352B4E1FC3DA1E00730082 /* SGActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61352B461FC3DA1E00730082 /* SGActionView.m */; };
+		61352B4F1FC3DA1E00730082 /* SGAlertMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 61352B491FC3DA1E00730082 /* SGAlertMenu.m */; };
+		61352B501FC3DA1E00730082 /* SGBaseMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 61352B4B1FC3DA1E00730082 /* SGBaseMenu.m */; };
+		61352B511FC3DA1E00730082 /* SGSheetMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 61352B4C1FC3DA1E00730082 /* SGSheetMenu.m */; };
+		61352B521FC3DA1E00730082 /* SGGridMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 61352B4D1FC3DA1E00730082 /* SGGridMenu.m */; };
 		613DA77A1F8DC12A0005E6CC /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613DA7791F8DC1280005E6CC /* EditViewController.swift */; };
 		6148D9CF1EDFD10000C02CA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6148D9CE1EDFD10000C02CA3 /* AppDelegate.swift */; };
 		6148D9D61EDFD10000C02CA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6148D9D51EDFD10000C02CA3 /* Assets.xcassets */; };
@@ -166,6 +171,16 @@
 		612BDA431F6151D70036B443 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		612BDA451F6151E50036B443 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		612BDA471F6152080036B443 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		61352B441FC3DA1E00730082 /* SGBaseMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGBaseMenu.h; path = ThirdParty/SGActionView/SGBaseMenu.h; sourceTree = "<group>"; };
+		61352B451FC3DA1E00730082 /* SGActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGActionView.h; path = ThirdParty/SGActionView/SGActionView.h; sourceTree = "<group>"; };
+		61352B461FC3DA1E00730082 /* SGActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGActionView.m; path = ThirdParty/SGActionView/SGActionView.m; sourceTree = "<group>"; };
+		61352B471FC3DA1E00730082 /* SGAlertMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGAlertMenu.h; path = ThirdParty/SGActionView/SGAlertMenu.h; sourceTree = "<group>"; };
+		61352B481FC3DA1E00730082 /* SGGridMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGGridMenu.h; path = ThirdParty/SGActionView/SGGridMenu.h; sourceTree = "<group>"; };
+		61352B491FC3DA1E00730082 /* SGAlertMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGAlertMenu.m; path = ThirdParty/SGActionView/SGAlertMenu.m; sourceTree = "<group>"; };
+		61352B4A1FC3DA1E00730082 /* SGSheetMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGSheetMenu.h; path = ThirdParty/SGActionView/SGSheetMenu.h; sourceTree = "<group>"; };
+		61352B4B1FC3DA1E00730082 /* SGBaseMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGBaseMenu.m; path = ThirdParty/SGActionView/SGBaseMenu.m; sourceTree = "<group>"; };
+		61352B4C1FC3DA1E00730082 /* SGSheetMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGSheetMenu.m; path = ThirdParty/SGActionView/SGSheetMenu.m; sourceTree = "<group>"; };
+		61352B4D1FC3DA1E00730082 /* SGGridMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGGridMenu.m; path = ThirdParty/SGActionView/SGGridMenu.m; sourceTree = "<group>"; };
 		613DA7791F8DC1280005E6CC /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EditViewController.swift; path = Platform/MainStoryBoard/EditViewController.swift; sourceTree = "<group>"; };
 		6148D9CB1EDFD10000C02CA3 /* AgriBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgriBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6148D9CE1EDFD10000C02CA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -346,6 +361,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		61352B431FC3DA0800730082 /* SGActionView */ = {
+			isa = PBXGroup;
+			children = (
+				61352B451FC3DA1E00730082 /* SGActionView.h */,
+				61352B461FC3DA1E00730082 /* SGActionView.m */,
+				61352B471FC3DA1E00730082 /* SGAlertMenu.h */,
+				61352B491FC3DA1E00730082 /* SGAlertMenu.m */,
+				61352B441FC3DA1E00730082 /* SGBaseMenu.h */,
+				61352B4B1FC3DA1E00730082 /* SGBaseMenu.m */,
+				61352B481FC3DA1E00730082 /* SGGridMenu.h */,
+				61352B4D1FC3DA1E00730082 /* SGGridMenu.m */,
+				61352B4A1FC3DA1E00730082 /* SGSheetMenu.h */,
+				61352B4C1FC3DA1E00730082 /* SGSheetMenu.m */,
+			);
+			name = SGActionView;
+			sourceTree = "<group>";
+		};
 		6148D9C21EDFD0FF00C02CA3 = {
 			isa = PBXGroup;
 			children = (
@@ -453,6 +485,7 @@
 		6148DA0C1EDFE70700C02CA3 /* ThirdyParty */ = {
 			isa = PBXGroup;
 			children = (
+				61352B431FC3DA0800730082 /* SGActionView */,
 				612BDA341F614F4D0036B443 /* KeyPasco */,
 				6148DA0E1EDFE72200C02CA3 /* PersonalImageDealWith */,
 				6148DA0D1EDFE71F00C02CA3 /* AESCrypt */,
@@ -932,10 +965,12 @@
 				61DB5C381F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift in Sources */,
 				6148DA171EDFE76D00C02CA3 /* NSData+AESCrypt.m in Sources */,
 				613DA77A1F8DC12A0005E6CC /* EditViewController.swift in Sources */,
+				61352B4F1FC3DA1E00730082 /* SGAlertMenu.m in Sources */,
 				612A82D61F74DC7C002D280D /* extendString.swift in Sources */,
 				6148DA381EDFE84600C02CA3 /* SecurityUtility.swift in Sources */,
 				6117CF3D1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift in Sources */,
 				61DB5C3A1F0E0D85006622EC /* DepositCombinedDetailViewController.swift in Sources */,
+				61352B521FC3DA1E00730082 /* SGGridMenu.m in Sources */,
 				617318191EEFCB4B00133F7A /* LoginView.swift in Sources */,
 				615B8D7D1EFD0CA5002B4B53 /* ConfirmViewController.swift in Sources */,
 				615006A91F0B9CD800269891 /* DepositCombinedToDepositViewController.swift in Sources */,
@@ -950,12 +985,15 @@
 				61F4F4281EF27B77001E3872 /* TypeSection.swift in Sources */,
 				615B8D731EFCDDA8002B4B53 /* MemoView.swift in Sources */,
 				BE7675351F0CCBC700E1A461 /* ExchangeRateViewController.swift in Sources */,
+				61352B511FC3DA1E00730082 /* SGSheetMenu.m in Sources */,
 				6148D9CF1EDFD10000C02CA3 /* AppDelegate.swift in Sources */,
 				6148DA421EE1428B00C02CA3 /* MenuViewController.swift in Sources */,
 				61FE9D181F15D23400FA32FE /* UserChangeIDPwdViewController.swift in Sources */,
+				61352B4E1FC3DA1E00730082 /* SGActionView.m in Sources */,
 				6148DA401EE0072000C02CA3 /* UIPlatform.swift in Sources */,
 				6148DA181EDFE76D00C02CA3 /* NSString+AESCrypt.m in Sources */,
 				6148DA031EDFE6C700C02CA3 /* HomeViewController.swift in Sources */,
+				61352B501FC3DA1E00730082 /* SGBaseMenu.m in Sources */,
 				61F4F4241EF24467001E3872 /* ChooseTypeView.swift in Sources */,
 				6148DA2B1EDFE7A400C02CA3 /* IntroductionView.swift in Sources */,
 				614FB4251EF9039400DDD270 /* CustomizeCell.swift in Sources */,

@@ -7,3 +7,4 @@
 #import <CommonCrypto/CommonCrypto.h>
 #import "VaktenManager.h"
 #include <ifaddrs.h>
+#import "SGActionView.h"

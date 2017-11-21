@@ -191,15 +191,27 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     
     private func showBankNameList() {
         if bankNameList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
+//            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
+//            for index in bankNameList! {
+//                if let name = index["bankName"], let code = index["bankCode"] {
+//                    let temp = "\(code) \(name)".trimmingCharacters(in: .whitespaces)
+//                    actSheet.addButton(withTitle: temp)
+//                }
+//            }
+//            actSheet.tag = ViewTag.View_BankActionSheet.rawValue
+//            actSheet.show(in: view)
+            var array = [String]()
             for index in bankNameList! {
                 if let name = index["bankName"], let code = index["bankCode"] {
                     let temp = "\(code) \(name)".trimmingCharacters(in: .whitespaces)
-                    actSheet.addButton(withTitle: temp)
+                    array.append(temp)
                 }
             }
-            actSheet.tag = ViewTag.View_BankActionSheet.rawValue
-            actSheet.show(in: view)
+            SGActionView.showSheet(withTitle: Choose_Title, itemTitles: array, selectedIndex: 0) { index in
+                let title = array[index]
+                let array = title.components(separatedBy: .whitespaces)
+                self.m_DDTransInBank?.setOneRow(BillPayment_BankCode_Title, array.first ?? "")
+            }
         }
     }
     
@@ -350,10 +362,10 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if actionSheet.cancelButtonIndex != buttonIndex {
             switch (actionSheet.tag) {
-            case ViewTag.View_BankActionSheet.rawValue:
-                let title = actionSheet.buttonTitle(at: buttonIndex)
-                let array = title?.components(separatedBy: .whitespaces)
-                m_DDTransInBank?.setOneRow(BillPayment_BankCode_Title, array?.first ?? "")
+//            case ViewTag.View_BankActionSheet.rawValue:
+//                let title = actionSheet.buttonTitle(at: buttonIndex)
+//                let array = title?.components(separatedBy: .whitespaces)
+//                m_DDTransInBank?.setOneRow(BillPayment_BankCode_Title, array?.first ?? "")
                 
             case ViewTag.View_InAccountActionSheet.rawValue:
                 commonAccountIndex = buttonIndex-1

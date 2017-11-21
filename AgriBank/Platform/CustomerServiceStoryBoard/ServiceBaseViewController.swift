@@ -52,7 +52,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     private var curData = [ServiceBaseStruct]()
     private var m_iSelectedIndex:Int? = nil
     private var locationManager:CLLocationManager? = nil
-    private var curLocation = CLLocationCoordinate2D()
+    private var curLocation:CLLocationCoordinate2D? = nil
 
     // MARK: - Override
     override func viewDidLoad() {
@@ -124,6 +124,11 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
             }
             
         case "INFO0302":
+            if curLocation != nil && aroundMeList.count == 0 {
+                /* 「定位」比「電文INFO0302」還要快 */
+                setLoading(true)
+                postRequest("Info/INFO0301", "INFO0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07052","Operate":"getListInfo","Longitude":curLocation!.longitude,"Latitude":curLocation!.latitude], false), AuthorizationManage.manage.getHttpHead(false))
+            }
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 unitList.removeAll()
                 unitInfoList.removeAll()
@@ -253,6 +258,11 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
             switch index {
             case 0:
                 cityList.append(contentsOf: unitList)
+                for city in ATMList {
+                    if cityList.index(of: city) == nil {
+                        cityList.append(city)
+                    }
+                }
             case 1:
                 cityList.append(contentsOf: unitList)
             case 2:
@@ -314,9 +324,12 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     // MARK: - CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let coordinate = locations.first?.coordinate {
-            if curLocation.latitude != coordinate.latitude || curLocation.longitude != coordinate.longitude {
+            if curLocation?.latitude != coordinate.latitude || curLocation?.longitude != coordinate.longitude {
                 curLocation = coordinate
-                postRequest("Info/INFO0301", "INFO0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07052","Operate":"getListInfo","Longitude":curLocation.longitude,"Latitude":curLocation.latitude], false), AuthorizationManage.manage.getHttpHead(false))
+                if ATMList.count > 0 || unitList.count > 0 {
+                /* 「定位」比「電文INFO0302」還要慢 or 定位點位置有變 */
+                    postRequest("Info/INFO0301", "INFO0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07052","Operate":"getListInfo","Longitude":curLocation!.longitude,"Latitude":curLocation!.latitude], false), AuthorizationManage.manage.getHttpHead(false))
+                }
             }
         }
     }
