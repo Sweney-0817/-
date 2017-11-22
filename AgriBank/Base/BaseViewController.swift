@@ -718,6 +718,12 @@ extension BaseViewController: ConnectionUtilityDelegate {
     
     func didFailedWithError(_ error: Error) {
         setLoading(false)
-        showErrorMessage(nil, error.localizedDescription)
+        if (error as NSError).code == -1009 {
+            /* 網路*/
+            showErrorMessage(nil, ErrorMsg_NoConnection)
+        }
+        else {
+            showErrorMessage(nil, error.localizedDescription)
+        }
     }
 }
