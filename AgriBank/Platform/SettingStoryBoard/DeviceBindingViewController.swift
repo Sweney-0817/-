@@ -335,4 +335,14 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
         topDropView?.setOneRow(DeviceBinding_Bank_Title, city + " " + place)
         topTextfield.resignFirstResponder()
     }
+    
+    // MARK: - LoginDelegate
+    override func clickLoginCloseBtn() {
+        /* 避免手勢被清除 and 把Observer移除 */
+        loginView?.removeFromSuperview()
+        loginView = nil
+        curFeatureID = nil
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
 }

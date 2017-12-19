@@ -317,6 +317,7 @@ struct RequestStruct {
     var strURL:String? = nil
     var needCertificate = false
     var isImage = false
+    var timeOut = REQUEST_TIME_OUT
 }
 
 // MARK: - 圖片名稱
@@ -389,6 +390,7 @@ let PerformChange_Title = "執行變更"
 let SetNotification_Title = "您要打開系統應用通知才可收到推播通知"
 let Setting_Title = "設定"
 let Timeout_Title = "待機時間過長即將登出"
+let ProvideUnit_Title = "提供單位"
 
 let Max_ID_Password_Length:Int = 16 // 使用者代號、使用者密碼的長度限制
 let Max_MobliePhone_Length:Int = 10 // 手機號碼

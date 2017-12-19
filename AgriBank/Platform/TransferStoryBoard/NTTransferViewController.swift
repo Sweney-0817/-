@@ -413,7 +413,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             do {
                 let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:Any]
                             
-                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0102", strSessionDescription: "TRAN0102", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0102", strSessionDescription: "TRAN0102", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: TIME_OUT_125)
                 
                 let CARDACTNO = (jsonDic?["CARDACTNO"] as? String) ?? ""
                 let INACT = (jsonDic?["INACT"] as? String) ?? ""
@@ -510,7 +510,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     @IBAction func clickSendBtn(_ sender: Any) {
         if inputIsCorrect() {
             if isPredesignated {
-                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0101", strSessionDescription: "TRAN0101", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":showBankAccountDropView?.getContentByType(.Second) ?? "","INBANK":showBankAccountDropView?.getContentByType(.First) ?? "","TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0101", strSessionDescription: "TRAN0101", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":showBankAccountDropView?.getContentByType(.Second) ?? "","INBANK":showBankAccountDropView?.getContentByType(.First) ?? "","TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: TIME_OUT_125)
                 
                 var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
                 dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:topDropView?.getContentByType(.First) ?? ""])

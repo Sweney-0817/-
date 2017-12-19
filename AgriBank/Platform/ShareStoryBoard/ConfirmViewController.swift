@@ -11,6 +11,9 @@ import CoreLocation
 
 let Confirm_ImageConfirm_Cell_Height:CGFloat = 60
 let Confirm_Segue = "GoResult"
+/* 「即時轉帳」確認頁特殊處理 */
+let Predesignated_Title = "約定轉帳"
+let NonPredesignated_Title = "非約定轉帳"
 
 class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, ImageConfirmViewDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var m_tvData: UITableView!
@@ -91,7 +94,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 if !isNeedOTP {
                     if data?.checkRequest != nil {
                         setLoading(true)
-                        postRequest((data?.checkRequest?.strMethod)!, (data?.checkRequest?.strSessionDescription)!, data?.checkRequest?.httpBody, data?.checkRequest?.loginHttpHead, data?.checkRequest?.strURL, (data?.checkRequest?.needCertificate)!, (data?.checkRequest?.isImage)!)
+                        postRequest((data?.checkRequest?.strMethod)!, (data?.checkRequest?.strSessionDescription)!, data?.checkRequest?.httpBody, data?.checkRequest?.loginHttpHead, data?.checkRequest?.strURL, (data?.checkRequest?.needCertificate)!, (data?.checkRequest?.isImage)!, (data?.checkRequest?.timeOut)!)
                     }
                 }
                 else {
@@ -102,7 +105,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                             if VIsSuccessful((otp?.resultCode)!) {
                                 self.dataOTP?.httpBodyList?["otp"] = otp?.otp
                                 self.dataOTP?.checkRequest?.httpBody = AuthorizationManage.manage.converInputToHttpBody((self.dataOTP?.httpBodyList!)!, true)
-                                self.postRequest((self.dataOTP?.checkRequest?.strMethod)!, (self.dataOTP?.checkRequest?.strSessionDescription)!, self.dataOTP?.checkRequest?.httpBody, self.dataOTP?.checkRequest?.loginHttpHead, self.dataOTP?.checkRequest?.strURL, (self.dataOTP?.checkRequest?.needCertificate)!, (self.dataOTP?.checkRequest?.isImage)!)
+                                self.postRequest((self.dataOTP?.checkRequest?.strMethod)!, (self.dataOTP?.checkRequest?.strSessionDescription)!, self.dataOTP?.checkRequest?.httpBody, self.dataOTP?.checkRequest?.loginHttpHead, self.dataOTP?.checkRequest?.strURL, (self.dataOTP?.checkRequest?.needCertificate)!, (self.dataOTP?.checkRequest?.isImage)!, (self.dataOTP?.checkRequest?.timeOut)!)
                             }
                             else {
                                 let alert = UIAlertController(title: UIAlert_Default_Title, message: "\(ErrorMsg_GenerateOTP_Faild) \((otp?.resultCode)!.rawValue)", preferredStyle: .alert)
@@ -163,7 +166,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         controller.setData(data!)
          /* 「即時轉帳」結果頁特殊處理 */
         if getCurrentFeatureID() == .FeatureID_NTTransfer {
-            controller.setData(data!, isNeedOTP ? "非約定轉帳" : "約定轉帳")
+            controller.setData(data!, isNeedOTP ? NonPredesignated_Title : Predesignated_Title)
         }
         else {
             controller.setData(data!)
@@ -198,7 +201,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         super.viewDidAppear(animated)
         /* 「即時轉帳」確認頁特殊處理 */
         if getCurrentFeatureID() == .FeatureID_NTTransfer {
-            navigationController?.navigationBar.topItem?.title = isNeedOTP ? "非約定轉帳" : "約定轉帳"
+            navigationController?.navigationBar.topItem?.title = isNeedOTP ? NonPredesignated_Title : Predesignated_Title
         }
     }
     

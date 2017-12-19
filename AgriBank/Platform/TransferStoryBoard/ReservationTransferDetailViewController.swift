@@ -78,7 +78,7 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
     // MARK: - StoryBoard Touch Event
     @IBAction func clickCancelBtn(_ sender: Any) {
         if inputIsCorrect() {
-            let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0302", strSessionDescription: "TRAN0302", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"commitTxn","TransactionId":transactionId,"ACTNO":input?.outAccount ?? "","RGDAY":(input?.loginDate ?? "").replacingOccurrences(of: "/", with: "") ,"TXTNO":input?.serialNumber ?? "","TRMSEQ":input?.trmseq ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+            let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0302", strSessionDescription: "TRAN0302", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"commitTxn","TransactionId":transactionId,"ACTNO":input?.outAccount ?? "","RGDAY":(input?.loginDate ?? "").replacingOccurrences(of: "/", with: "") ,"TXTNO":input?.serialNumber ?? "","TRMSEQ":input?.trmseq ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
             
             var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認取消", resultBtnName: "繼續交易", checkRequest: confirmRequest)
             dataConfirm.list?.append([Response_Key:"轉出帳號",Response_Value:input?.outAccount ?? ""])

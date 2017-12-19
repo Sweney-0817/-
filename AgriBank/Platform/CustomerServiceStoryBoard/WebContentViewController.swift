@@ -11,6 +11,8 @@ import UIKit
 class WebContentViewController: BaseViewController, UIWebViewDelegate {
     @IBOutlet weak var m_lbTitle: UILabel!
     @IBOutlet weak var m_wvContent: UIWebView!
+    @IBOutlet weak var provideUnit: UILabel!
+    @IBOutlet weak var provideHeight: NSLayoutConstraint!
     private var m_Data:PromotionStruct? = nil
     private var contentData:Data? = nil
     
@@ -25,6 +27,13 @@ class WebContentViewController: BaseViewController, UIWebViewDelegate {
         super.viewDidLoad()
     
         m_lbTitle.text = m_Data?.title
+        if let place = m_Data?.place, !place.isEmpty {
+            provideUnit.text = "\(ProvideUnit_Title):\(place)"
+        }
+        else {
+            provideHeight.constant = 0
+            provideUnit.isHidden = false
+        }
 //        m_wvContent.stringByEvaluatingJavaScript(from: "document.characterSet='utf-8';")
 //        m_wvContent.load(contentData!, mimeType: "text/html", textEncodingName: "UTF-8", baseURL:URL(string: (m_Data?.url)!)!)
 //        m_wvContent.loadHTMLString(String(data: contentData!, encoding: .utf8)!, baseURL: URL(string: (m_Data?.url)!)!)

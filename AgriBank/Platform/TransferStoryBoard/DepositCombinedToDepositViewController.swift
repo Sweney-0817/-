@@ -197,7 +197,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                     }
                 }
                 let TXAMT = transAmountTextfield.text ?? ""
-                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
                 
                 var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
                 dataConfirm.list?.append([Response_Key: "綜合存款帳號", Response_Value:TACTNO])

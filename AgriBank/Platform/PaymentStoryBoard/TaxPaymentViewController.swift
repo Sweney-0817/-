@@ -291,7 +291,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
                     let CORP = (jsonDic?["CORP"] as? String) ?? ""
                     let IDNO = (jsonDic?["IDNO"] as? String) ?? ""
                     
-                    let confirmRequest = RequestStruct(strMethod: "PAY/PAY0103", strSessionDescription: "PAY0103", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                    let confirmRequest = RequestStruct(strMethod: "PAY/PAY0103", strSessionDescription: "PAY0103", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: TIME_OUT_125)
                     
                     var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":TYPE,"OUTACT":OUTACT,"CORP":CORP,"IDNO":IDNO,"TXAMT":TXAMT,"taskId":taskID,"otp":""],task: task)
                     
@@ -308,7 +308,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
                     let BILLNO = (jsonDic?["BILLNO"] as? String) ?? ""
                     let DATELINE = (jsonDic?["DATELINE"] as? String) ?? ""
                     
-                    let confirmRequest = RequestStruct(strMethod: "PAY/PAY0105", strSessionDescription: "PAY0105", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                    let confirmRequest = RequestStruct(strMethod: "PAY/PAY0105", strSessionDescription: "PAY0105", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: TIME_OUT_125)
                     
                     var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05001","Operate":"ConfirmTxn","TransactionId":transactionId,"ACTTYPECODE":ACTTYPECODE,"ACTTYPE":ACTTYPE,"PAYTYPECODE":PAYTYPECODE,"PAYTYPE":PAYTYPE,"TYPE":TYPE,"OUTACT":OUTACT,"BILLNO":BILLNO,"DATELINE":DATELINE,"TXAMT":TXAMT,"taskId":taskID,"otp":""],task: task)
                     

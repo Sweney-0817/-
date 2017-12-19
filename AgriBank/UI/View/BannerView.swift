@@ -8,7 +8,7 @@
 
 import UIKit
 
-let Default_Banner_Image_Name = "Default"
+let Default_Banner_Image_Name = "DefaultBanner"
 let Banner_Repeat_Time:TimeInterval = 5
 
 struct BannerStructure {
@@ -21,6 +21,7 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentSizeWidth: NSLayoutConstraint!
+    @IBOutlet weak var backgroundImage: UIImageView!
     private var contentList:[BannerStructure]? = nil
     private var imageList = [Int:UIImage]()
     private var request:ConnectionUtility? = nil
@@ -33,6 +34,7 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
     
     private func addImageView() {
         if contentList != nil {
+            backgroundImage.isHidden = true
             pageControl.numberOfPages = (contentList?.count)!
             contentSizeWidth.constant = self.frame.width * CGFloat(pageControl.numberOfPages-1)
             var xStart:CGFloat = 0
@@ -49,6 +51,9 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
                 postRequest("", String(Int(pageControl.currentPage)), false, nil, nil, content.imageURL)
             }
             _ = Timer.scheduledTimer(timeInterval: Banner_Repeat_Time, target: self, selector: #selector(pageChanged), userInfo: nil, repeats: true);
+        }
+        else {
+            backgroundImage.isHidden = false
         }
     }
 

@@ -81,9 +81,9 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     }
     
     // MARK: - Public
-    func postRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:[String:String]?, _ strURL:String? = nil, _ needCertificate:Bool = false, _ isImage:Bool = false)  {
+    func postRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:[String:String]?, _ strURL:String? = nil, _ needCertificate:Bool = false, _ isImage:Bool = false, _ timeOut:TimeInterval = REQUEST_TIME_OUT)  {
         request = !isImage ? ConnectionUtility(.Json) : ConnectionUtility(.Image)
-        request?.requestData(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, loginHttpHead, needCertificate)
+        request?.requestData(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, loginHttpHead, needCertificate, timeOut)
     }
     
     func getRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:[String:String]?, _ strURL:String?, _ needCertificate:Bool, _ type:DownloadType)  {
@@ -309,6 +309,8 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             view.removeGestureRecognizer(touchTap!)
             touchTap = nil
         }
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     // MARK: - UIBarButtonItem Selector

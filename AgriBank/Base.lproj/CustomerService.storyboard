@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -153,15 +153,24 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9zI-W8-PFC">
+                                <rect key="frame" x="20" y="80" width="355" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="tTk-bS-rEo"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.49803921568627452" green="0.49803921568627452" blue="0.49803921568627452" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MNe-QW-ipf">
-                                <rect key="frame" x="0.0" y="80" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="105" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="yDU-Vd-1H5"/>
                                 </constraints>
                             </view>
                             <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qFH-M6-m8p">
-                                <rect key="frame" x="0.0" y="81" width="375" height="586"/>
+                                <rect key="frame" x="0.0" y="106" width="375" height="561"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="delegate" destination="9c1-GB-A5h" id="KFJ-d8-Piw"/>
@@ -171,20 +180,25 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="qFH-M6-m8p" firstAttribute="leading" secondItem="GD9-Zm-Rtg" secondAttribute="leading" id="1T9-bf-psG"/>
+                            <constraint firstItem="9zI-W8-PFC" firstAttribute="leading" secondItem="GD9-Zm-Rtg" secondAttribute="leading" constant="20" id="4KG-1Y-NAO"/>
                             <constraint firstAttribute="trailing" secondItem="qFH-M6-m8p" secondAttribute="trailing" id="D3p-mB-IWB"/>
                             <constraint firstItem="vvo-qC-7WN" firstAttribute="top" secondItem="qFH-M6-m8p" secondAttribute="bottom" id="GNE-8J-SsM"/>
                             <constraint firstItem="MNe-QW-ipf" firstAttribute="leading" secondItem="GD9-Zm-Rtg" secondAttribute="leading" id="H20-g5-RTC"/>
                             <constraint firstItem="qFH-M6-m8p" firstAttribute="top" secondItem="MNe-QW-ipf" secondAttribute="bottom" id="JDb-Zd-zbO"/>
-                            <constraint firstItem="MNe-QW-ipf" firstAttribute="top" secondItem="nlA-ZC-qRn" secondAttribute="bottom" id="SFK-34-pX6"/>
+                            <constraint firstAttribute="trailing" secondItem="9zI-W8-PFC" secondAttribute="trailing" id="Tyr-ft-1ww"/>
                             <constraint firstItem="nlA-ZC-qRn" firstAttribute="top" secondItem="DdK-lo-rs8" secondAttribute="bottom" id="fyL-cI-M4k"/>
                             <constraint firstAttribute="trailing" secondItem="nlA-ZC-qRn" secondAttribute="trailing" id="iEJ-SX-hgU"/>
                             <constraint firstAttribute="trailing" secondItem="MNe-QW-ipf" secondAttribute="trailing" id="ibT-QM-gv0"/>
+                            <constraint firstItem="MNe-QW-ipf" firstAttribute="top" secondItem="9zI-W8-PFC" secondAttribute="bottom" id="kU4-rV-VDS"/>
                             <constraint firstItem="nlA-ZC-qRn" firstAttribute="leading" secondItem="GD9-Zm-Rtg" secondAttribute="leading" id="sfG-Ro-Pig"/>
+                            <constraint firstItem="9zI-W8-PFC" firstAttribute="top" secondItem="nlA-ZC-qRn" secondAttribute="bottom" id="vnk-Vn-EUQ"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="m_lbTitle" destination="nlA-ZC-qRn" id="h7j-kt-TwY"/>
                         <outlet property="m_wvContent" destination="qFH-M6-m8p" id="llw-bV-0aZ"/>
+                        <outlet property="provideHeight" destination="tTk-bS-rEo" id="kbb-fl-TJP"/>
+                        <outlet property="provideUnit" destination="9zI-W8-PFC" id="uJv-Sp-O6h"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hL9-4w-TFJ" userLabel="First Responder" sceneMemberID="firstResponder"/>

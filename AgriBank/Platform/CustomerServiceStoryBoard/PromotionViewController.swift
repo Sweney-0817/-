@@ -23,8 +23,8 @@ struct PromotionStruct {
     }
 }
 
-let Promotion_Seivice_Title = "提供單位"
 let Promotion_Segue = "goDetail"
+let Promotion_RecentCount:Int = 100
 
 class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var m_vPlace: UIView!
@@ -61,7 +61,7 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
                         var pList = [PromotionStruct]()
                         for info in promotion {
                             pList.append(PromotionStruct( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "", info["CMI_ID"] ?? "" ))
-                            if recentList.count < 20 {
+                            if recentList.count <= Promotion_RecentCount {
                                 recentList.append(PromotionStruct( info["CMI_Title"] ?? "", info["CMI_AddedDT"] ?? "", info["CUM_BankChineseName"] ?? "", info["URL"] ?? "", info["CMI_ID"] ?? "" ))
                             }
                         }
@@ -105,7 +105,7 @@ class PromotionViewController: BaseViewController, OneRowDropDownViewDelegate, U
         if m_DDPlace == nil {
             m_DDPlace = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
             m_DDPlace?.delegate = self
-            m_DDPlace?.setOneRow(Promotion_Seivice_Title, Choose_Title)
+            m_DDPlace?.setOneRow(ProvideUnit_Title, Choose_Title)
             m_DDPlace?.frame = CGRect(x:0, y:0, width:m_vPlace.frame.width, height:(m_DDPlace?.getHeight())!)
             m_vPlace.addSubview(m_DDPlace!)
         }

@@ -294,7 +294,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
                 let MEMO = (jsonDic?["MEMO"] as? String) ?? ""
                 let EMAIL = (jsonDic?["EMAIL"] as? String) ?? ""
                 
-                let confirmRequest = RequestStruct(strMethod: "PAY/PAY0107", strSessionDescription: "PAY0107", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false)
+                let confirmRequest = RequestStruct(strMethod: "PAY/PAY0107", strSessionDescription: "PAY0107", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: TIME_OUT_125)
                 
                 var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"05002","Operate":"commitTxn","TransactionId":transactionId,"OUTACT":OUTACT,"INACT": INACT,"INBANK":INBANK,"TXAMT":TXAMT,"MEMO":MEMO,"EMAIL":EMAIL,"taskId":taskID,"otp":""],task: task)
                 
