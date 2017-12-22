@@ -376,6 +376,11 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             case ViewTag.View_AccountActionSheet.rawValue:
                 if let info = accountList?[buttonIndex-1] {
                     m_DDTransOutAccount?.setThreeRow(BillPayment_OutAccout_Title, info.accountNO, BillPayment_Currency_Ttile, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), BillPayment_Balance_Ttile, String(info.balance).separatorThousand())
+                    commonAccountIndex = nil
+                    m_DDTransInBA?.setTwoRow(BillPayment_BankCode_Title, Choose_Title, BillPayment_InAccout_Title, "")
+                    m_tfTransAmount.text = ""
+                    m_tfTransMemo.text = ""
+                    m_tfEmail.text = ""
                 }
                 
             default: break
@@ -396,12 +401,12 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let newLength = (textField.text?.count)! - range.length + string.count
-        if textField == m_vEmail {
+        if textField == m_tfEmail {
             if newLength > Max_Email_Length {
                 return false
             }
         }
-        else if textField == m_vTransMemo {
+        else if textField == m_tfTransMemo {
             if newLength > Max19_Memo_Length {
                 return false
             }
