@@ -170,6 +170,9 @@ class Platform {
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil, name: "設備綁定")
         informationList[.FeatureID_DeviceBinding] = feature
         
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil, name: "聯絡客服")
+        informationList[.FeatureID_ContactCustomerService] = feature
+        
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: nil, name: "新增")
         informationList[.FeatureID_Edit] = feature
         

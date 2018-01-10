@@ -243,6 +243,85 @@
             </objects>
             <point key="canvasLocation" x="-317" y="2178"/>
         </scene>
+        <!--Contact Customer Service View Controller-->
+        <scene sceneID="6bG-Nh-mYM">
+            <objects>
+                <viewController storyboardIdentifier="FeatureID_ContactCustomerService" id="eO2-qc-ELN" customClass="ContactCustomerServiceViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="oXg-3D-VAL"/>
+                        <viewControllerLayoutGuide type="bottom" id="a6N-GF-NQj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JxV-Iq-pz8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KWu-TB-AyV">
+                                <rect key="frame" x="0.0" y="20" width="375" height="587"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="eO2-qc-ELN" id="KJ1-bv-44h"/>
+                                    <outlet property="delegate" destination="eO2-qc-ELN" id="zPo-zL-0k4"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iwJ-0e-KHC">
+                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v0l-3B-T4K">
+                                        <rect key="frame" x="15" y="8" width="165" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="2Tf-Hg-oOp"/>
+                                        </constraints>
+                                        <state key="normal" title="顯示地圖" backgroundImage="ButtonMedium">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="ClickShowMapBtn:" destination="eO2-qc-ELN" eventType="touchUpInside" id="YC9-FI-p5G"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fFg-1S-Kff">
+                                        <rect key="frame" x="195" y="8" width="165" height="44"/>
+                                        <state key="normal" title="撥打電話" backgroundImage="ButtonMedium">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clickCallPhoneButton:" destination="eO2-qc-ELN" eventType="touchUpInside" id="tNb-vq-GnL"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="fFg-1S-Kff" secondAttribute="trailing" constant="15" id="3zo-2j-z2v"/>
+                                    <constraint firstItem="fFg-1S-Kff" firstAttribute="width" secondItem="v0l-3B-T4K" secondAttribute="width" id="8eG-N6-9fG"/>
+                                    <constraint firstItem="v0l-3B-T4K" firstAttribute="leading" secondItem="iwJ-0e-KHC" secondAttribute="leading" constant="15" id="O1B-eH-Weq"/>
+                                    <constraint firstItem="fFg-1S-Kff" firstAttribute="height" secondItem="v0l-3B-T4K" secondAttribute="height" id="TzW-wl-IxM"/>
+                                    <constraint firstItem="fFg-1S-Kff" firstAttribute="centerY" secondItem="v0l-3B-T4K" secondAttribute="centerY" id="gZy-B3-SdX"/>
+                                    <constraint firstAttribute="height" constant="60" id="kuE-a7-hHT"/>
+                                    <constraint firstItem="fFg-1S-Kff" firstAttribute="leading" secondItem="v0l-3B-T4K" secondAttribute="trailing" constant="15" id="lTt-hp-Vo9"/>
+                                    <constraint firstItem="v0l-3B-T4K" firstAttribute="centerY" secondItem="iwJ-0e-KHC" secondAttribute="centerY" id="m6q-H4-e47"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="KWu-TB-AyV" secondAttribute="trailing" id="EHA-5S-jhd"/>
+                            <constraint firstItem="iwJ-0e-KHC" firstAttribute="leading" secondItem="JxV-Iq-pz8" secondAttribute="leading" id="KUE-s0-86l"/>
+                            <constraint firstItem="KWu-TB-AyV" firstAttribute="leading" secondItem="JxV-Iq-pz8" secondAttribute="leading" id="KWd-jo-rv2"/>
+                            <constraint firstItem="iwJ-0e-KHC" firstAttribute="top" secondItem="KWu-TB-AyV" secondAttribute="bottom" id="NSG-SF-DxO"/>
+                            <constraint firstAttribute="trailing" secondItem="iwJ-0e-KHC" secondAttribute="trailing" id="Qw8-YA-nTM"/>
+                            <constraint firstItem="a6N-GF-NQj" firstAttribute="top" secondItem="iwJ-0e-KHC" secondAttribute="bottom" id="XO7-0Q-DXR"/>
+                            <constraint firstItem="KWu-TB-AyV" firstAttribute="top" secondItem="oXg-3D-VAL" secondAttribute="bottom" id="sUy-QG-0Gb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="bottomView" destination="iwJ-0e-KHC" id="vNk-90-LmN"/>
+                        <outlet property="callPhoneButton" destination="fFg-1S-Kff" id="l2t-xU-lGm"/>
+                        <outlet property="tableView" destination="KWu-TB-AyV" id="6Ye-B6-nKo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yph-8Z-mtf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-318" y="2860"/>
+        </scene>
         <!--Personal Message Detail View Controller-->
         <scene sceneID="bXz-TF-6tJ">
             <objects>

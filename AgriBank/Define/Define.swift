@@ -47,6 +47,7 @@ enum PlatformFeatureID: Int {
     case FeatureID_MessageSwitch = 170400           // 個人訊息開關
     case FeatureID_SetAvatar = 170500               // 登入頭像設定
     case FeatureID_DeviceBinding = 180100           // 設備綁定
+    case FeatureID_ContactCustomerService = 190100  // 聯絡客服
     case FeatureID_Edit = 990300                    // 新增/編輯
     
     func StoryBoardID() -> String {
@@ -113,8 +114,10 @@ enum PlatformFeatureID: Int {
             return "FeatureID_SetAvatar"
         case .FeatureID_DeviceBinding:
             return "FeatureID_DeviceBinding"
+        case .FeatureID_ContactCustomerService:
+            return "FeatureID_ContactCustomerService"
         default:
-            return "";
+            return ""
         }
     }
     
@@ -134,12 +137,12 @@ enum PlatformFeatureID: Int {
             return "Payment"
         case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation:
             return "FinancialInformation"
-        case .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage:
+        case .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage, .FeatureID_ContactCustomerService:
             return "CustomerService"
         case .FeatureID_BasicInfoChange, .FeatureID_UserNameChange, .FeatureID_UserPwdChange, .FeatureID_MessageSwitch, .FeatureID_SetAvatar, .FeatureID_DeviceBinding, .FeatureID_FirstLoginChange:
             return "Setting"
         default:
-            return "";
+            return ""
         }
     }
 }

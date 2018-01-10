@@ -120,9 +120,11 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
                 tableView.reloadData()
             }
             else {
-                currentID = info?.contentList?[indexPath.row-1]
-                if parent is SideMenuViewController {
-                    (parent as! SideMenuViewController).ShowSideMenu(true)
+                if let list = getAuthFeatureIDContentList(featureList[indexPath.section]) {
+                    currentID = list[indexPath.row-1]
+                    if parent is SideMenuViewController {
+                        (parent as! SideMenuViewController).ShowSideMenu(true)
+                    }
                 }
             }
         }

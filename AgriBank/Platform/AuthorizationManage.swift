@@ -174,7 +174,8 @@ class AuthorizationManage {
     func CanEnterFeature(_ ID:PlatformFeatureID) -> Bool { // 判斷是否需要登入
         var canEnter = false
         switch ID {
-        case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation, .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_Home, .FeatureID_Edit, .FeatureID_DeviceBinding:
+
+        case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation, .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_Home, .FeatureID_Edit, .FeatureID_DeviceBinding, .FeatureID_ContactCustomerService:
             canEnter = true
             
         default:
@@ -217,6 +218,7 @@ class AuthorizationManage {
         case "T31": return PlatformFeatureID.FeatureID_MessageSwitch
         case "T32": return PlatformFeatureID.FeatureID_SetAvatar
         case "T33": return PlatformFeatureID.FeatureID_DeviceBinding
+        case "T40": return PlatformFeatureID.FeatureID_ContactCustomerService
         default: return nil
         }
     }
@@ -317,10 +319,10 @@ class AuthorizationManage {
             
         case .Menu_Type, .Edit_Type:
             if !IsLoginSuccess() {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_DeviceBinding]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
             }
             else {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
             }
         }
         

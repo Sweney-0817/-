@@ -46,6 +46,9 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     private var resultList = [String:Any]()             // 電文(ACIF0101)response
     private var pushByclickExpandBtn = false            // 判斷是否從cell觸發 進功能畫面
     private var curExpandCell:IndexPath? = nil          // 目前展開的cell
+    private var canNTAgreedTransfer = false             // 「約轉」畫面是否有授權
+    private var canAccountDetail = false                // 「帳戶往來明細」畫面是否有授權
+    private var canLoanPrincipalInterest = false        // 「繳交放款本息」畫面是否有授權
     
     // MARK: - Private
     private func getTypeByInputString(_ input:String) -> ActOverviewType? {
@@ -67,6 +70,17 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
         navigationController?.delegate = self
         getTransactionID("02031", TransactionID_Description)
+        if let list = AuthorizationManage.manage.getAuthList([.FeatureID_AccountDetailView]), list.count > 0 {
+            canAccountDetail = true
+        }
+        if let list = AuthorizationManage.manage.getAuthList([.FeatureID_NTAccountTransfer]), list.count > 0 {
+            if let list = AuthorizationManage.manage.getAuthList([.FeatureID_NTTransfer]), list.count > 0 {
+                canNTAgreedTransfer = true
+            }
+            if let list = AuthorizationManage.manage.getAuthList([.FeatureID_LoanPrincipalInterest]), list.count > 0 {
+                canLoanPrincipalInterest = true
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -454,11 +468,22 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             cell.detail2Label.text = (array[indexPath.row].currency == Currency_TWD) ? Currency_TWD_Title : array[indexPath.row].currency
             cell.detail3Label.text = String(array[indexPath.row].balance)?.separatorThousand()
             if let cellType = getTypeByInputString(ActOverview_TypeList[index]) {
-                if cellType == .Type1  {
-                    cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == Account_EnableTrans,true), indexPath)
-                }
-                else {
-                    cell.AddExpnadBtn(self, cellType, (true,true), indexPath)
+                switch cellType {
+                case .Type1:
+                    if canNTAgreedTransfer {
+                        cell.AddExpnadBtn(self, cellType, (array[indexPath.row].status == Account_EnableTrans, canAccountDetail), indexPath)
+                    }
+                    else {
+                        cell.AddExpnadBtn(self, cellType, (false, canAccountDetail), indexPath)
+                    }
+                    
+                case .Type2, .Type3:
+                    cell.AddExpnadBtn(self, cellType, (canAccountDetail, canAccountDetail), indexPath)
+                
+                case .Type4:
+                    cell.AddExpnadBtn(self, cellType, (canLoanPrincipalInterest, canAccountDetail), indexPath)
+                    
+                default: break
                 }
             }
         }

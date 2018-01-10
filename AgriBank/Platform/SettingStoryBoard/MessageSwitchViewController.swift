@@ -134,8 +134,7 @@ class MessageSwitchViewController: BaseViewController {
                 center.getNotificationSettings() { setting in
                     if setting.alertStyle != .none {
                         DispatchQueue.main.async {
-                            self.messageSwitch.isOn = true
-                            if self.getStatus! == false {
+                            if self.messageSwitch.isOn == true {
                                 self.setLoading(true)
                                 self.postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":self.transactionId,"action":"1"], true), AuthorizationManage.manage.getHttpHead(true))
                             }
@@ -143,21 +142,28 @@ class MessageSwitchViewController: BaseViewController {
                     }
                     else {
                         DispatchQueue.main.async {
-                            self.messageSwitch.isOn = false
+                            if self.messageSwitch.isOn == true {
+                                self.setLoading(true)
+                                self.postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":self.transactionId,"action":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+                                self.messageSwitch.isOn = false
+                            }
                         }
                     }
                 }
             }
             else {
                 if UIApplication.shared.currentUserNotificationSettings != nil {
-                    messageSwitch.isOn = true
-                    if self.getStatus == false {
+                    if self.messageSwitch.isOn == true {
                         setLoading(true)
                         postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":transactionId,"action":"1"], true), AuthorizationManage.manage.getHttpHead(true))
                     }
                 }
                 else {
-                    messageSwitch.isOn = false
+                    if self.messageSwitch.isOn == true {
+                        self.setLoading(true)
+                        self.postRequest("Comm/COMM0305", "COMM0305", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"dataSetup","TransactionId":self.transactionId,"action":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+                        messageSwitch.isOn = false
+                    }
                 }
             }
         }
