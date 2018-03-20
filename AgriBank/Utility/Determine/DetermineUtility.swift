@@ -91,11 +91,12 @@ class DetermineUtility {
                     result = false
                     break
                 }
+                /* 客戶需求修改 */
                 //3碼連續,EX.121
-                else if number1 == 1 && number2 == 0 {
-                    result = false
-                    break
-                }
+//                else if number1 == 1 && number2 == 0 {
+//                    result = false
+//                    break
+//                }
             }
         }
         else {

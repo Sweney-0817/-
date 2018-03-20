@@ -35,6 +35,8 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     @IBOutlet weak var m_vEmail: UIView!
     @IBOutlet weak var m_tfEmail: TextField!
     @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var m_separator1Height: NSLayoutConstraint!
+    @IBOutlet weak var m_separator2Height: NSLayoutConstraint!
     
     private var m_DDTransOutAccount: ThreeRowDropDownView? = nil
     private var m_DDTransInBank: OneRowDropDownView? = nil
@@ -114,9 +116,11 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             }
             showOutAccountList()
             
-        case "ACCT0102":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array2 = data["Result2"] as? [[String:Any]] {
-                commonAccountList = array2
+        case "ACCT0104":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
+                if let array = data["Result2"] as? [[String:Any]] {
+                    commonAccountList = array
+                }
                 showCommonAccountList()
             }
             else {
@@ -157,6 +161,8 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             m_consTransInBankHeight.constant = 60
             m_consTransInAccountHeight.constant = 60
             m_consTransInBAHeight.constant = 0
+            m_separator1Height.constant = 1
+            m_separator2Height.constant = 0
             m_vTransInBank.isHidden = false
             m_vTransInAccount.isHidden = false
             m_vTransInBA.isHidden = true
@@ -167,6 +173,8 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             m_consTransInBankHeight.constant = 0
             m_consTransInAccountHeight.constant = 0
             m_consTransInBAHeight.constant = 80
+            m_separator1Height.constant = 0
+            m_separator2Height.constant = 0
             m_vTransInBank.isHidden = true
             m_vTransInAccount.isHidden = true
             m_vTransInBA.isHidden = false
@@ -216,7 +224,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     }
     
     private func showCommonAccountList() {
-        if commonAccountList != nil {
+        if commonAccountList != nil && (commonAccountList?.count)! > 0 {
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for info in commonAccountList! {
                 if let account = info["ACTNO"] as? String, let bankCode = info["IN_BR_CODE"] as? String {
@@ -225,6 +233,9 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             }
             actSheet.tag = ViewTag.View_InAccountActionSheet.rawValue
             actSheet.show(in: view)
+        }
+        else {
+            showErrorMessage(nil, ErrorMsg_GetList_InCommonAccount)
         }
     }
     
@@ -347,7 +358,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
         if m_DDTransOutAccount?.getContentByType(.First) != Choose_Title {
             if m_DDTransInBA?.getContentByType(.First) == Choose_Title {
                 setLoading(true)
-                postRequest("ACCT/ACCT0102", "ACCT0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0","ACTNO":m_DDTransOutAccount?.getContentByType(.First) ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("ACCT/ACCT0104", "ACCT0104", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02004","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0","ACTNO":m_DDTransOutAccount?.getContentByType(.First) ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
                 showCommonAccountList()

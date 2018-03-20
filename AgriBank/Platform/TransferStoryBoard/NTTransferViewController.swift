@@ -198,11 +198,19 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             
         case "ACCT0102":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
-                if let array1 = data["Result"] as? [[String:Any]] {
-                    agreedAccountList = array1
+                if let array = data["Result"] as? [[String:Any]] {
+                    agreedAccountList = array
                 }
-                if let array2 = data["Result2"] as? [[String:Any]] {
-                    commonAccountList = array2
+                showInAccountList(isPredesignated)
+            }
+            else {
+                super.didResponse(description, response)
+            }
+            
+        case "ACCT0104":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
+                if let array = data["Result2"] as? [[String:Any]] {
+                    commonAccountList = array
                 }
                 showInAccountList(isPredesignated)
             }
@@ -597,12 +605,24 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     // MARK: - TwoRowDropDownViewDelegate
     func clickTwoRowDropDownView(_ sender: TwoRowDropDownView) {
         if accountIndex != nil {
-            if agreedAccountList == nil && commonAccountList == nil {
-                setLoading(true)
-                postRequest("ACCT/ACCT0102", "ACCT0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02002","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0","ACTNO":accountList?[accountIndex!].accountNO ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+            if( isPredesignated ) {
+                // ACCT0102 專門取「約定帳戶列表」
+                if agreedAccountList == nil {
+                    setLoading(true)
+                    postRequest("ACCT/ACCT0102", "ACCT0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02002","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0","ACTNO":accountList?[accountIndex!].accountNO ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+                else {
+                    showInAccountList(isPredesignated)
+                }
             }
             else {
-                showInAccountList(isPredesignated)
+                if commonAccountList == nil {
+                    setLoading(true)
+                    postRequest("ACCT/ACCT0104", "ACCT0104", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02004","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0","ACTNO":accountList?[accountIndex!].accountNO ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+                else {
+                    showInAccountList(isPredesignated)
+                }
             }
         }
         else {

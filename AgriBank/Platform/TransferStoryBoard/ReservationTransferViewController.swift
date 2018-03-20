@@ -114,8 +114,10 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             }
             
         case "ACCT0102":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array1 = data["Result"] as? [[String:Any]] {
-                agreedAccountList = array1
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
+                if let array = data["Result"] as? [[String:Any]] {
+                    agreedAccountList = array
+                }
                 showInAccountList()
             }
             else {

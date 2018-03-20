@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Tax Payment View Controller-->
         <scene sceneID="w23-cs-IVc">
@@ -198,7 +203,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tax" translatesAutoresizingMaskIntoConstraints="NO" id="iy9-82-Si4">
-                                                        <rect key="frame" x="18" y="433.66666666666663" width="379" height="252.99999999999989"/>
+                                                        <rect key="frame" x="18" y="433.66666666666674" width="379" height="253"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="253" id="JYc-pp-O7K"/>
                                                         </constraints>
@@ -319,7 +324,7 @@
                                                         </constraints>
                                                     </view>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HintDownArrow" translatesAutoresizingMaskIntoConstraints="NO" id="4m7-J5-Hi7">
-                                                        <rect key="frame" x="0.0" y="109.99999999999999" width="414" height="39.666666666666643"/>
+                                                        <rect key="frame" x="0.0" y="110.00000000000001" width="414" height="39.666666666666671"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="4m7-J5-Hi7" secondAttribute="height" multiplier="375:36" id="DNa-IE-z9r"/>
                                                         </constraints>
@@ -362,7 +367,7 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VkI-2G-dQi">
-                                                                <rect key="frame" x="0.0" y="61" width="379" height="60.000000000000028"/>
+                                                                <rect key="frame" x="0.0" y="61" width="379" height="60"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="60" id="Q4s-Hh-Qns"/>
@@ -445,10 +450,10 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d18-q3-jnO">
-                                                                <rect key="frame" x="0.0" y="334" width="379" height="59.999999999999943"/>
+                                                                <rect key="frame" x="0.0" y="334" width="379" height="60"/>
                                                                 <subviews>
                                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="備註/交易備記" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="dr3-KZ-xUX" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
-                                                                        <rect key="frame" x="15" y="8" width="349" height="43.999999999999943"/>
+                                                                        <rect key="frame" x="15" y="8" width="349" height="44"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="44" id="Vxz-fY-zY4"/>
                                                                         </constraints>
@@ -617,6 +622,8 @@
                         <outlet property="m_consTransInBAHeight" destination="szg-gg-AKb" id="Upx-a4-bJ8"/>
                         <outlet property="m_consTransInBankHeight" destination="Q4s-Hh-Qns" id="0Ld-Q7-SDa"/>
                         <outlet property="m_segAccountType" destination="SPf-xm-8bo" id="wb5-9v-rV8"/>
+                        <outlet property="m_separator1Height" destination="Aje-uK-mSy" id="NLx-u7-tFw"/>
+                        <outlet property="m_separator2Height" destination="beB-8G-O9C" id="u8V-vO-4W7"/>
                         <outlet property="m_tfEmail" destination="6YS-nr-66N" id="4h9-8h-IFg"/>
                         <outlet property="m_tfTransAmount" destination="aLY-Yd-4zC" id="cp3-vK-LQZ"/>
                         <outlet property="m_tfTransInAccount" destination="Zgd-Fh-UWF" id="4GI-72-A5E"/>

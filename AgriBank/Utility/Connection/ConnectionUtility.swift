@@ -11,7 +11,8 @@ import Foundation
 let REQUEST_TIME_OUT:TimeInterval = 65  // Time out Default
 let CERTIFICATE_NAME = ""               // 憑證名稱
 let CERTIFICATE_TYPE = "cer"            // 憑證副檔名
-let TIME_OUT_125:TimeInterval = 125     // TRAN0101、TRAN0102、PAY0103、PAY0105、PAY0107 這幾支呼叫API於時時間請大於120秒，因為是跨行，EAI那邊可以等待120
+let TIME_OUT_125:TimeInterval = 305     // TRAN0101、TRAN0102、PAY0103、PAY0105、PAY0107 這幾支呼叫API於時時間請大於120秒，因為是跨行，EAI那邊可以等待120
+                                        // 20180320 要求修改為300
 
 protocol ConnectionUtilityDelegate {
     func didRecvdResponse(_ description:String, _ response: NSDictionary) -> Void

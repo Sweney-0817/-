@@ -481,9 +481,9 @@ let ErrorMsg_Input_Amount = "輸入金額不得0元"
 let ErrorMsg_ID_LackOfLength = "身分證字號長度不足"
 let ErrorMsg_NoPositioning = "此交易需開啟定位權限"
 let ErrorMsg_NoConnection = "請確認網路是否正常。"
+let ErrorMsg_GetList_InCommonAccount = "您無常用帳號" // 用於「即時轉帳」「繳費」
 /*  用於「即時轉帳」 */
-let ErrorMsg_GetList_InAgreedAccount = "無法取得約定轉入帳戶"
-let ErrorMsg_GetList_InCommonAccount = "無法取得常用轉入帳戶"
+let ErrorMsg_GetList_InAgreedAccount = "您無轉入帳戶"
 let ErrorMsg_Choose_InAccount = "請選擇轉入帳號"
 let ErrorMsg_Predesignated_Amount = "轉帳金額不得大於200萬"
 let ErrorMsg_NotPredesignated_Amount = "轉帳金額不得大於3萬"
