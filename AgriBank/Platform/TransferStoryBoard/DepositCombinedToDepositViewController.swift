@@ -167,6 +167,8 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let status = array.first?["CanTrans"] as? String, status == Can_Transaction_Status, let date = array.first?["CurrentDate"] as? String {
                 let TACTNO = topDropView?.getContentByType(.First) ?? ""
                 let TYPE = responseDepositList[curDepositTypeIndex!]["Type"] ?? ""
+                //Guester 20180605 取得 REFNOType 至 TRAN0401 發出
+                let REFNOType = responseDepositList[curDepositTypeIndex!]["REFNOType"] ?? ""
                 let PRDCD = periodDropView?.getContentByType(.First) ?? ""
                 var IRTID = ""
                 if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]], let irtid = Detail[curRateTypeIndex!]["IRTID"] as? [String:String], let Value = irtid["Value"] {
@@ -197,7 +199,9 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                     }
                 }
                 let TXAMT = transAmountTextfield.text ?? ""
-                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+//                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+                //Guester 20180605 取得 REFNOType 至 TRAN0401 發出
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401",strSessionDescription: "TRAN0401", httpBody:AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"RENFO":REFNOType, "PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
                 
                 var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
                 dataConfirm.list?.append([Response_Key: "綜合存款帳號", Response_Value:TACTNO])

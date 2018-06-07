@@ -37,6 +37,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
     private var chooseDay = ""                          // 選擇的日
     private var chooseMonth = ""                        // 選擇的月
     private var chooseYear = ""                         // 選擇的年
+    private var m_strCurrentDate:String? = nil          // 電文取回的當前營業日
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -108,6 +109,9 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
                         }
                     }
                 }
+                //Guester 20180605 多發 COMM0701 以取得 CurrentDate
+                setLoading(true)
+                postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
             }
             else {
                 super.didResponse(description, response)
@@ -123,7 +127,15 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             else {
                 super.didResponse(description, response)
             }
-            
+        case "COMM0701"://Guester 20180605 多發 COMM0701 以取得 CurrentDate
+            if  let data = response.object(forKey: ReturnData_Key) as? [String:Any],
+                let array = data["Result"] as? [[String:Any]],
+                let date = array.first?["CurrentDate"] as? String {
+                m_strCurrentDate = date
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
+            }
         default: break
         }
     }
@@ -148,9 +160,16 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         isFixedDate = false
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
             dateView.frame = view.frame
-            var componenets = Calendar.current.dateComponents([.day,.year,.month], from: Date())
-            componenets.day = componenets.day!+1
-            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: componenets), maxDate: nil, curDate: Calendar.current.date(from: componenets))
+//            var componenets = Calendar.current.dateComponents([.day,.year,.month], from: Date())
+            //Guester 20180605 多發 COMM0701 以取得 CurrentDate
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy/MM/dd"
+            let date = dateFormatter.date(from: m_strCurrentDate!)
+            var componenetsMin = Calendar.current.dateComponents([.day,.year,.month], from: date ?? Date())
+            componenetsMin.day = componenetsMin.day!+1
+            var componenetsMax = Calendar.current.dateComponents([.day,.year,.month], from: date ?? Date())
+            componenetsMax.month = componenetsMax.month!+3
+            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: componenetsMin), maxDate: Calendar.current.date(from: componenetsMax), curDate: date)
             dateView.showOneDatePickerView(true, startDate) { start in
                 self.chooseDay = start.day
                 self.chooseMonth = start.month
