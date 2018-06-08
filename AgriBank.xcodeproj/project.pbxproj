@@ -839,7 +839,7 @@
 				TargetAttributes = {
 					6148D9CA1EDFD10000C02CA3 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = 354BPKXPSS;
+						DevelopmentTeam = 95E44WWFM7;
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
@@ -1263,7 +1263,7 @@
 				INFOPLIST_FILE = AgriBank/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.agribank.mbank-sit";
+				PRODUCT_BUNDLE_IDENTIFIER = org.naffic.mbank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "596a93c5-ad22-42e7-aba1-6e238f209739";
 				PROVISIONING_PROFILE_SPECIFIER = forComAll;
@@ -1292,7 +1292,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.agribank.mbank-sit";
+				PRODUCT_BUNDLE_IDENTIFIER = org.naffic.mbank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "596a93c5-ad22-42e7-aba1-6e238f209739";
 				PROVISIONING_PROFILE_SPECIFIER = forComAll;
