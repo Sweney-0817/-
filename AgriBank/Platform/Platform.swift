@@ -130,7 +130,16 @@ class Platform {
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation, name: "定期儲蓄試算")
         informationList[.FeatureID_RegularSavingCalculation] = feature
+    //Guester 20180626
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_QRCodeTrans, .FeatureID_QRPay], belong: nil, name: "行動支付")
+        informationList[.FeatureID_MobilePay] = feature
         
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "QR Code轉帳")
+        informationList[.FeatureID_QRCodeTrans] = feature
+        
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "QR Pay")
+        informationList[.FeatureID_QRPay] = feature
+    //Guester 20180626 End
         feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage], belong: nil, name: "客戶服務")
         informationList[.FeatureID_CustomerService] = feature
         

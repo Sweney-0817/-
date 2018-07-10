@@ -504,7 +504,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             showBankDorpView?.setOneRow(NTTransfer_BankCode, Choose_Title)
             enterAccountTextfield.text = ""
             
-        default: // 常用帳號
+        case 1: // 常用帳號
             isCustomizeAct = false
             enterAccountView.isHidden = true
             enterAccountHeight.constant = 0
@@ -512,6 +512,14 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             showBankAccountHeight.constant = sShowBankAccountHeight
             inAccountIndex = nil
             showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, Choose_Title, NTTransfer_InAccount, "")
+    //Guester 20180626
+        case 2: // QR Code轉帳
+            let controller = getControllerByID(.FeatureID_AcceptRules)
+            (controller as! AcceptRulesViewController).m_nextFeatureID = .FeatureID_QRCodeTrans
+            navigationController?.pushViewController(controller, animated: true)
+    //Guester 20180626 End
+        default:
+            break
         }
     }
     

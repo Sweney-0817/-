@@ -229,6 +229,23 @@ class ResultCell: UITableViewCell {
     }
 }
 
+class ResultEditCell: UITableViewCell {
+    @IBOutlet weak var m_lbTitle: UILabel!
+    @IBOutlet var m_tfEditData: UITextField!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    func set(_ title:String, _ data:String) {
+        m_lbTitle.text = title
+        m_tfEditData.text = data
+    }
+
+}
+
 class NTRationCell: UITableViewCell {
     @IBOutlet weak var m_lbTitle: UILabel!
     @IBOutlet weak var m_lbData1: UILabel!

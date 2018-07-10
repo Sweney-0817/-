@@ -151,7 +151,16 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                         getTransactionID(workCode, BaseTransactionID_Description)
                         curFeatureID = ID
                     }
+                    //Guester 20180626
+                case .FeatureID_QRCodeTrans, .FeatureID_QRPay:
+                    if true {
+//                        canEnter = false
+//                        let controller = getControllerByID(.FeatureID_AcceptRules)
+//                        (controller as! AcceptRulesViewController).m_nextFeatureID = ID
+//                        navigationController?.pushViewController(controller, animated: true)
+                    }
                     
+                    //Guester 20180626 End
                 default: break
                 }
                 

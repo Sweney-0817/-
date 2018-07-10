@@ -69,6 +69,15 @@ class DetermineUtility {
         return false
     }
     
+    // MARK: - 檢核輸入為全數字
+    func isAllNumber(_ input:String) -> Bool {
+        let RegEx = "[0-9]*"
+        let Test = NSPredicate(format:"SELF MATCHES %@", RegEx)
+        if Test.evaluate(with: input) {
+            return true
+        }
+        return false
+    }
     // MARK: - 檢核不得有三個以上相同的英數字、連續英文字或連號數字，例如aaa、abc、cba、aba、111、123、321、121等，且宜包含大小寫英文字母。
     func checkInputNotContinuous(_ input:String) -> Bool {
         var result = true

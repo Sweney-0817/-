@@ -8,3 +8,5 @@
 #import "VaktenManager.h"
 #include <ifaddrs.h>
 #import "SGActionView.h"
+#import "MWQRPTransactionInfo.h"
+

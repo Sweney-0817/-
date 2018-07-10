@@ -35,6 +35,12 @@ enum PlatformFeatureID: Int {
     case FeatureID_NTRation = 150100                // 新臺幣利率
     case FeatureID_ExchangeRate = 150200            // 牌告匯率
     case FeatureID_RegularSavingCalculation = 150300// 定期儲蓄試算
+    //Guester 20180626
+    case FeatureID_MobilePay = 200000               // 行動支付
+    case FeatureID_AcceptRules = 200100             // 同意條款
+    case FeatureID_QRCodeTrans = 200200             // QR Code轉帳
+    case FeatureID_QRPay = 200300                   // QR Pay
+    //Guester 20180626 End
     case FeatureID_CustomerService = 160000         // 客戶服務
     case FeatureID_Promotion = 160100               // 農漁會優惠產品
     case FeatureID_News = 160200                    // 最新消息
@@ -92,6 +98,14 @@ enum PlatformFeatureID: Int {
             return "FeatureID_ExchangeRate"
         case .FeatureID_RegularSavingCalculation:
             return "FeatureID_RegularSavingCalculation"
+    //Guester 20180626
+        case .FeatureID_AcceptRules:
+            return "FeatureID_AcceptRules"
+        case .FeatureID_QRCodeTrans:
+            return "FeatureID_QRCodeTrans"
+        case .FeatureID_QRPay:
+            return "FeatureID_QRPay"
+    //Guester 20180626 End
         case .FeatureID_LoanPrincipalInterest:
             return "FeatureID_LoanPrincipalInterest"
         case .FeatureID_Promotion:
@@ -123,23 +137,53 @@ enum PlatformFeatureID: Int {
     
     func StoryBoardName() -> String {
         switch self {
-        case .FeatureID_Home, .FeatureID_Menu, .FeatureID_Edit:
+        case .FeatureID_Home,
+             .FeatureID_Menu,
+             .FeatureID_Edit:
             return "Main"
-        case .FeatureID_AccountOverView, .FeatureID_AccountDetailView:
+        case .FeatureID_AccountOverView,
+             .FeatureID_AccountDetailView:
             return "Account"
-        case .FeatureID_Confirm, .FeatureID_Result:
+        case .FeatureID_Confirm,
+             .FeatureID_Result:
             return "Share"
-        case .FeatureID_NTTransfer, .FeatureID_ReservationTransfer, .FeatureID_ReservationTransferSearchCancel, .FeatureID_DepositCombinedToDeposit, .FeatureID_DepositCombinedToDepositSearch, .FeatureID_LoanPrincipalInterest:
+        case .FeatureID_NTTransfer,
+             .FeatureID_ReservationTransfer,
+             .FeatureID_ReservationTransferSearchCancel,
+             .FeatureID_DepositCombinedToDeposit,
+             .FeatureID_DepositCombinedToDepositSearch,
+             .FeatureID_LoanPrincipalInterest:
             return "Transfer"
-        case .FeatureID_PassbookLoseApply, .FeatureID_DebitCardLoseApply, .FeatureID_CheckLoseApply:
+        case .FeatureID_PassbookLoseApply,
+             .FeatureID_DebitCardLoseApply,
+             .FeatureID_CheckLoseApply:
             return "Lose"
-        case .FeatureID_TaxPayment, .FeatureID_BillPayment:
+        case .FeatureID_TaxPayment,
+             .FeatureID_BillPayment:
             return "Payment"
-        case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation:
+        case .FeatureID_NTRation,
+             .FeatureID_ExchangeRate,
+             .FeatureID_RegularSavingCalculation:
             return "FinancialInformation"
-        case .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage, .FeatureID_ContactCustomerService:
+        //Guester 20180626
+        case .FeatureID_AcceptRules,
+             .FeatureID_QRCodeTrans,
+             .FeatureID_QRPay:
+            return "MobilePay"
+        //Guester 20180626 End
+        case .FeatureID_Promotion,
+             .FeatureID_News,
+             .FeatureID_ServiceBase,
+             .FeatureID_PersonalMessage,
+             .FeatureID_ContactCustomerService:
             return "CustomerService"
-        case .FeatureID_BasicInfoChange, .FeatureID_UserNameChange, .FeatureID_UserPwdChange, .FeatureID_MessageSwitch, .FeatureID_SetAvatar, .FeatureID_DeviceBinding, .FeatureID_FirstLoginChange:
+        case .FeatureID_BasicInfoChange,
+             .FeatureID_UserNameChange,
+             .FeatureID_UserPwdChange,
+             .FeatureID_MessageSwitch,
+             .FeatureID_SetAvatar,
+             .FeatureID_DeviceBinding,
+             .FeatureID_FirstLoginChange:
             return "Setting"
         default:
             return ""
@@ -212,6 +256,7 @@ enum UIID: Int {
     case UIID_DatePickerView          // DatePickerView class
     case UIID_ShowMessageHeadView     // ShowMessageHeadView class
     case UIID_ExchangeRateCell        // ExchangeRateCell class for牌告匯率
+    case UIID_ResultEditCell        //QRCode掃描無金額用
     
     func NibName() -> String? {
         switch self {
@@ -261,6 +306,8 @@ enum UIID: Int {
             return "ShowMessageHeadView"
         case .UIID_ExchangeRateCell:
             return "ExchangeRateCell"
+        case .UIID_ResultEditCell:
+            return "ResultEditCell"
         default:
             return nil
         }
@@ -445,6 +492,7 @@ let ReturnMessage_Key = "ReturnMsg"
 let ReturnData_Key = "Data"
 let Response_Key = "Key"
 let Response_Value = "Value"
+let Response_Type = "Type"
 let Currency_TWD = "00"             // 幣別代碼 00:台幣
 let Account_EnableTrans = "2"       // 此帳號是否有轉出權限 2:可轉帳 除了2 其他不可轉帳
 let Can_Transaction_Status = "0"    // 是否可進行交易 0:可交易 1:不可交易

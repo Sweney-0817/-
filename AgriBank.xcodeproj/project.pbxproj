@@ -113,6 +113,12 @@
 		61FE9D171F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */; };
 		61FE9D181F15D23400FA32FE /* UserChangeIDPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */; };
 		61FE9D1B1F15D24500FA32FE /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61FE9D191F15D24500FA32FE /* Setting.storyboard */; };
+		BE4E900420E6270300EDDEEA /* MWQRPTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E900320E6270300EDDEEA /* MWQRPTransactionInfo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BE4E900820ECDBFF00EDDEEA /* ResultEditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE4E900720ECDBFF00EDDEEA /* ResultEditCell.xib */; };
+		BE4E900A20EF203400EDDEEA /* ScanCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4E900920EF203400EDDEEA /* ScanCodeView.swift */; };
+		BE4E900C20EF205100EDDEEA /* ScanCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE4E900B20EF205100EDDEEA /* ScanCodeView.xib */; };
+		BE4E901220F32BB000EDDEEA /* MakeQRCodeUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4E901120F32BB000EDDEEA /* MakeQRCodeUtility.swift */; };
+		BE4E901820F35E0F00EDDEEA /* PayTaxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4E901720F35E0F00EDDEEA /* PayTaxInfo.swift */; };
 		BE7675301F0CC71400E1A461 /* FinancialInformation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE76752E1F0CC71400E1A461 /* FinancialInformation.storyboard */; };
 		BE7675331F0CCB2B00E1A461 /* NTRationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7675321F0CCB2B00E1A461 /* NTRationViewController.swift */; };
 		BE7675351F0CCBC700E1A461 /* ExchangeRateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7675341F0CCBC700E1A461 /* ExchangeRateViewController.swift */; };
@@ -134,6 +140,10 @@
 		BEB38A6A1F0A27EE006094AC /* BillPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB38A681F0A27EE006094AC /* BillPaymentViewController.swift */; };
 		BEB38A6B1F0A27EE006094AC /* TaxPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB38A691F0A27EE006094AC /* TaxPaymentViewController.swift */; };
 		BEB38A6E1F0A2800006094AC /* Payment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEB38A6C1F0A2800006094AC /* Payment.storyboard */; };
+		BEF0D9D220E24D0500BC9833 /* MobilePay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEF0D9D020E24D0500BC9833 /* MobilePay.storyboard */; };
+		BEF0D9D520E2512D00BC9833 /* AcceptRulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF0D9D420E2512D00BC9833 /* AcceptRulesViewController.swift */; };
+		BEF0D9D720E2519000BC9833 /* QRCodeTransViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF0D9D620E2519000BC9833 /* QRCodeTransViewController.swift */; };
+		BEF0D9D920E251DD00BC9833 /* QRPayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF0D9D820E251DD00BC9833 /* QRPayViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -278,6 +288,13 @@
 		61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdResultViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdResultViewController.swift; sourceTree = "<group>"; };
 		61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdViewController.swift; sourceTree = "<group>"; };
 		61FE9D1A1F15D24500FA32FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Setting.storyboard; sourceTree = "<group>"; };
+		BE4E900220E6270300EDDEEA /* MWQRPTransactionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWQRPTransactionInfo.h; sourceTree = "<group>"; };
+		BE4E900320E6270300EDDEEA /* MWQRPTransactionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWQRPTransactionInfo.m; sourceTree = "<group>"; };
+		BE4E900720ECDBFF00EDDEEA /* ResultEditCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ResultEditCell.xib; path = UI/View/Cell/ResultEditCell.xib; sourceTree = "<group>"; };
+		BE4E900920EF203400EDDEEA /* ScanCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScanCodeView.swift; path = UI/View/ScanCodeView.swift; sourceTree = "<group>"; };
+		BE4E900B20EF205100EDDEEA /* ScanCodeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ScanCodeView.xib; path = UI/View/ScanCodeView.xib; sourceTree = "<group>"; };
+		BE4E901120F32BB000EDDEEA /* MakeQRCodeUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeQRCodeUtility.swift; sourceTree = "<group>"; };
+		BE4E901720F35E0F00EDDEEA /* PayTaxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayTaxInfo.swift; sourceTree = "<group>"; };
 		BE76752F1F0CC71400E1A461 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FinancialInformation.storyboard; sourceTree = "<group>"; };
 		BE7675321F0CCB2B00E1A461 /* NTRationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NTRationViewController.swift; path = Platform/FinancialInformationStoryBoard/NTRationViewController.swift; sourceTree = "<group>"; };
 		BE7675341F0CCBC700E1A461 /* ExchangeRateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExchangeRateViewController.swift; path = Platform/FinancialInformationStoryBoard/ExchangeRateViewController.swift; sourceTree = "<group>"; };
@@ -299,6 +316,10 @@
 		BEB38A681F0A27EE006094AC /* BillPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BillPaymentViewController.swift; sourceTree = "<group>"; };
 		BEB38A691F0A27EE006094AC /* TaxPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxPaymentViewController.swift; sourceTree = "<group>"; };
 		BEB38A6D1F0A2800006094AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Payment.storyboard; sourceTree = "<group>"; };
+		BEF0D9D120E24D0500BC9833 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MobilePay.storyboard; sourceTree = "<group>"; };
+		BEF0D9D420E2512D00BC9833 /* AcceptRulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AcceptRulesViewController.swift; path = Platform/MobilePayStoryBoard/AcceptRulesViewController.swift; sourceTree = "<group>"; };
+		BEF0D9D620E2519000BC9833 /* QRCodeTransViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QRCodeTransViewController.swift; path = Platform/MobilePayStoryBoard/QRCodeTransViewController.swift; sourceTree = "<group>"; };
+		BEF0D9D820E251DD00BC9833 /* QRPayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QRPayViewController.swift; path = Platform/MobilePayStoryBoard/QRPayViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -442,6 +463,7 @@
 		6148D9FC1EDFE62B00C02CA3 /* Platform */ = {
 			isa = PBXGroup;
 			children = (
+				BEF0D9D320E2502B00BC9833 /* MobilePayStoryBoard */,
 				61FE9D0A1F15D21E00FA32FE /* SettingStoryBoard */,
 				BE86EE901F135504003C7A36 /* CustomerServiceStoryBoard */,
 				BE7675311F0CCAD800E1A461 /* FinancialInformationStoryBoard */,
@@ -566,6 +588,8 @@
 				61B7CD0A1F458B5200145517 /* DatePickerView.swift */,
 				6122726E1F8F5046001FA028 /* ShowMessageHeadView.swift */,
 				612272701F8F5065001FA028 /* ShowMessageHeadView.xib */,
+				BE4E900920EF203400EDDEEA /* ScanCodeView.swift */,
+				BE4E900B20EF205100EDDEEA /* ScanCodeView.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -581,6 +605,9 @@
 		6148DA2F1EDFE7C200C02CA3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				BE4E901320F3446D00EDDEEA /* PayTaxInfo */,
+				BE4E900D20F32B1200EDDEEA /* Bank */,
+				BE4E900120E6270300EDDEEA /* QRPTransactionInfo */,
 				6148DA361EDFE83B00C02CA3 /* Security */,
 				6148DA331EDFE7DC00C02CA3 /* Determine */,
 				6148DA301EDFE7D200C02CA3 /* Connection */,
@@ -625,6 +652,7 @@
 				BE76752E1F0CC71400E1A461 /* FinancialInformation.storyboard */,
 				BE86EE8D1F135292003C7A36 /* CustomerService.storyboard */,
 				61FE9D191F15D24500FA32FE /* Setting.storyboard */,
+				BEF0D9D020E24D0500BC9833 /* MobilePay.storyboard */,
 			);
 			name = StoryBoard;
 			sourceTree = "<group>";
@@ -661,6 +689,7 @@
 				BE86EEA11F136715003C7A36 /* NewsCell.xib */,
 				BE86EEA31F136B9A003C7A36 /* ServiceBaseCell.xib */,
 				6168B4F11FA8537F00809924 /* ExchangeRateCell.xib */,
+				BE4E900720ECDBFF00EDDEEA /* ResultEditCell.xib */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -736,6 +765,34 @@
 			name = SettingStoryBoard;
 			sourceTree = "<group>";
 		};
+		BE4E900120E6270300EDDEEA /* QRPTransactionInfo */ = {
+			isa = PBXGroup;
+			children = (
+				BE4E900220E6270300EDDEEA /* MWQRPTransactionInfo.h */,
+				BE4E900320E6270300EDDEEA /* MWQRPTransactionInfo.m */,
+			);
+			name = QRPTransactionInfo;
+			path = Utility/QRPTransactionInfo;
+			sourceTree = "<group>";
+		};
+		BE4E900D20F32B1200EDDEEA /* Bank */ = {
+			isa = PBXGroup;
+			children = (
+				BE4E901120F32BB000EDDEEA /* MakeQRCodeUtility.swift */,
+			);
+			name = Bank;
+			path = Utility/Bank;
+			sourceTree = "<group>";
+		};
+		BE4E901320F3446D00EDDEEA /* PayTaxInfo */ = {
+			isa = PBXGroup;
+			children = (
+				BE4E901720F35E0F00EDDEEA /* PayTaxInfo.swift */,
+			);
+			name = PayTaxInfo;
+			path = Utility/PayTaxInfo;
+			sourceTree = "<group>";
+		};
 		BE7675311F0CCAD800E1A461 /* FinancialInformationStoryBoard */ = {
 			isa = PBXGroup;
 			children = (
@@ -769,6 +826,16 @@
 			);
 			name = PaymentStoryBoard;
 			path = Platform/PaymentStoryBoard;
+			sourceTree = "<group>";
+		};
+		BEF0D9D320E2502B00BC9833 /* MobilePayStoryBoard */ = {
+			isa = PBXGroup;
+			children = (
+				BEF0D9D420E2512D00BC9833 /* AcceptRulesViewController.swift */,
+				BEF0D9D620E2519000BC9833 /* QRCodeTransViewController.swift */,
+				BEF0D9D820E251DD00BC9833 /* QRPayViewController.swift */,
+			);
+			name = MobilePayStoryBoard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -891,7 +958,9 @@
 				614FB42B1EF9039400DDD270 /* ResultCell.xib in Resources */,
 				615A77FD1FB4371000D0D03C /* agribank_pro_app_const.bin in Resources */,
 				BE86EE8F1F135292003C7A36 /* CustomerService.storyboard in Resources */,
+				BEF0D9D220E24D0500BC9833 /* MobilePay.storyboard in Resources */,
 				6148DA281EDFE7A400C02CA3 /* BannerView.xib in Resources */,
+				BE4E900820ECDBFF00EDDEEA /* ResultEditCell.xib in Resources */,
 				61564A891F09E7D900CB6C4A /* ThreeRowDropDownView.xib in Resources */,
 				61FE9D1B1F15D24500FA32FE /* Setting.storyboard in Resources */,
 				6148D9D91EDFD10000C02CA3 /* LaunchScreen.storyboard in Resources */,
@@ -924,6 +993,7 @@
 				BE7675301F0CC71400E1A461 /* FinancialInformation.storyboard in Resources */,
 				614FB4291EF9039400DDD270 /* MenuExpandCell.xib in Resources */,
 				614FB4261EF9039400DDD270 /* EditCell.xib in Resources */,
+				BE4E900C20EF205100EDDEEA /* ScanCodeView.xib in Resources */,
 				BE86EEA41F136B9A003C7A36 /* ServiceBaseCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -957,17 +1027,21 @@
 				BE76753B1F0E3D1A00E1A461 /* ImageConfirmView.swift in Sources */,
 				61DAE3481F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift in Sources */,
 				6129E6B31F038E7900C23D67 /* PassbookLoseApplyViewController.swift in Sources */,
+				BEF0D9D920E251DD00BC9833 /* QRPayViewController.swift in Sources */,
 				61FE9D151F15D23400FA32FE /* MessageSwitchViewController.swift in Sources */,
 				6148DA071EDFE6E500C02CA3 /* BasePhotoViewController.swift in Sources */,
 				61FE9D171F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift in Sources */,
 				6122726F1F8F5046001FA028 /* ShowMessageHeadView.swift in Sources */,
 				BE86EE9E1F136024003C7A36 /* ServiceBaseDetailViewController.swift in Sources */,
+				BE4E901220F32BB000EDDEEA /* MakeQRCodeUtility.swift in Sources */,
 				BE86EE921F135570003C7A36 /* PromotionViewController.swift in Sources */,
 				61FE9D131F15D23400FA32FE /* BasicInfoResultViewController.swift in Sources */,
+				BEF0D9D720E2519000BC9833 /* QRCodeTransViewController.swift in Sources */,
 				61564A861F09E7D900CB6C4A /* OneRowDropDownView.swift in Sources */,
 				61DB5C381F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift in Sources */,
 				6148DA171EDFE76D00C02CA3 /* NSData+AESCrypt.m in Sources */,
 				613DA77A1F8DC12A0005E6CC /* EditViewController.swift in Sources */,
+				BE4E901820F35E0F00EDDEEA /* PayTaxInfo.swift in Sources */,
 				61B855EE2003193900B9F46D /* ContactCustomerServiceViewController.swift in Sources */,
 				61352B4F1FC3DA1E00730082 /* SGAlertMenu.m in Sources */,
 				612A82D61F74DC7C002D280D /* extendString.swift in Sources */,
@@ -1005,6 +1079,7 @@
 				615006A71F0B6E3700269891 /* ReservationTransferDetailViewController.swift in Sources */,
 				61F4F42C1EF2A9E3001E3872 /* ActOverviewViewController.swift in Sources */,
 				61F4F4301EF2B807001E3872 /* ActDetailViewController.swift in Sources */,
+				BEF0D9D520E2512D00BC9833 /* AcceptRulesViewController.swift in Sources */,
 				6148DA251EDFE7A400C02CA3 /* AnnounceNews.swift in Sources */,
 				6148DA321EDFE7D800C02CA3 /* ConnectionUtility.swift in Sources */,
 				6148DA081EDFE6E500C02CA3 /* BaseViewController.swift in Sources */,
@@ -1023,7 +1098,9 @@
 				61E374A01F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift in Sources */,
 				61F4F42E1EF2ADAD001E3872 /* ShowDetailViewController.swift in Sources */,
 				61FE9D121F15D23400FA32FE /* BasicInfoChangeViewController.swift in Sources */,
+				BE4E900A20EF203400EDDEEA /* ScanCodeView.swift in Sources */,
 				BE86EE961F1355B5003C7A36 /* ServiceBaseViewController.swift in Sources */,
+				BE4E900420E6270300EDDEEA /* MWQRPTransactionInfo.m in Sources */,
 				BE86EE981F1355CD003C7A36 /* PersonalMessageViewController.swift in Sources */,
 				6109C02F1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift in Sources */,
 				BEB38A6B1F0A27EE006094AC /* TaxPaymentViewController.swift in Sources */,
@@ -1142,6 +1219,14 @@
 				BEB38A6D1F0A2800006094AC /* Base */,
 			);
 			name = Payment.storyboard;
+			sourceTree = "<group>";
+		};
+		BEF0D9D020E24D0500BC9833 /* MobilePay.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BEF0D9D120E24D0500BC9833 /* Base */,
+			);
+			name = MobilePay.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

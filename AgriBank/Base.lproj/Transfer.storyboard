@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -92,6 +92,7 @@
                                                         <segments>
                                                             <segment title="自訂帳號"/>
                                                             <segment title="常用帳號"/>
+                                                            <segment title="QR Code轉帳"/>
                                                         </segments>
                                                         <color key="tintColor" red="0.27058823529999998" green="0.65098039220000004" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
                                                         <connections>
@@ -305,10 +306,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="Cx0-rb-nzD" secondAttribute="trailing" constant="15" id="9mV-s0-9Ie"/>
-                                    <constraint firstAttribute="trailing" secondItem="Cx0-rb-nzD" secondAttribute="trailing" constant="15" id="GDJ-ie-aNZ"/>
                                     <constraint firstAttribute="height" constant="60" id="KDJ-mu-T4R"/>
                                     <constraint firstItem="Cx0-rb-nzD" firstAttribute="centerX" secondItem="8Mw-tQ-gII" secondAttribute="centerX" id="PLH-Rj-9N4"/>
                                     <constraint firstItem="Cx0-rb-nzD" firstAttribute="centerY" secondItem="8Mw-tQ-gII" secondAttribute="centerY" id="TBw-dD-zfU"/>
+                                    <constraint firstItem="Cx0-rb-nzD" firstAttribute="leading" secondItem="8Mw-tQ-gII" secondAttribute="leading" constant="15" id="VfI-g2-M7p"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -884,13 +885,13 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="續存" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kpf-Ml-SC2">
-                                                <rect key="frame" x="137" y="244" width="37" height="60"/>
+                                                <rect key="frame" x="137" y="244" width="36.5" height="60"/>
                                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PPH-52-FNr">
-                                                <rect key="frame" x="189" y="262" width="24" height="24"/>
+                                                <rect key="frame" x="188.5" y="262" width="24" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="QVE-XC-9Ho"/>
                                                     <constraint firstAttribute="width" constant="24" id="teq-wq-Hrl"/>
@@ -901,7 +902,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="不續存" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IYv-H4-lAj">
-                                                <rect key="frame" x="223" y="244" width="55" height="60"/>
+                                                <rect key="frame" x="222.5" y="244" width="54.5" height="60"/>
                                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>

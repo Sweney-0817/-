@@ -175,7 +175,20 @@ class AuthorizationManage {
         var canEnter = false
         switch ID {
 
-        case .FeatureID_NTRation, .FeatureID_ExchangeRate, .FeatureID_RegularSavingCalculation, .FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_Home, .FeatureID_Edit, .FeatureID_DeviceBinding, .FeatureID_ContactCustomerService:
+        case .FeatureID_NTRation,
+             .FeatureID_ExchangeRate,
+             .FeatureID_RegularSavingCalculation,
+             .FeatureID_Promotion,
+             .FeatureID_News,
+             .FeatureID_ServiceBase,
+             .FeatureID_Home,
+             .FeatureID_Edit,
+             .FeatureID_DeviceBinding,
+        //for test
+        .FeatureID_QRCodeTrans,
+        .FeatureID_QRPay,
+        .FeatureID_AcceptRules,
+             .FeatureID_ContactCustomerService:
             canEnter = true
             
         default:
@@ -219,6 +232,12 @@ class AuthorizationManage {
         case "T32": return PlatformFeatureID.FeatureID_SetAvatar
         case "T33": return PlatformFeatureID.FeatureID_DeviceBinding
         case "T40": return PlatformFeatureID.FeatureID_ContactCustomerService
+    //Guester 20180626
+//        case "": return PlatformFeatureID.FeatureID_AcceptRules // 同意條款
+//        case "": return PlatformFeatureID.FeatureID_QRCodeTrans // QR Code轉帳
+//        case "": return PlatformFeatureID.FeatureID_QRPay       // QR Pay
+    //Guester 20180626 End
+
         default: return nil
         }
     }
@@ -253,7 +272,9 @@ class AuthorizationManage {
         var list:[PlatformFeatureID]? = nil
         switch type {
         case .Fixd_Type:
-            list = [.FeatureID_Edit]
+            //for test
+//            list = [.FeatureID_Edit]
+            list = [.FeatureID_Edit, .FeatureID_QRCodeTrans, .FeatureID_QRPay, .FeatureID_AcceptRules]
             
         case .Default_Type:
             if IsLoginSuccess() {
@@ -319,10 +340,10 @@ class AuthorizationManage {
             
         case .Menu_Type, .Edit_Type:
             if !IsLoginSuccess() {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_MobilePay, .FeatureID_CustomerService, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
             }
             else {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_MobilePay, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
             }
         }
         
