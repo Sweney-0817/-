@@ -38,6 +38,10 @@ struct PayTax {
     var deadLine : String?
     /// 期別代號
     var periodCode : String?
+    /// 年
+    var m_strPayTaxYear : String?
+    /// 月
+    var m_strPayTaxMonth : String?
     
     init() {
         taxType = nil
@@ -45,6 +49,8 @@ struct PayTax {
         amount = nil
         deadLine = nil
         periodCode = nil
+        m_strPayTaxYear = nil
+        m_strPayTaxMonth = nil
     }
     static func getTypeName(_ isUp : Bool) -> [String:String] {
         return ["15001":"綜合所得稅結算申報繳稅", "11221":"牌照稅-大型自用客車", "11222":"牌照稅-大型自用貨車", "11223":"牌照稅-小型自用客車", "11224":"牌照稅-小型自用貨車", "11226":"牌照稅-大型營業貨車(普)", "11227":"牌照稅-小型營業客車", "11228":"牌照稅-小型營業貨車", "11229":"牌照稅-大型營業客車(特)", "11230":"牌照稅-大型營業貨車(特)", "11232":"牌照稅-重型機車", "11235":"牌照稅-大自貨牽引車", "11236":"牌照稅-大營貨牽引車", "11201":"房屋稅-定期開徵稅款", "11331":"地價稅-定期開徵稅款", "11002":"綜所稅申報核定補徵稅款", "11003":"綜所稅未申報核定補徵稅款"]

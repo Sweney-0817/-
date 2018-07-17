@@ -153,13 +153,14 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                     }
                     //Guester 20180626
                 case .FeatureID_QRCodeTrans, .FeatureID_QRPay:
-                    if true {
-//                        canEnter = false
-//                        let controller = getControllerByID(.FeatureID_AcceptRules)
-//                        (controller as! AcceptRulesViewController).m_nextFeatureID = ID
-//                        navigationController?.pushViewController(controller, animated: true)
+                    //for test
+                    let i = Int(Date().timeIntervalSince1970)
+                    if (i % 2 == 0) {
+                        canEnter = false
+                        let controller = getControllerByID(.FeatureID_AcceptRules)
+                        (controller as! AcceptRulesViewController).m_nextFeatureID = ID
+                        navigationController?.pushViewController(controller, animated: true)
                     }
-                    
                     //Guester 20180626 End
                 default: break
                 }
@@ -252,7 +253,32 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         alert.addAction(UIAlertAction(title: Determine_Title, style: .default, handler: nil))
         present(alert, animated: false, completion: nil)
     }
-    
+    func showErrorMessageWithHandler(title : String?,
+                                     msg : String?,
+                                     confirmTitle : String?,
+                                     confirmHandler : @escaping () -> Void) {
+        
+    }
+    func showAlert(title:String?,
+                   msg:String?,
+                   confirmTitle:String?,
+                   cancleTitle:String?,
+                   completionHandler: @escaping ()->Void,
+                   cancelHandelr: @escaping ()->Void) {
+        let alert = UIAlertController(title: title, message: msg, preferredStyle:UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: confirmTitle, style: .default, handler: { (action: UIAlertAction!) in
+            completionHandler()
+        }))
+        
+        if cancleTitle != nil {
+            alert.addAction(UIAlertAction(title: cancleTitle, style: .cancel, handler: { (action: UIAlertAction!) in
+                cancelHandelr()
+            }))
+        }
+        
+        present(alert, animated: true, completion: nil)
+    }
     func showLoginView() { // 顯示Login畫面
         if loginView == nil {
             loginView = getUIByID(.UIID_Login) as? LoginView

@@ -23,33 +23,40 @@ class QRCodeTransViewController: BaseViewController {
     
     @IBOutlet var m_vPaymentView: UIView!
     
-    var m_uiActView:OneRowDropDownView? = nil
-    var m_scanView : ScanCodeView? = nil
+    var m_uiActView : OneRowDropDownView? = nil
+    var m_uiScanView : ScanCodeView? = nil
+
+    private var m_strType : String = ""
+    private var m_qrpInfo : MWQRPTransactionInfo? = nil
+    private var m_taxInfo : PayTax? = nil
 
     var m_arrActList : [[String:String]] = [[String:String]]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
         self.initActView()
+        self.initScanView()
 //        self.addObserverToKeyBoard()
         self.addGestureForKeyBoard()
-        self.getTransactionID("03001", TransactionID_Description)
+        self.send_getActList()
+    }
+    func initScanView() {
+        m_uiScanView = Bundle.main.loadNibNamed("ScanCodeView", owner: self, options: nil)?.first as? ScanCodeView
+        m_uiScanView!.set(CGRect(origin: .zero, size: m_vPaymentView.bounds.size), self)
+        m_vPaymentView.addSubview(m_uiScanView!)
     }
     func startScan() {
-        m_scanView = Bundle.main.loadNibNamed("ScanCodeView", owner: self, options: nil)?.first as? ScanCodeView
-        m_scanView!.set(CGRect(origin: .zero, size: m_vPaymentView.bounds.size), getQRCodeString)
-        m_vPaymentView.addSubview(m_scanView!)
-        self.m_scanView!.startScan()
+        self.m_uiScanView!.startScan()
     }
     func stopScan() {
-        self.m_scanView!.stopScan()
+        self.m_uiScanView!.stopScan()
     }
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         self.startScan()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     // MARK:- Init Methods
     func initActView() {
@@ -66,7 +73,6 @@ class QRCodeTransViewController: BaseViewController {
     }
     // MARK:- UI Methods
     private func changeFunction(_ isReceipt:Bool) {
-//        self.isPredesignated = isPredesignated
         if isReceipt {
             m_btnReceipt.backgroundColor = Green_Color
             m_btnReceipt.setTitleColor(.white, for: .normal)
@@ -102,8 +108,31 @@ class QRCodeTransViewController: BaseViewController {
         }
     }
     // MARK:- Logic Methods
-    func getQRCodeString(_ : String) {
-        
+    func analysisQRCode(_ strData : String) {
+        let result = ScanCodeView.analysisQRCode(strData)
+        guard result.error == nil else {
+            showAlert(title: nil, msg: result.error, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+            return
+        }
+        m_strType = result.type
+        m_qrpInfo = result.qrp
+        m_taxInfo = result.tax
+        switch m_strType {
+        case "01", "03", "51":
+            self.send_checkQRCode()
+        case "02":
+            performSegue(withIdentifier: "GoScanResult", sender: nil)
+        case PayTax_Type11_Type, PayTax_Type15_Type:
+            self.send_checkPayTaxCode()
+        default:
+            self.stopScan()
+            showAlert(title: "不明type", msg: m_strType, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+        }
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        let controller = segue.destination as! ScanResultViewController
+        controller.setData(type: m_strType, qrp: m_qrpInfo, tax: m_taxInfo)
     }
     // MARK:- WebService Methods
     private func makeFakeData() {
@@ -119,6 +148,14 @@ class QRCodeTransViewController: BaseViewController {
         self.makeFakeData()
         //        postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
     }
+    private func send_checkQRCode() {
+        self.didResponse("checkQRCode", [String:String]() as NSDictionary)
+    }
+    private func send_checkPayTaxCode() {
+        m_taxInfo?.m_strPayTaxYear = "公元5000年"
+        m_taxInfo?.m_strPayTaxMonth = "滿月"
+        self.didResponse("checkPayTaxCode", [String:String]() as NSDictionary)
+    }
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
@@ -130,83 +167,10 @@ class QRCodeTransViewController: BaseViewController {
             else {
                 super.didResponse(description, response)
             }
-            //        case "ACCT0101":
-            //            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
-            //                for category in array {
-            //                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
-            //                        accountList = [AccountStruct]()
-            //                        for actInfo in result {
-            //                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
-            //                                accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //
-            //                if inputAccount != nil {
-            //                    for index in 0..<(accountList?.count)! {
-            //                        if let info = accountList?[index], info.accountNO == inputAccount! {
-            //                            accountIndex = index
-            //                            topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance).separatorThousand())
-            //                            break
-            //                        }
-            //                    }
-            //                    inputAccount = nil
-            //                }
-            //            }
-            //            else {
-            //                super.didResponse(description, response)
-            //            }
-            //
-            //        case "COMM0401":
-            //            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:String]] {
-            //                bankNameList = array
-            //                showBankList()
-            //            }
-            //            else {
-            //                super.didResponse(description, response)
-            //            }
-            //
-            //        case "ACCT0102":
-            //            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
-            //                if let array = data["Result"] as? [[String:Any]] {
-            //                    agreedAccountList = array
-            //                }
-            //                showInAccountList(isPredesignated)
-            //            }
-            //            else {
-            //                super.didResponse(description, response)
-            //            }
-            //
-            //        case "ACCT0104":
-            //            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
-            //                if let array = data["Result2"] as? [[String:Any]] {
-            //                    commonAccountList = array
-            //                }
-            //                showInAccountList(isPredesignated)
-            //            }
-            //            else {
-            //                super.didResponse(description, response)
-            //            }
-            //
-            //        case "COMM0802":
-            //            showNonPredesignated()
-            //
-            //        case "TRAN0103":
-            //            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let Id = data["taskId"] as? String {
-            //                VaktenManager.sharedInstance().getTasksOperation{ resultCode, tasks  in
-            //                    if VIsSuccessful(resultCode) && tasks != nil {
-            //                        self.transNonPredesignated(tasks! as! [VTask], Id)
-            //                    }
-            //                    else {
-            //                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode.rawValue)")
-            //                    }
-            //                }
-            //            }
-            //            else {
-            //                showErrorMessage(nil, ErrorMsg_No_TaskId)
-            //            }
-            
+        case "checkQRCode":
+            performSegue(withIdentifier: "GoScanResult", sender: nil)
+        case "checkPayTaxCode":
+            performSegue(withIdentifier: "GoScanResult", sender: nil)
         default: super.didResponse(description, response)
         }
     }
@@ -227,7 +191,30 @@ class QRCodeTransViewController: BaseViewController {
         self.m_ivQRCode.image = MakeQRCodeUtility.utility.generateQRCode(from: strQRCode)
     }
 }
-
+// MARK:- extension
+extension QRCodeTransViewController : ScanCodeViewDelegate {
+    func clickBtnAlbum() {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+            stopScan()
+            let controller : UIImagePickerController = UIImagePickerController()
+            controller.delegate = self
+            controller.sourceType = UIImagePickerControllerSourceType.photoLibrary
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
+    func getQRCodeString(_ strQRCode : String) {
+        self.analysisQRCode(strQRCode)
+    }
+    func noPermission() {
+        let confirmHandler : ()->Void = {() in
+            if (UIApplication.shared.canOpenURL(URL(string:"App-Prefs:root=com.agribank.mbank-sit")!)) {
+                UIApplication.shared.openURL(URL(string: "App-Prefs:root=com.agribank.mbank-sit")!)
+            }
+        }
+        let cancelHandler : ()->Void = {()}
+        showAlert(title: "尚未授權相機功能", msg: "請先至設定啟用相機權限", confirmTitle: "設定", cancleTitle: "取消", completionHandler: confirmHandler, cancelHandelr: cancelHandler)
+    }
+}
 extension QRCodeTransViewController : OneRowDropDownViewDelegate {
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         self.dismissKeyboard()
@@ -247,12 +234,20 @@ extension QRCodeTransViewController : UIActionSheetDelegate {
                 let iIndex : Int = buttonIndex - 1
                 let info : [String:String] = m_arrActList[iIndex]
                 let act : String = info["Act"]!
-//                let amount : String = info["Amount"]!
                 m_uiActView?.setOneRow("*帳戶", act)
-//                self.checkBtnConfirm()
             default:
                 break
             }
         }
+    }
+}
+extension QRCodeTransViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        let image : UIImage = info["UIImagePickerControllerOriginalImage"] as! UIImage
+        let strQRCode : String = ScanCodeView.detectQRCode(image)
+        DispatchQueue.main.asyncAfter(deadline: .now(), execute: {() in
+            self.analysisQRCode(strQRCode)
+        })
     }
 }

@@ -33,10 +33,10 @@
                         <color key="textColor" red="0.49803921568627452" green="0.49803921568627452" blue="0.49803921568627452" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="UAf-Ae-UAJ" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
-                        <rect key="frame" x="147" y="5" width="212" height="49.666666666666664"/>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="請輸入金額(新台幣)" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="UAf-Ae-UAJ" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                        <rect key="frame" x="16" y="8" width="342" height="44.666666666666664"/>
                         <nil key="textColor"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                     </textField>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CSd-8Q-7LA">
@@ -52,12 +52,12 @@
                     <constraint firstItem="uXi-5v-Pad" firstAttribute="leading" secondItem="OsE-P8-ocG" secondAttribute="leading" constant="15" id="Au1-ee-I8K"/>
                     <constraint firstItem="uXi-5v-Pad" firstAttribute="top" secondItem="OsE-P8-ocG" secondAttribute="top" id="E4Z-ru-u6P"/>
                     <constraint firstAttribute="bottom" secondItem="uXi-5v-Pad" secondAttribute="bottom" id="FbI-0U-YUv"/>
-                    <constraint firstItem="UAf-Ae-UAJ" firstAttribute="leading" secondItem="uXi-5v-Pad" secondAttribute="trailing" constant="15" id="QSR-a0-d6m"/>
+                    <constraint firstAttribute="trailing" secondItem="UAf-Ae-UAJ" secondAttribute="trailing" constant="16" id="IHc-YN-dnn"/>
                     <constraint firstItem="CSd-8Q-7LA" firstAttribute="leading" secondItem="OsE-P8-ocG" secondAttribute="leading" id="RJ8-fF-E3I"/>
-                    <constraint firstAttribute="bottom" secondItem="UAf-Ae-UAJ" secondAttribute="bottom" constant="5" id="W4B-ws-PM0"/>
-                    <constraint firstAttribute="trailing" secondItem="UAf-Ae-UAJ" secondAttribute="trailing" constant="15" id="Yn9-7Z-4NP"/>
+                    <constraint firstItem="UAf-Ae-UAJ" firstAttribute="leading" secondItem="OsE-P8-ocG" secondAttribute="leading" constant="16" id="Sfu-ro-Qbg"/>
+                    <constraint firstAttribute="bottom" secondItem="UAf-Ae-UAJ" secondAttribute="bottom" constant="7" id="W4B-ws-PM0"/>
                     <constraint firstAttribute="trailing" secondItem="CSd-8Q-7LA" secondAttribute="trailing" id="ioB-ah-c7p"/>
-                    <constraint firstItem="UAf-Ae-UAJ" firstAttribute="top" secondItem="OsE-P8-ocG" secondAttribute="top" constant="5" id="yGJ-L1-YQU"/>
+                    <constraint firstItem="UAf-Ae-UAJ" firstAttribute="top" secondItem="OsE-P8-ocG" secondAttribute="top" constant="8" id="yGJ-L1-YQU"/>
                     <constraint firstAttribute="bottom" secondItem="CSd-8Q-7LA" secondAttribute="bottom" id="zAJ-D2-PsT"/>
                 </constraints>
             </tableViewCellContentView>
