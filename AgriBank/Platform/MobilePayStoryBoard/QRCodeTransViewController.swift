@@ -35,6 +35,7 @@ class QRCodeTransViewController: BaseViewController {
         super.viewDidLoad()
 
         self.initActView()
+        self.initQRCodeArea()
         self.initScanView()
 //        self.addObserverToKeyBoard()
         self.addGestureForKeyBoard()
@@ -44,6 +45,10 @@ class QRCodeTransViewController: BaseViewController {
         m_uiScanView = Bundle.main.loadNibNamed("ScanCodeView", owner: self, options: nil)?.first as? ScanCodeView
         m_uiScanView!.set(CGRect(origin: .zero, size: m_vPaymentView.bounds.size), self)
         m_vPaymentView.addSubview(m_uiScanView!)
+    }
+    func initQRCodeArea() {
+        m_vQRCodeArea.layer.borderColor = UIColor.init(red: 74.0/255.0, green: 74.0/255.0, blue: 74.0/255.0, alpha: 1.0).cgColor
+        m_vQRCodeArea.layer.borderWidth = 2.0
     }
     func startScan() {
         self.m_uiScanView!.startScan()
@@ -68,8 +73,8 @@ class QRCodeTransViewController: BaseViewController {
         m_uiActView?.m_lbFirstRowTitle.textAlignment = .center
         m_vActView.addSubview(m_uiActView!)
 
-        setShadowView(m_vTopView, .Bottom)
-        setShadowView(m_vButtonView, .Bottom)
+//        setShadowView(m_vButtonView)
+        setShadowView(m_vTopView)
     }
     // MARK:- UI Methods
     private func changeFunction(_ isReceipt:Bool) {

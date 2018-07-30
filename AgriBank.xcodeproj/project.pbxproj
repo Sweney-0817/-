@@ -113,6 +113,7 @@
 		61FE9D171F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */; };
 		61FE9D181F15D23400FA32FE /* UserChangeIDPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */; };
 		61FE9D1B1F15D24500FA32FE /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61FE9D191F15D24500FA32FE /* Setting.storyboard */; };
+		BE49D0DF20FEEDF0004E6BD6 /* PolygonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE49D0DE20FEEDF0004E6BD6 /* PolygonView.swift */; };
 		BE4E900420E6270300EDDEEA /* MWQRPTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E900320E6270300EDDEEA /* MWQRPTransactionInfo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BE4E900820ECDBFF00EDDEEA /* ResultEditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE4E900720ECDBFF00EDDEEA /* ResultEditCell.xib */; };
 		BE4E900A20EF203400EDDEEA /* ScanCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4E900920EF203400EDDEEA /* ScanCodeView.swift */; };
@@ -289,6 +290,7 @@
 		61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdResultViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdResultViewController.swift; sourceTree = "<group>"; };
 		61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdViewController.swift; sourceTree = "<group>"; };
 		61FE9D1A1F15D24500FA32FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Setting.storyboard; sourceTree = "<group>"; };
+		BE49D0DE20FEEDF0004E6BD6 /* PolygonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PolygonView.swift; path = UI/View/PolygonView.swift; sourceTree = "<group>"; };
 		BE4E900220E6270300EDDEEA /* MWQRPTransactionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWQRPTransactionInfo.h; sourceTree = "<group>"; };
 		BE4E900320E6270300EDDEEA /* MWQRPTransactionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWQRPTransactionInfo.m; sourceTree = "<group>"; };
 		BE4E900720ECDBFF00EDDEEA /* ResultEditCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ResultEditCell.xib; path = UI/View/Cell/ResultEditCell.xib; sourceTree = "<group>"; };
@@ -592,6 +594,7 @@
 				612272701F8F5065001FA028 /* ShowMessageHeadView.xib */,
 				BE4E900920EF203400EDDEEA /* ScanCodeView.swift */,
 				BE4E900B20EF205100EDDEEA /* ScanCodeView.xib */,
+				BE49D0DE20FEEDF0004E6BD6 /* PolygonView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1085,6 +1088,7 @@
 				61F4F4301EF2B807001E3872 /* ActDetailViewController.swift in Sources */,
 				BEF0D9D520E2512D00BC9833 /* AcceptRulesViewController.swift in Sources */,
 				6148DA251EDFE7A400C02CA3 /* AnnounceNews.swift in Sources */,
+				BE49D0DF20FEEDF0004E6BD6 /* PolygonView.swift in Sources */,
 				6148DA321EDFE7D800C02CA3 /* ConnectionUtility.swift in Sources */,
 				6148DA081EDFE6E500C02CA3 /* BaseViewController.swift in Sources */,
 				61564A881F09E7D900CB6C4A /* ThreeRowDropDownView.swift in Sources */,

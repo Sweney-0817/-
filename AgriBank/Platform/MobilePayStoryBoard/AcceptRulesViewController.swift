@@ -16,6 +16,10 @@ class AcceptRulesViewController: BaseViewController {
         m_btnCheck.isSelected = !m_btnCheck.isSelected
     }
     @IBAction func m_btnConfirmClick(_ sender: Any) {
+        guard m_btnCheck.isSelected else {
+            showErrorMessage(nil, "請勾選我已審閱並同意上述事項")
+            return
+        }
         guard m_nextFeatureID != nil else {
             showErrorMessage("錯誤", "沒帶FeatureID")
             return
@@ -27,6 +31,7 @@ class AcceptRulesViewController: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        m_wvContent.loadRequest(URLRequest.init(url: URL.init(string: "https://www.google.com")!))
     }
 
     override func didReceiveMemoryWarning() {

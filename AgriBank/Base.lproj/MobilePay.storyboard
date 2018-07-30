@@ -88,9 +88,8 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="NeV-FA-gYV" firstAttribute="centerY" secondItem="FfU-L2-zqg" secondAttribute="centerY" id="4hU-6Q-Sfk"/>
-                                    <constraint firstAttribute="trailing" secondItem="NeV-FA-gYV" secondAttribute="trailing" constant="15" id="Dt0-yK-PeE"/>
-                                    <constraint firstItem="NeV-FA-gYV" firstAttribute="centerX" secondItem="FfU-L2-zqg" secondAttribute="centerX" id="MZR-hY-Miy"/>
                                     <constraint firstAttribute="height" constant="60" id="TcS-4z-31g"/>
+                                    <constraint firstAttribute="trailing" secondItem="NeV-FA-gYV" secondAttribute="trailing" constant="15" id="VzO-SG-DsX"/>
                                     <constraint firstItem="NeV-FA-gYV" firstAttribute="leading" secondItem="FfU-L2-zqg" secondAttribute="leading" constant="15" id="tFH-Wt-yJU"/>
                                 </constraints>
                             </view>
@@ -136,7 +135,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oN4-W3-36f">
                                 <rect key="frame" x="0.0" y="80" width="375" height="587"/>
                                 <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yII-bD-OsX">
+                                    <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yII-bD-OsX">
                                         <rect key="frame" x="16" y="0.0" width="343" height="587"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1hz-ke-Z1l">
@@ -238,17 +237,17 @@
                                                         <rect key="frame" x="47" y="206" width="249" height="249"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PvL-fV-KNS">
-                                                                <rect key="frame" x="2" y="2" width="245" height="245"/>
+                                                                <rect key="frame" x="21" y="21" width="207" height="207"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </imageView>
                                                         </subviews>
-                                                        <color key="backgroundColor" red="0.29019607843137252" green="0.29019607843137252" blue="0.29019607843137252" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
-                                                            <constraint firstItem="PvL-fV-KNS" firstAttribute="top" secondItem="lsJ-Z5-saR" secondAttribute="top" constant="2" id="1Y6-yY-0CL"/>
-                                                            <constraint firstAttribute="trailing" secondItem="PvL-fV-KNS" secondAttribute="trailing" constant="2" id="ERT-53-ESR"/>
-                                                            <constraint firstAttribute="bottom" secondItem="PvL-fV-KNS" secondAttribute="bottom" constant="2" id="dvK-hl-8Df"/>
+                                                            <constraint firstItem="PvL-fV-KNS" firstAttribute="top" secondItem="lsJ-Z5-saR" secondAttribute="top" constant="21" id="1Y6-yY-0CL"/>
+                                                            <constraint firstAttribute="trailing" secondItem="PvL-fV-KNS" secondAttribute="trailing" constant="21" id="ERT-53-ESR"/>
+                                                            <constraint firstAttribute="bottom" secondItem="PvL-fV-KNS" secondAttribute="bottom" constant="21" id="dvK-hl-8Df"/>
                                                             <constraint firstAttribute="width" secondItem="lsJ-Z5-saR" secondAttribute="height" multiplier="1:1" id="mol-IH-6rS"/>
-                                                            <constraint firstItem="PvL-fV-KNS" firstAttribute="leading" secondItem="lsJ-Z5-saR" secondAttribute="leading" constant="2" id="r9e-OF-SUq"/>
+                                                            <constraint firstItem="PvL-fV-KNS" firstAttribute="leading" secondItem="lsJ-Z5-saR" secondAttribute="leading" constant="21" id="r9e-OF-SUq"/>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本QR Code支援台灣Pay，付款人可使&lt;全國農漁達人&gt;或其他支援台灣Pay QR Code之APP進行掃描轉帳" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cuq-MI-nfd">
@@ -458,6 +457,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                 <state key="normal" title="確認送出" backgroundImage="ButtonLarge"/>
+                                                <state key="disabled" backgroundImage="buttonDisable"/>
                                                 <connections>
                                                     <action selector="m_btnConfirmClick:" destination="Oef-s9-HmD" eventType="touchUpInside" id="9Wm-Fi-089"/>
                                                 </connections>
@@ -547,6 +547,7 @@
         <image name="Checkon" width="24" height="24"/>
         <image name="HintDownArrow" width="375" height="36"/>
         <image name="Textfield" width="311" height="44"/>
+        <image name="buttonDisable" width="343" height="46"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="3Tj-wx-QYb"/>

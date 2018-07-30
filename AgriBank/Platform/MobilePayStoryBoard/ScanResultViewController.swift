@@ -141,7 +141,12 @@ class ScanResultViewController: BaseViewController {
             m_arrResultData.append(temp)
         }
         //        if ((m_qrpInfo?.txnAmt()) != nil) {
-        temp[Response_Key] = "金額"
+        if (m_qrpInfo?.txnCurrencyCode() == nil) {
+            temp[Response_Key] = "金額"
+        }
+        else {
+            temp[Response_Key] = "金額" + (m_qrpInfo?.txnCurrencyCode())! == "901" ? "(新臺幣)" : String(format: "(%@)", (m_qrpInfo?.txnCurrencyCode())!)
+        }
         temp[Response_Value] = m_qrpInfo?.txnAmt() ?? ""
         m_strInputAmount = m_qrpInfo?.txnAmt() ?? ""
         temp[Response_Type] = self.checkType("1")
@@ -195,7 +200,12 @@ class ScanResultViewController: BaseViewController {
             m_arrResultData.append(temp)
         }
         //        if ((m_qrpInfo?.txnAmt()) != nil) {
-        temp[Response_Key] = "金額"
+        if (m_qrpInfo?.txnCurrencyCode() == nil) {
+            temp[Response_Key] = "金額"
+        }
+        else {
+            temp[Response_Key] = "金額" + (m_qrpInfo?.txnCurrencyCode())! == "901" ? "(新臺幣)" : String(format: "(%@)", (m_qrpInfo?.txnCurrencyCode())!)
+        }
         temp[Response_Value] = m_qrpInfo?.txnAmt() ?? ""
         m_strInputAmount = m_qrpInfo?.txnAmt() ?? ""
         temp[Response_Type] = self.checkType("1")
@@ -253,7 +263,12 @@ class ScanResultViewController: BaseViewController {
             m_arrResultData.append(temp)
         }
         //        if ((m_qrpInfo?.txnAmt()) != nil) {
-        temp[Response_Key] = "金額"
+        if (m_qrpInfo?.txnCurrencyCode() == nil) {
+            temp[Response_Key] = "金額"
+        }
+        else {
+            temp[Response_Key] = "金額" + (m_qrpInfo?.txnCurrencyCode())! == "901" ? "(新臺幣)" : String(format: "(%@)", (m_qrpInfo?.txnCurrencyCode())!)
+        }
         temp[Response_Value] = m_qrpInfo?.txnAmt() ?? ""
         m_strInputAmount = m_qrpInfo?.txnAmt() ?? ""
         temp[Response_Type] = self.checkType("1")
@@ -267,7 +282,7 @@ class ScanResultViewController: BaseViewController {
         }
         else if (m_dicDecrypt["E7"] != nil) {
             temp[Response_Key] = "銷帳編號"
-            temp[Response_Value] = m_dicDecrypt["E2"]
+            temp[Response_Value] = m_dicDecrypt["E7"]
             temp[Response_Type] = "E"
             m_arrResultData.append(temp)
         }
@@ -347,6 +362,43 @@ class ScanResultViewController: BaseViewController {
         }
         m_strInputAmount = "-"
     }
+    private func enterConfirmView(_ taskList:[VTask], _ taskID:String) {
+        var task:VTask? = nil
+        for info in taskList {
+            if info.taskID == taskID {
+                task = info
+                break
+            }
+        }
+        if task != nil, let data = task?.message.data(using: .utf8) {
+            do {
+                let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:Any]
+                
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0102", strSessionDescription: "TRAN0102", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: TIME_OUT_125)
+                
+                let CARDACTNO = (jsonDic?["CARDACTNO"] as? String) ?? ""
+                let INACT = (jsonDic?["INACT"] as? String) ?? ""
+                let INBANK = (jsonDic?["INBANK"] as? String) ?? ""
+                let TXAMT = (jsonDic?["TXAMT"] as? String) ?? ""
+                let TXMEMO = (jsonDic?["TXMEMO"] as? String) ?? ""
+                let MAIL = (jsonDic?["MAIL"] as? String) ?? ""
+                
+                var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":CARDACTNO,"INACT":INACT,"INBANK":INBANK,"TXAMT":TXAMT,"TXMEMO":TXMEMO,"MAIL":MAIL,"taskId":taskID,"otp":""],task: task)
+                
+//                dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:CARDACTNO])
+//                dataConfirm.list?.append([Response_Key: "銀行代碼", Response_Value:INBANK])
+//                dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:INACT])
+//                dataConfirm.list?.append([Response_Key: "轉帳金額", Response_Value:TXAMT.separatorThousand()])
+//                dataConfirm.list?.append([Response_Key: "備註/交易備記", Response_Value:TXMEMO])
+//                dataConfirm.list?.append([Response_Key: "受款人E-mail", Response_Value:MAIL])
+                
+                enterConfirmOTPController(dataConfirm, true)
+            }
+            catch {
+                showErrorMessage(nil, error.localizedDescription)
+            }
+        }
+    }
     // MARK:- Handle Actions
     @IBAction func m_btnConfirmClick(_ sender: Any) {
         dismissKeyboard()
@@ -368,17 +420,7 @@ class ScanResultViewController: BaseViewController {
     }
     private func send_confirm() {
         setLoading(true)
-        //        var inAccount = ""
-        //        var inBank = ""
-        //        if isCustomizeAct {
-        //            inAccount = enterAccountTextfield.text ?? ""
-        //            inBank = showBankDorpView?.getContentByType(.First) ?? ""
-        //        }
-        //        else {
-        //            inAccount = showBankAccountDropView?.getContentByType(.Second) ?? ""
-        //            inBank = showBankAccountDropView?.getContentByType(.First) ?? ""
-        //        }
-        //        postRequest("TRAN/TRAN0103", "TRAN0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":topDropView?.getContentByType(.First) ?? "","INACT":inAccount,"INBANK":inBank,"TXAMT":transAmountTextfield.text!,"TXMEMO":memoTextfield.text!,"MAIL":emailTextfield.text!], true), AuthorizationManage.manage.getHttpHead(true))
+//        postRequest("TRAN/TRAN0103", "TRAN0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":m_uiActView?.getContentByType(.First) ?? "---","INACT":"---","INBANK":"---","TXAMT":m_strInputAmount,"TXMEMO":"---","MAIL":"---"], true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
@@ -391,83 +433,21 @@ class ScanResultViewController: BaseViewController {
             else {
                 super.didResponse(description, response)
             }
-            //        case "ACCT0101":
-            //            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
-            //                for category in array {
-            //                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
-            //                        accountList = [AccountStruct]()
-            //                        for actInfo in result {
-            //                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
-            //                                accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //
-            //                if inputAccount != nil {
-            //                    for index in 0..<(accountList?.count)! {
-            //                        if let info = accountList?[index], info.accountNO == inputAccount! {
-            //                            accountIndex = index
-            //                            topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance).separatorThousand())
-            //                            break
-            //                        }
-            //                    }
-            //                    inputAccount = nil
-            //                }
-            //            }
-            //            else {
-            //                super.didResponse(description, response)
-            //            }
-            //
-            //        case "COMM0401":
-            //            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:String]] {
-            //                bankNameList = array
-            //                showBankList()
-            //            }
-            //            else {
-            //                super.didResponse(description, response)
-            //            }
-            //
-            //        case "ACCT0102":
-            //            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
-            //                if let array = data["Result"] as? [[String:Any]] {
-            //                    agreedAccountList = array
-            //                }
-            //                showInAccountList(isPredesignated)
-            //            }
-            //            else {
-            //                super.didResponse(description, response)
-            //            }
-            //
-            //        case "ACCT0104":
-            //            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
-            //                if let array = data["Result2"] as? [[String:Any]] {
-            //                    commonAccountList = array
-            //                }
-            //                showInAccountList(isPredesignated)
-            //            }
-            //            else {
-            //                super.didResponse(description, response)
-            //            }
-            //
-            //        case "COMM0802":
-            //            showNonPredesignated()
-            //
-            //        case "TRAN0103":
-            //            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let Id = data["taskId"] as? String {
-            //                VaktenManager.sharedInstance().getTasksOperation{ resultCode, tasks  in
-            //                    if VIsSuccessful(resultCode) && tasks != nil {
-            //                        self.transNonPredesignated(tasks! as! [VTask], Id)
-            //                    }
-            //                    else {
-            //                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode.rawValue)")
-            //                    }
-            //                }
-            //            }
-            //            else {
-            //                showErrorMessage(nil, ErrorMsg_No_TaskId)
-            //            }
-            
+        case "TRAN0103":
+            self.enterConfirmView([VTask](), "test ID")
+//            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let Id = data["taskId"] as? String {
+//                VaktenManager.sharedInstance().getTasksOperation{ resultCode, tasks  in
+//                    if VIsSuccessful(resultCode) && tasks != nil {
+//                        self.enterConfirmView(tasks! as! [VTask], Id)
+//                    }
+//                    else {
+//                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode.rawValue)")
+//                    }
+//                }
+//            }
+//            else {
+//                showErrorMessage(nil, ErrorMsg_No_TaskId)
+//            }
         default: super.didResponse(description, response)
         }
     }

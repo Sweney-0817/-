@@ -16,6 +16,7 @@ class QRPayViewController: BaseViewController {
     var m_strType : String = ""
     private var m_qrpInfo : MWQRPTransactionInfo? = nil
     var m_taxInfo : PayTax? = nil
+    var m_bIsLoadFromAlbum : Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +26,10 @@ class QRPayViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         NSLog("======== QRPayViewController viewDidAppear ========")
         super.viewDidAppear(animated)
-        startScan()
+        if (m_bIsLoadFromAlbum == false) {
+            startScan()
+        }
+        m_bIsLoadFromAlbum = false
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -42,6 +46,7 @@ class QRPayViewController: BaseViewController {
     // MARK:- UI Methods
     func startScan() {
         self.m_uiScanView!.startScan()
+        m_bIsLoadFromAlbum = false
     }
     func stopScan() {
         self.m_uiScanView!.stopScan()
@@ -119,6 +124,7 @@ extension QRPayViewController : UIImagePickerControllerDelegate, UINavigationCon
 }
 extension QRPayViewController : ScanCodeViewDelegate {
     func clickBtnAlbum() {
+        m_bIsLoadFromAlbum = true
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
             stopScan()
             let controller : UIImagePickerController = UIImagePickerController()

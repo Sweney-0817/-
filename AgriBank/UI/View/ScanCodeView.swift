@@ -82,12 +82,12 @@ class ScanCodeView: UIView {
         let fillLayer : CAShapeLayer = CAShapeLayer()
         fillLayer.path = path.cgPath
         fillLayer.fillRule = kCAFillRuleEvenOdd
-        fillLayer.fillColor = UIColor.black.cgColor
+        fillLayer.fillColor = UIColor.init(red: 73.0/255.0, green: 73.0/255.0, blue: 73.0/255.0, alpha: 0.58).cgColor
         fillLayer.opacity = 0.8
         m_vCameraArea.layer.addSublayer(fillLayer)
         
-        m_vScanArea.layer.borderColor = Green_Color.cgColor
-        m_vScanArea.layer.borderWidth = 2
+//        m_vScanArea.layer.borderColor = Green_Color.cgColor
+//        m_vScanArea.layer.borderWidth = 2
     }
     private func startNotification() {
         NotificationCenter.default.addObserver(forName: NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil, queue: OperationQueue.current, using: avCaptureInputPortFormatDescriptionDidChangeNotification)
