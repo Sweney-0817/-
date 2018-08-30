@@ -48,8 +48,9 @@ class ScanCodeView: UIView {
         captureSession?.addInput(input)
         output = AVCaptureMetadataOutput.init()
         captureSession?.addOutput(output)
-        let captureQueue = DispatchQueue.init(label: "captureQueue")
-        output?.setMetadataObjectsDelegate(self, queue: captureQueue)
+//        let captureQueue = DispatchQueue.init(label: "captureQueue")
+//        output?.setMetadataObjectsDelegate(self, queue: captureQueue)
+        output?.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
         output?.metadataObjectTypes = output?.availableMetadataObjectTypes
         
         videoPreviewLayer = AVCaptureVideoPreviewLayer.init(session: captureSession)

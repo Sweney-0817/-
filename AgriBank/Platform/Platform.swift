@@ -139,6 +139,9 @@ class Platform {
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "QR Pay")
         informationList[.FeatureID_QRPay] = feature
+
+        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "QRCode支付約定條款")
+        informationList[.FeatureID_AcceptRules] = feature
     //Guester 20180626 End
         feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage], belong: nil, name: "客戶服務")
         informationList[.FeatureID_CustomerService] = feature

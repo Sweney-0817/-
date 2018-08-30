@@ -13,6 +13,7 @@ import MobileCoreServices
 class QRPayViewController: BaseViewController {
     @IBOutlet var m_vScanView: UIView!
     var m_uiScanView : ScanCodeView? = nil
+//    var m_vcScanView : ScanCodeViewController? = nil
     var m_strType : String = ""
     private var m_qrpInfo : MWQRPTransactionInfo? = nil
     var m_taxInfo : PayTax? = nil
@@ -21,7 +22,8 @@ class QRPayViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.initScanView()
+//        self.initScanView()
+        getTransactionID("09002", TransactionID_Description)
     }
     override func viewDidAppear(_ animated: Bool) {
         NSLog("======== QRPayViewController viewDidAppear ========")
@@ -31,6 +33,10 @@ class QRPayViewController: BaseViewController {
         }
         m_bIsLoadFromAlbum = false
     }
+    override func viewDidDisappear(_ animated: Bool) {
+        stopScan()
+        super.viewDidDisappear(animated)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -38,6 +44,9 @@ class QRPayViewController: BaseViewController {
 
     // MARK:- Init Methods
     private func initScanView() {
+//        m_vcScanView = ScanCodeViewController(nibName: "ScanCodeViewController", bundle: nil)
+//        m_vcScanView?.set(CGRect(origin: .zero, size: m_vScanView.bounds.size), self)
+//        m_vScanView.addSubview((m_vcScanView?.view)!)
         m_uiScanView = Bundle.main.loadNibNamed("ScanCodeView", owner: self, options: nil)?.first as? ScanCodeView
         m_uiScanView!.set(CGRect(origin: .zero, size: m_vScanView.bounds.size), self)
         m_vScanView.addSubview(m_uiScanView!)
@@ -45,11 +54,28 @@ class QRPayViewController: BaseViewController {
     
     // MARK:- UI Methods
     func startScan() {
+//        guard self.m_uiScanView != nil else {
+//            return
+//        }
+        if (m_uiScanView == nil) {
+            self.initScanView()
+        }
         self.m_uiScanView!.startScan()
+//        if (m_vcScanView == nil) {
+//            self.initScanView()
+//        }
+//        self.m_vcScanView?.startScan()
         m_bIsLoadFromAlbum = false
     }
     func stopScan() {
+        guard self.m_uiScanView != nil else {
+            return
+        }
         self.m_uiScanView!.stopScan()
+//        guard self.m_vcScanView != nil else {
+//            return
+//        }
+//        self.m_vcScanView?.stopScan()
     }
     
     // MARK:- Logic Methods
@@ -77,12 +103,52 @@ class QRPayViewController: BaseViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let controller = segue.destination as! ScanResultViewController
-        controller.setData(type: m_strType, qrp: m_qrpInfo, tax: m_taxInfo)
+        controller.setData(type: m_strType, qrp: m_qrpInfo, tax: m_taxInfo, transactionId: transactionId)
     }
 
     // MARK:- WebService Methods
     private func send_checkQRCode() {
-        self.didResponse("checkQRCode", [String:String]() as NSDictionary)
+        //for test
+        self.didResponse("QR0201", [String:String]() as NSDictionary)
+        return
+        var body: [String:String] = [String:String]()
+        body["WorkCode"] = "09002"
+        body["Operate"] = "QRConfirm"
+        body["TransactionId"] = transactionId
+        body["appId"] = AgriBank_AppID
+        body["countryCode"] = m_qrpInfo?.countryCode()
+        body["transType"] = m_strType == "51" ? "01" : m_strType
+        body["processingCode"] = "000163"
+        
+        if (m_qrpInfo?.acqBank() != nil && m_qrpInfo?.acqBank().isEmpty == false) {
+            body["acqBank"] = m_qrpInfo?.acqBank()
+        }
+        if (m_qrpInfo?.terminalId() != nil && m_qrpInfo?.terminalId().isEmpty == false) {
+            body["terminalId"] = m_qrpInfo?.terminalId()
+        }
+        if (m_qrpInfo?.merchantId() != nil && m_qrpInfo?.merchantId().isEmpty == false) {
+            body["merchantId"] = m_qrpInfo?.merchantId()
+        }
+        if (m_qrpInfo?.merchantName() != nil && m_qrpInfo?.merchantName().isEmpty == false) {
+            body["merchantName"] = m_qrpInfo?.merchantName()
+        }
+        body["paymentType"] = m_qrpInfo?.paymentType()
+        if (m_qrpInfo?.secureCode() != nil && m_qrpInfo?.secureCode().isEmpty == false) {
+            body["secureCode"] = m_qrpInfo?.secureCode()
+        }
+        if (m_qrpInfo?.secureData() != nil && m_qrpInfo?.secureData().isEmpty == false) {
+            body["secureData"] = m_qrpInfo?.secureData()
+        }
+        if (m_qrpInfo?.acqInfo() != nil && m_qrpInfo?.acqInfo().isEmpty == false) {
+            body["acqBankInfo"] = m_qrpInfo?.acqInfo()
+        }
+        if (m_qrpInfo?.qrExpirydate() != nil && m_qrpInfo?.qrExpirydate().isEmpty == false) {
+            body["qrExpirydate"] = m_qrpInfo?.qrExpirydate()
+        }
+        if (m_qrpInfo?.deadlinefinal() != nil && m_qrpInfo?.deadlinefinal().isEmpty == false) {
+            body["deadlinefinal"] = m_qrpInfo?.deadlinefinal()
+        }
+        postRequest("QR/QR0201", "QR0201", AuthorizationManage.manage.converInputToHttpBody(body, true), AuthorizationManage.manage.getHttpHead(true))
     }
     private func send_checkPayTaxCode() {
         m_taxInfo?.m_strPayTaxYear = "公元5000年"
@@ -91,11 +157,19 @@ class QRPayViewController: BaseViewController {
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
-        case "checkQRCode":
+        case TransactionID_Description:
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+            }
+            else {
+                super.didResponse(description, response)
+            }
+        case "QR0201"://checkQRCode
             performSegue(withIdentifier: "GoScanResult", sender: nil)
         case "checkPayTaxCode":
             performSegue(withIdentifier: "GoScanResult", sender: nil)
-        default: super.didResponse(description, response)
+        default:
+            super.didResponse(description, response)
         }
     }
     
@@ -120,6 +194,10 @@ extension QRPayViewController : UIImagePickerControllerDelegate, UINavigationCon
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {() in
             self.analysisQRCode(strQRCode)
         })
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+        startScan()
     }
 }
 extension QRPayViewController : ScanCodeViewDelegate {

@@ -37,9 +37,9 @@ enum PlatformFeatureID: Int {
     case FeatureID_RegularSavingCalculation = 150300// 定期儲蓄試算
     //Guester 20180626
     case FeatureID_MobilePay = 200000               // 行動支付
-    case FeatureID_AcceptRules = 200100             // 同意條款
+    case FeatureID_QRPay = 200100                   // QR Pay
     case FeatureID_QRCodeTrans = 200200             // QR Code轉帳
-    case FeatureID_QRPay = 200300                   // QR Pay
+    case FeatureID_AcceptRules = 200101             // 同意條款
     //Guester 20180626 End
     case FeatureID_CustomerService = 160000         // 客戶服務
     case FeatureID_Promotion = 160100               // 農漁會優惠產品
@@ -452,6 +452,7 @@ let Max_Email_Length:Int = 50       // Email長度
 let Max_Account_Length:Int = 16     // 輸入轉入帳號長度
 let NewInput_MinLength:Int = 8      // 新輸入代號or密碼最小長度
 let NewInput_MaxLength:Int = 16     // 新輸入代號or密碼最大長度
+let Max_Amount_Length:Int = 9       // 輸入金額最大長度
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "agriBank_iOS"

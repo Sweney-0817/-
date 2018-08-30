@@ -34,6 +34,7 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
     func requestData(_ delegate:ConnectionUtilityDelegate?, _ strURL:String, _ strTag:String, _ httpBody:Data? = nil, _ dicHttpHead:[String:String]? = nil, _ needCertificate:Bool = false, _ timeOut:TimeInterval = REQUEST_TIME_OUT) -> Void {
         self.delegate = delegate
         self.needCertificate = needCertificate
+//        NSLog("========[%@]=======", strURL)
 
         let session = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue())
         session.sessionDescription = strTag

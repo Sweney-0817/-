@@ -29,6 +29,14 @@ struct ResponseLoginInfo {
     var STATUS:String? = nil        // 帳戶狀態 
 }
 
+struct QRPAcception {
+    //for test
+    var Read: String = "Y"
+//    var Read: String = "N"
+    var Version: String = ""
+    var Content: String = ""
+}
+
 class AuthorizationManage {
     static let manage = AuthorizationManage()
     private var authList:[PlatformFeatureID]? = nil      // 功能授權資料
@@ -43,6 +51,9 @@ class AuthorizationManage {
     private var canDepositTermination = false            // 是否可以「綜存戶轉存明細解約」
     private var canPayLoan = false                       // 是否可以「繳交放款本息」
     private var canChangeBaseInfo = false                // 是否可以「基本資料變更」
+    //QRP同意條款狀態
+    private var m_qrpAcception: QRPAcception = QRPAcception()
+    
     
     func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info
@@ -185,9 +196,9 @@ class AuthorizationManage {
              .FeatureID_Edit,
              .FeatureID_DeviceBinding,
         //for test
-        .FeatureID_QRCodeTrans,
+//        .FeatureID_QRCodeTrans,
         .FeatureID_QRPay,
-        .FeatureID_AcceptRules,
+//        .FeatureID_AcceptRules,
              .FeatureID_ContactCustomerService:
             canEnter = true
             
@@ -233,9 +244,9 @@ class AuthorizationManage {
         case "T33": return PlatformFeatureID.FeatureID_DeviceBinding
         case "T40": return PlatformFeatureID.FeatureID_ContactCustomerService
     //Guester 20180626
-//        case "": return PlatformFeatureID.FeatureID_AcceptRules // 同意條款
-//        case "": return PlatformFeatureID.FeatureID_QRCodeTrans // QR Code轉帳
-//        case "": return PlatformFeatureID.FeatureID_QRPay       // QR Pay
+        case "T41": return PlatformFeatureID.FeatureID_MobilePay    // 行動支付
+        case "T42": return PlatformFeatureID.FeatureID_QRCodeTrans  // QR Code轉帳
+        case "T43": return PlatformFeatureID.FeatureID_QRPay        // QR Pay
     //Guester 20180626 End
 
         default: return nil
@@ -273,8 +284,8 @@ class AuthorizationManage {
         switch type {
         case .Fixd_Type:
             //for test
+            list = [.FeatureID_Edit, .FeatureID_QRPay]
 //            list = [.FeatureID_Edit]
-            list = [.FeatureID_Edit, .FeatureID_QRCodeTrans, .FeatureID_QRPay, .FeatureID_AcceptRules]
             
         case .Default_Type:
             if IsLoginSuccess() {
@@ -340,7 +351,7 @@ class AuthorizationManage {
             
         case .Menu_Type, .Edit_Type:
             if !IsLoginSuccess() {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_MobilePay, .FeatureID_CustomerService, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, /*.FeatureID_MobilePay,*/ .FeatureID_CustomerService, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
             }
             else {
                 list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_MobilePay, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
@@ -376,5 +387,24 @@ class AuthorizationManage {
             }
         }
         return temp
+    }
+
+    func setQRPAcception(_ data:[String:String]) {
+        m_qrpAcception.Read = data["Read"] ?? "N"
+        m_qrpAcception.Version = data["Version"] ?? ""
+        m_qrpAcception.Content = data["Content"] ?? ""
+    }
+    
+    func getQRPAcception() -> QRPAcception {
+        return m_qrpAcception
+    }
+    
+    func canEnterQRP() -> Bool {
+        if (m_qrpAcception.Read == "Y") {
+            return true
+        }
+        else {
+            return false
+        }
     }
 }

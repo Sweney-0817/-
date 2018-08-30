@@ -153,6 +153,21 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                     }
                     //Guester 20180626
                 case .FeatureID_QRCodeTrans, .FeatureID_QRPay:
+                    canEnter = false
+                    if SecurityUtility.utility.isJailBroken() {
+                        showErrorMessage(ErrorMsg_IsJailBroken, nil)
+                    }
+                    else if AuthorizationManage.manage.canEnterQRP() == false {
+                        //for test
+                        getTransactionID("09001", BaseTransactionID_Description)
+//                        self.postRequest("QR/QR0101", "QR0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"getTerms","TransactionId":"tranId","LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+                        curFeatureID = ID
+                        
+                    }
+                    else {
+                        canEnter = true
+                    }
+                    //Guester 20180626 End
                     //for test
                     let i = Int(Date().timeIntervalSince1970)
                     if (i % 2 == 0) {
@@ -635,14 +650,21 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     VaktenManager.sharedInstance().authenticateOperation(withSessionID: (info.Token ?? "")) { resultCode in
                         if VIsSuccessful(resultCode) {
                             if self.curFeatureID != nil {
-                                var workCode = ""
-                                if self.curFeatureID! == .FeatureID_TaxPayment {
-                                    workCode = "05001"
+                                switch self.curFeatureID {
+                                case .FeatureID_TaxPayment?, .FeatureID_BillPayment?:
+                                    var workCode = ""
+                                    if self.curFeatureID! == .FeatureID_TaxPayment {
+                                        workCode = "05001"
+                                    }
+                                    else if self.curFeatureID! == .FeatureID_BillPayment {
+                                        workCode = "05002"
+                                    }
+                                    self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
+                                case .FeatureID_QRCodeTrans?, .FeatureID_QRPay?:
+                                    self.postRequest("QR/QR0101", "QR0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"getTerms","TransactionId":tranId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+                                default:
+                                    break
                                 }
-                                else if self.curFeatureID! == .FeatureID_BillPayment {
-                                    workCode = "05002"
-                                }
-                                self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
                             }
                         }
                         else {
@@ -665,7 +687,21 @@ extension BaseViewController: ConnectionUtilityDelegate {
             
 //        case "COMM0301":
 //            print(response)
-            
+        case "QR0101":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:String] {
+                AuthorizationManage.manage.setQRPAcception(data)
+                if (AuthorizationManage.manage.canEnterQRP()) {
+                    enterFeatureByID(curFeatureID!, true)
+                }
+                else {
+                    let controller = getControllerByID(.FeatureID_AcceptRules)
+                    //for test
+                    (controller as! AcceptRulesViewController).m_nextFeatureID = curFeatureID
+//                    (controller as! AcceptRulesViewController).m_nextFeatureID = .FeatureID_QRPay
+                    (controller as! AcceptRulesViewController).transactionId = tempTransactionId
+                    navigationController?.pushViewController(controller, animated: true)
+                }
+            }
         default: break
         }
     }
@@ -679,7 +715,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
              "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
              "PAY0103","PAY0105","PAY0107",
              "USIF0102","USIF0201","USIF0301",
-             "COMM0102","COMM0801","COMM0103":
+             "COMM0102","COMM0801","COMM0103","QR0302":
             didResponse(description, response)
             
         default:
@@ -744,6 +780,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     /*  登入失敗，需要重取圖形驗證碼 */
                     if description == "COMM0101" {
                         getImageConfirm()
+                    }
+                    //checkQRCode回錯時須重啟相機
+                    if (description == "QR0201") {
+                        (self as! QRPayViewController).startScan()
                     }
                 }
             }

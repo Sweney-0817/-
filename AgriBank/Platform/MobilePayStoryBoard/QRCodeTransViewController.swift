@@ -69,7 +69,7 @@ class QRCodeTransViewController: BaseViewController {
         m_uiActView?.delegate = self
         m_uiActView?.frame = m_vActView.frame
         m_uiActView?.frame.origin = .zero
-        m_uiActView?.setOneRow("*帳戶", Choose_Title)
+        m_uiActView?.setOneRow("轉入帳號", Choose_Title)
         m_uiActView?.m_lbFirstRowTitle.textAlignment = .center
         m_vActView.addSubview(m_uiActView!)
 
@@ -137,7 +137,7 @@ class QRCodeTransViewController: BaseViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let controller = segue.destination as! ScanResultViewController
-        controller.setData(type: m_strType, qrp: m_qrpInfo, tax: m_taxInfo)
+        controller.setData(type: m_strType, qrp: m_qrpInfo, tax: m_taxInfo, transactionId: transactionId)
     }
     // MARK:- WebService Methods
     private func makeFakeData() {
@@ -239,7 +239,10 @@ extension QRCodeTransViewController : UIActionSheetDelegate {
                 let iIndex : Int = buttonIndex - 1
                 let info : [String:String] = m_arrActList[iIndex]
                 let act : String = info["Act"]!
-                m_uiActView?.setOneRow("*帳戶", act)
+                if (m_uiActView?.getContentByType(.First) != act) {
+                    m_uiActView?.setOneRow("轉入帳號", act)
+                    self.m_ivQRCode.image = nil
+                }
             default:
                 break
             }
@@ -254,5 +257,24 @@ extension QRCodeTransViewController : UIImagePickerControllerDelegate, UINavigat
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {() in
             self.analysisQRCode(strQRCode)
         })
+    }
+}
+extension QRCodeTransViewController : UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        guard DetermineUtility.utility.isAllNumber(newString) else {
+            return false
+        }
+        
+        let newLength = (textField.text?.count)! - range.length + string.count
+        let maxLength = Max_Amount_Length
+        if newLength <= maxLength {
+            m_tfAmount.text = newString
+            self.m_ivQRCode.image = nil
+            return true
+        }
+        else {
+            return false
+        }
     }
 }

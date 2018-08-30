@@ -230,7 +230,6 @@ class ResultCell: UITableViewCell {
 }
 
 class ResultEditCell: UITableViewCell {
-    @IBOutlet weak var m_lbTitle: UILabel!
     @IBOutlet var m_tfEditData: UITextField!
     
     override func awakeFromNib() {
@@ -239,9 +238,9 @@ class ResultEditCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    func set(_ title:String, _ data:String) {
-        m_lbTitle.text = title
+    func set(_ data:String, placeholder:String = "請輸入金額(新台幣)") {
         m_tfEditData.text = data
+        m_tfEditData.placeholder = placeholder
     }
 
 }
