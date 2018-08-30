@@ -41,6 +41,17 @@ enum PlatformFeatureID: Int {
     case FeatureID_QRCodeTrans = 200200             // QR Code轉帳
     case FeatureID_AcceptRules = 200101             // 同意條款
     //Guester 20180626 End
+    
+    //Guester 20180731
+    case FeatureID_GoldPassbook = 210000                // 黃金存摺
+    case FeatureID_GPAccountInfomation = 210100         // 帳號總覽
+    case FeatureID_GPSingleBuy = 210200                 // 單筆申購
+    case FeatureID_GPSingleSell = 210300                // 單筆回售
+    case FeatureID_GPRegularAccountInfomation = 210400  // 定期投資戶總覽
+    case FeatureID_GPTransactionDetail = 210500         // 交易明細
+    case FeatureID_GPGoldPrice = 210600                 // 牌告價格
+    case FeatureID_GPAcceptRules = 210001               // 同意條款
+    //Guester 20180731 End
     case FeatureID_CustomerService = 160000         // 客戶服務
     case FeatureID_Promotion = 160100               // 農漁會優惠產品
     case FeatureID_News = 160200                    // 最新消息
@@ -106,6 +117,23 @@ enum PlatformFeatureID: Int {
         case .FeatureID_QRPay:
             return "FeatureID_QRPay"
     //Guester 20180626 End
+
+    //Guester 20180731
+        case .FeatureID_GPAccountInfomation:
+            return "FeatureID_GPAccountInfomation"
+        case .FeatureID_GPSingleBuy:
+            return "FeatureID_GPSingleBuy"
+        case .FeatureID_GPSingleSell:
+            return "FeatureID_GPSingleSell"
+        case .FeatureID_GPRegularAccountInfomation:
+            return "FeatureID_GPRegularAccountInfomation"
+        case .FeatureID_GPTransactionDetail:
+            return "FeatureID_GPTransactionDetail"
+        case .FeatureID_GPGoldPrice:
+            return "FeatureID_GPGoldPrice"
+        case .FeatureID_GPAcceptRules:
+            return "FeatureID_GPAcceptRules"
+    //Guester 20180731 End
         case .FeatureID_LoanPrincipalInterest:
             return "FeatureID_LoanPrincipalInterest"
         case .FeatureID_Promotion:
@@ -171,6 +199,17 @@ enum PlatformFeatureID: Int {
              .FeatureID_QRPay:
             return "MobilePay"
         //Guester 20180626 End
+        
+        //Guester 20180731
+        case .FeatureID_GPAccountInfomation,
+             .FeatureID_GPSingleBuy,
+             .FeatureID_GPSingleSell,
+             .FeatureID_GPRegularAccountInfomation,
+             .FeatureID_GPTransactionDetail,
+             .FeatureID_GPGoldPrice,
+             .FeatureID_GPAcceptRules:
+            return "GoldPassbook"
+        //Guester 20180731 End
         case .FeatureID_Promotion,
              .FeatureID_News,
              .FeatureID_ServiceBase,
@@ -257,6 +296,9 @@ enum UIID: Int {
     case UIID_ShowMessageHeadView     // ShowMessageHeadView class
     case UIID_ExchangeRateCell        // ExchangeRateCell class for牌告匯率
     case UIID_ResultEditCell        //QRCode掃描無金額用
+    case UIID_GPTransactionDetailCell //黃金存摺交易明細
+    case UIID_GPGoldPriceCell       //黃金存摺牌告價格
+    case UIID_GPDiffAmountDetailView//黃金定期不定額投資檢視
     
     func NibName() -> String? {
         switch self {
@@ -308,6 +350,12 @@ enum UIID: Int {
             return "ExchangeRateCell"
         case .UIID_ResultEditCell:
             return "ResultEditCell"
+        case .UIID_GPTransactionDetailCell:
+            return "GPTransactionDetailCell"
+        case .UIID_GPGoldPriceCell:
+            return "GPGoldPriceCell"
+        case .UIID_GPDiffAmountDetailView:
+            return "GPDiffAmountDetailView"
         default:
             return nil
         }
@@ -586,7 +634,9 @@ let ErrorMsg_NoImage = "您尚未設定頭像"
 /* 用於「服務據點」 */
 let ErrorMsg_NoTelephone = "此單位尚無提供電話"
 let ErrorMsg_NoMapAddress = "此單位尚無提供位址"
-
+/* 黃金存摺 */
+let GPAccountTitle = "黃金存摺帳號"
+let ErrorMsg_DateMonthOnlySix = "查詢區間僅能六個月"
 // MARK: - Shadow Direction:
 enum ShadowDirection {
     case All

@@ -131,6 +131,31 @@ class OverviewCell: UITableViewCell {
         expandView?.frame = CGRect(x: contentView.frame.maxX, y: 0, width: (expandView?.frame.size.width)!, height: contentView.frame.height-1)
     }
     
+    func AddExpnadBtn(_ delegate:OverviewCellDelegate?, _ curRow:IndexPath) {
+        status = .Hide
+        trailingCons.constant = sTrailing
+        leadingCons.constant = sleading
+        self.curRow = curRow
+        self.delegate = delegate
+        if gesture == nil {
+            gesture = UIPanGestureRecognizer(target: self, action: #selector(HandlePanGesture))
+            gesture?.delegate = self
+            contentView.addGestureRecognizer(gesture!)
+        }
+        if expandView == nil {
+            expandView = Platform.plat.getUIByID(.UIID_ExpandView, self) as? ExpandView
+            expandView?.button1.addTarget(self, action: #selector(clickButton1(_:)), for: .touchUpInside)
+            expandView?.button2.addTarget(self, action: #selector(clickButton2(_:)), for: .touchUpInside)
+            contentView.addSubview(expandView!)
+        }
+        expandView?.SetStatus(true, true)
+        Button_Width = (expandView?.frame.size.width)!
+        expandView?.SetLabelTitle("定期\n投資", "交易\n明細")
+//        expandView?.button1.tag = type.rawValue
+//        expandView?.button2.tag = type.rawValue
+        expandView?.frame = CGRect(x: contentView.frame.maxX, y: 0, width: (expandView?.frame.size.width)!, height: contentView.frame.height-1)
+    }
+    
     func showExpandView() {
         if expandView != nil {
             expandView?.frame = CGRect(x: contentView.frame.maxX-Button_Width, y: 0, width: (expandView?.frame.size.width)!, height: contentView.frame.height-1)
@@ -369,4 +394,57 @@ class ExchangeRateCell: UITableViewCell {
         m_lbData1.text = data1
         m_lbData2.text = data2
     }
+}
+
+class GPTransactionDetailCell: UITableViewCell {
+    var m_dicData: [String:String] = [String:String]()
+    var getDetail: ((String)->())? = nil
+    @IBOutlet var m_lbAmountTitle: UILabel!
+    @IBOutlet var m_lbTradeDate: UILabel!
+    @IBOutlet var m_lbCheckMark: UILabel!
+    @IBOutlet var m_lbAmount: UILabel!
+    @IBOutlet var m_lbBalance: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    func set(_ data: [String:String], _ getDetail: ((String)->())?) {
+        m_dicData = data
+        m_lbAmountTitle.text = m_dicData["title"]
+        m_lbTradeDate.text = m_dicData["date"]
+        m_lbCheckMark.text = m_dicData["mark"]
+        m_lbAmount.text = m_dicData["amount"]
+        m_lbBalance.text = m_dicData["balance"]
+        self.getDetail = getDetail
+    }
+    @IBAction func m_btnDetailClick(_ sender: Any) {
+        guard self.getDetail != nil else {
+            NSLog("GPTransactionDetailCell[%@]", m_dicData["serial"]!)
+            return
+        }
+        self.getDetail!(m_dicData["serial"]!)
+    }
+}
+
+class GPGoldPriceCell: UITableViewCell {
+    @IBOutlet var m_lbDate: UILabel!
+    @IBOutlet var m_lbTime: UILabel!
+    @IBOutlet var m_lbBuy: UILabel!
+    @IBOutlet var m_lbSell: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    func set(_ date: String, _ time: String, _ buy: String, _ sell: String) {
+        m_lbDate.text = date
+        m_lbTime.text = time
+        m_lbBuy.text = buy
+        m_lbSell.text = sell
+    }
+    
 }

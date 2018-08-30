@@ -12,6 +12,8 @@ import UIKit
 #if DEBUG
 let URL_PROTOCOL = "http"
 let URL_DOMAIN = "172.16.132.52/APP/api"
+//for test
+//let URL_DOMAIN = "122.147.4.202/FFICMAPI/api"
 #else
 let URL_PROTOCOL = "https"
 let URL_DOMAIN = "mbapi.naffic.org.tw/APP/api"
@@ -168,15 +170,19 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                         canEnter = true
                     }
                     //Guester 20180626 End
-                    //for test
-                    let i = Int(Date().timeIntervalSince1970)
-                    if (i % 2 == 0) {
-                        canEnter = false
-                        let controller = getControllerByID(.FeatureID_AcceptRules)
-                        (controller as! AcceptRulesViewController).m_nextFeatureID = ID
-                        navigationController?.pushViewController(controller, animated: true)
+                    //Guester 20180731
+                case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell, .FeatureID_GPRegularAccountInfomation:
+                    if let vc: GPAcceptRulesViewController = (self as? GPAcceptRulesViewController) {
+                        let nextFeatureID = vc.m_nextFeatureID
+                        if (nextFeatureID == ID) {
+                            break
+                        }
                     }
-                    //Guester 20180626 End
+                    canEnter = false
+                    let controller = getControllerByID(.FeatureID_GPAcceptRules)
+                    (controller as! GPAcceptRulesViewController).m_nextFeatureID = ID
+                    navigationController?.pushViewController(controller, animated: true)
+                    //Guester 20180731 End
                 default: break
                 }
                 

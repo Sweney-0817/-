@@ -199,6 +199,12 @@ class AuthorizationManage {
 //        .FeatureID_QRCodeTrans,
         .FeatureID_QRPay,
 //        .FeatureID_AcceptRules,
+//        .FeatureID_GPAccountInfomation,
+//        .FeatureID_GPSingleBuy,
+//        .FeatureID_GPSingleSell,
+//        .FeatureID_GPRegularAccountInfomation,
+//        .FeatureID_GPTransactionDetail,
+//        .FeatureID_GPGoldPrice,
              .FeatureID_ContactCustomerService:
             canEnter = true
             
@@ -249,6 +255,15 @@ class AuthorizationManage {
         case "T43": return PlatformFeatureID.FeatureID_QRPay        // QR Pay
     //Guester 20180626 End
 
+    //Guester 20180731
+        case "T44": return PlatformFeatureID.FeatureID_GoldPassbook         // 黃金存摺
+        case "T45": return PlatformFeatureID.FeatureID_GPAccountInfomation  // 帳號總覽
+        case "T46": return PlatformFeatureID.FeatureID_GPSingleBuy          // 單筆申購
+        case "T47": return PlatformFeatureID.FeatureID_GPSingleSell         // 單筆回售
+        case "T48": return PlatformFeatureID.FeatureID_GPRegularAccountInfomation   // 定期投資戶總覽
+        case "T49": return PlatformFeatureID.FeatureID_GPTransactionDetail  // 交易明細
+        case "T50": return PlatformFeatureID.FeatureID_GPGoldPrice          // 牌告價格
+    //Guester 20180731 End
         default: return nil
         }
     }
@@ -351,10 +366,10 @@ class AuthorizationManage {
             
         case .Menu_Type, .Edit_Type:
             if !IsLoginSuccess() {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, /*.FeatureID_MobilePay,*/ .FeatureID_CustomerService, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, /*.FeatureID_MobilePay, .FeatureID_GoldPassbook,*/ .FeatureID_CustomerService, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
             }
             else {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_MobilePay, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_MobilePay, .FeatureID_GoldPassbook, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
             }
         }
         
