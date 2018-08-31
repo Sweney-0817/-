@@ -7,12 +7,20 @@
 //
 
 import UIKit
+//黃金存摺帳號下的定期申購設定
 struct settingData {
     var m_strDate: String
     var m_strType: String
     var m_strAmount: String
     var m_strStop: String
     var m_strBtn: String
+}
+//帶到申請或變更頁面的資訊
+struct passData {
+//    var m_strDate: String
+    var m_accountStruct: AccountStruct
+    var m_strTransOutAct: String
+    var m_settingData: settingData
 }
 let sameAmount = "定期定額"
 let sameQuantity = "定期定量"
@@ -26,7 +34,8 @@ let btnTitleChange = "變更"
 let btnTitleCheck = "檢視"
 class GPRegularAccountInfomationViewController: BaseViewController {
     var m_uiActView: OneRowDropDownView? = nil
-    var m_aryActList: [String] = [String]()
+    var m_iActIndex: Int = -1
+    var m_aryActList: [AccountStruct] = [AccountStruct]()
     var m_aryData: [settingData] = [settingData]()
     var m_uiDiffAmountDetail: GPDiffAmountDetailView? = nil
     
@@ -89,8 +98,8 @@ class GPRegularAccountInfomationViewController: BaseViewController {
     func showActList() {
         if (m_aryActList.count > 0) {
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
-            for act in m_aryActList {
-                actSheet.addButton(withTitle: act)
+            for actInfo in m_aryActList {
+                actSheet.addButton(withTitle: actInfo.accountNO)
             }
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
@@ -223,14 +232,25 @@ class GPRegularAccountInfomationViewController: BaseViewController {
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let data: settingData = sender as! settingData
+        let _passData: passData = passData(m_accountStruct: m_aryActList[m_iActIndex], m_strTransOutAct: self.m_lbTransOutAct.text!, m_settingData: data)
         super.prepare(for: segue, sender: sender)
         switch segue.identifier {
         case "showBuy":
-            let controller = segue.destination as! GPRegularSubscriptionViewController
-            controller.setData((m_uiActView?.getContentByType(.First))!, self.m_lbCurrency.text!, self.m_lbTransOutAct.text!, data.m_strDate)
+            let controller = segue.destination as! GPAcceptRulesViewController
+            var dicData: [String:Any] = [String:Any]()
+            dicData["nextStep"] = "showBuy"
+            dicData["data"] = _passData
+            controller.m_dicData = dicData
+//            let controller = segue.destination as! GPRegularSubscriptionViewController
+//            controller.setData((m_uiActView?.getContentByType(.First))!, self.m_lbCurrency.text!, self.m_lbTransOutAct.text!, data.m_strDate)
         case "showChange":
-            let controller = segue.destination as! GPRegularChangeViewController
-            controller.setData((m_uiActView?.getContentByType(.First))!, self.m_lbTransOutAct.text!, data.m_strDate)
+            let controller = segue.destination as! GPAcceptRulesViewController
+            var dicData: [String:Any] = [String:Any]()
+            dicData["nextStep"] = "showChange"
+            dicData["data"] = _passData
+            controller.m_dicData = dicData
+//            let controller = segue.destination as! GPRegularChangeViewController
+//            controller.setData((m_uiActView?.getContentByType(.First))!, self.m_lbTransOutAct.text!, data.m_strDate)
         default:
             return
         }
@@ -239,7 +259,8 @@ class GPRegularAccountInfomationViewController: BaseViewController {
     private func makeFakeAct() {
         m_aryActList.removeAll()
         for i in 0..<20 {
-            m_aryActList.append(String.init(format: "%05d", i))
+            let actInfo: AccountStruct = AccountStruct(accountNO: String.init(format: "%05d", i), currency: "TWNTD", balance: String.init(format: "%d", i*10000+1000), status: "")
+            m_aryActList.append(actInfo)
         }
     }
     private func makeFakeActData() {
@@ -291,8 +312,9 @@ extension GPRegularAccountInfomationViewController : UIActionSheetDelegate {
         if actionSheet.cancelButtonIndex != buttonIndex {
             switch (actionSheet.tag) {
             case ViewTag.View_AccountActionSheet.rawValue:
-                let iIndex : Int = buttonIndex - 1
-                let act : String = m_aryActList[iIndex]
+                m_iActIndex = buttonIndex - 1
+                let info : AccountStruct = m_aryActList[m_iActIndex]
+                let act : String = info.accountNO
                 m_uiActView?.setOneRow(GPAccountTitle, act)
                 self.send_getActData()
                 self.m_svContent.isHidden = false

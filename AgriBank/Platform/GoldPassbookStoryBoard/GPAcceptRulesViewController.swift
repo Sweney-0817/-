@@ -9,7 +9,8 @@
 import UIKit
 
 class GPAcceptRulesViewController: BaseViewController {
-    var m_nextFeatureID : PlatformFeatureID? = nil
+    var m_nextFeatureID: PlatformFeatureID? = nil
+    var m_dicData: [String:Any]? = nil
     @IBOutlet var m_wvContent: UIWebView!
     @IBOutlet var m_btnCheck: UIButton!
     @IBAction func m_btnCheckClick(_ sender: Any) {
@@ -20,11 +21,16 @@ class GPAcceptRulesViewController: BaseViewController {
             showErrorMessage(nil, "請勾選我已審閱並同意上述事項")
             return
         }
-        guard m_nextFeatureID != nil else {
-            showErrorMessage("錯誤", "沒帶FeatureID")
+        guard (m_nextFeatureID != nil || m_dicData != nil) else {
+            showErrorMessage("錯誤", "沒有下一步")
             return
         }
-        enterFeatureByID(m_nextFeatureID!, false)
+        switch m_nextFeatureID {
+        case .FeatureID_GPSingleBuy?, .FeatureID_GPSingleSell?:
+            enterFeatureByID(m_nextFeatureID!, false)
+        default:
+            performSegue(withIdentifier: m_dicData!["nextStep"] as! String, sender: m_dicData!["data"])
+        }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,15 +44,24 @@ class GPAcceptRulesViewController: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let data: passData = sender as! passData
+        switch segue.identifier {
+        case "showBuy":
+            let controller = segue.destination as! GPRegularSubscriptionViewController
+            let act: String = data.m_accountStruct.accountNO
+            let currency: String = data.m_accountStruct.currency
+            let transOutAct: String = data.m_strTransOutAct
+            let date: String = data.m_settingData.m_strDate
+            controller.setData(act, currency, transOutAct, date)
+        case "showChange":
+            let controller = segue.destination as! GPRegularChangeViewController
+            let act: String = data.m_accountStruct.accountNO
+            let transOutAct: String = data.m_strTransOutAct
+            let date: String = data.m_settingData.m_strDate
+            controller.setData(act, transOutAct, date)
+        default:
+            return
+        }
     }
-    */
-
 }

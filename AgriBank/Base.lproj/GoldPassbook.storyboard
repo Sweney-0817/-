@@ -830,8 +830,8 @@
                         <outlet property="m_lbType3" destination="2nn-Wt-TNZ" id="nKC-eF-g80"/>
                         <outlet property="m_svContent" destination="mA5-wa-Kv7" id="2qw-zd-Zy3"/>
                         <outlet property="m_vActView" destination="oPr-iY-AJf" id="DTx-vT-8vm"/>
-                        <segue destination="Rrc-H6-GTB" kind="show" identifier="showBuy" id="t1c-85-U6z"/>
-                        <segue destination="wOj-gJ-tHX" kind="show" identifier="showChange" id="aMn-2u-egw"/>
+                        <segue destination="JeR-Jb-vvA" kind="show" identifier="showChange" id="CtQ-UR-AKg"/>
+                        <segue destination="JeR-Jb-vvA" kind="show" identifier="showBuy" id="gzV-Vy-8yx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TWH-pZ-syr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -841,7 +841,7 @@
         <!--Regular Subscription View Controller-->
         <scene sceneID="sI9-AF-BvE">
             <objects>
-                <viewController storyboardIdentifier="FeatureID_GPRegularSubscription" id="Rrc-H6-GTB" customClass="GPRegularSubscriptionViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Rrc-H6-GTB" customClass="GPRegularSubscriptionViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XcN-mS-ac8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1175,7 +1175,7 @@
         <!--Regular Change View Controller-->
         <scene sceneID="oAa-GH-IIC">
             <objects>
-                <viewController storyboardIdentifier="FeatureID_GPRegularChange" id="wOj-gJ-tHX" customClass="GPRegularChangeViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wOj-gJ-tHX" customClass="GPRegularChangeViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wzL-h8-7Z6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2029,6 +2029,8 @@
                     <connections>
                         <outlet property="m_btnCheck" destination="LWj-8l-ZK1" id="Cxb-i1-cy7"/>
                         <outlet property="m_wvContent" destination="oR7-iA-BgX" id="HXH-pL-rhv"/>
+                        <segue destination="Rrc-H6-GTB" kind="show" identifier="showBuy" id="iLW-SD-Tii"/>
+                        <segue destination="wOj-gJ-tHX" kind="show" identifier="showChange" id="4ea-dx-xT6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nbe-qx-jvx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2044,4 +2046,7 @@
         <image name="EntryRight" width="20" height="20"/>
         <image name="Textfield" width="311" height="44"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="gzV-Vy-8yx"/>
+    </inferredMetricsTieBreakers>
 </document>

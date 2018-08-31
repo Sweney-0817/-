@@ -82,6 +82,13 @@ class GPRegularSubscriptionViewController: BaseViewController {
     }
     @IBAction func m_btnNextClick(_ sender: Any) {
     }
+    override func clickBackBarItem() {
+        for vc in (self.navigationController?.viewControllers)! {
+            if (vc.isKind(of: GPRegularAccountInfomationViewController.self)) {
+                navigationController?.popToViewController(vc, animated: true)
+            }
+        }
+    }
 }
 extension GPRegularSubscriptionViewController : UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

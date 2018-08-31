@@ -202,7 +202,7 @@ class AuthorizationManage {
 //        .FeatureID_GPAccountInfomation,
 //        .FeatureID_GPSingleBuy,
 //        .FeatureID_GPSingleSell,
-//        .FeatureID_GPRegularAccountInfomation,
+        .FeatureID_GPRegularAccountInfomation,
 //        .FeatureID_GPTransactionDetail,
 //        .FeatureID_GPGoldPrice,
              .FeatureID_ContactCustomerService:
@@ -299,7 +299,7 @@ class AuthorizationManage {
         switch type {
         case .Fixd_Type:
             //for test
-            list = [.FeatureID_Edit, .FeatureID_QRPay]
+            list = [.FeatureID_Edit, .FeatureID_QRPay, .FeatureID_GPRegularAccountInfomation]
 //            list = [.FeatureID_Edit]
             
         case .Default_Type:

@@ -171,7 +171,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                     }
                     //Guester 20180626 End
                     //Guester 20180731
-                case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell, .FeatureID_GPRegularAccountInfomation:
+                case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell:
                     if let vc: GPAcceptRulesViewController = (self as? GPAcceptRulesViewController) {
                         let nextFeatureID = vc.m_nextFeatureID
                         if (nextFeatureID == ID) {
@@ -667,7 +667,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                     }
                                     self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
                                 case .FeatureID_QRCodeTrans?, .FeatureID_QRPay?:
-                                    self.postRequest("QR/QR0101", "QR0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"getTerms","TransactionId":tranId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+                                    self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
+//                                    self.postRequest("QR/QR0101", "QR0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"getTerms","TransactionId":tranId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
                                 default:
                                     break
                                 }
@@ -682,7 +683,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
             }
             
         case "BaseCOMM0802":
-            if let con = navigationController?.viewControllers.first {
+            if (curFeatureID == .FeatureID_QRCodeTrans || curFeatureID == .FeatureID_QRPay) {
+                self.postRequest("QR/QR0101", "QR0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"getTerms","TransactionId":tempTransactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+            }
+            else if let con = navigationController?.viewControllers.first {
                 if con is HomeViewController {
                     (con as! HomeViewController).tempTransactionId = tempTransactionId
                     (con as! HomeViewController).pushFeatureController(curFeatureID!, true)
@@ -708,6 +712,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     navigationController?.pushViewController(controller, animated: true)
                 }
             }
+            curFeatureID = nil
+            tempTransactionId = ""
         default: break
         }
     }
