@@ -685,9 +685,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     (con as! HomeViewController).tempTransactionId = tempTransactionId
                     (con as! HomeViewController).pushFeatureController(curFeatureID!, true)
                 }
+                curFeatureID = nil
+                tempTransactionId = ""
             }
-            curFeatureID = nil
-            tempTransactionId = ""
             
 //        case "COMM0301":
 //            print(response)
