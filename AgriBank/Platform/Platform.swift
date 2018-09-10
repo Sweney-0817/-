@@ -131,13 +131,15 @@ class Platform {
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation, name: "定期儲蓄試算")
         informationList[.FeatureID_RegularSavingCalculation] = feature
     //Guester 20180626
-        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_QRCodeTrans, .FeatureID_QRPay], belong: nil, name: "行動支付")
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_QRPay], belong: nil, name: "行動支付")
         informationList[.FeatureID_MobilePay] = feature
+//        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_QRCodeTrans, .FeatureID_QRPay], belong: nil, name: "行動支付")
+//        informationList[.FeatureID_MobilePay] = feature
+
+//        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "QR Code轉帳")
+//        informationList[.FeatureID_QRCodeTrans] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "QR Code轉帳")
-        informationList[.FeatureID_QRCodeTrans] = feature
-        
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "QR Pay")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "台灣Pay")
         informationList[.FeatureID_QRPay] = feature
 
         feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "QRCode支付約定條款")

@@ -31,8 +31,8 @@ struct ResponseLoginInfo {
 
 struct QRPAcception {
     //for test
-    var Read: String = "Y"
-//    var Read: String = "N"
+//    var Read: String = "Y"
+    var Read: String = "N"
     var Version: String = ""
     var Content: String = ""
 }
@@ -197,12 +197,12 @@ class AuthorizationManage {
              .FeatureID_DeviceBinding,
         //for test
 //        .FeatureID_QRCodeTrans,
-        .FeatureID_QRPay,
+//        .FeatureID_QRPay,
 //        .FeatureID_AcceptRules,
 //        .FeatureID_GPAccountInfomation,
 //        .FeatureID_GPSingleBuy,
 //        .FeatureID_GPSingleSell,
-        .FeatureID_GPRegularAccountInfomation,
+//        .FeatureID_GPRegularAccountInfomation,
 //        .FeatureID_GPTransactionDetail,
 //        .FeatureID_GPGoldPrice,
              .FeatureID_ContactCustomerService:
@@ -299,8 +299,8 @@ class AuthorizationManage {
         switch type {
         case .Fixd_Type:
             //for test
-            list = [.FeatureID_Edit, .FeatureID_QRPay, .FeatureID_GPRegularAccountInfomation]
-//            list = [.FeatureID_Edit]
+//            list = [.FeatureID_Edit, .FeatureID_QRPay, .FeatureID_GPRegularAccountInfomation]
+            list = [.FeatureID_Edit]
             
         case .Default_Type:
             if IsLoginSuccess() {
@@ -366,10 +366,10 @@ class AuthorizationManage {
             
         case .Menu_Type, .Edit_Type:
             if !IsLoginSuccess() {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, /*.FeatureID_MobilePay, .FeatureID_GoldPassbook,*/ .FeatureID_CustomerService, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_MobilePay, /* .FeatureID_GoldPassbook,*/ .FeatureID_CustomerService, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
             }
             else {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_MobilePay, .FeatureID_GoldPassbook, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_MobilePay, .FeatureID_GoldPassbook, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding, .FeatureID_ContactCustomerService]
             }
         }
         

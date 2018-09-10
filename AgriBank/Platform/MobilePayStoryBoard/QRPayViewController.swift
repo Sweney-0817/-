@@ -109,8 +109,8 @@ class QRPayViewController: BaseViewController {
     // MARK:- WebService Methods
     private func send_checkQRCode() {
         //for test
-        self.didResponse("QR0201", [String:String]() as NSDictionary)
-        return
+//        self.didResponse("QR0201", [String:String]() as NSDictionary)
+//        return
         var body: [String:String] = [String:String]()
         body["WorkCode"] = "09002"
         body["Operate"] = "QRConfirm"

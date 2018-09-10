@@ -171,7 +171,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                     }
                     //Guester 20180626 End
                     //Guester 20180731
-                case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell:
+                case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell, .FeatureID_GPRegularAccountInfomation:
                     if let vc: GPAcceptRulesViewController = (self as? GPAcceptRulesViewController) {
                         let nextFeatureID = vc.m_nextFeatureID
                         if (nextFeatureID == ID) {
@@ -691,9 +691,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     (con as! HomeViewController).tempTransactionId = tempTransactionId
                     (con as! HomeViewController).pushFeatureController(curFeatureID!, true)
                 }
+                curFeatureID = nil
+                tempTransactionId = ""
             }
-            curFeatureID = nil
-            tempTransactionId = ""
             
 //        case "COMM0301":
 //            print(response)
