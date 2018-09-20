@@ -173,15 +173,34 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         if (locationTextfield.text?.isEmpty)! {
             return ErrorMsg_Choose_CityBank
         }
-        if sAccount.isEmpty {
-            return "\(Enter_Title)\(accountTextfield.placeholder ?? "")"
+        if (sAccount.isEmpty) {
+            if (accountTextfield.text?.isEmpty)! {
+                return "\(Enter_Title)\(accountTextfield.placeholder ?? "")"
+            }
+            if (accountTextfield.text?.count)! < Min_Identify_Length {
+                return ErrorMsg_ID_LackOfLength
+            }
+            if !DetermineUtility.utility.isValidIdentify(accountTextfield.text!) {
+                return ErrorMsg_Error_Identify
+            }
         }
-        if sAccount.count < Min_Identify_Length {
-            return ErrorMsg_ID_LackOfLength
+        else {
+            if sAccount.count < Min_Identify_Length {
+                return ErrorMsg_ID_LackOfLength
+            }
+            if !DetermineUtility.utility.isValidIdentify(sAccount) {
+                return ErrorMsg_Error_Identify
+            }
         }
-        if !DetermineUtility.utility.isValidIdentify(sAccount) {
-            return ErrorMsg_Error_Identify
-        }
+//        if sAccount.isEmpty {
+//            return "\(Enter_Title)\(accountTextfield.placeholder ?? "")"
+//        }
+//        if sAccount.count < Min_Identify_Length {
+//            return ErrorMsg_ID_LackOfLength
+//        }
+//        if !DetermineUtility.utility.isValidIdentify(sAccount) {
+//            return ErrorMsg_Error_Identify
+//        }
         if (idTextfield.text?.isEmpty)! {
             return "\(Enter_Title)\(idTextfield.placeholder ?? "")"
         }
@@ -205,7 +224,7 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         else {
             self.endEditing(true)
             loginInfo.bankCode = bankCode[locationTextfield.text?.replacingOccurrences(of: " ", with: "") ?? ""] ?? loginInfo.bankCode
-            loginInfo.account = sAccount
+            loginInfo.account = sAccount.isEmpty ? accountTextfield.text! : sAccount
             loginInfo.id = idTextfield.text ?? loginInfo.id
             loginInfo.password = passwordTextfield.text ?? loginInfo.password
             let city = locationTextfield.text?.components(separatedBy: " ").first ?? ""
@@ -256,6 +275,10 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
                 return false
             }
         }
+        else if (textField == accountTextfield) {
+            textField.text = ""
+            sAccount = ""
+        }
         return true
     }
     
@@ -271,17 +294,44 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
         var maxLength = 0
         
         if textField == accountTextfield {
-            let newString = (sAccount as NSString).replacingCharacters(in: range, with: string)
-            if !DetermineUtility.utility.isEnglishAndNumber(newString) {
-                return false
-            }
-            if newLength <= Max_Identify_Length {
-                sAccount = newString
+            maxLength = Max_Identify_Length
+            if newLength <= maxLength {
                 return true
             }
             else {
                 return false
             }
+//            if (textField.markedTextRange != nil) {
+//                if !DetermineUtility.utility.isEnglishAndNumber(string) {
+//                    textField.text = (sAccount as NSString).replacingCharacters(in: Login_Mask_Range, with: Login_Mask)
+//                    return false
+//                }
+//                else {
+//                    NSLog("[%@][%@]", sAccount, string)
+//                    let replaceRange = NSRange.init(location: range.location, length: 0)
+//                    let newString = (sAccount as NSString).replacingCharacters(in: replaceRange, with: string)
+//                    if newString.count <= Max_Identify_Length {
+//                        sAccount = newString
+//                        return true
+//                    }
+//                    else {
+//                        return true
+//                    }
+//                }
+//            }
+//            else {
+//                let newString = (sAccount as NSString).replacingCharacters(in: range, with: string)
+//                if !DetermineUtility.utility.isEnglishAndNumber(newString) {
+//                    return false
+//                }
+//                if newLength <= Max_Identify_Length {
+//                    sAccount = newString
+//                    return true
+//                }
+//                else {
+//                    return false
+//                }
+//            }
         }
         else {
             switch textField {

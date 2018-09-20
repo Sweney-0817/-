@@ -13,6 +13,8 @@ class ScanResultViewController: BaseViewController {
     @IBOutlet var m_vActView: UIView!
     @IBOutlet var m_tvScanResult: UITableView!
     @IBOutlet var m_consScanResultHeight: NSLayoutConstraint!
+    @IBOutlet var m_wvMemo: UIWebView!
+    @IBOutlet var m_consMemoHeight: NSLayoutConstraint!
     @IBOutlet var m_btnConfirm: UIButton!
     @IBOutlet var m_vButtonView: UIView!
     var m_uiActView : TwoRowDropDownView? = nil
@@ -39,6 +41,7 @@ class ScanResultViewController: BaseViewController {
         self.makeShowData()
         self.checkBtnConfirm()
         self.send_getActList()
+        self.send_QueryData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -675,6 +678,23 @@ class ScanResultViewController: BaseViewController {
 //        self.makeFakeData()
         postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
     }
+    func send_QueryData() {
+        var type: String = ""
+        switch m_strType {
+        case "51":// 轉帳購貨:T
+            type = "T"
+        case "01":// 消費扣款:C
+            type = "C"
+        case "02":// P2P轉帳:Q
+            type = "Q"
+        case "03":// 繳費:P
+            type = "P"
+        default:
+            type = ""
+        }
+        postRequest("QR/QR0601", "QR0601", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09006","Operate":"queryData","Type":type], true), AuthorizationManage.manage.getHttpHead(true))
+     
+    }
     private func send_PurchaseConfirm(_ data:[String:String]) {
         setLoading(true)
         postRequest("QR/QR0401", "QR0401", AuthorizationManage.manage.converInputToHttpBody(data, true), AuthorizationManage.manage.getHttpHead(true))
@@ -742,6 +762,12 @@ class ScanResultViewController: BaseViewController {
             else {
                 showErrorMessage(nil, ErrorMsg_No_TaskId)
             }
+        case "QR0601":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
+                let content = data["Content"] as? String
+                m_wvMemo.loadHTMLString(content!, baseURL: nil)
+            }
+            
         default:
             super.didResponse(description, response)
         }
@@ -818,4 +844,13 @@ extension ScanResultViewController : UITextFieldDelegate {
         }
     }
 }
-
+extension ScanResultViewController : UIWebViewDelegate {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        var frame: CGRect = self.m_wvMemo.frame
+        frame.size.height = 1
+        self.m_wvMemo.frame = frame
+        let fittingSize = self.m_wvMemo.sizeThatFits(CGSize(width: 0, height: 0))
+        frame.size = fittingSize
+        self.m_wvMemo.frame = frame
+    }
+}

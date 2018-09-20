@@ -160,9 +160,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                         showErrorMessage(ErrorMsg_IsJailBroken, nil)
                     }
                     else if AuthorizationManage.manage.canEnterQRP() == false {
-                        //for test
                         getTransactionID("09001", BaseTransactionID_Description)
-//                        self.postRequest("QR/QR0101", "QR0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"getTerms","TransactionId":"tranId","LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
                         curFeatureID = ID
                         
                     }
@@ -705,9 +703,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 }
                 else {
                     let controller = getControllerByID(.FeatureID_AcceptRules)
-                    //for test
                     (controller as! AcceptRulesViewController).m_nextFeatureID = curFeatureID
-//                    (controller as! AcceptRulesViewController).m_nextFeatureID = .FeatureID_QRPay
                     (controller as! AcceptRulesViewController).transactionId = tempTransactionId
                     navigationController?.pushViewController(controller, animated: true)
                 }

@@ -119,7 +119,7 @@ extension ScanCodeView : AVCaptureMetadataOutputObjectsDelegate {
             NSLog("掃到空的")
             return
         }
-        AudioServicesPlayAlertSound(1016)//震動
+//        AudioServicesPlayAlertSound(1016)//震動
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {() in
             NSLog("掃到[%@]", StringCodeValue)
             self.stopScan()

@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import MobileCoreServices
+import Photos
 
 class QRPayViewController: BaseViewController {
     @IBOutlet var m_vScanView: UIView!
@@ -44,9 +45,6 @@ class QRPayViewController: BaseViewController {
 
     // MARK:- Init Methods
     private func initScanView() {
-//        m_vcScanView = ScanCodeViewController(nibName: "ScanCodeViewController", bundle: nil)
-//        m_vcScanView?.set(CGRect(origin: .zero, size: m_vScanView.bounds.size), self)
-//        m_vScanView.addSubview((m_vcScanView?.view)!)
         m_uiScanView = Bundle.main.loadNibNamed("ScanCodeView", owner: self, options: nil)?.first as? ScanCodeView
         m_uiScanView!.set(CGRect(origin: .zero, size: m_vScanView.bounds.size), self)
         m_vScanView.addSubview(m_uiScanView!)
@@ -54,17 +52,10 @@ class QRPayViewController: BaseViewController {
     
     // MARK:- UI Methods
     func startScan() {
-//        guard self.m_uiScanView != nil else {
-//            return
-//        }
         if (m_uiScanView == nil) {
             self.initScanView()
         }
         self.m_uiScanView!.startScan()
-//        if (m_vcScanView == nil) {
-//            self.initScanView()
-//        }
-//        self.m_vcScanView?.startScan()
         m_bIsLoadFromAlbum = false
     }
     func stopScan() {
@@ -72,10 +63,6 @@ class QRPayViewController: BaseViewController {
             return
         }
         self.m_uiScanView!.stopScan()
-//        guard self.m_vcScanView != nil else {
-//            return
-//        }
-//        self.m_vcScanView?.stopScan()
     }
     
     // MARK:- Logic Methods
@@ -105,7 +92,55 @@ class QRPayViewController: BaseViewController {
         let controller = segue.destination as! ScanResultViewController
         controller.setData(type: m_strType, qrp: m_qrpInfo, tax: m_taxInfo, transactionId: transactionId)
     }
-
+    func checkPhotoAuthorize() -> Bool {
+        let status = PHPhotoLibrary.authorizationStatus()
+        
+        switch status {
+        case .authorized:
+            return true
+            
+        case .notDetermined:
+            // 请求授权
+            PHPhotoLibrary.requestAuthorization({ (status) -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
+                    _ = self.clickBtnAlbum()
+                })
+            })
+            
+        default:
+            showAlert(title: nil, msg: "無相簿權限", confirmTitle: "確認", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+//            ()
+//        DispatchQueue.main.async(execute: { () -> Void in
+//            let alertController = UIAlertController(title: "照片访问受限",
+//                                                    message: "点击“设置”，允许访问您的照片",
+//                                                    preferredStyle: .alert)
+//
+//            let cancelAction = UIAlertAction(title:"取消", style: .cancel, handler:nil)
+//
+//            let settingsAction = UIAlertAction(title:"设置", style: .default, handler: {
+//                (action) -> Void in
+//                let url = URL(string: UIApplicationOpenSettingsURLString)
+//                if let url = url, UIApplication.shared.canOpenURL(url) {
+//                    if #available(iOS 10, *) {
+//                        UIApplication.shared.open(url, options: [:],
+//                                                  completionHandler: {
+//                                                    (success) in
+//                        })
+//                    } else {
+//                        UIApplication.shared.openURL(url)
+//                    }
+//                }
+//            })
+//
+//            alertController.addAction(cancelAction)
+//            alertController.addAction(settingsAction)
+//
+//            self.present(alertController, animated: true, completion: nil)
+//        })
+        }
+        return false
+    }
+    
     // MARK:- WebService Methods
     private func send_checkQRCode() {
         //for test
@@ -174,16 +209,18 @@ class QRPayViewController: BaseViewController {
     }
     
     // MARK:- Handle Actions
-    @IBAction func m_btnAlbumClick(_ sender: Any) {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
-            stopScan()
-            let controller : UIImagePickerController = UIImagePickerController()
-            controller.delegate = self
-            controller.sourceType = UIImagePickerControllerSourceType.photoLibrary
-            self.present(controller, animated: true, completion: nil)
-            
-        }
-    }
+//    @IBAction func m_btnAlbumClick(_ sender: Any) {
+//        let status: PHAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+//        if (status == .authorized) {
+//            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+//                stopScan()
+//                let controller : UIImagePickerController = UIImagePickerController()
+//                controller.delegate = self
+//                controller.sourceType = UIImagePickerControllerSourceType.photoLibrary
+//                self.present(controller, animated: true, completion: nil)
+//            }
+//        }
+//    }
 }
 // MARK:- extension
 extension QRPayViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -203,12 +240,14 @@ extension QRPayViewController : UIImagePickerControllerDelegate, UINavigationCon
 extension QRPayViewController : ScanCodeViewDelegate {
     func clickBtnAlbum() {
         m_bIsLoadFromAlbum = true
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
-            stopScan()
-            let controller : UIImagePickerController = UIImagePickerController()
-            controller.delegate = self
-            controller.sourceType = UIImagePickerControllerSourceType.photoLibrary
-            self.present(controller, animated: true, completion: nil)
+        if (self.checkPhotoAuthorize()) {
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+                stopScan()
+                let controller : UIImagePickerController = UIImagePickerController()
+                controller.delegate = self
+                controller.sourceType = UIImagePickerControllerSourceType.photoLibrary
+                self.present(controller, animated: true, completion: nil)
+            }
         }
     }
     func getQRCodeString(_ strQRCode : String) {

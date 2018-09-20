@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -438,12 +438,26 @@
                                                     <constraint firstItem="o7s-pH-evV" firstAttribute="top" secondItem="8Iq-9N-aL5" secondAttribute="bottom" constant="16" id="rlD-rI-1OD"/>
                                                 </constraints>
                                             </view>
+                                            <webView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0WQ-NQ-eA9">
+                                                <rect key="frame" x="0.0" y="536" width="375" height="0.0"/>
+                                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" id="trh-lf-Q8c"/>
+                                                </constraints>
+                                                <connections>
+                                                    <outlet property="delegate" destination="Oef-s9-HmD" id="Him-8T-o50"/>
+                                                </connections>
+                                            </webView>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="SOB-uz-zpp" secondAttribute="trailing" id="D25-qn-RHU"/>
                                             <constraint firstItem="SOB-uz-zpp" firstAttribute="leading" secondItem="0pY-bC-DFy" secondAttribute="leading" id="V65-1f-vSz"/>
                                             <constraint firstItem="SOB-uz-zpp" firstAttribute="top" secondItem="0pY-bC-DFy" secondAttribute="top" id="XyU-N0-hml"/>
+                                            <constraint firstItem="0WQ-NQ-eA9" firstAttribute="top" secondItem="SOB-uz-zpp" secondAttribute="bottom" id="gHL-vZ-yFY"/>
+                                            <constraint firstAttribute="trailing" secondItem="0WQ-NQ-eA9" secondAttribute="trailing" id="jrT-XE-dwD"/>
+                                            <constraint firstAttribute="bottom" secondItem="0WQ-NQ-eA9" secondAttribute="bottom" id="mcR-1A-ALp"/>
                                             <constraint firstAttribute="bottom" secondItem="SOB-uz-zpp" secondAttribute="bottom" id="p8L-Ds-gWb"/>
+                                            <constraint firstItem="0WQ-NQ-eA9" firstAttribute="leading" secondItem="0pY-bC-DFy" secondAttribute="leading" id="pbh-AG-D87"/>
                                             <constraint firstItem="SOB-uz-zpp" firstAttribute="width" secondItem="0pY-bC-DFy" secondAttribute="width" id="zid-7m-v0l"/>
                                         </constraints>
                                     </scrollView>
@@ -495,11 +509,13 @@
                     </view>
                     <connections>
                         <outlet property="m_btnConfirm" destination="p2x-gE-US0" id="esE-dm-OaS"/>
+                        <outlet property="m_consMemoHeight" destination="trh-lf-Q8c" id="55o-oz-t4j"/>
                         <outlet property="m_consScanResultHeight" destination="otg-zI-KYc" id="WT6-DP-Kgi"/>
                         <outlet property="m_tvScanResult" destination="eRW-XG-ffJ" id="IGj-O4-v2p"/>
                         <outlet property="m_vActView" destination="8Iq-9N-aL5" id="B4g-z4-Vo9"/>
                         <outlet property="m_vButtonView" destination="9UX-tV-yWs" id="qr3-mn-3Yu"/>
                         <outlet property="m_vScanResultView" destination="SOB-uz-zpp" id="YSA-SW-ERS"/>
+                        <outlet property="m_wvMemo" destination="0WQ-NQ-eA9" id="wNw-qn-bbt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0TX-ey-gfd" userLabel="First Responder" sceneMemberID="firstResponder"/>
