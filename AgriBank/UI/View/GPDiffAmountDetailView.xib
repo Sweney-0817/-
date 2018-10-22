@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -26,10 +25,10 @@
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ehx-c4-9Zp">
-                    <rect key="frame" x="10" y="136" width="355" height="395"/>
+                    <rect key="frame" x="10" y="118" width="355" height="431"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Close" translatesAutoresizingMaskIntoConstraints="NO" id="3Mh-er-qY5">
-                            <rect key="frame" x="15" y="15" width="24.5" height="24"/>
+                            <rect key="frame" x="15" y="15" width="24" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="3Mh-er-qY5" secondAttribute="height" multiplier="1:1" id="Mg5-u7-wOM"/>
                             </constraints>
@@ -45,7 +44,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="投資檢視" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uX7-vb-UVV">
-                            <rect key="frame" x="137" y="13.5" width="80" height="28"/>
+                            <rect key="frame" x="137.5" y="13" width="80" height="28"/>
                             <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="20"/>
                             <color key="textColor" red="0.27058823529999998" green="0.65098039220000004" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -135,13 +134,13 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LV5-Pp-kBD">
-                                    <rect key="frame" x="200.5" y="10" width="47" height="26"/>
+                                    <rect key="frame" x="200" y="10" width="47" height="26"/>
                                     <fontDescription key="fontDescription" name="PingFangTC-Semibold" family="PingFang TC" pointSize="18"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2g-kj-XSn">
-                                    <rect key="frame" x="200.5" y="46" width="47" height="26"/>
+                                    <rect key="frame" x="200" y="46" width="47" height="26"/>
                                     <fontDescription key="fontDescription" name="PingFangTC-Semibold" family="PingFang TC" pointSize="18"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -218,12 +217,18 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qlt-pq-u6i">
-                            <rect key="frame" x="0.0" y="349" width="355" height="46"/>
+                            <rect key="frame" x="0.0" y="349" width="355" height="82"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="每次投資金額下限" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q3Y-Db-HrP">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="每次投資金額上限" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q3Y-Db-HrP">
                                     <rect key="frame" x="10" y="10" width="180" height="26"/>
                                     <fontDescription key="fontDescription" name="PingFangTC-Semibold" family="PingFang TC" pointSize="18"/>
                                     <color key="textColor" red="0.49803921568627452" green="0.49803921568627452" blue="0.49803921568627452" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="每次投資金額下限" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jzR-pC-laH">
+                                    <rect key="frame" x="10" y="46" width="180" height="26"/>
+                                    <fontDescription key="fontDescription" name="PingFangTC-Semibold" family="PingFang TC" pointSize="18"/>
+                                    <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aEc-Ai-l3H">
@@ -232,13 +237,24 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Jg-gL-OaS">
+                                    <rect key="frame" x="200" y="46" width="47" height="26"/>
+                                    <fontDescription key="fontDescription" name="PingFangTC-Semibold" family="PingFang TC" pointSize="18"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstAttribute="bottom" secondItem="jzR-pC-laH" secondAttribute="bottom" constant="10" id="8GN-rw-ChU"/>
+                                <constraint firstItem="7Jg-gL-OaS" firstAttribute="centerY" secondItem="jzR-pC-laH" secondAttribute="centerY" id="KAF-hO-4fs"/>
                                 <constraint firstItem="aEc-Ai-l3H" firstAttribute="leading" secondItem="q3Y-Db-HrP" secondAttribute="trailing" constant="10" id="Lxd-g4-d0D"/>
+                                <constraint firstItem="7Jg-gL-OaS" firstAttribute="leading" secondItem="jzR-pC-laH" secondAttribute="trailing" constant="10" id="WOR-69-dAf"/>
                                 <constraint firstItem="q3Y-Db-HrP" firstAttribute="top" secondItem="qlt-pq-u6i" secondAttribute="top" constant="10" id="eT0-p4-Zlg"/>
-                                <constraint firstAttribute="bottom" secondItem="q3Y-Db-HrP" secondAttribute="bottom" constant="10" id="mFU-JB-glu"/>
+                                <constraint firstItem="jzR-pC-laH" firstAttribute="top" secondItem="q3Y-Db-HrP" secondAttribute="bottom" constant="10" id="jaw-Gl-gmS"/>
                                 <constraint firstItem="aEc-Ai-l3H" firstAttribute="centerY" secondItem="q3Y-Db-HrP" secondAttribute="centerY" id="vX0-Gk-RSB"/>
+                                <constraint firstItem="jzR-pC-laH" firstAttribute="leading" secondItem="qlt-pq-u6i" secondAttribute="leading" constant="10" id="vxu-tO-HyD"/>
+                                <constraint firstItem="jzR-pC-laH" firstAttribute="width" secondItem="q3Y-Db-HrP" secondAttribute="width" id="zEq-t1-J45"/>
                                 <constraint firstItem="q3Y-Db-HrP" firstAttribute="leading" secondItem="qlt-pq-u6i" secondAttribute="leading" constant="10" id="zHo-nt-BJG"/>
                             </constraints>
                         </view>
@@ -299,7 +315,8 @@
             </constraints>
             <connections>
                 <outlet property="m_lbAmount" destination="FfN-0H-BNo" id="RXB-ob-BSQ"/>
-                <outlet property="m_lbAmountLimit" destination="aEc-Ai-l3H" id="hcY-6g-qHj"/>
+                <outlet property="m_lbAmountDownLimit" destination="7Jg-gL-OaS" id="vea-yx-yI9"/>
+                <outlet property="m_lbAmountUpLimit" destination="aEc-Ai-l3H" id="d8e-9Z-uKZ"/>
                 <outlet property="m_lbBasePrice" destination="t9H-ir-ocI" id="9A8-4l-xJn"/>
                 <outlet property="m_lbDate" destination="Vet-VU-BRB" id="VOf-7J-Mwe"/>
                 <outlet property="m_lbDown" destination="ExL-5g-RWA" id="sPL-Ne-ibr"/>

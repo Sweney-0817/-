@@ -12,15 +12,14 @@ let AccountInfomation_CellTitle = ["帳號","幣別","總公克數"]
 class GPAccountInfomationViewController: BaseViewController {
 
     @IBOutlet var m_tvAccountInfomation: UITableView!
-    var m_aryAccountInfomation: [[String:String]] = [[String:String]]()
+    var m_aryActList : [AccountStruct] = [AccountStruct]()
     var curExpandCell:IndexPath? = nil          // 目前展開的cell
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.initTableView()
-//        self.send_getActList()
-        self.send_test()
+        getTransactionID("10002", TransactionID_Description)
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,22 +42,17 @@ class GPAccountInfomationViewController: BaseViewController {
     
     // MARK:- WebService Methods
     private func makeFakeData() {
-        m_aryAccountInfomation.removeAll()
-        var temp : [String:String] = [String:String]()
+        m_aryActList.removeAll()
         for i in 0..<20 {
-            temp["Act"] = String.init(format: "%05d", i)
-            temp["Currency"] = "TWD"
-            temp["Amount"] = String.init(format: "%dg", i*100+10)
-            m_aryAccountInfomation.append(temp)
+            let actNO = String.init(format: "%05d", i)
+            let curcd = "TWD"
+            let bal = String.init(format: "%dg", i*100+10)
+            m_aryActList.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ""))
         }
     }
-    //for test
-    func send_test() {
-        postRequest("QR/QR0101", "QR0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"getTerms","TransactionId":"2017070600000001","LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
-    }
-    func send_getActList() {
-        self.makeFakeData()
-//        postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+    func send_getGoldList() {
+//        self.makeFakeData()
+        postRequest("Gold/Gold0201", "Gold0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10002","Operate":"getGoldList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
@@ -66,18 +60,25 @@ class GPAccountInfomationViewController: BaseViewController {
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
                 setLoading(true)
-                self.send_getActList()
+                self.send_getGoldList()
             }
             else {
                 super.didResponse(description, response)
             }
-        case "checkQRCode":
-            performSegue(withIdentifier: "GoScanResult", sender: nil)
-        case "checkPayTaxCode":
-            performSegue(withIdentifier: "GoScanResult", sender: nil)
-        case "QR0101":
-            NSLog("%@", response)
-        default: super.didResponse(description, response)
+        case "Gold0201":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:Any]] {
+                m_aryActList.removeAll()
+                for actInfo in result {
+                    if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String {
+                        m_aryActList.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ""))
+                    }
+                }
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_No_TaskId)
+            }
+        default:
+            super.didResponse(description, response)
         }
     }
     // MARK:- Handle Actions
@@ -85,7 +86,7 @@ class GPAccountInfomationViewController: BaseViewController {
 }
 extension GPAccountInfomationViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return m_aryAccountInfomation.count
+        return m_aryActList.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_OverviewCell.NibName()!, for: indexPath) as! OverviewCell
@@ -93,9 +94,9 @@ extension GPAccountInfomationViewController : UITableViewDelegate, UITableViewDa
         cell.title2Label.text = AccountInfomation_CellTitle[1]
         cell.title3Label.text = AccountInfomation_CellTitle[2]
         
-        cell.detail1Label.text = m_aryAccountInfomation[indexPath.row]["Act"] ?? ""
-        cell.detail2Label.text = m_aryAccountInfomation[indexPath.row]["Currency"] ?? ""
-        cell.detail3Label.text = m_aryAccountInfomation[indexPath.row]["Amount"] ?? ""
+        cell.detail1Label.text = m_aryActList[indexPath.row].accountNO
+        cell.detail2Label.text = m_aryActList[indexPath.row].currency
+        cell.detail3Label.text = m_aryActList[indexPath.row].balance
 
         cell.AddExpnadBtn(self, indexPath)
         if curExpandCell == indexPath {

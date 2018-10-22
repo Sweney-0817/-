@@ -56,10 +56,11 @@ class GPAcceptRulesViewController: BaseViewController {
             controller.setData(act, currency, transOutAct, date)
         case "showChange":
             let controller = segue.destination as! GPRegularChangeViewController
-            let act: String = data.m_accountStruct.accountNO
-            let transOutAct: String = data.m_strTransOutAct
-            let date: String = data.m_settingData.m_strDate
-            controller.setData(act, transOutAct, date)
+//            let act: String = data.m_accountStruct.accountNO
+//            let transOutAct: String = data.m_strTransOutAct
+//            let date: String = data.m_settingData.m_strDate
+//            controller.setData(act, transOutAct, date)
+            controller.setData(data)
         default:
             return
         }

@@ -13,6 +13,8 @@ class GPRegularSubscriptionViewController: BaseViewController {
     var m_strCurrency: String = ""
     var m_strTransOutAct: String = ""
     var m_strTradeDate: String = ""
+    var m_strBuyAmount: String = ""
+    var m_bIsSameAmount: Bool = true
     @IBOutlet var m_vButtonView: UIView!
     @IBOutlet var m_btnSameAmount: UIButton!
     @IBOutlet var m_btnSameQuantity: UIButton!
@@ -50,7 +52,9 @@ class GPRegularSubscriptionViewController: BaseViewController {
     }
     // MARK:- UI Methods
     private func changeFunction(_ isSameAmount:Bool) {
-        if isSameAmount {
+        m_bIsSameAmount = isSameAmount
+        m_strBuyAmount = ""
+        if m_bIsSameAmount {
             m_btnSameAmount.backgroundColor = Green_Color
             m_btnSameAmount.setTitleColor(.white, for: .normal)
             m_btnSameQuantity.backgroundColor = .white
@@ -68,7 +72,44 @@ class GPRegularSubscriptionViewController: BaseViewController {
         }
     }
     // MARK:- Logic Methods
-    
+    func enterConfirmView_SameAmount() {
+        var data : [String:String] = [String:String]()
+        data["WorkCode"] = "10008"
+        data["Operate"] = "commitTxn"
+        data["TransactionId"] = transactionId
+        data["REFNO"] = m_strGPAct
+        data["INVACT"] = m_strTransOutAct
+        data["DD"] = m_strTradeDate
+        data["AMT"] = m_strBuyAmount
+        let confirmRequest = RequestStruct(strMethod: "Gold/Gold0401", strSessionDescription: "Gold0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+        
+        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+        dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: m_strGPAct])
+        dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: m_strCurrency])
+        dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: m_strTransOutAct])
+        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: m_strTradeDate])
+        dataConfirm.list?.append([Response_Key: "投資金額", Response_Value: m_strBuyAmount])
+        enterConfirmResultController(true, dataConfirm, true)
+    }
+    func enterConfirmView_SameQuantity() {
+        var data : [String:String] = [String:String]()
+        data["WorkCode"] = "10010"
+        data["Operate"] = "commitTxn"
+        data["TransactionId"] = transactionId
+        data["REFNO"] = m_strGPAct
+        data["INVACT"] = m_strTransOutAct
+        data["DD"] = m_strTradeDate
+        data["QTY"] = m_strBuyAmount
+        let confirmRequest = RequestStruct(strMethod: "Gold/Gold0403", strSessionDescription: "Gold0403", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+        
+        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+        dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: m_strGPAct])
+        dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: m_strCurrency])
+        dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: m_strTransOutAct])
+        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: m_strTradeDate])
+        dataConfirm.list?.append([Response_Key: "投資數量", Response_Value: m_strBuyAmount])
+        enterConfirmResultController(true, dataConfirm, true)
+    }
     // MARK:- WebService Methods
     
     // MARK:- Handle Actions
@@ -81,6 +122,12 @@ class GPRegularSubscriptionViewController: BaseViewController {
         self.changeFunction(false)
     }
     @IBAction func m_btnNextClick(_ sender: Any) {
+        if (m_bIsSameAmount) {
+            self.enterConfirmView_SameAmount()
+        }
+        else {
+            self.enterConfirmView_SameQuantity()
+        }
     }
     override func clickBackBarItem() {
         for vc in (self.navigationController?.viewControllers)! {
@@ -97,15 +144,14 @@ extension GPRegularSubscriptionViewController : UITextFieldDelegate {
             return false
         }
         
-//        let newLength = (textField.text?.count)! - range.length + string.count
-//        let maxLength = Max_MobliePhone_Length
-//        if newLength <= maxLength {
-//            m_strInputAmount = newString
-//            self.checkBtnConfirm()
+        let newLength = (textField.text?.count)! - range.length + string.count
+        let maxLength = Max_GoldGram_Length
+        if newLength <= maxLength {
+            m_strBuyAmount = newString
             return true
-//        }
-//        else {
-//            return false
-//        }
+        }
+        else {
+            return false
+        }
     }
 }

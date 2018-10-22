@@ -26,8 +26,22 @@ class QRPayViewController: BaseViewController {
 //        self.initScanView()
         getTransactionID("09002", TransactionID_Description)
     }
+    
+    func appWillEnterBackground(_ notification:NSNotification) {
+        stopScan()
+    }
+    
+    func appWillEnterForeground(_ notification:NSNotification) {
+        if (m_bIsLoadFromAlbum == false) {
+            startScan()
+        }
+        m_bIsLoadFromAlbum = false
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         NSLog("======== QRPayViewController viewDidAppear ========")
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterBackground(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         super.viewDidAppear(animated)
         if (m_bIsLoadFromAlbum == false) {
             startScan()
@@ -35,6 +49,10 @@ class QRPayViewController: BaseViewController {
         m_bIsLoadFromAlbum = false
     }
     override func viewDidDisappear(_ animated: Bool) {
+        
+        NotificationCenter.default.removeObserver(self, name:NSNotification.Name.UIApplicationWillResignActive, object:nil)
+        NotificationCenter.default.removeObserver(self, name:NSNotification.Name.UIApplicationDidBecomeActive, object:nil)
+        
         stopScan()
         super.viewDidDisappear(animated)
     }
@@ -140,6 +158,20 @@ class QRPayViewController: BaseViewController {
         }
         return false
     }
+    func resizeImage(image: UIImage, ratio: CGFloat) -> UIImage? {
+        let newWidth = image.size.width * ratio
+        let newHeight = image.size.height * ratio
+        let newSize: CGSize = CGSize(width: newWidth, height: newHeight)
+        
+        let rect: CGRect = CGRect(origin: .zero, size: newSize)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, UIScreen.main.scale)
+        image.draw(in: rect)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
     
     // MARK:- WebService Methods
     private func send_checkQRCode() {
@@ -200,14 +232,30 @@ class QRPayViewController: BaseViewController {
                 super.didResponse(description, response)
             }
         case "QR0201"://checkQRCode
-            performSegue(withIdentifier: "GoScanResult", sender: nil)
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String {
+                if returnCode == ReturnCode_Success {
+                    performSegue(withIdentifier: "GoScanResult", sender: nil)
+                }
+                else {
+                    if let type = response.object(forKey: "ActionType") as? String {
+                        switch type {
+                        case "showMsg":
+                            if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
+                                showAlert(title: UIAlert_Default_Title, msg: returnMsg, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: { self.startScan() }, cancelHandelr: {()})
+                                showErrorMessage(nil, returnMsg)
+                            }
+                        default:
+                            break
+                        }
+                    }
+                }
+            }
         case "checkPayTaxCode":
             performSegue(withIdentifier: "GoScanResult", sender: nil)
         default:
             super.didResponse(description, response)
         }
     }
-    
     // MARK:- Handle Actions
 //    @IBAction func m_btnAlbumClick(_ sender: Any) {
 //        let status: PHAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
@@ -227,14 +275,47 @@ extension QRPayViewController : UIImagePickerControllerDelegate, UINavigationCon
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         picker.dismiss(animated: true, completion: nil)
         let image : UIImage = info["UIImagePickerControllerOriginalImage"] as! UIImage
-        let strQRCode : String = ScanCodeView.detectQRCode(image)
+//        let strQRCode : String = ScanCodeView.detectQRCode(image)
+        var strQRCode : String = ScanCodeView.detectQRCode(image)
+        //0.75 0.5 0.4
+        var scale: CGFloat = 1.0
+        while strQRCode.isEmpty == true {
+            if (scale == 1.0) {
+                scale = 0.75
+            }
+            else if (scale == 0.75) {
+                scale = 0.5
+            }
+            else if (scale == 0.5) {
+                scale = 0.4
+            }
+            else if (scale == 0.4) {
+                scale = -1.0
+            }
+            
+            if (scale > 0) {
+//                scale -= 0.1
+                let tempImage = self.resizeImage(image: image, ratio: scale)
+                if (tempImage != nil) {
+                    strQRCode = ScanCodeView.detectQRCode(tempImage!)
+                }
+                else {
+                    break
+                }
+            }
+            else {
+                break
+            }
+        }
+        NSLog("偵測圖片[%@][%.1f]", strQRCode, scale)
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {() in
             self.analysisQRCode(strQRCode)
         })
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
-        startScan()
+//        startScan()
+        m_bIsLoadFromAlbum = false
     }
 }
 extension QRPayViewController : ScanCodeViewDelegate {
@@ -242,7 +323,7 @@ extension QRPayViewController : ScanCodeViewDelegate {
         m_bIsLoadFromAlbum = true
         if (self.checkPhotoAuthorize()) {
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
-                stopScan()
+//                stopScan()
                 let controller : UIImagePickerController = UIImagePickerController()
                 controller.delegate = self
                 controller.sourceType = UIImagePickerControllerSourceType.photoLibrary
@@ -254,11 +335,19 @@ extension QRPayViewController : ScanCodeViewDelegate {
         self.analysisQRCode(strQRCode)
     }
     func noPermission() {
+#if DEBUG
         let confirmHandler : ()->Void = {() in
             if (UIApplication.shared.canOpenURL(URL(string:"App-Prefs:root=com.agribank.mbank-sit")!)) {
                 UIApplication.shared.openURL(URL(string: "App-Prefs:root=com.agribank.mbank-sit")!)
             }
         }
+#else
+        let confirmHandler : ()->Void = {() in
+            if (UIApplication.shared.canOpenURL(URL(string:"App-Prefs:root=org.naffic.mbank")!)) {
+                UIApplication.shared.openURL(URL(string: "App-Prefs:root=org.naffic.mbank")!)
+            }
+        }
+#endif
         let cancelHandler : ()->Void = {()}
         showAlert(title: "尚未授權相機功能", msg: "請先至設定啟用相機權限", confirmTitle: "設定", cancleTitle: "取消", completionHandler: confirmHandler, cancelHandelr: cancelHandler)
     }

@@ -81,22 +81,45 @@ class GPGoldPriceViewController: BaseViewController {
         }
         m_tvContentView.reloadData()
     }
-    func send_getActList(_ start: Date, _ end: Date) {
-        self.makeFakeData(start, end)
-//        postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+    func send_queryData(_ start: Date, _ end: Date) {
+//        self.makeFakeData(start, end)
+        let fmt = DateFormatter()
+        fmt.dateFormat = "YYYY/MM/dd"
+        let startDate: String = fmt.string(from: start)
+        let endDate: String = fmt.string(from: end)
+
+        postRequest("Gold/Gold0501", "Gold0501", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10012","Operate":"queryData","SDAY":startDate,"EDAY":endDate], true), AuthorizationManage.manage.getHttpHead(true))
+    }
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case "Gold0501":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:String]] {
+                m_aryData.removeAll()
+                for data in result {
+                    if let DATE = data["DATE"], let TIME = data["TIME"], let SELL = data["SELL"], let BUY = data["BUY"] {
+                        m_aryData.append(GoldPriceData(m_strDate: DATE, m_strTime: TIME, m_strBuy: BUY, m_strSell: SELL))
+                    }
+                }
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_No_TaskId)
+            }
+        default:
+            super.didResponse(description, response)
+        }
     }
     // MARK:- Handle Actions
     @IBAction func m_btnTodayClick(_ sender: Any) {
         let start: Date = Date()
         let end: Date = Date()
         self.showDatePeriod("當日", start: start, end: end)
-        self.send_getActList(start, end)
+        self.send_queryData(start, end)
     }
     @IBAction func m_btnWeekClick(_ sender: Any) {
         let start: Date = NSCalendar.current.date(byAdding: .day, value: -7, to: Date())!
         let end: Date = Date()
         self.showDatePeriod("近7日", start: start, end: end)
-        self.send_getActList(start, end)
+        self.send_queryData(start, end)
     }
     @IBAction func m_btnCustomizeClick(_ sender: Any) {
         let curDate = InputDatePickerStruct(minDate: nil, maxDate: Date(), curDate: Date())
@@ -111,7 +134,7 @@ class GPGoldPriceViewController: BaseViewController {
                 }
                 else {
                     self.showDatePeriod("自訂", start: sDate!, end: eDate!)
-                    self.send_getActList(sDate!, eDate!)
+                    self.send_queryData(sDate!, eDate!)
                 }
             }
             view.addSubview(dateView)

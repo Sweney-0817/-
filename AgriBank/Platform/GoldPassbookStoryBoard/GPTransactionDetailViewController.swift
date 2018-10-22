@@ -8,17 +8,34 @@
 
 import UIKit
 let TransactionDetail_CellTitle = ["交易日期", "更正記號", "交易量", "餘額(g)"]
-let TransactionDetailDetail_CellTitle = ["交易時間", "交易序號", "更正記號", "借貸", "交易量", "單價", "餘額(g)"]
+
+struct GPTransactionDetailData {
+    ///日期
+    var TXDAY: String = ""
+    ///更正
+    var HCODE: String = ""
+    ///借貸
+    var CRDB: String = ""
+    ///交易公克數
+    var TXQTY: String = ""
+    ///餘額(公克)
+    var AVBAL: String = ""
+    ///交易序號
+    var SEQ: String = ""
+    ///單價
+    var VALUE: String = ""
+}
 class GPTransactionDetailViewController: BaseViewController {
     @IBOutlet var m_vActView: UIView!
     @IBOutlet var m_vTopView: UIView!
     @IBOutlet var m_lbTitle: UILabel!
     @IBOutlet var m_lbDate: UILabel!
     @IBOutlet var m_tvContentView: UITableView!
-    var m_aryActList: [String] = [String]()
-    var m_aryData: [[String:String]] = [[String:String]]()
-    var m_strCurDetail: String? = nil
-    var m_dicDetail: [String:[[String:String]]] = [String:[[String:String]]]()
+    var m_iActIndex: Int = -1
+    var m_aryActList : [AccountStruct] = [AccountStruct]()
+    var m_aryData: [GPTransactionDetailData] = [GPTransactionDetailData]()
+//    var m_strCurDetail: String? = nil
+//    var m_dicDetail: [String:[[String:String]]] = [String:[[String:String]]]()
     var m_uiActView: OneRowDropDownView? = nil
 
     override func viewDidLoad() {
@@ -27,7 +44,7 @@ class GPTransactionDetailViewController: BaseViewController {
         // Do any additional setup after loading the view.
         initActView()
         initTableView()
-        send_getActList()
+        send_getGoldList()
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,8 +75,8 @@ class GPTransactionDetailViewController: BaseViewController {
     func showActList() {
         if (m_aryActList.count > 0) {
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
-            for act in m_aryActList {
-                actSheet.addButton(withTitle: act)
+            for actInfo in m_aryActList {
+                actSheet.addButton(withTitle: actInfo.accountNO)
             }
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
@@ -76,87 +93,147 @@ class GPTransactionDetailViewController: BaseViewController {
         let endDate: String = fmt.string(from: end)
         m_lbDate.text = "\(startDate) - \(endDate)"
     }
-    func showDetail(_ serial: String) {
-        m_strCurDetail = serial
-        if (m_dicDetail[m_strCurDetail!] == nil) {
-            self.send_getTransactionDetailDetail(m_strCurDetail!)
-        }
-        else {
-            performSegue(withIdentifier: "showDetail", sender: nil)
-        }
+    func showDetail(_ index: Int) {
+//        m_strCurDetail = serial
+//        if (m_dicDetail[m_strCurDetail!] == nil) {
+//            self.send_getTransactionDetailDetail(m_strCurDetail!)
+//        }
+//        else {
+            performSegue(withIdentifier: "showDetail", sender: m_aryData[index])
+//        }
     }
     // MARK:- Logic Methods
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let data: GPTransactionDetailData = sender as! GPTransactionDetailData
         super.prepare(for: segue, sender: sender)
         let controller = segue.destination as! GPTransactionDetailDetailViewController
-        controller.setData(m_dicDetail[m_strCurDetail!]!)
+        controller.setData(data)
     }
     // MARK:- WebService Methods
-    private func makeFakeAct() {
-        m_aryActList.removeAll()
-        for i in 0..<20 {
-            m_aryActList.append(String.init(format: "%05d", i))
-        }
+//    private func makeFakeAct() {
+//        m_aryActList.removeAll()
+//        for i in 0..<20 {
+//            let actNO = String.init(format: "%05d", i)
+//            let curcd = "TWD"
+//            let bal = String.init(format: "%dg", i*100+10)
+//            m_aryActList.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ""))
+//        }
+//    }
+//    private func makeFakeTransactionDetail(_ start: Date, _ end: Date) {
+//        m_aryData.removeAll()
+//        var date = start // first date
+//        let endDate = end // last date
+//
+//        // Formatter for printing the date, adjust it according to your needs:
+//        let fmt = DateFormatter()
+//        fmt.dateFormat = "YYYY/MM/dd"
+//
+//        while date <= endDate {
+//            var dicData: [String: String] = [String: String]()
+//            dicData["title"] = (Int(Date().timeIntervalSince1970) % 2 == 0) ? "買進量" : "賣出量"
+//            dicData["date"] = fmt.string(from: date)
+//            dicData["mark"] = (Int(Date().timeIntervalSince1970) % 2 == 0) ? "更" : "-"
+//            dicData["amount"] = String(format: "%d", arc4random_uniform(100))
+//            dicData["balance"] = String(format: "%d", arc4random_uniform(10))
+//            dicData["serial"] = String(format: "%d", arc4random_uniform(10))
+//
+//            date = NSCalendar.current.date(byAdding: .day, value: 1, to: date)!
+//            m_aryData.append(dicData)
+//        }
+//        m_tvContentView.reloadData()
+//    }
+//    private func makeFakeTransactionDetailDetail(_ serial: String) {
+//        var aryData: [[String:String]] = [[String:String]]()
+//        for key in TransactionDetailDetail_CellTitle {
+//            var dicData: [String:String] = [String:String]()
+//            dicData[Response_Key] = key
+//            dicData[Response_Value] = String(format: "[%@][%@]", key, serial)
+//            aryData.append(dicData)
+//        }
+//        m_dicDetail[serial] = aryData
+//    }
+    func send_getGoldList() {
+//        self.makeFakeData()
+        postRequest("Gold/Gold0201", "Gold0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10002","Operate":"getGoldList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
     }
-    private func makeFakeTransactionDetail(_ start: Date, _ end: Date) {
-        m_aryData.removeAll()
-        var date = start // first date
-        let endDate = end // last date
-        
-        // Formatter for printing the date, adjust it according to your needs:
+    func send_getGoldInfo(_ start: Date, _ end: Date) {
         let fmt = DateFormatter()
         fmt.dateFormat = "YYYY/MM/dd"
-        
-        while date <= endDate {
-            var dicData: [String: String] = [String: String]()
-            dicData["title"] = (Int(Date().timeIntervalSince1970) % 2 == 0) ? "買進量" : "賣出量"
-            dicData["date"] = fmt.string(from: date)
-            dicData["mark"] = (Int(Date().timeIntervalSince1970) % 2 == 0) ? "更" : "-"
-            dicData["amount"] = String(format: "%d", arc4random_uniform(100))
-            dicData["balance"] = String(format: "%d", arc4random_uniform(10))
-            dicData["serial"] = String(format: "%d", arc4random_uniform(10))
-            
-            date = NSCalendar.current.date(byAdding: .day, value: 1, to: date)!
-            m_aryData.append(dicData)
+        let startDate: String = fmt.string(from: start)
+        let endDate: String = fmt.string(from: end)
+
+        postRequest("Gold/Gold0202", "Gold0202", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10003","Operate":"getGoldInfo","TransactionId":transactionId, "REFNO":m_aryActList[m_iActIndex].accountNO,"INQSDY":startDate,"INQEDY":endDate], true), AuthorizationManage.manage.getHttpHead(true))
+    }
+//    func send_getTransactionDetail(_ start: Date, _ end: Date) {
+//        self.makeFakeTransactionDetail(start, end)
+//        //        postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+//    }
+//    func send_getTransactionDetailDetail(_ serial: String) {
+//        self.makeFakeTransactionDetailDetail(serial)
+//        performSegue(withIdentifier: "showDetail", sender: nil)
+//    }
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                setLoading(true)
+                self.send_getGoldList()
+            }
+            else {
+                super.didResponse(description, response)
+            }
+        case "Gold0201":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:Any]] {
+                m_aryActList.removeAll()
+                for actInfo in result {
+                    if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String {
+                        m_aryActList.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ""))
+                    }
+                }
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_No_TaskId)
+            }
+        case "Gold0202":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:String]] {
+                m_aryData.removeAll()
+                for data in result {
+                    if let TXDAY = data["TXDAY"], let HCODE = data["HCODE"], let CRDB = data["CRDB"], let TXQTY = data["TXQTY"], let AVBAL = data["AVBAL"], let SEQ = data["SEQ"], let VALUE = data["VALUE"] {
+                        m_aryData.append(GPTransactionDetailData(TXDAY: TXDAY, HCODE: HCODE, CRDB: CRDB, TXQTY: TXQTY, AVBAL: AVBAL, SEQ: SEQ, VALUE: VALUE))
+                    }
+                }
+            }
+        default:
+            super.didResponse(description, response)
         }
-        m_tvContentView.reloadData()
-    }
-    private func makeFakeTransactionDetailDetail(_ serial: String) {
-        var aryData: [[String:String]] = [[String:String]]()
-        for key in TransactionDetailDetail_CellTitle {
-            var dicData: [String:String] = [String:String]()
-            dicData[Response_Key] = key
-            dicData[Response_Value] = String(format: "[%@][%@]", key, serial)
-            aryData.append(dicData)
-        }
-        m_dicDetail[serial] = aryData
-    }
-    func send_getActList() {
-        self.makeFakeAct()
-        //        postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
-    }
-    func send_getTransactionDetail(_ start: Date, _ end: Date) {
-        self.makeFakeTransactionDetail(start, end)
-        //        postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
-    }
-    func send_getTransactionDetailDetail(_ serial: String) {
-        self.makeFakeTransactionDetailDetail(serial)
-        performSegue(withIdentifier: "showDetail", sender: nil)
     }
     // MARK:- Handle Actions
     @IBAction func m_btnTodayClick(_ sender: Any) {
+        guard m_iActIndex != -1 else {
+            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return
+        }
         let start: Date = Date()
         let end: Date = Date()
         self.showDatePeriod("當日", start: start, end: end)
-        self.send_getTransactionDetail(start, end)
+        self.send_getGoldInfo(start, end)
     }
     @IBAction func m_btnWeekClick(_ sender: Any) {
+        guard m_iActIndex != -1 else {
+            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return
+        }
         let start: Date = NSCalendar.current.date(byAdding: .day, value: -7, to: Date())!
         let end: Date = Date()
         self.showDatePeriod("近7日", start: start, end: end)
-        self.send_getTransactionDetail(start, end)
+        self.send_getGoldInfo(start, end)
     }
     @IBAction func m_btnCustomizeClick(_ sender: Any) {
+        guard m_iActIndex != -1 else {
+            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return
+        }
         let curDate = InputDatePickerStruct(minDate: nil, maxDate: Date(), curDate: Date())
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
             dateView.frame = view.frame
@@ -169,7 +246,7 @@ class GPTransactionDetailViewController: BaseViewController {
                 }
                 else {
                     self.showDatePeriod("自訂", start: sDate!, end: eDate!)
-                    self.send_getTransactionDetail(sDate!, eDate!)
+                    self.send_getGoldInfo(sDate!, eDate!)
                 }
             }
             view.addSubview(dateView)
@@ -180,7 +257,7 @@ extension GPTransactionDetailViewController : OneRowDropDownViewDelegate {
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         self.dismissKeyboard()
         if (m_aryActList.count == 0) {
-            self.send_getActList()
+            self.send_getGoldList()
         }
         else {
             self.showActList()
@@ -192,9 +269,9 @@ extension GPTransactionDetailViewController : UIActionSheetDelegate {
         if actionSheet.cancelButtonIndex != buttonIndex {
             switch (actionSheet.tag) {
             case ViewTag.View_AccountActionSheet.rawValue:
-                let iIndex : Int = buttonIndex - 1
-                let act : String = m_aryActList[iIndex]
-                m_uiActView?.setOneRow(GPAccountTitle, act)
+                self.m_iActIndex = buttonIndex - 1
+                let actInfo : AccountStruct = m_aryActList[self.m_iActIndex]
+                m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
             default:
                 break
             }
@@ -210,7 +287,7 @@ extension GPTransactionDetailViewController : UITableViewDelegate, UITableViewDa
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_GPTransactionDetailCell.NibName()!, for: indexPath) as! GPTransactionDetailCell
-        cell.set(m_aryData[indexPath.row], self.showDetail(_:))
+        cell.set(m_aryData[indexPath.row], self.showDetail(_:), indexPath.row)
         cell.selectionStyle = .none
         return cell
     }

@@ -397,8 +397,9 @@ class ExchangeRateCell: UITableViewCell {
 }
 
 class GPTransactionDetailCell: UITableViewCell {
-    var m_dicData: [String:String] = [String:String]()
-    var getDetail: ((String)->())? = nil
+//    var m_dicData: [String:String] = [String:String]()
+    var m_objDetailData: GPTransactionDetailData? = nil
+    var getDetail: ((Int)->())? = nil
     @IBOutlet var m_lbAmountTitle: UILabel!
     @IBOutlet var m_lbTradeDate: UILabel!
     @IBOutlet var m_lbCheckMark: UILabel!
@@ -410,21 +411,22 @@ class GPTransactionDetailCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    func set(_ data: [String:String], _ getDetail: ((String)->())?) {
-        m_dicData = data
-        m_lbAmountTitle.text = m_dicData["title"]
-        m_lbTradeDate.text = m_dicData["date"]
-        m_lbCheckMark.text = m_dicData["mark"]
-        m_lbAmount.text = m_dicData["amount"]
-        m_lbBalance.text = m_dicData["balance"]
+    func set(_ data: GPTransactionDetailData, _ getDetail: ((Int)->())?, _ tag: Int) {
+        m_objDetailData = data
         self.getDetail = getDetail
+        m_lbAmountTitle.text = m_objDetailData?.CRDB == "1" ? "賣出量" : "買進量"
+        m_lbTradeDate.text = m_objDetailData?.TXDAY
+        m_lbCheckMark.text = m_objDetailData?.HCODE == "0" ? "-" : "更"
+        m_lbAmount.text = m_objDetailData?.TXQTY
+        m_lbBalance.text = m_objDetailData?.AVBAL
+        self.tag = tag
     }
     @IBAction func m_btnDetailClick(_ sender: Any) {
         guard self.getDetail != nil else {
-            NSLog("GPTransactionDetailCell[%@]", m_dicData["serial"]!)
+            NSLog("GPTransactionDetailCell[%d]", self.tag)
             return
         }
-        self.getDetail!(m_dicData["serial"]!)
+        self.getDetail!(self.tag)
     }
 }
 

@@ -39,7 +39,7 @@ class ScanResultViewController: BaseViewController {
         self.addGestureForKeyBoard()
         self.setShadowView(m_vButtonView)
         self.makeShowData()
-        self.checkBtnConfirm()
+//        self.checkBtnConfirm()
         self.send_getActList()
         self.send_QueryData()
     }
@@ -84,9 +84,29 @@ class ScanResultViewController: BaseViewController {
         }
     }
 // MARK:- Logic Methods
+    func checkInput() -> Bool {
+        if (m_uiActView?.getContentByType(.First) == Choose_Title) {
+            showAlert(title: nil, msg: "請選擇帳戶", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return false
+        }
+        if (m_strInputAmount.isEmpty == true) {
+            showAlert(title: nil, msg: "請輸入金額", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return false
+        }
+        if (Int(m_strInputAmount) == 0) {
+            showAlert(title: nil, msg: "輸入金額不得0元", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return false
+        }
+        if (Int(m_strInputAmount) == 0) {
+            showAlert(title: nil, msg: "輸入金額不得小於0元", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return false
+        }
+        return true
+    }
     func checkBtnConfirm() {
         if ((m_uiActView?.getContentByType(.First) != Choose_Title) &&
-            (m_strInputAmount.isEmpty == false)) {
+            (m_strInputAmount.isEmpty == false) &&
+            Int(m_strInputAmount)! > 0) {
             m_btnConfirm.isEnabled = true
         }
         else {
@@ -130,7 +150,7 @@ class ScanResultViewController: BaseViewController {
 //        temp[Response_Key] = "類別"
 //        temp[Response_Value] = "消費購物"
 //        m_aryShowData.append(temp)
-        
+
         if ((m_qrpInfo?.merchantName()) != nil) {
             temp[Response_Key] = "商店名稱"
             temp[Response_Value] = m_qrpInfo?.merchantName()
@@ -465,7 +485,7 @@ class ScanResultViewController: BaseViewController {
         }
         //支付工具型態欄位
         if (m_qrpInfo?.paymentType() != nil) {
-            if (m_qrpInfo?.paymentType() == "01") {
+            if (m_qrpInfo?.paymentType() == "00" || m_qrpInfo?.paymentType() == "01") {
                 body["processingCode"] = "2541"
             }
             else if (m_qrpInfo?.paymentType() == "02") {
@@ -497,7 +517,7 @@ class ScanResultViewController: BaseViewController {
             body["INBANK"] = m_qrpInfo?.acqBank()
         }
         //轉帳金額
-        body["TXAMT"] = m_strInputAmount + "00"
+        body["TXAMT"] = String(Int(m_strInputAmount) ?? 0) + "00"
         //特店名稱
         if ((m_qrpInfo?.merchantName()) != nil) {
             body["merchantName"] = m_qrpInfo?.merchantName()
@@ -562,7 +582,7 @@ class ScanResultViewController: BaseViewController {
         }
         //支付工具型態欄位
         if (m_qrpInfo?.paymentType() != nil) {
-            if (m_qrpInfo?.paymentType() == "01") {
+            if (m_qrpInfo?.paymentType() == "00" || m_qrpInfo?.paymentType() == "01") {
                 body["processingCode"] = "2541"
             }
             else if (m_qrpInfo?.paymentType() == "02") {
@@ -659,6 +679,9 @@ class ScanResultViewController: BaseViewController {
     // MARK:- Handle Actions
     @IBAction func m_btnConfirmClick(_ sender: Any) {
         dismissKeyboard()
+        guard self.checkInput() else {
+            return
+        }
         NSLog("Input[%@]", m_strInputAmount)
         makeConfirmData()
     }
@@ -693,31 +716,13 @@ class ScanResultViewController: BaseViewController {
             type = ""
         }
         postRequest("QR/QR0601", "QR0601", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09006","Operate":"queryData","Type":type], true), AuthorizationManage.manage.getHttpHead(true))
-     
     }
+    
     private func send_PurchaseConfirm(_ data:[String:String]) {
         setLoading(true)
         postRequest("QR/QR0401", "QR0401", AuthorizationManage.manage.converInputToHttpBody(data, true), AuthorizationManage.manage.getHttpHead(true))
-//        let confirmRequest = RequestStruct(strMethod: "QR/QR0402", strSessionDescription: "QR0402", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: TIME_OUT_125)
     }
     private func send_TransPurchaseConfirm(_ data:[String:String]) {
-        //for test
-//        let confirmRequest = RequestStruct(strMethod: "QR/QR0302", strSessionDescription: "QR0302", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: TIME_OUT_125)
-//        var data = makePurchaseConfirmData()
-//        data["Operate"] = "commitTxn"
-//        data["taskId"] = "1"
-//        data["otp"] = "1234"
-//
-////        var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: data, task: nil)
-//        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
-//        dataConfirm.list?.append([Response_Key: "商店名稱", Response_Value:data["merchantName"] ?? ""])
-//        dataConfirm.list?.append([Response_Key: "特店代號", Response_Value:data["merchantId"] ?? ""])
-//        dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:data["INACT"] ?? ""])
-//        dataConfirm.list?.append([Response_Key: "訂單編號", Response_Value:data["orderNumber"] ?? ""])
-////        enterConfirmOTPController(dataConfirm, true)
-//        enterConfirmResultController(true, dataConfirm, true)
-//        return
-        
         setLoading(true)
         postRequest("QR/QR0301", "QR0301", AuthorizationManage.manage.converInputToHttpBody(data, true), AuthorizationManage.manage.getHttpHead(true))
     }
@@ -762,6 +767,10 @@ class ScanResultViewController: BaseViewController {
             else {
                 showErrorMessage(nil, ErrorMsg_No_TaskId)
             }
+        case "QR0401":
+            break
+        case "QR0501":
+            break
         case "QR0601":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 let content = data["Content"] as? String
@@ -794,7 +803,7 @@ extension ScanResultViewController : UIActionSheetDelegate {
                 let act : String = info.accountNO
                 let amount : String = info.balance
                 m_uiActView?.setTwoRow(NTTransfer_OutAccount, act, NTTransfer_Balance, amount)
-                self.checkBtnConfirm()
+//                self.checkBtnConfirm()
             default:
                 break
             }
@@ -836,7 +845,7 @@ extension ScanResultViewController : UITextFieldDelegate {
         let maxLength = Max_MobliePhone_Length
         if newLength <= maxLength {
             m_strInputAmount = newString
-            self.checkBtnConfirm()
+//            self.checkBtnConfirm()
             return true
         }
         else {
@@ -852,5 +861,6 @@ extension ScanResultViewController : UIWebViewDelegate {
         let fittingSize = self.m_wvMemo.sizeThatFits(CGSize(width: 0, height: 0))
         frame.size = fittingSize
         self.m_wvMemo.frame = frame
+        m_consMemoHeight.constant = fittingSize.height
     }
 }

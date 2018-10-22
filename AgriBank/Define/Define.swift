@@ -501,6 +501,7 @@ let Max_Account_Length:Int = 16     // 輸入轉入帳號長度
 let NewInput_MinLength:Int = 8      // 新輸入代號or密碼最小長度
 let NewInput_MaxLength:Int = 16     // 新輸入代號or密碼最大長度
 let Max_Amount_Length:Int = 9       // 輸入金額最大長度
+let Max_GoldGram_Length:Int = 9     // 黃金最大克數
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "agriBank_iOS"
@@ -531,6 +532,29 @@ struct AccountStruct {
     var currency = ""
     var balance = ""
     var status = ""
+}
+
+struct GPActInfo {  //黃金存摺帳戶對應的約定轉帳戶
+    ///約定轉帳帳號
+    var PAYACT = ""
+    ///可用餘額
+    var AVBAL = ""
+    ///風險評量分數
+    var SCORE = ""
+    ///風險評量建檔日
+    var CREDAY = ""
+}
+struct GPPriceInfo {//黃金牌告價格
+    ///牌告日期
+    var DATE = ""
+    ///牌告時間
+    var TIME = ""
+    ///牌次
+    var CNT = ""
+    ///銀行賣出價
+    var SELL = ""
+    ///銀行買入價
+    var BUY = ""
 }
 
 // MARK: - 電文定義

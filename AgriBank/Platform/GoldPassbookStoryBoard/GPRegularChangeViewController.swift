@@ -8,35 +8,54 @@
 
 import UIKit
 
-let settingList: [String] = ["不設定", "暫停扣款", "停止扣款"]
+let pauseDebit = "暫停扣款"
+let stopDebit = "停止扣款"
 
 class GPRegularChangeViewController: BaseViewController {
     var m_uiSettingView: OneRowDropDownView? = nil
     var m_uiPauseStartView: OneRowDropDownView? = nil
     var m_uiPauseEndView: OneRowDropDownView? = nil
-    var m_strGPAct: String = ""
-    var m_strTransOutAct: String = ""
-    var m_strTradeDate: String = ""
-    var m_strSetting: String = Choose_Title
+//    var m_bIsSameAmount: Bool = true
+//    var m_strGPAct: String = ""
+//    var m_strTransOutAct: String = ""
+//    var m_strTradeDate: String = ""
+    var m_objPassData: passData? = nil
+    var m_iSettingIndex: Int = 0
     var m_strPauseStart: String = Choose_Title
     var m_strPauseEnd: String = Choose_Title
+    var m_arySettingList: [String] = [String]()
+    var m_strBuyAmount: String = ""
 
     @IBOutlet var m_lbGPAct: UILabel!
     @IBOutlet var m_lbTransOutAct: UILabel!
     @IBOutlet var m_lbTradeDate: UILabel!
+    @IBOutlet var m_lbTradeTitle: UILabel!
     @IBOutlet var m_tfTradeInput: TextField!
+    @IBOutlet var m_lbTradeAmount: UILabel!
     @IBOutlet var m_vSettingView: UIView!
     @IBOutlet var m_vPauseStartView: UIView!
+    @IBOutlet var m_vPauseStartBottomLine: UIView!
     @IBOutlet var m_vPauseEndView: UIView!
+    @IBOutlet var m_vPauseEndBottomLine: UIView!
     @IBOutlet var m_lbCommand: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        m_lbGPAct.text = m_strGPAct
-        m_lbTransOutAct.text = m_strTransOutAct
-        m_lbTradeDate.text = m_strTradeDate
+        m_lbGPAct.text = m_objPassData?.m_accountStruct.accountNO
+        m_lbTransOutAct.text = m_objPassData?.m_strTransOutAct
+        m_lbTradeDate.text = m_objPassData?.m_settingData.m_strDate
+        if (m_objPassData?.m_settingData.m_strType == sameAmount) {
+            m_arySettingList = ["修改金額", pauseDebit, stopDebit]
+        }
+        else if (m_objPassData?.m_settingData.m_strType == sameQuantity) {
+            m_arySettingList = ["修改數量", pauseDebit, stopDebit]
+        }
+        else {
+            m_arySettingList = [m_objPassData?.m_settingData.m_strType, pauseDebit, stopDebit] as! [String]
+        }
+        
         initSettingView()
         initPauseStartView()
         initPauseEndView()
@@ -49,17 +68,15 @@ class GPRegularChangeViewController: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
     // MARK:- Init Methods
-    func setData(_ GPAct: String, _ transOutAct: String, _ tradeDate: String) {
-        m_strGPAct = GPAct
-        m_strTransOutAct = transOutAct
-        m_strTradeDate = tradeDate
+    func setData(_ data: passData) {
+        m_objPassData = data
     }
     private func initSettingView() {
         m_uiSettingView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
         m_uiSettingView?.delegate = self
         m_uiSettingView?.frame = m_vSettingView.frame
         m_uiSettingView?.frame.origin = .zero
-        m_uiSettingView?.setOneRow("扣款設定", m_strSetting)
+        m_uiSettingView?.setOneRow("扣款設定", m_arySettingList[m_iSettingIndex])
         m_uiSettingView?.m_lbFirstRowTitle.textAlignment = .center
         m_vSettingView.addSubview(m_uiSettingView!)
     }
@@ -84,14 +101,104 @@ class GPRegularChangeViewController: BaseViewController {
     // MARK:- UI Methods
     func showSettingList() {
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
-            for setting in settingList {
+            for setting in m_arySettingList {
                 actSheet.addButton(withTitle: setting)
             }
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
     }
+    func changeView(_ setting: String) {
+        if (setting == pauseDebit) {
+            m_tfTradeInput.text = ""
+            m_tfTradeInput.isHidden = true
+            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!
+            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount
+            m_lbTradeAmount.isHidden = false
+            m_vPauseStartView.isHidden = false
+            m_vPauseStartBottomLine.isHidden = false
+            m_vPauseEndView.isHidden = false
+            m_vPauseEndBottomLine.isHidden = false
+        }
+        else if (setting == stopDebit) {
+            m_tfTradeInput.text = ""
+            m_tfTradeInput.isHidden = true
+            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!
+            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount
+            m_lbTradeAmount.isHidden = false
+            m_vPauseStartView.isHidden = true
+            m_vPauseStartBottomLine.isHidden = true
+            m_vPauseEndView.isHidden = true
+            m_vPauseEndBottomLine.isHidden = true
+        }
+        else {
+            m_tfTradeInput.text = m_objPassData?.m_settingData.m_strAmount
+            m_tfTradeInput.isHidden = false
+            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!
+            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount
+            m_lbTradeAmount.isHidden = true
+            m_vPauseStartView.isHidden = true
+            m_vPauseStartBottomLine.isHidden = true
+            m_vPauseEndView.isHidden = true
+            m_vPauseEndBottomLine.isHidden = true
+        }
+    }
     // MARK:- Logic Methods
-    
+    func enterConfirmView_SameAmount() {
+        var data : [String:String] = [String:String]()
+        data["WorkCode"] = "10009"
+        data["Operate"] = "commitTxn"
+        data["TransactionId"] = transactionId
+        data["REFNO"] = m_objPassData?.m_accountStruct.accountNO
+        data["INVACT"] = m_objPassData?.m_strTransOutAct
+        data["DD"] = m_objPassData?.m_settingData.m_strDate
+        data["AMT"] = m_strBuyAmount
+        data["SETUP"] = String(m_iSettingIndex)
+        if (m_iSettingIndex == 1) {
+            data["STPSDAY"] = m_strPauseStart
+            data["STPEDAY"] = m_strPauseEnd
+        }
+        let confirmRequest = RequestStruct(strMethod: "Gold/Gold0402", strSessionDescription: "Gold0402", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+        
+        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+        dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: (m_objPassData?.m_accountStruct.accountNO)!])
+        dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: (m_objPassData?.m_strTransOutAct)!])
+        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)!])
+        dataConfirm.list?.append([Response_Key: "投資金額", Response_Value: (m_objPassData?.m_settingData.m_strAmount)!])
+        dataConfirm.list?.append([Response_Key: "扣款設定", Response_Value: m_arySettingList[m_iSettingIndex]])
+        if (m_iSettingIndex == 1) {
+            dataConfirm.list?.append([Response_Key: "暫停起日", Response_Value: m_strPauseStart])
+            dataConfirm.list?.append([Response_Key: "暫停訖日", Response_Value: m_strPauseEnd])
+        }
+        enterConfirmResultController(true, dataConfirm, true)
+    }
+    func enterConfirmView_SameQuantity() {
+        var data : [String:String] = [String:String]()
+        data["WorkCode"] = "10011"
+        data["Operate"] = "commitTxn"
+        data["TransactionId"] = transactionId
+        data["REFNO"] = m_objPassData?.m_accountStruct.accountNO
+        data["INVACT"] = m_objPassData?.m_strTransOutAct
+        data["DD"] = m_objPassData?.m_settingData.m_strDate
+        data["QTY"] = m_strBuyAmount
+        data["SETUP"] = String(m_iSettingIndex)
+        if (m_iSettingIndex == 1) {
+            data["STPSDAY"] = m_strPauseStart
+            data["STPEDAY"] = m_strPauseEnd
+        }
+        let confirmRequest = RequestStruct(strMethod: "Gold/Gold0404", strSessionDescription: "Gold0404", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+        
+        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+        dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: (m_objPassData?.m_accountStruct.accountNO)!])
+        dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: (m_objPassData?.m_strTransOutAct)!])
+        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)!])
+        dataConfirm.list?.append([Response_Key: "投資數量", Response_Value: (m_objPassData?.m_settingData.m_strAmount)!])
+        dataConfirm.list?.append([Response_Key: "扣款設定", Response_Value: m_arySettingList[m_iSettingIndex]])
+        if (m_iSettingIndex == 1) {
+            dataConfirm.list?.append([Response_Key: "暫停起日", Response_Value: m_strPauseStart])
+            dataConfirm.list?.append([Response_Key: "暫停訖日", Response_Value: m_strPauseEnd])
+        }
+        enterConfirmResultController(true, dataConfirm, true)
+    }
     // MARK:- WebService Methods
     
     // MARK:- Handle Actions
@@ -139,8 +246,9 @@ extension GPRegularChangeViewController : UIActionSheetDelegate {
         if actionSheet.cancelButtonIndex != buttonIndex {
             switch (actionSheet.tag) {
             case ViewTag.View_AccountActionSheet.rawValue:
-                let iIndex : Int = buttonIndex - 1
-                m_uiSettingView?.setOneRow("扣款設定", settingList[iIndex])
+                m_iSettingIndex = buttonIndex - 1
+                m_uiSettingView?.setOneRow("扣款設定", m_arySettingList[m_iSettingIndex])
+                self.changeView(m_arySettingList[m_iSettingIndex])
             default:
                 break
             }
@@ -154,14 +262,14 @@ extension GPRegularChangeViewController : UITextFieldDelegate {
             return false
         }
         
-//        let newLength = (textField.text?.count)! - range.length + string.count
-//        let maxLength = Max_MobliePhone_Length
-//        if newLength <= maxLength {
-//            m_strBuyGram = newString
+        let newLength = (textField.text?.count)! - range.length + string.count
+        let maxLength = Max_GoldGram_Length
+        if newLength <= maxLength {
+            m_strBuyAmount = newString
             return true
-//        }
-//        else {
-//            return false
-//        }
+        }
+        else {
+            return false
+        }
     }
 }

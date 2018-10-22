@@ -561,7 +561,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         AuthorizationManage.manage.setLoginStatus(true)
                         if curFeatureID != nil {
                             enterFeatureByID(curFeatureID!, true)
-                            curFeatureID = nil
+                            if (curFeatureID != .FeatureID_QRPay && curFeatureID != .FeatureID_QRCodeTrans) {
+                                curFeatureID = nil
+                            }
                         }
                         
                     case Account_Status_ForcedChange_Password:
@@ -725,7 +727,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
              "USIF0102","USIF0201","USIF0301",
              "COMM0102","COMM0801","COMM0103","QR0302":
             didResponse(description, response)
-            
+        case "QR0201"://checkQRCode 自行處理回來的結果(因為有錯誤時，關閉alert後要重啟相機)
+            didResponse(description, response)
         default:
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String {
                 if returnCode == ReturnCode_Success {
@@ -788,10 +791,6 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     /*  登入失敗，需要重取圖形驗證碼 */
                     if description == "COMM0101" {
                         getImageConfirm()
-                    }
-                    //checkQRCode回錯時須重啟相機
-                    if (description == "QR0201") {
-                        (self as! QRPayViewController).startScan()
                     }
                 }
             }

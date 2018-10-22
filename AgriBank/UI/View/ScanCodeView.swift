@@ -242,7 +242,6 @@ extension ScanCodeView {
             if qrp?.txnCurrencyCode() != nil && qrp?.txnCurrencyCode() != "901" {
                 type = ""
                 error = String(format: "尚不支援此交易幣別(%@)", (qrp?.txnCurrencyCode())!)
-//                showAlert(title: nil, msg: String(format: "尚不支援此交易幣別(%@)", (m_qrpInfo?.txnCurrencyCode())!), confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
             }
             else {
                 switch (qrp?.transactionType)! {
