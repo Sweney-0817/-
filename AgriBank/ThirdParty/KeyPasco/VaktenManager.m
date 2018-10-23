@@ -15,7 +15,8 @@ static NSString *const kCustomerID = @"agribank.com.tw";
 static NSString *const kAppLable = @"AGRIBANK-APPLICATION";
 
 #if DEBUG
-static NSString *const kDefaultKAPI = @"http://172.16.132.52/OTP";
+//static NSString *const kDefaultKAPI = @"http://172.16.132.52/OTP";
+static NSString *const kDefaultKAPI = @"http://mbapiqa.naffic.org.tw/OTP";
 static NSString *const kCredentialFile =  @"agribank_dev_credential";
 static NSString *const kAppConstFile = @"agribank_dev_app_const";
 static NSString *const kApiKeyFile = @"1-proto5-pub";

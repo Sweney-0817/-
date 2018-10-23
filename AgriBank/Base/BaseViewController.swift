@@ -11,9 +11,9 @@ import UIKit
 
 #if DEBUG
 let URL_PROTOCOL = "http"
-let URL_DOMAIN = "172.16.132.52/APP/api"
+let URL_DOMAIN = "mbapiqa.naffic.org.tw/APP/api"
 //for test
-//let URL_DOMAIN = "122.147.4.202/FFICMAPI/api"
+//let URL_DOMAIN = "122.147.4.202/FFICMAPI/api"//Roy測試假電文
 #else
 let URL_PROTOCOL = "https"
 let URL_DOMAIN = "mbapi.naffic.org.tw/APP/api"
