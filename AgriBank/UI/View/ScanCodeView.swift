@@ -33,6 +33,9 @@ class ScanCodeView: UIView {
     }
     
     func startScan() {
+        guard scanning == false else {
+            return
+        }
         NSLog("======== ScanCodeView startScan ========")
         let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
         var input: AVCaptureDeviceInput? = nil
@@ -66,6 +69,9 @@ class ScanCodeView: UIView {
         scanning = true
     }
     func stopScan() {
+        guard scanning == true else {
+            return
+        }
         NSLog("======== ScanCodeView stopScan ========")
         scanning = false
         stopNotification()

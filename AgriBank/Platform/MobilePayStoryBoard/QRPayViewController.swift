@@ -304,7 +304,8 @@ extension QRPayViewController : UIImagePickerControllerDelegate, UINavigationCon
                 }
             }
             else {
-                break
+                self.showAlert(title: nil, msg: "QR Code解析錯誤-請協助確認條碼是否清晰並排除圖片中非條碼的圖片內容", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: { self.startScan() }, cancelHandelr: {()})
+                return
             }
         }
         NSLog("偵測圖片[%@][%.1f]", strQRCode, scale)
