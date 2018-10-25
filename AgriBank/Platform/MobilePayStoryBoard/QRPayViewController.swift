@@ -143,6 +143,7 @@ class QRPayViewController: BaseViewController {
     
     // MARK:- WebService Methods
     private func send_checkQRCode() {
+        self.setLoading(true)
         var body: [String:String] = [String:String]()
         body["WorkCode"] = "09002"
         body["Operate"] = "QRConfirm"
@@ -188,6 +189,7 @@ class QRPayViewController: BaseViewController {
         self.didResponse("checkPayTaxCode", [String:String]() as NSDictionary)
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
+        self.setLoading(false)
         switch description {
         case TransactionID_Description:
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {

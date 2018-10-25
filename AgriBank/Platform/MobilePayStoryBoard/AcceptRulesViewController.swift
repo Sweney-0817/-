@@ -24,7 +24,6 @@ class AcceptRulesViewController: BaseViewController {
             showErrorMessage("錯誤", "沒帶FeatureID")
             return
         }
-//        enterFeatureByID(m_nextFeatureID!, false)
         self.send_confirm()
     }
     
@@ -32,21 +31,19 @@ class AcceptRulesViewController: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-//        m_wvContent.loadRequest(URLRequest.init(url: URL.init(string: "https://www.google.com")!))
         let content: String = AuthorizationManage.manage.getQRPAcception().Content
         m_wvContent.loadHTMLString(content, baseURL: nil)
     }
     func send_confirm() {
+        self.setLoading(true)
         let version: String = AuthorizationManage.manage.getQRPAcception().Version
         postRequest("QR/QR0102", "QR0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"termsConfirm","TransactionId":transactionId,"Version":version,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
+        self.setLoading(false)
         switch description {
         case "QR0102":
-//            if let data = response.object(forKey: ReturnData_Key) as? [String:String] {
-//                AuthorizationManage.manage.setQRPAcception(data)
-                enterFeatureByID(m_nextFeatureID!, true)
-//            }
+            enterFeatureByID(m_nextFeatureID!, true)
             break
         default:
             super.didResponse(description, response)

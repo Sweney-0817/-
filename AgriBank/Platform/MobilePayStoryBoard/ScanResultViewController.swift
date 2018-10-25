@@ -698,10 +698,12 @@ class ScanResultViewController: BaseViewController {
         }
     }
     func send_getActList() {
+        self.setLoading(true)
 //        self.makeFakeData()
         postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
     }
     func send_QueryData() {
+        self.setLoading(true)
         var type: String = ""
         switch m_strType {
         case "51":// 轉帳購貨:T
@@ -735,6 +737,7 @@ class ScanResultViewController: BaseViewController {
         postRequest("QR/QR0501", "QR0501", AuthorizationManage.manage.converInputToHttpBody(data, true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
+        self.setLoading(false)
         switch description {
         case "ACCT0101":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
@@ -776,7 +779,6 @@ class ScanResultViewController: BaseViewController {
                 let content = data["Content"] as? String
                 m_wvMemo.loadHTMLString(content!, baseURL: nil)
             }
-            
         default:
             super.didResponse(description, response)
         }

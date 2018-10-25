@@ -589,7 +589,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                             DispatchQueue.main.async {
                                 if self.curFeatureID != nil {
                                     self.enterFeatureByID(self.curFeatureID!, true)
-                                    self.curFeatureID = nil
+                                    if (self.curFeatureID != .FeatureID_QRPay && self.curFeatureID != .FeatureID_QRCodeTrans) {
+                                        self.curFeatureID = nil
+                                    }
                                 }
                                 else {
                                     if self is HomeViewController {
@@ -668,7 +670,6 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                     self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
                                 case .FeatureID_QRCodeTrans?, .FeatureID_QRPay?:
                                     self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
-//                                    self.postRequest("QR/QR0101", "QR0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"getTerms","TransactionId":tranId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
                                 default:
                                     break
                                 }
