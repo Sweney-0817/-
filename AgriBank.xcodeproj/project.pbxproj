@@ -155,8 +155,6 @@
 		BED66B9D2110135600D0D5D4 /* GPRegularChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B9C2110135600D0D5D4 /* GPRegularChangeViewController.swift */; };
 		BED66B9F2110139800D0D5D4 /* GPTransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B9E2110139800D0D5D4 /* GPTransactionDetailViewController.swift */; };
 		BED66BA1211013F200D0D5D4 /* GPGoldPriceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66BA0211013F200D0D5D4 /* GPGoldPriceViewController.swift */; };
-		BEE052E521352B5F003DC364 /* ScanCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE052E321352B5F003DC364 /* ScanCodeViewController.swift */; };
-		BEE052E621352B5F003DC364 /* ScanCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEE052E421352B5F003DC364 /* ScanCodeViewController.xib */; };
 		BEF0D9D220E24D0500BC9833 /* MobilePay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEF0D9D020E24D0500BC9833 /* MobilePay.storyboard */; };
 		BEF0D9D520E2512D00BC9833 /* AcceptRulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF0D9D420E2512D00BC9833 /* AcceptRulesViewController.swift */; };
 		BEF0D9D720E2519000BC9833 /* QRCodeTransViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF0D9D620E2519000BC9833 /* QRCodeTransViewController.swift */; };
@@ -348,8 +346,6 @@
 		BED66B9C2110135600D0D5D4 /* GPRegularChangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPRegularChangeViewController.swift; path = Platform/GoldPassbookStoryBoard/GPRegularChangeViewController.swift; sourceTree = "<group>"; };
 		BED66B9E2110139800D0D5D4 /* GPTransactionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPTransactionDetailViewController.swift; path = Platform/GoldPassbookStoryBoard/GPTransactionDetailViewController.swift; sourceTree = "<group>"; };
 		BED66BA0211013F200D0D5D4 /* GPGoldPriceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPGoldPriceViewController.swift; path = Platform/GoldPassbookStoryBoard/GPGoldPriceViewController.swift; sourceTree = "<group>"; };
-		BEE052E321352B5F003DC364 /* ScanCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScanCodeViewController.swift; path = Platform/MobilePayStoryBoard/ScanCodeViewController.swift; sourceTree = "<group>"; };
-		BEE052E421352B5F003DC364 /* ScanCodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ScanCodeViewController.xib; path = Platform/MobilePayStoryBoard/ScanCodeViewController.xib; sourceTree = "<group>"; };
 		BEF0D9D120E24D0500BC9833 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MobilePay.storyboard; sourceTree = "<group>"; };
 		BEF0D9D420E2512D00BC9833 /* AcceptRulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AcceptRulesViewController.swift; path = Platform/MobilePayStoryBoard/AcceptRulesViewController.swift; sourceTree = "<group>"; };
 		BEF0D9D620E2519000BC9833 /* QRCodeTransViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QRCodeTransViewController.swift; path = Platform/MobilePayStoryBoard/QRCodeTransViewController.swift; sourceTree = "<group>"; };
@@ -891,8 +887,6 @@
 				BEF0D9D620E2519000BC9833 /* QRCodeTransViewController.swift */,
 				BEF0D9D820E251DD00BC9833 /* QRPayViewController.swift */,
 				BE4E901920F70D6400EDDEEA /* ScanResultViewController.swift */,
-				BEE052E321352B5F003DC364 /* ScanCodeViewController.swift */,
-				BEE052E421352B5F003DC364 /* ScanCodeViewController.xib */,
 			);
 			name = MobilePayStoryBoard;
 			sourceTree = "<group>";
@@ -1017,7 +1011,6 @@
 				614FB42B1EF9039400DDD270 /* ResultCell.xib in Resources */,
 				615A77FD1FB4371000D0D03C /* agribank_pro_app_const.bin in Resources */,
 				BE86EE8F1F135292003C7A36 /* CustomerService.storyboard in Resources */,
-				BEE052E621352B5F003DC364 /* ScanCodeViewController.xib in Resources */,
 				BEF0D9D220E24D0500BC9833 /* MobilePay.storyboard in Resources */,
 				6148DA281EDFE7A400C02CA3 /* BannerView.xib in Resources */,
 				BE4E900820ECDBFF00EDDEEA /* ResultEditCell.xib in Resources */,
@@ -1155,7 +1148,6 @@
 				6148DA081EDFE6E500C02CA3 /* BaseViewController.swift in Sources */,
 				61564A881F09E7D900CB6C4A /* ThreeRowDropDownView.swift in Sources */,
 				6129E6B21F038E7900C23D67 /* DebitCardLoseApplyViewController.swift in Sources */,
-				BEE052E521352B5F003DC364 /* ScanCodeViewController.swift in Sources */,
 				BE86EE9A1F135857003C7A36 /* WebContentViewController.swift in Sources */,
 				6125ABF21EF5509C00A2A9A3 /* TextField.swift in Sources */,
 				BEB38A6A1F0A27EE006094AC /* BillPaymentViewController.swift in Sources */,

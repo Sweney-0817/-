@@ -22,8 +22,6 @@ class QRPayViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        self.initScanView()
         getTransactionID("09002", TransactionID_Description)
     }
     
@@ -49,7 +47,6 @@ class QRPayViewController: BaseViewController {
         m_bIsLoadFromAlbum = false
     }
     override func viewDidDisappear(_ animated: Bool) {
-        
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name.UIApplicationWillResignActive, object:nil)
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name.UIApplicationDidBecomeActive, object:nil)
         
@@ -58,7 +55,6 @@ class QRPayViewController: BaseViewController {
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK:- Init Methods
@@ -127,34 +123,6 @@ class QRPayViewController: BaseViewController {
             
         default:
             showAlert(title: nil, msg: "無相簿權限", confirmTitle: "確認", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
-//            ()
-//        DispatchQueue.main.async(execute: { () -> Void in
-//            let alertController = UIAlertController(title: "照片访问受限",
-//                                                    message: "点击“设置”，允许访问您的照片",
-//                                                    preferredStyle: .alert)
-//
-//            let cancelAction = UIAlertAction(title:"取消", style: .cancel, handler:nil)
-//
-//            let settingsAction = UIAlertAction(title:"设置", style: .default, handler: {
-//                (action) -> Void in
-//                let url = URL(string: UIApplicationOpenSettingsURLString)
-//                if let url = url, UIApplication.shared.canOpenURL(url) {
-//                    if #available(iOS 10, *) {
-//                        UIApplication.shared.open(url, options: [:],
-//                                                  completionHandler: {
-//                                                    (success) in
-//                        })
-//                    } else {
-//                        UIApplication.shared.openURL(url)
-//                    }
-//                }
-//            })
-//
-//            alertController.addAction(cancelAction)
-//            alertController.addAction(settingsAction)
-//
-//            self.present(alertController, animated: true, completion: nil)
-//        })
         }
         return false
     }
@@ -175,9 +143,6 @@ class QRPayViewController: BaseViewController {
     
     // MARK:- WebService Methods
     private func send_checkQRCode() {
-        //for test
-//        self.didResponse("QR0201", [String:String]() as NSDictionary)
-//        return
         var body: [String:String] = [String:String]()
         body["WorkCode"] = "09002"
         body["Operate"] = "QRConfirm"
@@ -274,48 +239,51 @@ class QRPayViewController: BaseViewController {
 extension QRPayViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         picker.dismiss(animated: true, completion: nil)
-        let image : UIImage = info["UIImagePickerControllerOriginalImage"] as! UIImage
-//        let strQRCode : String = ScanCodeView.detectQRCode(image)
-        var strQRCode : String = ScanCodeView.detectQRCode(image)
-        //0.75 0.5 0.4
-        var scale: CGFloat = 1.0
-        while strQRCode.isEmpty == true {
-            if (scale == 1.0) {
-                scale = 0.75
-            }
-            else if (scale == 0.75) {
-                scale = 0.5
-            }
-            else if (scale == 0.5) {
-                scale = 0.4
-            }
-            else if (scale == 0.4) {
-                scale = -1.0
-            }
-            
-            if (scale > 0) {
-//                scale -= 0.1
-                let tempImage = self.resizeImage(image: image, ratio: scale)
-                if (tempImage != nil) {
-                    strQRCode = ScanCodeView.detectQRCode(tempImage!)
+        self.setLoading(true)
+        DispatchQueue.main.async {
+            let image : UIImage = info["UIImagePickerControllerOriginalImage"] as! UIImage
+            var strQRCode : String = ScanCodeView.detectQRCode(image)
+            //0.75 0.5 0.4
+            var scale: CGFloat = 1.0
+            while strQRCode.isEmpty == true {
+                if (scale == 1.0) {
+                    scale = 0.75
+                }
+                else if (scale == 0.75) {
+                    scale = 0.5
+                }
+                else if (scale == 0.5) {
+                    scale = 0.4
+                }
+                else if (scale == 0.4) {
+                    scale = -1.0
+                }
+                
+                if (scale > 0) {
+                    //                scale -= 0.1
+                    let tempImage = self.resizeImage(image: image, ratio: scale)
+                    if (tempImage != nil) {
+                        strQRCode = ScanCodeView.detectQRCode(tempImage!)
+                    }
+                    else {
+                        break
+                    }
                 }
                 else {
-                    break
+                    self.showAlert(title: nil, msg: "QR Code解析錯誤-請協助確認條碼是否清晰並排除圖片中非條碼的圖片內容", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: { self.startScan() }, cancelHandelr: {()})
+                    self.setLoading(false)
+                    return
                 }
             }
-            else {
-                self.showAlert(title: nil, msg: "QR Code解析錯誤-請協助確認條碼是否清晰並排除圖片中非條碼的圖片內容", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: { self.startScan() }, cancelHandelr: {()})
-                return
-            }
+            self.setLoading(false)
+            NSLog("偵測圖片[%@][%.1f]", strQRCode, scale)
+            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {() in
+                self.analysisQRCode(strQRCode)
+            })
         }
-        NSLog("偵測圖片[%@][%.1f]", strQRCode, scale)
-        DispatchQueue.main.asyncAfter(deadline: .now(), execute: {() in
-            self.analysisQRCode(strQRCode)
-        })
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
-//        startScan()
         m_bIsLoadFromAlbum = false
     }
 }
@@ -324,7 +292,6 @@ extension QRPayViewController : ScanCodeViewDelegate {
         m_bIsLoadFromAlbum = true
         if (self.checkPhotoAuthorize()) {
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
-//                stopScan()
                 let controller : UIImagePickerController = UIImagePickerController()
                 controller.delegate = self
                 controller.sourceType = UIImagePickerControllerSourceType.photoLibrary
