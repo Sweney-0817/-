@@ -718,11 +718,6 @@ extension BaseViewController: ConnectionUtilityDelegate {
             }
             curFeatureID = nil
             tempTransactionId = ""
-                    navigationController?.pushViewController(controller, animated: true)
-                }
-            }
-            curFeatureID = nil
-            tempTransactionId = ""
         default: break
         }
     }
