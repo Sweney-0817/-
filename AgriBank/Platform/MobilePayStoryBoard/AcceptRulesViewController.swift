@@ -10,6 +10,7 @@ import UIKit
 
 class AcceptRulesViewController: BaseViewController {
     var m_nextFeatureID : PlatformFeatureID? = nil
+    var m_dicData : [String:String]? = nil
     @IBOutlet var m_wvContent: UIWebView!
     @IBOutlet var m_btnCheck: UIButton!
     @IBAction func m_btnCheckClick(_ sender: Any) {
@@ -31,12 +32,14 @@ class AcceptRulesViewController: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        let content: String = AuthorizationManage.manage.getQRPAcception().Content
+//        let content: String = AuthorizationManage.manage.getQRPAcception().Content
+        let content: String = m_dicData?["Content"] ?? ""
         m_wvContent.loadHTMLString(content, baseURL: nil)
     }
     func send_confirm() {
         self.setLoading(true)
-        let version: String = AuthorizationManage.manage.getQRPAcception().Version
+//        let version: String = AuthorizationManage.manage.getQRPAcception().Version
+        let version: String = m_dicData?["Version"] ?? ""
         postRequest("QR/QR0102", "QR0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"termsConfirm","TransactionId":transactionId,"Version":version,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {

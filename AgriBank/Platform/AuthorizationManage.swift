@@ -29,13 +29,13 @@ struct ResponseLoginInfo {
     var STATUS:String? = nil        // 帳戶狀態 
 }
 
-struct QRPAcception {
-    //for test
-//    var Read: String = "Y"
-    var Read: String = "N"
-    var Version: String = ""
-    var Content: String = ""
-}
+//struct QRPAcception {
+//    //for test
+////    var Read: String = "Y"
+//    var Read: String = "N"
+//    var Version: String = ""
+//    var Content: String = ""
+//}
 
 class AuthorizationManage {
     static let manage = AuthorizationManage()
@@ -52,7 +52,7 @@ class AuthorizationManage {
     private var canPayLoan = false                       // 是否可以「繳交放款本息」
     private var canChangeBaseInfo = false                // 是否可以「基本資料變更」
     //QRP同意條款狀態
-    private var m_qrpAcception: QRPAcception = QRPAcception()
+//    private var m_qrpAcception: QRPAcception = QRPAcception()
     
     
     func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
@@ -404,22 +404,22 @@ class AuthorizationManage {
         return temp
     }
 
-    func setQRPAcception(_ data:[String:String]) {
-        m_qrpAcception.Read = data["Read"] ?? "N"
-        m_qrpAcception.Version = data["Version"] ?? ""
-        m_qrpAcception.Content = data["Content"] ?? ""
-    }
+//    func setQRPAcception(_ data:[String:String]) {
+//        m_qrpAcception.Read = data["Read"] ?? "N"
+//        m_qrpAcception.Version = data["Version"] ?? ""
+//        m_qrpAcception.Content = data["Content"] ?? ""
+//    }
     
-    func getQRPAcception() -> QRPAcception {
-        return m_qrpAcception
-    }
+//    func getQRPAcception() -> QRPAcception {
+//        return m_qrpAcception
+//    }
     
-    func canEnterQRP() -> Bool {
-        if (m_qrpAcception.Read == "Y") {
-            return true
-        }
-        else {
-            return false
-        }
-    }
+//    func canEnterQRP() -> Bool {
+//        if (m_qrpAcception.Read == "Y") {
+//            return true
+//        }
+//        else {
+//            return false
+//        }
+//    }
 }

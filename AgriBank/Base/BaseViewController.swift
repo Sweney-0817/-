@@ -34,6 +34,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     var curFeatureID:PlatformFeatureID? = nil   // 即將要登入的功能ID
     var touchTap:UITapGestureRecognizer? = nil  // 手勢: 用來關閉Textfield
     var tempTransactionId = ""                  // 暫存「繳費」「繳稅」的transactionId
+    var m_bCanEnterQRP: Bool = false              // 暫存是否可進入QRP
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -159,13 +160,14 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                     if SecurityUtility.utility.isJailBroken() {
                         showErrorMessage(ErrorMsg_IsJailBroken, nil)
                     }
-                    else if AuthorizationManage.manage.canEnterQRP() == false {
+//                    else if AuthorizationManage.manage.canEnterQRP() == false {
+                    else if m_bCanEnterQRP == false {
                         getTransactionID("09001", BaseTransactionID_Description)
                         curFeatureID = ID
-                        
                     }
                     else {
                         canEnter = true
+                        m_bCanEnterQRP = false
                     }
                     //Guester 20180626 End
                     //Guester 20180731
@@ -700,14 +702,22 @@ extension BaseViewController: ConnectionUtilityDelegate {
 //            print(response)
         case "QR0101":
             if let data = response.object(forKey: ReturnData_Key) as? [String:String] {
-                AuthorizationManage.manage.setQRPAcception(data)
-                if (AuthorizationManage.manage.canEnterQRP()) {
+//                AuthorizationManage.manage.setQRPAcception(data)
+//                if (AuthorizationManage.manage.canEnterQRP()) {
+                if (data["Read"] == "Y") {
+                    m_bCanEnterQRP = true
                     enterFeatureByID(curFeatureID!, true)
                 }
                 else {
                     let controller = getControllerByID(.FeatureID_AcceptRules)
+                    (controller as! AcceptRulesViewController).m_dicData = data
                     (controller as! AcceptRulesViewController).m_nextFeatureID = curFeatureID
                     (controller as! AcceptRulesViewController).transactionId = tempTransactionId
+                    navigationController?.pushViewController(controller, animated: true)
+                }
+            }
+            curFeatureID = nil
+            tempTransactionId = ""
                     navigationController?.pushViewController(controller, animated: true)
                 }
             }
