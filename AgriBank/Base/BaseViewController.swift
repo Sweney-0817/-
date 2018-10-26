@@ -171,17 +171,15 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                     }
                     //Guester 20180626 End
                     //Guester 20180731
-                case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell, .FeatureID_GPRegularAccountInfomation:
-                    if let vc: GPAcceptRulesViewController = (self as? GPAcceptRulesViewController) {
-                        let nextFeatureID = vc.m_nextFeatureID
-                        if (nextFeatureID == ID) {
-                            break
-                        }
-                    }
+                case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell:
                     canEnter = false
-                    let controller = getControllerByID(.FeatureID_GPAcceptRules)
-                    (controller as! GPAcceptRulesViewController).m_nextFeatureID = ID
-                    navigationController?.pushViewController(controller, animated: true)
+                    if AuthorizationManage.manage.canEnterGold() == false {
+                        getTransactionID("10001", BaseTransactionID_Description)
+                        curFeatureID = ID
+                    }
+                    else {
+                        canEnter = true
+                    }
                     //Guester 20180731 End
                 default: break
                 }
@@ -653,7 +651,13 @@ extension BaseViewController: ConnectionUtilityDelegate {
 //            curFeatureID = nil
             
         case BaseTransactionID_Description:
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if (self.curFeatureID == .FeatureID_GPSingleBuy || self.curFeatureID == .FeatureID_GPSingleSell) {
+                if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                    tempTransactionId = tranId
+                    self.postRequest("Gold/Gold0101", "Gold0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10001","Operate":"getTerms","TransactionId":tempTransactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+            }
+            else if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 tempTransactionId = tranId
                 if let info = AuthorizationManage.manage.getResponseLoginInfo() {
                     setLoading(true)
@@ -713,6 +717,21 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     (controller as! AcceptRulesViewController).m_dicData = data
                     (controller as! AcceptRulesViewController).m_nextFeatureID = curFeatureID
                     (controller as! AcceptRulesViewController).transactionId = tempTransactionId
+                    navigationController?.pushViewController(controller, animated: true)
+                }
+            }
+            curFeatureID = nil
+            tempTransactionId = ""
+        case "Gold0101":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:String] {
+                AuthorizationManage.manage.setGoldAcception(data)
+                if (AuthorizationManage.manage.canEnterGold()) {
+                    enterFeatureByID(curFeatureID!, true)
+                }
+                else {
+                    let controller = getControllerByID(.FeatureID_GPAcceptRules)
+                    (controller as! GPAcceptRulesViewController).m_nextFeatureID = curFeatureID
+                    (controller as! GPAcceptRulesViewController).transactionId = tempTransactionId
                     navigationController?.pushViewController(controller, animated: true)
                 }
             }

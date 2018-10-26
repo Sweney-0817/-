@@ -15,11 +15,7 @@ class GPRegularChangeViewController: BaseViewController {
     var m_uiSettingView: OneRowDropDownView? = nil
     var m_uiPauseStartView: OneRowDropDownView? = nil
     var m_uiPauseEndView: OneRowDropDownView? = nil
-//    var m_bIsSameAmount: Bool = true
-//    var m_strGPAct: String = ""
-//    var m_strTransOutAct: String = ""
-//    var m_strTradeDate: String = ""
-    var m_objPassData: passData? = nil
+    var m_objPassData: GPPassData? = nil
     var m_iSettingIndex: Int = 0
     var m_strPauseStart: String = Choose_Title
     var m_strPauseEnd: String = Choose_Title
@@ -61,6 +57,7 @@ class GPRegularChangeViewController: BaseViewController {
         initPauseEndView()
 
         self.addGestureForKeyBoard()
+        self.changeView(m_arySettingList[m_iSettingIndex])
     }
 
     override func didReceiveMemoryWarning() {
@@ -68,7 +65,7 @@ class GPRegularChangeViewController: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
     // MARK:- Init Methods
-    func setData(_ data: passData) {
+    func setData(_ data: GPPassData) {
         m_objPassData = data
     }
     private func initSettingView() {
@@ -199,10 +196,39 @@ class GPRegularChangeViewController: BaseViewController {
         }
         enterConfirmResultController(true, dataConfirm, true)
     }
+
     // MARK:- WebService Methods
-    
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                if (m_objPassData?.m_settingData.m_strType == sameAmount) {
+                    enterConfirmView_SameAmount()
+                }
+                else if (m_objPassData?.m_settingData.m_strType == sameQuantity) {
+                    enterConfirmView_SameQuantity()
+                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+        default:
+            super.didResponse(description, response)
+        }
+    }
+
     // MARK:- Handle Actions
     @IBAction func m_btnNextClick(_ sender: Any) {
+        if (m_objPassData?.m_settingData.m_strType == sameAmount) {
+            getTransactionID("10009", TransactionID_Description)
+        }
+        else if (m_objPassData?.m_settingData.m_strType == sameQuantity) {
+            getTransactionID("10011", TransactionID_Description)
+        }
+        else {
+            return
+        }
     }
     override func clickBackBarItem() {
         for vc in (self.navigationController?.viewControllers)! {

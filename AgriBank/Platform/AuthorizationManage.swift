@@ -37,6 +37,14 @@ struct ResponseLoginInfo {
 //    var Content: String = ""
 //}
 
+struct GoldAcception {
+    //for test
+//    var Read: String = "Y"
+    var Read: String = "N"
+    var Version: String = ""
+    var Content: String = ""
+}
+
 class AuthorizationManage {
     static let manage = AuthorizationManage()
     private var authList:[PlatformFeatureID]? = nil      // 功能授權資料
@@ -53,7 +61,8 @@ class AuthorizationManage {
     private var canChangeBaseInfo = false                // 是否可以「基本資料變更」
     //QRP同意條款狀態
 //    private var m_qrpAcception: QRPAcception = QRPAcception()
-    
+    //黃金同意條款狀態
+    private var m_goldAcception: GoldAcception = GoldAcception()
     
     func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info
@@ -422,4 +431,23 @@ class AuthorizationManage {
 //            return false
 //        }
 //    }
+    
+    func setGoldAcception(_ data:[String:String]) {
+        m_goldAcception.Read = data["Read"] ?? "N"
+        m_goldAcception.Version = data["Version"] ?? ""
+        m_goldAcception.Content = data["Content"] ?? ""
+    }
+    
+    func getGoldAcception() -> GoldAcception {
+        return m_goldAcception
+    }
+    
+    func canEnterGold() -> Bool {
+        if (m_goldAcception.Read == "Y") {
+            return true
+        }
+        else {
+            return false
+        }
+    }
 }

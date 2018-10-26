@@ -27,7 +27,6 @@ class GPAccountInfomationViewController: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
     // MARK:- Init Methods
     private func initTableView() {
         m_tvAccountInfomation.delegate = self
@@ -51,10 +50,12 @@ class GPAccountInfomationViewController: BaseViewController {
         }
     }
     func send_getGoldList() {
+        self.setLoading(true)
 //        self.makeFakeData()
         postRequest("Gold/Gold0201", "Gold0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10002","Operate":"getGoldList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
+        self.setLoading(false)
         switch description {
         case TransactionID_Description:
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
@@ -66,13 +67,14 @@ class GPAccountInfomationViewController: BaseViewController {
                 super.didResponse(description, response)
             }
         case "Gold0201":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:Any]] {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:String]] {
                 m_aryActList.removeAll()
                 for actInfo in result {
-                    if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String {
+                    if let actNO = actInfo["ACTNO"], let curcd = actInfo["CURCD"], let bal = actInfo["BAL"] {
                         m_aryActList.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ""))
                     }
                 }
+                m_tvAccountInfomation.reloadData()
             }
             else {
                 showErrorMessage(nil, ErrorMsg_No_TaskId)

@@ -24,7 +24,7 @@ class GPSingleBuyViewController: BaseViewController {
         self.initActView()
         self.initTableView()
         self.addGestureForKeyBoard()
-        self.send_getGoldList()
+        getTransactionID("10007", TransactionID_Description)
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,8 +71,9 @@ class GPSingleBuyViewController: BaseViewController {
         guard m_objActInfo != nil && m_objPriceInfo != nil else {
             return
         }
-        let strPriceTime: String = m_objPriceInfo!.DATE + m_objPriceInfo!.TIME//牌告時間
-        let totalAmount: String = String(lround(Double(m_objPriceInfo!.SELL)! * Double(m_strBuyGram)!))//試算金額
+        let strPriceTime: String = m_objPriceInfo!.DATE + " " + m_objPriceInfo!.TIME//牌告時間
+        let dSell: Double = Double(m_objPriceInfo!.SELL.replacingOccurrences(of: ",", with: ""))!
+        let totalAmount: String = String(lround(dSell * Double(m_strBuyGram)!))//試算金額
 
         var data : [String:String] = [String:String]()
         data["WorkCode"] = "10007"
@@ -86,7 +87,7 @@ class GPSingleBuyViewController: BaseViewController {
         data["CNT"] = m_objPriceInfo!.CNT
         data["TXAMT"] = totalAmount
         data["DATE"] = strPriceTime
-        let confirmRequest = RequestStruct(strMethod: "Gold/Gold0303", strSessionDescription: "Gold0303", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+        let confirmRequest = RequestStruct(strMethod: "Gold/Gold0302", strSessionDescription: "Gold0302", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
         
         var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: m_aryActList[m_iActIndex].accountNO])
@@ -110,17 +111,29 @@ class GPSingleBuyViewController: BaseViewController {
         }
     }
     func send_getGoldList() {
+        self.setLoading(true)
 //        self.makeFakeData()
         postRequest("Gold/Gold0201", "Gold0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10002","Operate":"getGoldList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
     }
     func send_getGoldAcctInfo(_ act: String) {
+        self.setLoading(true)
         postRequest("Gold/Gold0203", "Gold0203", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10004","Operate":"getGoldAcctInfo","TransactionId":transactionId, "REFNO":act], true), AuthorizationManage.manage.getHttpHead(true))
     }
     func send_queryData(){
+        self.setLoading(true)
         postRequest("Gold/Gold0502", "Gold0502", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10013","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
+        self.setLoading(false)
         switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                self.send_getGoldList()
+            }
+            else {
+                super.didResponse(description, response)
+            }
         case "Gold0201":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:Any]] {
                 m_aryActList.removeAll()
@@ -181,7 +194,12 @@ extension GPSingleBuyViewController : UIActionSheetDelegate {
 }
 extension GPSingleBuyViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        if (m_iActIndex != -1 && m_aryActList.count > m_iActIndex) {
+            return 3
+        }
+        else {
+            return 0
+        }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.row {

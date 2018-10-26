@@ -12,11 +12,13 @@ class GPSingleSellViewController: BaseViewController {
     var m_uiActView: OneRowDropDownView? = nil
     var m_strSellGram: String = "0"
     var m_iActIndex: Int = -1
+    var m_bIsSellAll: Bool = false
     var m_aryActList : [AccountStruct] = [AccountStruct]()
     var m_objActInfo : GPActInfo? = nil
     var m_objPriceInfo : GPPriceInfo? = nil
     @IBOutlet var m_vActView: UIView!
     @IBOutlet var m_tvContentView: UITableView!
+    @IBOutlet var m_vSellAll: UIView!
     @IBOutlet var m_btnSellAll: UIButton!
 
     override func viewDidLoad() {
@@ -25,7 +27,7 @@ class GPSingleSellViewController: BaseViewController {
         self.initActView()
         self.initTableView()
         self.addGestureForKeyBoard()
-        self.send_getGoldList()
+        getTransactionID("10006", TransactionID_Description)
     }
 
     override func didReceiveMemoryWarning() {
@@ -73,8 +75,9 @@ class GPSingleSellViewController: BaseViewController {
         guard m_objActInfo != nil && m_objPriceInfo != nil else {
             return
         }
-        let strPriceTime: String = m_objPriceInfo!.DATE + m_objPriceInfo!.TIME//牌告時間
-        let totalAmount: String = String(lround(Double(m_objPriceInfo!.BUY)! * Double(m_strSellGram)!))//試算金額
+        let strPriceTime: String = m_objPriceInfo!.DATE + " " + m_objPriceInfo!.TIME//牌告時間
+        let dBuy: Double = Double(m_objPriceInfo!.BUY.replacingOccurrences(of: ",", with: ""))!
+        let totalAmount: String = String(lround(dBuy * Double(m_strSellGram)!))//試算金額
         
         var data : [String:String] = [String:String]()
         data["WorkCode"] = "10006"
@@ -94,7 +97,7 @@ class GPSingleSellViewController: BaseViewController {
         dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: m_aryActList[m_iActIndex].currency])
         dataConfirm.list?.append([Response_Key: "入款帳號", Response_Value: m_objActInfo!.PAYACT])
         dataConfirm.list?.append([Response_Key: "牌告時間", Response_Value: strPriceTime])
-        dataConfirm.list?.append([Response_Key: "參考價(1克)", Response_Value: m_objPriceInfo!.SELL])
+        dataConfirm.list?.append([Response_Key: "參考價(1克)", Response_Value: m_objPriceInfo!.BUY])
         dataConfirm.list?.append([Response_Key: "回售量(克)", Response_Value: m_strSellGram])
         dataConfirm.list?.append([Response_Key: "試算金額", Response_Value: totalAmount])
         enterConfirmResultController(true, dataConfirm, true)
@@ -110,17 +113,29 @@ class GPSingleSellViewController: BaseViewController {
         }
     }
     func send_getGoldList() {
+        self.setLoading(true)
 //        self.makeFakeData()
         postRequest("Gold/Gold0201", "Gold0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10002","Operate":"getGoldList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
     }
     func send_getGoldAcctInfo(_ act: String) {
+        self.setLoading(true)
         postRequest("Gold/Gold0203", "Gold0203", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10004","Operate":"getGoldAcctInfo","TransactionId":transactionId, "REFNO":act], true), AuthorizationManage.manage.getHttpHead(true))
     }
     func send_queryData(){
+        self.setLoading(true)
         postRequest("Gold/Gold0502", "Gold0502", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10013","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
+        self.setLoading(false)
         switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                self.send_getGoldList()
+            }
+            else {
+                super.didResponse(description, response)
+            }
         case "Gold0201":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:Any]] {
                 m_aryActList.removeAll()
@@ -153,7 +168,9 @@ class GPSingleSellViewController: BaseViewController {
         self.send_queryData()
     }
     @IBAction func m_btnSellAllClick(_ sender: Any) {
-        m_btnSellAll.isSelected = !m_btnSellAll.isSelected
+        m_bIsSellAll = !m_bIsSellAll
+        m_btnSellAll.isSelected = m_bIsSellAll
+        m_tvContentView.reloadData()
     }
 }
 extension GPSingleSellViewController : OneRowDropDownViewDelegate {
@@ -176,7 +193,11 @@ extension GPSingleSellViewController : UIActionSheetDelegate {
                 let actInfo : AccountStruct = m_aryActList[self.m_iActIndex]
                 m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
                 self.send_getGoldAcctInfo(actInfo.accountNO)
+                m_vSellAll.isHidden = false
+                m_bIsSellAll = false
+                m_btnSellAll.isSelected = m_bIsSellAll
             default:
+                m_vSellAll.isHidden = true
                 break
             }
         }
@@ -184,7 +205,12 @@ extension GPSingleSellViewController : UIActionSheetDelegate {
 }
 extension GPSingleSellViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        if (m_iActIndex != -1 && m_aryActList.count > m_iActIndex) {
+            return 3
+        }
+        else {
+            return 0
+        }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.row {
@@ -195,13 +221,20 @@ extension GPSingleSellViewController : UITableViewDelegate, UITableViewDataSourc
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
-            cell.set("轉出帳號", m_objActInfo?.PAYACT ?? "")
+            cell.set("入款帳號", m_objActInfo?.PAYACT ?? "")
             cell.selectionStyle = .none
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultEditCell.NibName()!, for: indexPath) as! ResultEditCell
-            cell.set("", placeholder: "請輸入申購數量(公克)")
+            cell.set("", placeholder: "請輸入回售量(公克)")
             cell.m_tfEditData.delegate = self
             cell.selectionStyle = .none
+            if (m_bIsSellAll == true) {
+                cell.m_tfEditData.isEnabled = false
+                cell.m_tfEditData.text = m_aryActList[m_iActIndex].balance
+            }
+            else {
+                cell.m_tfEditData.isEnabled = true
+            }
             return cell
         default:
             return UITableViewCell()

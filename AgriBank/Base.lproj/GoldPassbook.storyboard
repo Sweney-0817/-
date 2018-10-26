@@ -160,7 +160,7 @@
                                     <constraint firstItem="LTP-Ci-802" firstAttribute="centerY" secondItem="lNa-Bk-7hi" secondAttribute="centerY" id="oXS-7O-dBn"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WaJ-nA-eIh">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WaJ-nA-eIh">
                                 <rect key="frame" x="0.0" y="289" width="375" height="43"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ohb-9y-S09">
@@ -215,6 +215,7 @@
                         <outlet property="m_btnSellAll" destination="ohb-9y-S09" id="qtp-SG-pkm"/>
                         <outlet property="m_tvContentView" destination="Vmj-pB-0Cd" id="52f-58-Hkj"/>
                         <outlet property="m_vActView" destination="GgK-kC-vyH" id="NGy-qo-i5H"/>
+                        <outlet property="m_vSellAll" destination="WaJ-nA-eIh" id="5aj-gK-xlT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GPl-vo-Rly" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -322,7 +323,7 @@
                                                 <rect key="frame" x="0.0" y="120" width="375" height="154"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nfI-NV-neY">
-                                                        <rect key="frame" x="0.0" y="0.0" width="130.5" height="46"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="141.5" height="46"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="扣款日期" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ljZ-a6-u1N">
                                                                 <rect key="frame" x="15" y="10" width="72.5" height="26"/>
@@ -330,8 +331,8 @@
                                                                 <color key="textColor" red="0.49803921568627452" green="0.49803921568627452" blue="0.49803921568627452" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="6日" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uPE-26-dfE">
-                                                                <rect key="frame" x="101.5" y="10" width="29" height="26"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="06日" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uPE-26-dfE">
+                                                                <rect key="frame" x="101.5" y="10" width="40" height="26"/>
                                                                 <fontDescription key="fontDescription" name="PingFangTC-Semibold" family="PingFang TC" pointSize="18"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -817,6 +818,9 @@
                         <outlet property="m_lbAmountTitle3" destination="XWu-XU-245" id="86C-J2-LGb"/>
                         <outlet property="m_lbCommand" destination="FBZ-RW-PwU" id="x5u-8V-BOd"/>
                         <outlet property="m_lbCurrency" destination="tZB-2A-Hjd" id="IvT-7I-6QI"/>
+                        <outlet property="m_lbDate1" destination="uPE-26-dfE" id="Pg7-Qe-eLM"/>
+                        <outlet property="m_lbDate2" destination="RH1-Jq-kgN" id="gcN-FR-IfF"/>
+                        <outlet property="m_lbDate3" destination="7IN-dx-xxA" id="ysl-vz-Kvz"/>
                         <outlet property="m_lbStop1" destination="CAn-wD-eEt" id="dH3-jx-rdN"/>
                         <outlet property="m_lbStop2" destination="Q6Z-6a-Ubw" id="t0n-Xo-fmr"/>
                         <outlet property="m_lbStop3" destination="65C-u1-bvL" id="9Vh-wq-OsD"/>
@@ -829,8 +833,9 @@
                         <outlet property="m_lbType3" destination="2nn-Wt-TNZ" id="nKC-eF-g80"/>
                         <outlet property="m_svContent" destination="mA5-wa-Kv7" id="2qw-zd-Zy3"/>
                         <outlet property="m_vActView" destination="oPr-iY-AJf" id="DTx-vT-8vm"/>
-                        <segue destination="JeR-Jb-vvA" kind="show" identifier="showChange" id="CtQ-UR-AKg"/>
-                        <segue destination="JeR-Jb-vvA" kind="show" identifier="showBuy" id="gzV-Vy-8yx"/>
+                        <segue destination="JeR-Jb-vvA" kind="show" identifier="showAcceptRules" id="CtQ-UR-AKg"/>
+                        <segue destination="Rrc-H6-GTB" kind="show" identifier="showBuy" id="lAR-9G-jyr"/>
+                        <segue destination="wOj-gJ-tHX" kind="show" identifier="showChange" id="6Wl-Cd-3zd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TWH-pZ-syr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1672,14 +1677,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eGo-5o-InE">
                                 <rect key="frame" x="0.0" y="81" width="375" height="100"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="近一週(交易日)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mxf-co-cCQ">
-                                        <rect key="frame" x="15" y="13" width="120" height="25.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mxf-co-cCQ">
+                                        <rect key="frame" x="15" y="13" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="18"/>
                                         <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017/01/02 - 2017/01/08" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hrP-z2-2Gm">
-                                        <rect key="frame" x="135" y="13" width="225" height="25.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hrP-z2-2Gm">
+                                        <rect key="frame" x="15" y="13" width="345" height="0.0"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1851,14 +1856,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wka-7I-aiK">
                                 <rect key="frame" x="0.0" y="20" width="375" height="100"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="近一週(交易日)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VsF-Jv-URD">
-                                        <rect key="frame" x="15" y="13" width="120" height="25.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VsF-Jv-URD">
+                                        <rect key="frame" x="15" y="13" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="18"/>
                                         <color key="textColor" red="0.49803921568627452" green="0.49803921568627452" blue="0.49803921568627452" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017/01/02 - 2017/01/08" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VA3-2t-UnD">
-                                        <rect key="frame" x="135" y="13" width="225" height="25.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VA3-2t-UnD">
+                                        <rect key="frame" x="15" y="13" width="345" height="0.0"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -2060,6 +2065,7 @@
         <image name="Textfield" width="311" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gzV-Vy-8yx"/>
+        <segue reference="6Wl-Cd-3zd"/>
+        <segue reference="lAR-9G-jyr"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -44,7 +44,6 @@ extension GPTransactionDetailDetailViewController : UITableViewDelegate, UITable
         return TransactionDetailDetail_CellTitle.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let dicDeta: [String:String] = m_aryData[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
         var strTitle: String = TransactionDetailDetail_CellTitle[indexPath.row]
         var strValue: String = ""

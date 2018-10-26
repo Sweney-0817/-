@@ -8,7 +8,7 @@
 
 import UIKit
 //黃金存摺帳號下的定期申購設定
-struct settingData {
+struct GPSettingData {
     ///投資日(扣款日期)
     var m_strDate: String = ""
     ///投資方式
@@ -23,16 +23,17 @@ struct settingData {
     var m_objDiffAmount: DiffAmountDetail? = nil
 }
 //帶到申請或變更頁面的資訊
-struct passData {
+struct GPPassData {
 //    var m_strDate: String
     var m_accountStruct: AccountStruct
     var m_strTransOutAct: String
-    var m_settingData: settingData
+    var m_settingData: GPSettingData
 }
 let sameAmount = "定期定額"
 let sameQuantity = "定期定量"
 let diffAmount = "定期不定額"
 let amountTitle = "投資金額"
+let quantityTitle = "投資數量"
 let basePrice = "基準價格"
 let stopTitle = "暫停訖日"
 let diffAmountCommand = "此投資方式請洽臨櫃辦理"
@@ -43,7 +44,8 @@ class GPRegularAccountInfomationViewController: BaseViewController {
     var m_uiActView: OneRowDropDownView? = nil
     var m_iActIndex: Int = -1
     var m_aryActList: [AccountStruct] = [AccountStruct]()
-    var m_aryData: [settingData] = [settingData]()
+    var m_aryData: [GPSettingData] = [GPSettingData]()
+    var m_iBtnIndex: Int = -1
     var m_uiDiffAmountDetail: GPDiffAmountDetailView? = nil
     
     @IBOutlet var m_vActView: UIView!
@@ -53,6 +55,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
     
     @IBOutlet var m_lbAmountTitle1: UILabel!
     @IBOutlet var m_lbStopTitle1: UILabel!
+    @IBOutlet var m_lbDate1: UILabel!
     @IBOutlet var m_lbType1: UILabel!
     @IBOutlet var m_lbAmount1: UILabel!
     @IBOutlet var m_lbStop1: UILabel!
@@ -61,6 +64,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
     
     @IBOutlet var m_lbAmountTitle2: UILabel!
     @IBOutlet var m_lbStopTitle2: UILabel!
+    @IBOutlet var m_lbDate2: UILabel!
     @IBOutlet var m_lbType2: UILabel!
     @IBOutlet var m_lbAmount2: UILabel!
     @IBOutlet var m_lbStop2: UILabel!
@@ -69,6 +73,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
     
     @IBOutlet var m_lbAmountTitle3: UILabel!
     @IBOutlet var m_lbStopTitle3: UILabel!
+    @IBOutlet var m_lbDate3: UILabel!
     @IBOutlet var m_lbType3: UILabel!
     @IBOutlet var m_lbAmount3: UILabel!
     @IBOutlet var m_lbStop3: UILabel!
@@ -82,7 +87,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         // Do any additional setup after loading the view.
         self.initActView()
         m_svContent.isHidden = true
-        self.send_getGoldList()
+        getTransactionID("10005", TransactionID_Description)
     }
 
     override func didReceiveMemoryWarning() {
@@ -117,12 +122,13 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         }
     }
     func clearDate() {
-        setDate1(settingData())
-        setDate2(settingData())
-        setDate3(settingData())
+        setDate1(GPSettingData())
+        setDate2(GPSettingData())
+        setDate3(GPSettingData())
     }
-    func setDate1(_ data: settingData) {
+    func setDate1(_ data: GPSettingData) {
         m_lbType1.text = data.m_strType
+        m_lbDate1.text = data.m_strDate + "日"
         switch data.m_strType {
         case sameAmount:
             m_lbAmountTitle1.text = amountTitle
@@ -130,7 +136,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmount1.text = data.m_strAmount
             m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
         case sameQuantity:
-            m_lbAmountTitle1.text = amountTitle
+            m_lbAmountTitle1.text = quantityTitle
             m_lbStopTitle1.text = stopTitle
             m_lbAmount1.text = data.m_strAmount
             m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
@@ -154,8 +160,9 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_consStopHeight1.constant = 36
         }
     }
-    func setDate2(_ data: settingData) {
+    func setDate2(_ data: GPSettingData) {
         m_lbType2.text = data.m_strType
+        m_lbDate2.text = data.m_strDate + "日"
         switch data.m_strType {
         case sameAmount:
             m_lbAmountTitle2.text = amountTitle
@@ -163,7 +170,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmount2.text = data.m_strAmount
             m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
         case sameQuantity:
-            m_lbAmountTitle2.text = amountTitle
+            m_lbAmountTitle2.text = quantityTitle
             m_lbStopTitle2.text = stopTitle
             m_lbAmount2.text = data.m_strAmount
             m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
@@ -187,8 +194,9 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_consStopHeight2.constant = 36
         }
     }
-    func setDate3(_ data: settingData) {
+    func setDate3(_ data: GPSettingData) {
         m_lbType3.text = data.m_strType
+        m_lbDate3.text = data.m_strDate + "日"
         switch data.m_strType {
         case sameAmount:
             m_lbAmountTitle3.text = amountTitle
@@ -196,7 +204,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmount3.text = data.m_strAmount
             m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
         case sameQuantity:
-            m_lbAmountTitle3.text = amountTitle
+            m_lbAmountTitle3.text = quantityTitle
             m_lbStopTitle3.text = stopTitle
             m_lbAmount3.text = data.m_strAmount
             m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
@@ -220,7 +228,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_consStopHeight3.constant = 36
         }
     }
-    func showDiffAmountDetail(_ data: settingData) {
+    func showDiffAmountDetail(_ data: GPSettingData) {
         guard data.m_objDiffAmount != nil else {
             return
         }
@@ -233,40 +241,45 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         }
     }
     // MARK:- Logic Methods
-    func processBtnClick(_ data: settingData) {
+    func processBtnClick(_ data: GPSettingData) {
         switch data.m_strBtn {
         case btnTitleNew:
-            performSegue(withIdentifier: "showBuy", sender: data)
+            if AuthorizationManage.manage.canEnterGold() == false {
+                send_getTerms()
+            }
+            else {
+                performSegue(withIdentifier: "showBuy", sender: data)
+            }
         case btnTitleChange:
-            performSegue(withIdentifier: "showChange", sender: data)
+            if AuthorizationManage.manage.canEnterGold() == false {
+                send_getTerms()
+            }
+            else {
+                performSegue(withIdentifier: "showChange", sender: data)
+            }
         case btnTitleCheck:
-//            let data: DiffAmountDetail = DiffAmountDetail(m_strDate: "date", m_strAmount: "amount", m_strBasePrice: "baseprice", m_strUp: "up", m_strUpAmount: "upamount", m_strDown: "down", m_strDownAmount: "downamount", m_strAmountLimit: "amountlimit")
             self.showDiffAmountDetail(data)
         default:
             break
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let data: settingData = sender as! settingData
-        let _passData: passData = passData(m_accountStruct: m_aryActList[m_iActIndex], m_strTransOutAct: self.m_lbTransOutAct.text!, m_settingData: data)
+        let data: GPSettingData = sender as! GPSettingData
+        let passData: GPPassData = GPPassData(m_accountStruct: m_aryActList[m_iActIndex], m_strTransOutAct: self.m_lbTransOutAct.text!, m_settingData: data)
         super.prepare(for: segue, sender: sender)
         switch segue.identifier {
         case "showBuy":
-            let controller = segue.destination as! GPAcceptRulesViewController
-            var dicData: [String:Any] = [String:Any]()
-            dicData["nextStep"] = "showBuy"
-            dicData["data"] = _passData
-            controller.m_dicData = dicData
-//            let controller = segue.destination as! GPRegularSubscriptionViewController
-//            controller.setData((m_uiActView?.getContentByType(.First))!, self.m_lbCurrency.text!, self.m_lbTransOutAct.text!, data.m_strDate)
+            let controller = segue.destination as! GPRegularSubscriptionViewController
+            controller.setData(passData)
         case "showChange":
+            let controller = segue.destination as! GPRegularChangeViewController
+            controller.setData(passData)
+        case "showAcceptRules":
             let controller = segue.destination as! GPAcceptRulesViewController
             var dicData: [String:Any] = [String:Any]()
-            dicData["nextStep"] = "showChange"
-            dicData["data"] = _passData
+            dicData["nextStep"] = data.m_strBtn == btnTitleNew ? "showBuy" : "showChange"
+            dicData["data"] = passData
             controller.m_dicData = dicData
-//            let controller = segue.destination as! GPRegularChangeViewController
-//            controller.setData((m_uiActView?.getContentByType(.First))!, self.m_lbTransOutAct.text!, data.m_strDate)
         default:
             return
         }
@@ -282,9 +295,9 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         }
     }
     private func makeFakeActData() {
-        let data0: settingData = settingData(m_strDate: "6日", m_strType: "定期不定額", m_strAmount: "3,000,000", m_strStop: "", m_strBtn: "檢視", m_objDiffAmount: nil)
-        let data1: settingData = settingData(m_strDate: "16日", m_strType: "-", m_strAmount: "-", m_strStop: "", m_strBtn: "申請", m_objDiffAmount: nil)
-        let data2: settingData = settingData(m_strDate: "26日", m_strType: "定期定額", m_strAmount: "-", m_strStop: "2017/05/30", m_strBtn: "變更", m_objDiffAmount: nil)
+        let data0: GPSettingData = GPSettingData(m_strDate: "6日", m_strType: "定期不定額", m_strAmount: "3,000,000", m_strStop: "", m_strBtn: "檢視", m_objDiffAmount: nil)
+        let data1: GPSettingData = GPSettingData(m_strDate: "16日", m_strType: "-", m_strAmount: "-", m_strStop: "", m_strBtn: "申請", m_objDiffAmount: nil)
+        let data2: GPSettingData = GPSettingData(m_strDate: "26日", m_strType: "定期定額", m_strAmount: "-", m_strStop: "2017/05/30", m_strBtn: "變更", m_objDiffAmount: nil)
         m_aryData.removeAll()
         m_aryData.append(data0)
         m_aryData.append(data1)
@@ -296,15 +309,30 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         self.setDate3(m_aryData[2])
     }
     func send_getGoldList() {
+        self.setLoading(true)
 //        self.makeFakeData()
         postRequest("Gold/Gold0201", "Gold0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10002","Operate":"getGoldList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
     }
     func send_getGoldList2() {
+        self.setLoading(true)
 //        self.makeFakeActData()
         postRequest("Gold/Gold0204", "Gold0204", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10005","Operate":"getGoldList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
     }
+    func send_getTerms() {
+        self.setLoading(true)
+        self.postRequest("Gold/Gold0101", "Gold0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10001","Operate":"getTerms","TransactionId":tempTransactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+    }
     override func didResponse(_ description:String, _ response: NSDictionary) {
+        self.setLoading(false)
         switch description {
+        case TransactionID_Description:
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                transactionId = tranId
+                self.send_getGoldList()
+            }
+            else {
+                super.didResponse(description, response)
+            }
         case "Gold0201":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:Any]] {
                 m_aryActList.removeAll()
@@ -320,12 +348,21 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         case "Gold0204":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 self.m_lbTransOutAct.text = data["INVACT"] as? String
-                if let result = response.object(forKey: "Result") as? [[String:String]] {
+                if let result = data["Result"] as? [[String:String]] {
                     m_aryData.removeAll()
                     for date in result {
-                        var tempSettingData: settingData = settingData()
+                        var tempSettingData: GPSettingData = GPSettingData()
                         tempSettingData.m_strDate = date["DAY"]!
-                        tempSettingData.m_strType = date["TYPE"]!
+                        switch date["TYPE"]! {
+                        case "1":
+                            tempSettingData.m_strType = sameAmount
+                        case "2":
+                            tempSettingData.m_strType = sameQuantity
+                        case "3":
+                            tempSettingData.m_strType = diffAmount
+                        default:
+                            tempSettingData.m_strType = "-"
+                        }
                         if (tempSettingData.m_strType == diffAmount) {
                             tempSettingData.m_strAmount = date["PRICE"]!
                             tempSettingData.m_strBtn = btnTitleCheck
@@ -368,24 +405,32 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                     self.m_svContent.isHidden = true
                 }
             }
-//        case "Gold0502":
-//            if let priceInfo = response.object(forKey: ReturnData_Key) as? [String:String] {
-//                m_objPriceInfo = GPPriceInfo(DATE: priceInfo["DATE"]!, TIME: priceInfo["TIME"]!, CNT: priceInfo["CNT"]!, SELL: priceInfo["SELL"]!, BUY: priceInfo["BUY"]!)
-//                self.enterConfirmView()
-//            }
+        case "Gold0101":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:String] {
+                AuthorizationManage.manage.setGoldAcception(data)
+                if (AuthorizationManage.manage.canEnterGold()) {
+                    self.processBtnClick(m_aryData[m_iBtnIndex])
+                }
+                else {
+                    performSegue(withIdentifier: "showAcceptRules", sender: m_aryData[m_iBtnIndex])
+                }
+            }
         default:
             super.didResponse(description, response)
         }
     }
     // MARK:- Handle Actions
     @IBAction func m_btn1Click(_ sender: Any) {
-        self.processBtnClick(m_aryData[0])
+        m_iBtnIndex = 0
+        self.processBtnClick(m_aryData[m_iBtnIndex])
     }
     @IBAction func m_btn2Click(_ sender: Any) {
-        self.processBtnClick(m_aryData[1])
+        m_iBtnIndex = 1
+        self.processBtnClick(m_aryData[m_iBtnIndex])
     }
     @IBAction func m_btn3Click(_ sender: Any) {
-        self.processBtnClick(m_aryData[2])
+        m_iBtnIndex = 2
+        self.processBtnClick(m_aryData[m_iBtnIndex])
     }
     
 }

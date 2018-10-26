@@ -9,7 +9,7 @@
 import UIKit
 
 class GPAcceptRulesViewController: BaseViewController {
-    var m_nextFeatureID: PlatformFeatureID? = nil
+    var m_nextFeatureID : PlatformFeatureID? = nil
     var m_dicData: [String:Any]? = nil
     @IBOutlet var m_wvContent: UIWebView!
     @IBOutlet var m_btnCheck: UIButton!
@@ -25,41 +25,48 @@ class GPAcceptRulesViewController: BaseViewController {
             showErrorMessage("錯誤", "沒有下一步")
             return
         }
-        switch m_nextFeatureID {
-        case .FeatureID_GPSingleBuy?, .FeatureID_GPSingleSell?:
-            enterFeatureByID(m_nextFeatureID!, false)
-        default:
-            performSegue(withIdentifier: m_dicData!["nextStep"] as! String, sender: m_dicData!["data"])
-        }
+        self.send_confirm()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        m_wvContent.loadRequest(URLRequest.init(url: URL.init(string: "https://www.google.com")!))
+        let content: String = AuthorizationManage.manage.getGoldAcception().Content
+        m_wvContent.loadHTMLString(content, baseURL: nil)
     }
-
+    func send_confirm() {
+        self.setLoading(true)
+        let version: String = AuthorizationManage.manage.getGoldAcception().Version
+        postRequest("Gold/Gold0102", "Gold0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10001","Operate":"termsConfirm","TransactionId":transactionId,"Version":version,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+    }
+    override func didResponse(_ description:String, _ response: NSDictionary) {
+        self.setLoading(false)
+        switch description {
+        case "Gold0102":
+            switch m_nextFeatureID {
+            case .FeatureID_GPSingleBuy?, .FeatureID_GPSingleSell?:
+                enterFeatureByID(m_nextFeatureID!, false)
+            default:
+                performSegue(withIdentifier: m_dicData!["nextStep"] as! String, sender: m_dicData!["data"])
+            }
+            break
+        default:
+            super.didResponse(description, response)
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let data: passData = sender as! passData
+        let data: GPPassData = sender as! GPPassData
         switch segue.identifier {
         case "showBuy":
             let controller = segue.destination as! GPRegularSubscriptionViewController
-            let act: String = data.m_accountStruct.accountNO
-            let currency: String = data.m_accountStruct.currency
-            let transOutAct: String = data.m_strTransOutAct
-            let date: String = data.m_settingData.m_strDate
-            controller.setData(act, currency, transOutAct, date)
+            controller.setData(data)
         case "showChange":
             let controller = segue.destination as! GPRegularChangeViewController
-//            let act: String = data.m_accountStruct.accountNO
-//            let transOutAct: String = data.m_strTransOutAct
-//            let date: String = data.m_settingData.m_strDate
-//            controller.setData(act, transOutAct, date)
             controller.setData(data)
         default:
             return

@@ -26,7 +26,6 @@ class GPGoldPriceViewController: BaseViewController {
 
         self.initTableView()
         setShadowView(m_vTopView)
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,10 +37,10 @@ class GPGoldPriceViewController: BaseViewController {
     private func initTableView() {
         m_tvContentView.delegate = self
         m_tvContentView.dataSource = self
-//        m_tvContentView.register(UINib(nibName: UIID.UIID_GPGoldPriceCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_GPGoldPriceCell.NibName()!)
         m_tvContentView.allowsSelection = false
         m_tvContentView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
     }
+
     // MARK:- UI Methods
     private func showDatePeriod(_ strTitle: String, start: Date, end: Date) {
         m_lbTitle.text = strTitle
@@ -82,7 +81,7 @@ class GPGoldPriceViewController: BaseViewController {
         m_tvContentView.reloadData()
     }
     func send_queryData(_ start: Date, _ end: Date) {
-//        self.makeFakeData(start, end)
+        self.setLoading(true)
         let fmt = DateFormatter()
         fmt.dateFormat = "YYYY/MM/dd"
         let startDate: String = fmt.string(from: start)
@@ -91,15 +90,17 @@ class GPGoldPriceViewController: BaseViewController {
         postRequest("Gold/Gold0501", "Gold0501", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10012","Operate":"queryData","SDAY":startDate,"EDAY":endDate], true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
+        self.setLoading(false)
         switch description {
         case "Gold0501":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:String]] {
+            if let result = response.object(forKey: ReturnData_Key) as? [[String:String]] {
                 m_aryData.removeAll()
                 for data in result {
                     if let DATE = data["DATE"], let TIME = data["TIME"], let SELL = data["SELL"], let BUY = data["BUY"] {
                         m_aryData.append(GoldPriceData(m_strDate: DATE, m_strTime: TIME, m_strBuy: BUY, m_strSell: SELL))
                     }
                 }
+                m_tvContentView.reloadData()
             }
             else {
                 showErrorMessage(nil, ErrorMsg_No_TaskId)
@@ -108,6 +109,7 @@ class GPGoldPriceViewController: BaseViewController {
             super.didResponse(description, response)
         }
     }
+    
     // MARK:- Handle Actions
     @IBAction func m_btnTodayClick(_ sender: Any) {
         let start: Date = Date()
@@ -141,6 +143,7 @@ class GPGoldPriceViewController: BaseViewController {
         }
     }
 }
+
 extension GPGoldPriceViewController : UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -151,28 +154,18 @@ extension GPGoldPriceViewController : UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_GPGoldPriceCell.NibName()!) as! GPGoldPriceCell
         cell.set("牌價日期", "牌價時間", "銀行買進", "銀行賣出")
-//        cell.selectionStyle = .none
         cell.backgroundColor = .white
         return cell
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return section == 0 ? 1 : m_aryData.count
         return m_aryData.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if (indexPath.section == 0) {
-//            let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_GPGoldPriceCell.NibName()!, for: indexPath) as! GPGoldPriceCell
-//            cell.set("牌價日期", "牌價時間", "銀行買進", "銀行賣出")
-//            cell.selectionStyle = .none
-//            return cell
-//        }
-//        else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_GPGoldPriceCell.NibName()!, for: indexPath) as! GPGoldPriceCell
-            let data: GoldPriceData = m_aryData[indexPath.row]
-            cell.set(data.m_strDate, data.m_strTime, data.m_strBuy, data.m_strSell)
-            cell.selectionStyle = .none
-            return cell
-//        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_GPGoldPriceCell.NibName()!, for: indexPath) as! GPGoldPriceCell
+        let data: GoldPriceData = m_aryData[indexPath.row]
+        cell.set(data.m_strDate, data.m_strTime, data.m_strBuy, data.m_strSell)
+        cell.selectionStyle = .none
+        return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 32
