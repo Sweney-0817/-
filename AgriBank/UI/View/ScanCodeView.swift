@@ -56,6 +56,18 @@ class ScanCodeView: UIView {
         output?.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
         output?.metadataObjectTypes = output?.availableMetadataObjectTypes
         
+        //計算中間可探測區域
+        let windowSize = m_vCameraArea.bounds.size
+        var scanRect = m_vScanArea.frame
+        //計算rectOfInterest 注意x,y交換位置
+        scanRect = CGRect(x:scanRect.origin.y/windowSize.height,
+                          y:scanRect.origin.x/windowSize.width,
+                          width:scanRect.size.height/windowSize.height,
+                          height:scanRect.size.width/windowSize.width);
+        
+        //設置可探測區域
+        output?.rectOfInterest = scanRect
+        
         videoPreviewLayer = AVCaptureVideoPreviewLayer.init(session: captureSession)
         videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         videoPreviewLayer?.frame = m_vCameraArea.frame
@@ -65,7 +77,7 @@ class ScanCodeView: UIView {
         captureSession?.startRunning()
         
         drawrect()
-        startNotification()
+//        startNotification()
         scanning = true
     }
     func stopScan() {
@@ -74,7 +86,7 @@ class ScanCodeView: UIView {
         }
         NSLog("======== ScanCodeView stopScan ========")
         scanning = false
-        stopNotification()
+//        stopNotification()
         captureSession?.stopRunning()
         captureSession = nil
         videoPreviewLayer?.removeFromSuperlayer()
@@ -96,19 +108,19 @@ class ScanCodeView: UIView {
 //        m_vScanArea.layer.borderColor = Green_Color.cgColor
 //        m_vScanArea.layer.borderWidth = 2
     }
-    private func startNotification() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil, queue: OperationQueue.current, using: avCaptureInputPortFormatDescriptionDidChangeNotification)
-    }
-    private func stopNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil)
-    }
-    func avCaptureInputPortFormatDescriptionDidChangeNotification(_ notification: Notification?) {
-        guard scanning else {
-            return
-        }
-        let rect : CGRect = m_vScanArea.frame
-        output?.rectOfInterest = (videoPreviewLayer?.metadataOutputRectOfInterest(for: rect))!
-    }
+//    private func startNotification() {
+//        NotificationCenter.default.addObserver(forName: NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil, queue: OperationQueue.current, using: avCaptureInputPortFormatDescriptionDidChangeNotification)
+//    }
+//    private func stopNotification() {
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil)
+//    }
+//    func avCaptureInputPortFormatDescriptionDidChangeNotification(_ notification: Notification?) {
+//        guard scanning else {
+//            return
+//        }
+//        let rect : CGRect = m_vScanArea.frame
+//        output?.rectOfInterest = (videoPreviewLayer?.metadataOutputRectOfInterest(for: rect))!
+//    }
 }
 extension ScanCodeView : AVCaptureMetadataOutputObjectsDelegate {
     func captureOutput(_ output: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
