@@ -84,10 +84,10 @@ class GPRegularSubscriptionViewController: BaseViewController {
         
         var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: (m_objPassData?.m_accountStruct.accountNO)!])
-        dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: (m_objPassData?.m_accountStruct.currency)!])
+        dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: (m_objPassData?.m_accountStruct.currency)! == Currency_TWD ? Currency_TWD_Title:(m_objPassData?.m_accountStruct.currency)!])
         dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: (m_objPassData?.m_strTransOutAct)!])
-        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)!])
-        dataConfirm.list?.append([Response_Key: "投資金額", Response_Value: m_strBuyAmount])
+        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)! + "日"])
+        dataConfirm.list?.append([Response_Key: "投資金額", Response_Value: m_strBuyAmount.separatorThousand()])
         enterConfirmResultController(true, dataConfirm, true)
     }
     func enterConfirmView_SameQuantity() {
@@ -103,10 +103,10 @@ class GPRegularSubscriptionViewController: BaseViewController {
         
         var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: (m_objPassData?.m_accountStruct.accountNO)!])
-        dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: (m_objPassData?.m_accountStruct.currency)!])
+        dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: (m_objPassData?.m_accountStruct.currency)! == Currency_TWD ? Currency_TWD_Title:(m_objPassData?.m_accountStruct.currency)!])
         dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: (m_objPassData?.m_strTransOutAct)!])
-        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)!])
-        dataConfirm.list?.append([Response_Key: "投資數量", Response_Value: m_strBuyAmount])
+        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)! + "日"])
+        dataConfirm.list?.append([Response_Key: "投資數量", Response_Value: m_strBuyAmount.separatorThousand() + "克"])
         enterConfirmResultController(true, dataConfirm, true)
     }
     // MARK:- WebService Methods

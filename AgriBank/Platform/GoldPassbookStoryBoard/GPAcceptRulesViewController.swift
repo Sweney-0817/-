@@ -11,6 +11,7 @@ import UIKit
 class GPAcceptRulesViewController: BaseViewController {
     var m_nextFeatureID : PlatformFeatureID? = nil
     var m_dicData: [String:Any]? = nil
+    var m_dicAcceptData : [String:String]? = nil
     @IBOutlet var m_wvContent: UIWebView!
     @IBOutlet var m_btnCheck: UIButton!
     @IBAction func m_btnCheckClick(_ sender: Any) {
@@ -31,12 +32,15 @@ class GPAcceptRulesViewController: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        let content: String = AuthorizationManage.manage.getGoldAcception().Content
+//        let content: String = AuthorizationManage.manage.getGoldAcception().Content
+        let content: String = m_dicAcceptData?["Content"] ?? ""
         m_wvContent.loadHTMLString(content, baseURL: nil)
+        m_wvContent.scrollView.bounces = false
     }
     func send_confirm() {
         self.setLoading(true)
-        let version: String = AuthorizationManage.manage.getGoldAcception().Version
+//        let version: String = AuthorizationManage.manage.getGoldAcception().Version
+        let version: String = m_dicAcceptData?["Version"] ?? ""
         postRequest("Gold/Gold0102", "Gold0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10001","Operate":"termsConfirm","TransactionId":transactionId,"Version":version,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {

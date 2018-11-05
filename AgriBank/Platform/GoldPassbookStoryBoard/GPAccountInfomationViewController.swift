@@ -97,8 +97,8 @@ extension GPAccountInfomationViewController : UITableViewDelegate, UITableViewDa
         cell.title3Label.text = AccountInfomation_CellTitle[2]
         
         cell.detail1Label.text = m_aryActList[indexPath.row].accountNO
-        cell.detail2Label.text = m_aryActList[indexPath.row].currency
-        cell.detail3Label.text = m_aryActList[indexPath.row].balance
+        cell.detail2Label.text = (m_aryActList[indexPath.row].currency == Currency_TWD ? Currency_TWD_Title:m_aryActList[indexPath.row].currency)
+        cell.detail3Label.text = m_aryActList[indexPath.row].balance + "克"
 
         cell.AddExpnadBtn(self, indexPath)
         if curExpandCell == indexPath {

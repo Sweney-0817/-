@@ -34,7 +34,8 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     var curFeatureID:PlatformFeatureID? = nil   // 即將要登入的功能ID
     var touchTap:UITapGestureRecognizer? = nil  // 手勢: 用來關閉Textfield
     var tempTransactionId = ""                  // 暫存「繳費」「繳稅」的transactionId
-    var m_bCanEnterQRP: Bool = false              // 暫存是否可進入QRP
+    var m_bCanEnterQRP: Bool = false            // 暫存是否可進入QRP
+    var m_bCanEnterGP: Bool = false             // 暫存是否可進入黃金存摺
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -173,12 +174,14 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                     //Guester 20180731
                 case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell:
                     canEnter = false
-                    if AuthorizationManage.manage.canEnterGold() == false {
+//                    if AuthorizationManage.manage.canEnterGold() == false {
+                    if m_bCanEnterGP == false {
                         getTransactionID("10001", BaseTransactionID_Description)
                         curFeatureID = ID
                     }
                     else {
                         canEnter = true
+                        m_bCanEnterGP = false
                     }
                     //Guester 20180731 End
                 default: break
@@ -724,12 +727,15 @@ extension BaseViewController: ConnectionUtilityDelegate {
             tempTransactionId = ""
         case "Gold0101":
             if let data = response.object(forKey: ReturnData_Key) as? [String:String] {
-                AuthorizationManage.manage.setGoldAcception(data)
-                if (AuthorizationManage.manage.canEnterGold()) {
+//                AuthorizationManage.manage.setGoldAcception(data)
+//                if (AuthorizationManage.manage.canEnterGold()) {
+                if (data["Read"] == "Y") {
+                    m_bCanEnterGP = true
                     enterFeatureByID(curFeatureID!, true)
                 }
                 else {
                     let controller = getControllerByID(.FeatureID_GPAcceptRules)
+                    (controller as! GPAcceptRulesViewController).m_dicAcceptData = data
                     (controller as! GPAcceptRulesViewController).m_nextFeatureID = curFeatureID
                     (controller as! GPAcceptRulesViewController).transactionId = tempTransactionId
                     navigationController?.pushViewController(controller, animated: true)

@@ -26,6 +26,9 @@ class GPGoldPriceViewController: BaseViewController {
 
         self.initTableView()
         setShadowView(m_vTopView)
+        
+        // 預設顯示當日牌告價格
+        self.m_btnTodayClick((Any).self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,7 +86,7 @@ class GPGoldPriceViewController: BaseViewController {
     func send_queryData(_ start: Date, _ end: Date) {
         self.setLoading(true)
         let fmt = DateFormatter()
-        fmt.dateFormat = "YYYY/MM/dd"
+        fmt.dateFormat = "YYYYMMdd"
         let startDate: String = fmt.string(from: start)
         let endDate: String = fmt.string(from: end)
 
@@ -93,18 +96,27 @@ class GPGoldPriceViewController: BaseViewController {
         self.setLoading(false)
         switch description {
         case "Gold0501":
-            if let result = response.object(forKey: ReturnData_Key) as? [[String:String]] {
-                m_aryData.removeAll()
-                for data in result {
-                    if let DATE = data["DATE"], let TIME = data["TIME"], let SELL = data["SELL"], let BUY = data["BUY"] {
-                        m_aryData.append(GoldPriceData(m_strDate: DATE, m_strTime: TIME, m_strBuy: BUY, m_strSell: SELL))
+            // 清除畫面資料
+            m_aryData.removeAll()
+            
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success
+            {
+                if let result = response.object(forKey: ReturnData_Key) as? [[String:String]] {
+                    for data in result {
+                        if let DATE = data["DATE"], let TIME = data["TIME"], let SELL = data["SELL"], let BUY = data["BUY"] {
+                            m_aryData.append(GoldPriceData(m_strDate: DATE, m_strTime: TIME, m_strBuy: BUY, m_strSell: SELL))
+                        }
                     }
                 }
-                m_tvContentView.reloadData()
             }
             else {
-                showErrorMessage(nil, ErrorMsg_No_TaskId)
+                if let message = response.object(forKey:ReturnMessage_Key) as? String {
+                    showErrorMessage(nil, message)
+                }
             }
+            
+            // 重新ReLoad
+            m_tvContentView.reloadData()
         default:
             super.didResponse(description, response)
         }
@@ -118,7 +130,7 @@ class GPGoldPriceViewController: BaseViewController {
         self.send_queryData(start, end)
     }
     @IBAction func m_btnWeekClick(_ sender: Any) {
-        let start: Date = NSCalendar.current.date(byAdding: .day, value: -7, to: Date())!
+        let start: Date = NSCalendar.current.date(byAdding: .day, value: -6, to: Date())!
         let end: Date = Date()
         self.showDatePeriod("近7日", start: start, end: end)
         self.send_queryData(start, end)
@@ -163,7 +175,8 @@ extension GPGoldPriceViewController : UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_GPGoldPriceCell.NibName()!, for: indexPath) as! GPGoldPriceCell
         let data: GoldPriceData = m_aryData[indexPath.row]
-        cell.set(data.m_strDate, data.m_strTime, data.m_strBuy, data.m_strSell)
+        
+        cell.set(data.m_strDate.dateFormatter(form: "yyyyMMdd", to: "MM/dd"), data.m_strTime, data.m_strBuy, data.m_strSell)
         cell.selectionStyle = .none
         return cell
     }

@@ -191,6 +191,32 @@ class AuthorizationManage {
         return httpBody
     }
     
+    // 不濾空白
+    func converInputToHttpBody2(_ input:[String:Any], _ needEncrypt:Bool) -> Data? {
+        
+        let jsonData = try? JSONSerialization.data(withJSONObject: input, options: [])
+        let jsonString = String(data: jsonData!, encoding: .utf8)
+        print(jsonString)
+        
+        var httpBody:Data? = nil
+        do {
+            httpBody = try JSONSerialization.data(withJSONObject: input, options: .prettyPrinted)
+            if needEncrypt {
+                let encryptID = [String](AuthorizationManage_CIDListKey.keys)[AuthorizationManage_Random]
+                if let encrypt = String(data: httpBody!, encoding: .utf8)?.replacingOccurrences(of: "\n", with: ""), let key = AuthorizationManage_CIDListKey[encryptID] {
+                    // 中台需求: " + body + "
+                    let encryptString = "\"" + SecurityUtility.utility.AES256Encrypt( encrypt, key ) + "\""
+                    httpBody = encryptString.data(using: .utf8)
+                }
+            }
+        }
+        catch {
+            print(error)
+        }
+        
+        return httpBody
+    }
+    
     func CanEnterFeature(_ ID:PlatformFeatureID) -> Bool { // 判斷是否需要登入
         var canEnter = false
         switch ID {
@@ -432,22 +458,22 @@ class AuthorizationManage {
 //        }
 //    }
     
-    func setGoldAcception(_ data:[String:String]) {
-        m_goldAcception.Read = data["Read"] ?? "N"
-        m_goldAcception.Version = data["Version"] ?? ""
-        m_goldAcception.Content = data["Content"] ?? ""
-    }
+//    func setGoldAcception(_ data:[String:String]) {
+//        m_goldAcception.Read = data["Read"] ?? "N"
+//        m_goldAcception.Version = data["Version"] ?? ""
+//        m_goldAcception.Content = data["Content"] ?? ""
+//    }
     
-    func getGoldAcception() -> GoldAcception {
-        return m_goldAcception
-    }
+//    func getGoldAcception() -> GoldAcception {
+//        return m_goldAcception
+//    }
     
-    func canEnterGold() -> Bool {
-        if (m_goldAcception.Read == "Y") {
-            return true
-        }
-        else {
-            return false
-        }
-    }
+//    func canEnterGold() -> Bool {
+//        if (m_goldAcception.Read == "Y") {
+//            return true
+//        }
+//        else {
+//            return false
+//        }
+//    }
 }

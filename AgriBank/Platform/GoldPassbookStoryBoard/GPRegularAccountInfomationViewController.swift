@@ -133,17 +133,17 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         case sameAmount:
             m_lbAmountTitle1.text = amountTitle
             m_lbStopTitle1.text = stopTitle
-            m_lbAmount1.text = data.m_strAmount
+            m_lbAmount1.text = data.m_strAmount.separatorThousand() == "0" ? "-":data.m_strAmount.separatorThousand()
             m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
         case sameQuantity:
             m_lbAmountTitle1.text = quantityTitle
             m_lbStopTitle1.text = stopTitle
-            m_lbAmount1.text = data.m_strAmount
+            m_lbAmount1.text = data.m_strAmount.separatorThousand() == "0" ? "-":data.m_strAmount.separatorThousand()
             m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
         case diffAmount:
             m_lbAmountTitle1.text = basePrice
             m_lbStopTitle1.text = diffAmountCommand
-            m_lbAmount1.text = data.m_strAmount
+            m_lbAmount1.text = data.m_strAmount.separatorThousand() == "0" ? "-":data.m_strAmount.separatorThousand()
             m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
         default:
             m_lbAmountTitle1.text = "-"
@@ -151,12 +151,14 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmount1.text = "-"
             m_btn1.setTitle("-", for: UIControlState.normal)
         }
-        if (data.m_strStop.isEmpty == true && data.m_strType != diffAmount) {
+        if (((data.m_strStop.isEmpty == true) || (Int(data.m_strStop) == 0)) && data.m_strType != diffAmount) {
             m_lbStop1.text = ""
             m_consStopHeight1.constant = 0
         }
         else {
-            m_lbStop1.text = data.m_strStop
+            if(data.m_strType != diffAmount) {
+                m_lbStop1.text = data.m_strStop.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")
+            }
             m_consStopHeight1.constant = 36
         }
     }
@@ -167,17 +169,17 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         case sameAmount:
             m_lbAmountTitle2.text = amountTitle
             m_lbStopTitle2.text = stopTitle
-            m_lbAmount2.text = data.m_strAmount
+            m_lbAmount2.text = data.m_strAmount.separatorThousand() == "0" ? "-":data.m_strAmount.separatorThousand()
             m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
         case sameQuantity:
             m_lbAmountTitle2.text = quantityTitle
             m_lbStopTitle2.text = stopTitle
-            m_lbAmount2.text = data.m_strAmount
+            m_lbAmount2.text = data.m_strAmount.separatorThousand() == "0" ? "-":data.m_strAmount.separatorThousand()
             m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
         case diffAmount:
             m_lbAmountTitle2.text = basePrice
             m_lbStopTitle2.text = diffAmountCommand
-            m_lbAmount2.text = data.m_strAmount
+            m_lbAmount2.text = data.m_strAmount.separatorThousand() == "0" ? "-":data.m_strAmount.separatorThousand()
             m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
         default:
             m_lbAmountTitle2.text = "-"
@@ -185,12 +187,14 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmount2.text = "-"
             m_btn2.setTitle("-", for: UIControlState.normal)
         }
-        if (data.m_strStop.isEmpty == true && data.m_strType != diffAmount) {
+        if (((data.m_strStop.isEmpty == true) || (Int(data.m_strStop) == 0)) && data.m_strType != diffAmount) {
             m_lbStop2.text = ""
             m_consStopHeight2.constant = 0
         }
         else {
-            m_lbStop2.text = data.m_strStop
+            if(data.m_strType != diffAmount) {
+                m_lbStop2.text = data.m_strStop.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")
+            }
             m_consStopHeight2.constant = 36
         }
     }
@@ -201,17 +205,17 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         case sameAmount:
             m_lbAmountTitle3.text = amountTitle
             m_lbStopTitle3.text = stopTitle
-            m_lbAmount3.text = data.m_strAmount
+            m_lbAmount3.text = data.m_strAmount.separatorThousand() == "0" ? "-":data.m_strAmount.separatorThousand()
             m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
         case sameQuantity:
             m_lbAmountTitle3.text = quantityTitle
             m_lbStopTitle3.text = stopTitle
-            m_lbAmount3.text = data.m_strAmount
+            m_lbAmount3.text = data.m_strAmount.separatorThousand() == "0" ? "-":data.m_strAmount.separatorThousand()
             m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
         case diffAmount:
             m_lbAmountTitle3.text = basePrice
             m_lbStopTitle3.text = diffAmountCommand
-            m_lbAmount3.text = data.m_strAmount
+            m_lbAmount3.text = data.m_strAmount.separatorThousand() == "0" ? "-":data.m_strAmount.separatorThousand()
             m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
         default:
             m_lbAmountTitle3.text = "-"
@@ -219,12 +223,14 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmount3.text = "-"
             m_btn3.setTitle("-", for: UIControlState.normal)
         }
-        if (data.m_strStop.isEmpty == true && data.m_strType != diffAmount) {
+        if (((data.m_strStop.isEmpty == true) || (Int(data.m_strStop) == 0)) && data.m_strType != diffAmount) {
             m_lbStop3.text = ""
             m_consStopHeight3.constant = 0
         }
         else {
-            m_lbStop3.text = data.m_strStop
+            if(data.m_strType != diffAmount) {
+                m_lbStop3.text = data.m_strStop.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")
+            }
             m_consStopHeight3.constant = 36
         }
     }
@@ -243,20 +249,22 @@ class GPRegularAccountInfomationViewController: BaseViewController {
     // MARK:- Logic Methods
     func processBtnClick(_ data: GPSettingData) {
         switch data.m_strBtn {
-        case btnTitleNew:
-            if AuthorizationManage.manage.canEnterGold() == false {
-                send_getTerms()
-            }
-            else {
-                performSegue(withIdentifier: "showBuy", sender: data)
-            }
-        case btnTitleChange:
-            if AuthorizationManage.manage.canEnterGold() == false {
-                send_getTerms()
-            }
-            else {
-                performSegue(withIdentifier: "showChange", sender: data)
-            }
+        case btnTitleNew, btnTitleChange :
+            send_getTerms()
+//        case btnTitleNew:
+//            if AuthorizationManage.manage.canEnterGold() == false {
+//                send_getTerms()
+//            }
+//            else {
+//                performSegue(withIdentifier: "showBuy", sender: data)
+//            }
+//        case btnTitleChange:
+//            if AuthorizationManage.manage.canEnterGold() == false {
+//                send_getTerms()
+//            }
+//            else {
+//                performSegue(withIdentifier: "showChange", sender: data)
+//            }
         case btnTitleCheck:
             self.showDiffAmountDetail(data)
         default:
@@ -313,14 +321,14 @@ class GPRegularAccountInfomationViewController: BaseViewController {
 //        self.makeFakeData()
         postRequest("Gold/Gold0201", "Gold0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10002","Operate":"getGoldList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
     }
-    func send_getGoldList2() {
+    func send_getGoldList2(_ act: String) {
         self.setLoading(true)
 //        self.makeFakeActData()
-        postRequest("Gold/Gold0204", "Gold0204", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10005","Operate":"getGoldList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
+        postRequest("Gold/Gold0204", "Gold0204", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10005","Operate":"getGoldList","TransactionId":transactionId, "REFNO":act], true), AuthorizationManage.manage.getHttpHead(true))
     }
     func send_getTerms() {
         self.setLoading(true)
-        self.postRequest("Gold/Gold0101", "Gold0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10001","Operate":"getTerms","TransactionId":tempTransactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+        self.postRequest("Gold/Gold0101", "Gold0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10001","Operate":"getTerms","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
         self.setLoading(false)
@@ -372,11 +380,11 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                             tempDiffAmountDetail.m_strAmount = date["AMT"]!
                             tempDiffAmountDetail.m_strBasePrice = date["PRICE"]!
                             tempDiffAmountDetail.m_strUp = date["UPER"]!
-                            tempDiffAmountDetail.m_strUpAmount = date["USIGN"]! + date["UAMT"]!
+                            tempDiffAmountDetail.m_strUpAmount = date["USIGN"]! + date["UAMT"]!.separatorThousand()
                             tempDiffAmountDetail.m_strDown = date["DPER"]!
-                            tempDiffAmountDetail.m_strDownAmount = date["DSIGN"]! + date["DAMT"]!
+                            tempDiffAmountDetail.m_strDownAmount = date["DSIGN"]! + date["DAMT"]!.separatorThousand()
                             tempDiffAmountDetail.m_strAmountUpLimit = date["UCAP"]!
-                            tempDiffAmountDetail.m_strAmountDownLimit = date["DCAP"]!
+                            tempDiffAmountDetail.m_strAmountDownLimit = date["DCAP"]!.separatorThousand()
                             tempSettingData.m_objDiffAmount = tempDiffAmountDetail
                         }
                         else if (tempSettingData.m_strType == sameAmount || tempSettingData.m_strType == sameQuantity){
@@ -407,9 +415,15 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             }
         case "Gold0101":
             if let data = response.object(forKey: ReturnData_Key) as? [String:String] {
-                AuthorizationManage.manage.setGoldAcception(data)
-                if (AuthorizationManage.manage.canEnterGold()) {
-                    self.processBtnClick(m_aryData[m_iBtnIndex])
+//                AuthorizationManage.manage.setGoldAcception(data)
+//                if (AuthorizationManage.manage.canEnterGold()) {
+                if (data["Read"] == "Y") {
+                    if(m_aryData[m_iBtnIndex].m_strBtn == btnTitleNew) {
+                        performSegue(withIdentifier: "showBuy", sender: m_aryData[m_iBtnIndex])
+                    }
+                    else if(m_aryData[m_iBtnIndex].m_strBtn == btnTitleChange) {
+                        performSegue(withIdentifier: "showChange", sender: m_aryData[m_iBtnIndex])
+                    }
                 }
                 else {
                     performSegue(withIdentifier: "showAcceptRules", sender: m_aryData[m_iBtnIndex])
@@ -453,8 +467,8 @@ extension GPRegularAccountInfomationViewController : UIActionSheetDelegate {
                 m_iActIndex = buttonIndex - 1
                 let actInfo : AccountStruct = m_aryActList[m_iActIndex]
                 m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
-                self.m_lbCurrency.text = actInfo.currency
-                self.send_getGoldList2()
+                self.m_lbCurrency.text = (actInfo.currency == Currency_TWD) ? Currency_TWD_Title:actInfo.currency
+                self.send_getGoldList2(actInfo.accountNO)
                 self.m_svContent.isHidden = true
             default:
                 break

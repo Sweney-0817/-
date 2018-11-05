@@ -23,6 +23,30 @@ extension String {
         }
         return temp
     }
+    
+    // 取除小數點
+    func separatorDecimal() -> String {
+        var temp = self.replacingOccurrences(of: "+", with: "").replacingOccurrences(of: "-", with: "")
+        let formatter = NumberFormatter()
+        formatter.decimalSeparator = "."
+        if let number = formatter.number(from: temp) {
+            temp = formatter.string(from: number) ?? temp
+        }
+        return temp
+    }
+    
+    // 日期格式轉換
+    func dateFormatter(form: String?, to: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = form
+        let dtDate = dateFormatter.date(from: self)
+        
+        dateFormatter.dateFormat = to
+        let strDate: String = dateFormatter.string(from: dtDate!)
+        
+        return strDate
+    }
+        
     // MARK: - SubString
     func substring(from: Int?, to: Int?) -> String {
         if let start = from {

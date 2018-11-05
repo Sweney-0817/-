@@ -143,7 +143,12 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 data = ConfirmResultStruct(image: "", title: "", list: nil, memo: "", confirmBtnName: dataOTP?.confirmBtnName ?? "", resultBtnName: dataOTP?.resultBtnName ?? "", checkRequest: nil)
             }
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
-                if (description == "QR0302") {
+                if  (description == "QR0302") ||
+                    (description == "Gold0301") ||
+                    (description == "Gold0302") ||
+                    (description == "Gold0402") ||
+                    (description == "Gold0404")
+                {
                     if let responseData = response.object(forKey: ReturnData_Key) as? [String:Any] {
                         if let responseResult = responseData["Result"] as? [[String:String]] {
                             data?.list = responseResult

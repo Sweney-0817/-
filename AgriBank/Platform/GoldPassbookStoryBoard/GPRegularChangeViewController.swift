@@ -41,7 +41,7 @@ class GPRegularChangeViewController: BaseViewController {
         // Do any additional setup after loading the view.
         m_lbGPAct.text = m_objPassData?.m_accountStruct.accountNO
         m_lbTransOutAct.text = m_objPassData?.m_strTransOutAct
-        m_lbTradeDate.text = m_objPassData?.m_settingData.m_strDate
+        m_lbTradeDate.text = (m_objPassData?.m_settingData.m_strDate)! + "日"
         if (m_objPassData?.m_settingData.m_strType == sameAmount) {
             m_arySettingList = ["修改金額", pauseDebit, stopDebit]
         }
@@ -108,8 +108,8 @@ class GPRegularChangeViewController: BaseViewController {
         if (setting == pauseDebit) {
             m_tfTradeInput.text = ""
             m_tfTradeInput.isHidden = true
-            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!
-            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount
+            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!.separatorDecimal()
+            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount.separatorThousand()
             m_lbTradeAmount.isHidden = false
             m_vPauseStartView.isHidden = false
             m_vPauseStartBottomLine.isHidden = false
@@ -119,8 +119,8 @@ class GPRegularChangeViewController: BaseViewController {
         else if (setting == stopDebit) {
             m_tfTradeInput.text = ""
             m_tfTradeInput.isHidden = true
-            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!
-            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount
+            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!.separatorDecimal()
+            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount.separatorThousand()
             m_lbTradeAmount.isHidden = false
             m_vPauseStartView.isHidden = true
             m_vPauseStartBottomLine.isHidden = true
@@ -128,10 +128,10 @@ class GPRegularChangeViewController: BaseViewController {
             m_vPauseEndBottomLine.isHidden = true
         }
         else {
-            m_tfTradeInput.text = m_objPassData?.m_settingData.m_strAmount
+            m_tfTradeInput.text = m_objPassData?.m_settingData.m_strAmount.separatorDecimal()
             m_tfTradeInput.isHidden = false
-            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!
-            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount
+            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!.separatorDecimal()
+            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount.separatorThousand()
             m_lbTradeAmount.isHidden = true
             m_vPauseStartView.isHidden = true
             m_vPauseStartBottomLine.isHidden = true
@@ -150,21 +150,28 @@ class GPRegularChangeViewController: BaseViewController {
         data["DD"] = m_objPassData?.m_settingData.m_strDate
         data["AMT"] = m_strBuyAmount
         data["SETUP"] = String(m_iSettingIndex)
+        
+        // 暫停起日, 暫停訖日
         if (m_iSettingIndex == 1) {
             data["STPSDAY"] = m_strPauseStart
             data["STPEDAY"] = m_strPauseEnd
         }
+        else {
+            data["STPSDAY"] = ""
+            data["STPEDAY"] = ""
+        }
+        
         let confirmRequest = RequestStruct(strMethod: "Gold/Gold0402", strSessionDescription: "Gold0402", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
         
         var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: (m_objPassData?.m_accountStruct.accountNO)!])
         dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: (m_objPassData?.m_strTransOutAct)!])
-        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)!])
-        dataConfirm.list?.append([Response_Key: "投資金額", Response_Value: (m_objPassData?.m_settingData.m_strAmount)!])
+        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)! + "日"])
+        dataConfirm.list?.append([Response_Key: "投資金額", Response_Value: m_strBuyAmount.separatorThousand()])
         dataConfirm.list?.append([Response_Key: "扣款設定", Response_Value: m_arySettingList[m_iSettingIndex]])
         if (m_iSettingIndex == 1) {
-            dataConfirm.list?.append([Response_Key: "暫停起日", Response_Value: m_strPauseStart])
-            dataConfirm.list?.append([Response_Key: "暫停訖日", Response_Value: m_strPauseEnd])
+            dataConfirm.list?.append([Response_Key: "暫停起日", Response_Value: m_strPauseStart.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")])
+            dataConfirm.list?.append([Response_Key: "暫停訖日", Response_Value: m_strPauseEnd.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")])
         }
         enterConfirmResultController(true, dataConfirm, true)
     }
@@ -178,21 +185,28 @@ class GPRegularChangeViewController: BaseViewController {
         data["DD"] = m_objPassData?.m_settingData.m_strDate
         data["QTY"] = m_strBuyAmount
         data["SETUP"] = String(m_iSettingIndex)
+        
+        // 暫停起日, 暫停訖日
         if (m_iSettingIndex == 1) {
             data["STPSDAY"] = m_strPauseStart
             data["STPEDAY"] = m_strPauseEnd
         }
+        else {
+            data["STPSDAY"] = ""
+            data["STPEDAY"] = ""
+        }
+        
         let confirmRequest = RequestStruct(strMethod: "Gold/Gold0404", strSessionDescription: "Gold0404", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
         
         var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: (m_objPassData?.m_accountStruct.accountNO)!])
         dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: (m_objPassData?.m_strTransOutAct)!])
-        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)!])
-        dataConfirm.list?.append([Response_Key: "投資數量", Response_Value: (m_objPassData?.m_settingData.m_strAmount)!])
+        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)! + "日"])
+        dataConfirm.list?.append([Response_Key: "投資數量", Response_Value: m_strBuyAmount.separatorThousand() + "克"])
         dataConfirm.list?.append([Response_Key: "扣款設定", Response_Value: m_arySettingList[m_iSettingIndex]])
         if (m_iSettingIndex == 1) {
-            dataConfirm.list?.append([Response_Key: "暫停起日", Response_Value: m_strPauseStart])
-            dataConfirm.list?.append([Response_Key: "暫停訖日", Response_Value: m_strPauseEnd])
+            dataConfirm.list?.append([Response_Key: "暫停起日", Response_Value: m_strPauseStart.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")])
+            dataConfirm.list?.append([Response_Key: "暫停訖日", Response_Value: m_strPauseEnd.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")])
         }
         enterConfirmResultController(true, dataConfirm, true)
     }
@@ -250,6 +264,7 @@ extension GPRegularChangeViewController : OneRowDropDownViewDelegate {
                 datePicker.frame.origin = .zero
                 datePicker.showOneDatePickerView(true, nil) { start in
                     self.m_uiPauseStartView?.setOneRow("暫停起日", "\(start.year)/\(start.month)/\(start.day)")
+                    self.m_strPauseStart = "\(start.year)\(start.month)\(start.day)"
                 }
                 view.addSubview(datePicker)
             }
@@ -261,6 +276,7 @@ extension GPRegularChangeViewController : OneRowDropDownViewDelegate {
                 datePicker.frame.origin = .zero
                 datePicker.showOneDatePickerView(true, nil) {  end in
                     self.m_uiPauseEndView?.setOneRow("暫停訖日", "\(end.year)/\(end.month)/\(end.day)")
+                    self.m_strPauseEnd = "\(end.year)\(end.month)\(end.day)"
                 }
                 view.addSubview(datePicker)
             }

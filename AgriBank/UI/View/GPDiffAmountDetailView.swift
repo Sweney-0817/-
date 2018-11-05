@@ -46,14 +46,14 @@ class GPDiffAmountDetailView: UIView {
         delegate?.clickDiffAmountDetailViewCloseBtn()
     }
     func setData(_ data: DiffAmountDetail) {
-        m_lbDate.text = data.m_strDate
-        m_lbAmount.text = data.m_strAmount
-        m_lbBasePrice.text = data.m_strBasePrice
-        m_lbUp.text = data.m_strUp
-        m_lbUpAmount.text = data.m_strUpAmount
-        m_lbDown.text = data.m_strDown
-        m_lbDownAmount.text = data.m_strDownAmount
-        m_lbAmountUpLimit.text = data.m_strAmountUpLimit
-        m_lbAmountDownLimit.text = data.m_strAmountDownLimit
+        m_lbDate.text = data.m_strDate + "日"
+        m_lbAmount.text = data.m_strAmount.separatorThousand()
+        m_lbBasePrice.text = data.m_strBasePrice.separatorThousand()
+        m_lbUp.text = data.m_strUp + "%"
+        m_lbUpAmount.text = data.m_strUpAmount.separatorThousand()
+        m_lbDown.text = data.m_strDown + "%"
+        m_lbDownAmount.text = data.m_strDownAmount.separatorThousand()
+        m_lbAmountUpLimit.text = data.m_strAmountUpLimit.separatorThousand()
+        m_lbAmountDownLimit.text = data.m_strAmountDownLimit.separatorThousand()
     }
 }

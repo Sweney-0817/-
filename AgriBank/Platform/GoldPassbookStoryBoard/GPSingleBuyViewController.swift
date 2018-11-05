@@ -71,7 +71,8 @@ class GPSingleBuyViewController: BaseViewController {
         guard m_objActInfo != nil && m_objPriceInfo != nil else {
             return
         }
-        let strPriceTime: String = m_objPriceInfo!.DATE + " " + m_objPriceInfo!.TIME//牌告時間
+        
+        let strPriceTime: String = m_objPriceInfo!.DATE.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd") + " " + m_objPriceInfo!.TIME//牌告時間
         let dSell: Double = Double(m_objPriceInfo!.SELL.replacingOccurrences(of: ",", with: ""))!
         let totalAmount: String = String(lround(dSell * Double(m_strBuyGram)!))//試算金額
 
@@ -87,17 +88,17 @@ class GPSingleBuyViewController: BaseViewController {
         data["CNT"] = m_objPriceInfo!.CNT
         data["TXAMT"] = totalAmount
         data["DATE"] = strPriceTime
-        let confirmRequest = RequestStruct(strMethod: "Gold/Gold0302", strSessionDescription: "Gold0302", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+        let confirmRequest = RequestStruct(strMethod: "Gold/Gold0302", strSessionDescription: "Gold0302", httpBody: AuthorizationManage.manage.converInputToHttpBody2(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
         
         var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: m_aryActList[m_iActIndex].accountNO])
-        dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: m_aryActList[m_iActIndex].currency])
+        dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: m_aryActList[m_iActIndex].currency == Currency_TWD ? Currency_TWD_Title:m_aryActList[m_iActIndex].currency])
         dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: m_objActInfo!.PAYACT])
-        dataConfirm.list?.append([Response_Key: "扣款帳號餘額", Response_Value: m_objActInfo!.AVBAL])
+        dataConfirm.list?.append([Response_Key: "扣款帳號餘額", Response_Value: m_objActInfo!.AVBAL.separatorThousand()])
         dataConfirm.list?.append([Response_Key: "牌告時間", Response_Value: strPriceTime])
-        dataConfirm.list?.append([Response_Key: "參考價(1克)", Response_Value: m_objPriceInfo!.SELL])
-        dataConfirm.list?.append([Response_Key: "申購量(克)", Response_Value: m_strBuyGram])
-        dataConfirm.list?.append([Response_Key: "試算金額", Response_Value: totalAmount])
+        dataConfirm.list?.append([Response_Key: "參考價(1克)", Response_Value: m_objPriceInfo!.SELL.separatorThousand()])
+        dataConfirm.list?.append([Response_Key: "申購量(克)", Response_Value: m_strBuyGram.separatorThousand()])
+        dataConfirm.list?.append([Response_Key: "試算金額", Response_Value: totalAmount.separatorThousand()])
         enterConfirmResultController(true, dataConfirm, true)
     }
     // MARK:- WebService Methods
@@ -147,8 +148,8 @@ class GPSingleBuyViewController: BaseViewController {
                 showErrorMessage(nil, ErrorMsg_No_TaskId)
             }
         case "Gold0203":
-            if let actInfo = response.object(forKey: ReturnData_Key) as? [String:String] {
-                m_objActInfo = GPActInfo(PAYACT: actInfo["PAYACT"]!, AVBAL: actInfo["AVBAL"]!, SCORE: actInfo["SCORE"]!, CREDAY: actInfo["CREDAY"]!)
+            if let actInfo = response.object(forKey: ReturnData_Key) as? [String:Any] {
+                m_objActInfo = GPActInfo(PAYACT: actInfo["PAYACT"]! as! String, AVBAL: actInfo["AVBAL"]! as! String, SCORE: actInfo["SCORE"]! as! String, CREDAY: actInfo["CREDAY"]! as! String)
                 m_tvContentView.isHidden = false
                 m_tvContentView.reloadData()
             }
@@ -205,7 +206,7 @@ extension GPSingleBuyViewController : UITableViewDelegate, UITableViewDataSource
         switch indexPath.row {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
-            cell.set("計價幣別", m_aryActList[m_iActIndex].currency)
+            cell.set("計價幣別", m_aryActList[m_iActIndex].currency == Currency_TWD ? Currency_TWD_Title:m_aryActList[m_iActIndex].currency)
             cell.selectionStyle = .none
             return cell
         case 1:

@@ -8,7 +8,7 @@
 
 import UIKit
 
-let TransactionDetailDetail_CellTitle = ["交易時間", "交易序號", "更正記號", "借貸", "交易量", "單價", "餘額(g)"]
+let TransactionDetailDetail_CellTitle = ["交易時間", "交易序號", "更正記號", "借貸", "交易量", "單價", "餘額(克)"]
 
 class GPTransactionDetailDetailViewController: BaseViewController {
     @IBOutlet var m_tvContentView: UITableView!
@@ -45,11 +45,13 @@ extension GPTransactionDetailDetailViewController : UITableViewDelegate, UITable
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
+
         var strTitle: String = TransactionDetailDetail_CellTitle[indexPath.row]
         var strValue: String = ""
         switch indexPath.row {
         case 0:
-            strValue = (m_objDetailData?.TXDAY)!
+            let strTime: String = (m_objDetailData?.TXTIME)!.dateFormatter(form: "HHmm", to: "HH:mm")
+            strValue = String(format: "%@ %@", (m_objDetailData?.TXDAY)!, strTime)
         case 1:
             strValue = (m_objDetailData?.SEQ)!
         case 2:
@@ -58,9 +60,9 @@ extension GPTransactionDetailDetailViewController : UITableViewDelegate, UITable
             strValue = m_objDetailData?.CRDB == "1" ? "賣出" : "買進"
         case 4:
             strTitle = m_objDetailData?.CRDB == "1" ? "賣出量" : "買進量"
-            strValue = (m_objDetailData?.TXQTY)!
+            strValue = (m_objDetailData?.TXQTY)! + "克"
         case 5:
-            strValue = (m_objDetailData?.VALUE)!
+            strValue = (m_objDetailData?.VALUE)!.separatorThousand()
         case 6:
             strValue = (m_objDetailData?.AVBAL)!
         default:

@@ -7,11 +7,13 @@
 //
 
 import UIKit
-let TransactionDetail_CellTitle = ["交易日期", "更正記號", "交易量", "餘額(g)"]
+let TransactionDetail_CellTitle = ["交易日期", "更正記號", "交易量", "餘額(克)"]
 
 struct GPTransactionDetailData {
     ///日期
     var TXDAY: String = ""
+    // 時間
+    var TXTIME: String = ""
     ///更正
     var HCODE: String = ""
     ///借貸
@@ -31,6 +33,8 @@ class GPTransactionDetailViewController: BaseViewController {
     @IBOutlet var m_lbTitle: UILabel!
     @IBOutlet var m_lbDate: UILabel!
     @IBOutlet var m_tvContentView: UITableView!
+    var dtStart:Date? = nil
+    var dtEnd:Date? = nil
     var m_iActIndex: Int = -1
     var m_aryActList : [AccountStruct] = [AccountStruct]()
     var m_aryData: [GPTransactionDetailData] = [GPTransactionDetailData]()
@@ -42,7 +46,12 @@ class GPTransactionDetailViewController: BaseViewController {
         // Do any additional setup after loading the view.
         initActView()
         initTableView()
-        send_getGoldList()
+        getTransactionID("10002", TransactionID_Description)
+        
+        // 預設為近7日
+        dtStart = NSCalendar.current.date(byAdding: .day, value: -6, to: Date())!
+        dtEnd = Date()
+        self.showDatePeriod("近7日", start: dtStart!, end: dtEnd!)
     }
 
     override func didReceiveMemoryWarning() {
@@ -117,7 +126,7 @@ class GPTransactionDetailViewController: BaseViewController {
     func send_getGoldInfo(_ start: Date, _ end: Date) {
         self.setLoading(true)
         let fmt = DateFormatter()
-        fmt.dateFormat = "YYYY/MM/dd"
+        fmt.dateFormat = "YYYYMMdd"
         let startDate: String = fmt.string(from: start)
         let endDate: String = fmt.string(from: end)
 
@@ -151,8 +160,9 @@ class GPTransactionDetailViewController: BaseViewController {
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:String]] {
                 m_aryData.removeAll()
                 for data in result {
-                    if let TXDAY = data["TXDAY"], let HCODE = data["HCODE"], let CRDB = data["CRDB"], let TXQTY = data["TXQTY"], let AVBAL = data["AVBAL"], let SEQ = data["SEQ"], let VALUE = data["VALUE"] {
-                        m_aryData.append(GPTransactionDetailData(TXDAY: TXDAY, HCODE: HCODE, CRDB: CRDB, TXQTY: TXQTY, AVBAL: AVBAL, SEQ: SEQ, VALUE: VALUE))
+                    if let TXDAY = data["TXDAY"], let TXTIME = data["TIME"], let HCODE = data["HCODE"], let CRDB = data["CRDB"], let TXQTY = data["TXQTY"], let AVBAL = data["AVBAL"], let SEQ = data["SEQ"], let VALUE = data["VALUE"] {
+                        
+                        m_aryData.append(GPTransactionDetailData(TXDAY: TXDAY.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd"), TXTIME: TXTIME, HCODE: HCODE, CRDB: CRDB, TXQTY: TXQTY, AVBAL: AVBAL, SEQ: SEQ, VALUE: VALUE))
                     }
                 }
                 m_tvContentView.reloadData()
@@ -168,20 +178,20 @@ class GPTransactionDetailViewController: BaseViewController {
             self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
-        let start: Date = Date()
-        let end: Date = Date()
-        self.showDatePeriod("當日", start: start, end: end)
-        self.send_getGoldInfo(start, end)
+        dtStart = Date()
+        dtEnd = Date()
+        self.showDatePeriod("當日", start: dtStart!, end: dtEnd!)
+        self.send_getGoldInfo(dtStart!, dtEnd!)
     }
     @IBAction func m_btnWeekClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
             self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
-        let start: Date = NSCalendar.current.date(byAdding: .day, value: -7, to: Date())!
-        let end: Date = Date()
-        self.showDatePeriod("近7日", start: start, end: end)
-        self.send_getGoldInfo(start, end)
+        dtStart = NSCalendar.current.date(byAdding: .day, value: -6, to: Date())!
+        dtEnd = Date()
+        self.showDatePeriod("近7日", start: dtStart!, end: dtEnd!)
+        self.send_getGoldInfo(dtStart!, dtEnd!)
     }
     @IBAction func m_btnCustomizeClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
@@ -192,15 +202,15 @@ class GPTransactionDetailViewController: BaseViewController {
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
             dateView.frame = view.frame
             dateView.frame.origin = .zero
-            dateView.showTwoDatePickerView(true, curDate, curDate) { start, end, sDate, eDate in
-                var componenets = Calendar.current.dateComponents([.year, .month, .day], from: sDate!)
+            dateView.showTwoDatePickerView(true, curDate, curDate) { start, end, dtStart, stEnd in
+                var componenets = Calendar.current.dateComponents([.year, .month, .day], from: dtStart!)
                 componenets.month = componenets.month!+6
-                if Calendar.current.compare(Calendar.current.date(from: componenets)!, to: eDate!, toGranularity: .day) == .orderedAscending {
+                if Calendar.current.compare(Calendar.current.date(from: componenets)!, to: stEnd!, toGranularity: .day) == .orderedAscending {
                     self.showErrorMessage(nil, ErrorMsg_DateMonthOnlySix)
                 }
                 else {
-                    self.showDatePeriod("自訂", start: sDate!, end: eDate!)
-                    self.send_getGoldInfo(sDate!, eDate!)
+                    self.showDatePeriod("自訂", start: dtStart!, end: stEnd!)
+                    self.send_getGoldInfo(dtStart!, stEnd!)
                 }
             }
             view.addSubview(dateView)
@@ -227,11 +237,14 @@ extension GPTransactionDetailViewController : UIActionSheetDelegate {
             case ViewTag.View_AccountActionSheet.rawValue:
                 self.m_iActIndex = buttonIndex - 1
                 let actInfo : AccountStruct = m_aryActList[self.m_iActIndex]
-                if (m_uiActView?.getContentByType(.First) != actInfo.accountNO) {
+                if (m_uiActView?.getContentByType(.First) != actInfo.accountNO)
+                {
                     m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
-                    self.showDatePeriod("", start: Date(), end: Date())
-                    self.m_aryData.removeAll()
-                    self.m_tvContentView.reloadData()
+                    self.send_getGoldInfo(dtStart!, dtEnd!)
+                }
+                else
+                {
+                    // 相同帳號不做動作
                 }
             default:
                 break
