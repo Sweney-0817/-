@@ -9,6 +9,8 @@
 import UIKit
 
 class GPSingleSellViewController: BaseViewController {
+    let m_contentViewHeight: CGFloat = 180.0
+    let m_sellAllHeight: CGFloat = 43.0
     var m_uiActView: OneRowDropDownView? = nil
     var m_strSellGram: String = "0"
     var m_iActIndex: Int = -1
@@ -18,7 +20,9 @@ class GPSingleSellViewController: BaseViewController {
     var m_objPriceInfo : GPPriceInfo? = nil
     @IBOutlet var m_vActView: UIView!
     @IBOutlet var m_tvContentView: UITableView!
+    @IBOutlet var m_consContentViewHeight: NSLayoutConstraint!
     @IBOutlet var m_vSellAll: UIView!
+    @IBOutlet var m_consSellAllHeight: NSLayoutConstraint!
     @IBOutlet var m_btnSellAll: UIButton!
 
     override func viewDidLoad() {
@@ -55,6 +59,8 @@ class GPSingleSellViewController: BaseViewController {
         m_tvContentView.allowsSelection = false
         m_tvContentView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
         m_tvContentView.isHidden = true
+        m_consContentViewHeight.constant = 0
+        m_consSellAllHeight.constant = 0
     }
     // MARK:- UI Methods
     func showActList() {
@@ -67,7 +73,7 @@ class GPSingleSellViewController: BaseViewController {
             actSheet.show(in: view)
         }
         else {
-            showErrorMessage(nil, ErrorMsg_GetList_InCommonAccount)
+            showErrorMessage(nil, ErrorMsg_NoGPAccount)
         }
     }
     // MARK:- Logic Methods
@@ -153,12 +159,19 @@ class GPSingleSellViewController: BaseViewController {
             if let actInfo = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 m_objActInfo = GPActInfo(PAYACT: actInfo["PAYACT"]! as! String, AVBAL: actInfo["AVBAL"]! as! String, SCORE: actInfo["SCORE"]! as! String, CREDAY: actInfo["CREDAY"]! as! String)
                 m_tvContentView.isHidden = false
+                m_consContentViewHeight.constant = m_contentViewHeight
+                m_consSellAllHeight.constant = m_sellAllHeight
                 m_tvContentView.reloadData()
             }
         case "Gold0502":
             if let priceInfo = response.object(forKey: ReturnData_Key) as? [String:String] {
-                m_objPriceInfo = GPPriceInfo(DATE: priceInfo["DATE"]!, TIME: priceInfo["TIME"]!, CNT: priceInfo["CNT"]!, SELL: priceInfo["SELL"]!, BUY: priceInfo["BUY"]!)
-                self.enterConfirmView()
+                if (priceInfo["CanTrans"] == Can_Transaction_Status) {
+                    m_objPriceInfo = GPPriceInfo(DATE: priceInfo["DATE"]!, TIME: priceInfo["TIME"]!, CNT: priceInfo["CNT"]!, SELL: priceInfo["SELL"]!, BUY: priceInfo["BUY"]!)
+                    self.enterConfirmView()
+                }
+                else {
+                    showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
+                }
             }
         default:
             super.didResponse(description, response)
@@ -166,6 +179,10 @@ class GPSingleSellViewController: BaseViewController {
     }
     // MARK:- Handle Actions
     @IBAction func m_btnNextClick(_ sender: Any) {
+        guard Int(m_strSellGram)! > 0 else {
+            showAlert(title: nil, msg: "請輸入回售數量", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return
+        }
         self.send_queryData()
     }
     @IBAction func m_btnSellAllClick(_ sender: Any) {
@@ -226,15 +243,20 @@ extension GPSingleSellViewController : UITableViewDelegate, UITableViewDataSourc
             cell.selectionStyle = .none
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultEditCell.NibName()!, for: indexPath) as! ResultEditCell
-            cell.set("", placeholder: "請輸入回售量(公克)")
+            cell.set("", placeholder: "請輸入回售量(克)")
             cell.m_tfEditData.delegate = self
             cell.selectionStyle = .none
             if (m_bIsSellAll == true) {
                 cell.m_tfEditData.isEnabled = false
                 cell.m_tfEditData.text = m_aryActList[m_iActIndex].balance
+                cell.m_tfEditData.textColor = .gray
+                m_strSellGram = m_aryActList[m_iActIndex].balance
             }
             else {
                 cell.m_tfEditData.isEnabled = true
+                cell.m_tfEditData.text = ""
+                cell.m_tfEditData.textColor = .black
+                m_strSellGram = "0"
             }
             return cell
         default:

@@ -9,6 +9,7 @@
 import UIKit
 
 class GPSingleBuyViewController: BaseViewController {
+    let m_contentViewHeight: CGFloat = 180.0
     var m_uiActView: OneRowDropDownView? = nil
     var m_strBuyGram: String = "0"
     var m_iActIndex: Int = -1
@@ -17,7 +18,8 @@ class GPSingleBuyViewController: BaseViewController {
     var m_objPriceInfo : GPPriceInfo? = nil
     @IBOutlet var m_vActView: UIView!
     @IBOutlet var m_tvContentView: UITableView!
-
+    @IBOutlet var m_consContentViewHeight: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,6 +53,7 @@ class GPSingleBuyViewController: BaseViewController {
         m_tvContentView.allowsSelection = false
         m_tvContentView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
         m_tvContentView.isHidden = true
+        m_consContentViewHeight.constant = 0
     }
     // MARK:- UI Methods
     func showActList() {
@@ -63,7 +66,7 @@ class GPSingleBuyViewController: BaseViewController {
             actSheet.show(in: view)
         }
         else {
-            showErrorMessage(nil, ErrorMsg_GetList_InCommonAccount)
+            showErrorMessage(nil, ErrorMsg_NoGPAccount)
         }
     }
     // MARK:- Logic Methods
@@ -151,6 +154,7 @@ class GPSingleBuyViewController: BaseViewController {
             if let actInfo = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 m_objActInfo = GPActInfo(PAYACT: actInfo["PAYACT"]! as! String, AVBAL: actInfo["AVBAL"]! as! String, SCORE: actInfo["SCORE"]! as! String, CREDAY: actInfo["CREDAY"]! as! String)
                 m_tvContentView.isHidden = false
+                m_consContentViewHeight.constant = m_contentViewHeight
                 m_tvContentView.reloadData()
             }
         case "Gold0502":
@@ -164,6 +168,10 @@ class GPSingleBuyViewController: BaseViewController {
     }
     // MARK:- Handle Actions
     @IBAction func m_btnNextClick(_ sender: Any) {
+        guard Int(m_strBuyGram)! > 0 else {
+            showAlert(title: nil, msg: "請輸入申購數量", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return
+        }
         self.send_queryData()
     }
 }
@@ -211,11 +219,11 @@ extension GPSingleBuyViewController : UITableViewDelegate, UITableViewDataSource
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
-            cell.set("轉出帳號", m_objActInfo?.PAYACT ?? "")
+            cell.set("扣款帳號", m_objActInfo?.PAYACT ?? "")
             cell.selectionStyle = .none
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultEditCell.NibName()!, for: indexPath) as! ResultEditCell
-            cell.set("", placeholder: "請輸入申購數量(公克)")
+            cell.set("", placeholder: "請輸入申購數量(克)")
             cell.m_tfEditData.delegate = self
             cell.selectionStyle = .none
             return cell

@@ -59,8 +59,8 @@ extension GPTransactionDetailDetailViewController : UITableViewDelegate, UITable
         case 3:
             strValue = m_objDetailData?.CRDB == "1" ? "賣出" : "買進"
         case 4:
-            strTitle = m_objDetailData?.CRDB == "1" ? "賣出量" : "買進量"
-            strValue = (m_objDetailData?.TXQTY)! + "克"
+            strTitle = m_objDetailData?.CRDB == "1" ? "賣出量(克)" : "買進量(克)"
+            strValue = (m_objDetailData?.TXQTY)!
         case 5:
             strValue = (m_objDetailData?.VALUE)!.separatorThousand()
         case 6:

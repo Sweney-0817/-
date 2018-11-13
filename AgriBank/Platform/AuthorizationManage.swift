@@ -37,13 +37,13 @@ struct ResponseLoginInfo {
 //    var Content: String = ""
 //}
 
-struct GoldAcception {
-    //for test
-//    var Read: String = "Y"
-    var Read: String = "N"
-    var Version: String = ""
-    var Content: String = ""
-}
+//struct GoldAcception {
+//    //for test
+////    var Read: String = "Y"
+//    var Read: String = "N"
+//    var Version: String = ""
+//    var Content: String = ""
+//}
 
 class AuthorizationManage {
     static let manage = AuthorizationManage()
@@ -62,7 +62,7 @@ class AuthorizationManage {
     //QRP同意條款狀態
 //    private var m_qrpAcception: QRPAcception = QRPAcception()
     //黃金同意條款狀態
-    private var m_goldAcception: GoldAcception = GoldAcception()
+//    private var m_goldAcception: GoldAcception = GoldAcception()
     
     func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info

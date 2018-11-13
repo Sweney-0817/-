@@ -33,12 +33,13 @@ class GPTransactionDetailViewController: BaseViewController {
     @IBOutlet var m_lbTitle: UILabel!
     @IBOutlet var m_lbDate: UILabel!
     @IBOutlet var m_tvContentView: UITableView!
-    var dtStart:Date? = nil
-    var dtEnd:Date? = nil
+    var m_dtStart:Date? = nil
+    var m_dtEnd:Date? = nil
     var m_iActIndex: Int = -1
     var m_aryActList : [AccountStruct] = [AccountStruct]()
     var m_aryData: [GPTransactionDetailData] = [GPTransactionDetailData]()
     var m_uiActView: OneRowDropDownView? = nil
+    var m_strActFromAccountInfomation: String? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,9 +50,9 @@ class GPTransactionDetailViewController: BaseViewController {
         getTransactionID("10002", TransactionID_Description)
         
         // 預設為近7日
-        dtStart = NSCalendar.current.date(byAdding: .day, value: -6, to: Date())!
-        dtEnd = Date()
-        self.showDatePeriod("近7日", start: dtStart!, end: dtEnd!)
+        m_dtStart = NSCalendar.current.date(byAdding: .day, value: -6, to: Date())!
+        m_dtEnd = Date()
+        self.showDatePeriod("近7日", start: m_dtStart!, end: m_dtEnd!)
     }
 
     override func didReceiveMemoryWarning() {
@@ -89,7 +90,7 @@ class GPTransactionDetailViewController: BaseViewController {
             actSheet.show(in: view)
         }
         else {
-            showErrorMessage(nil, ErrorMsg_GetList_InCommonAccount)
+            showErrorMessage(nil, ErrorMsg_NoGPAccount)
         }
     }
     func showDatePeriod(_ strTitle: String, start: Date, end: Date) {
@@ -111,6 +112,22 @@ class GPTransactionDetailViewController: BaseViewController {
     }
     
     // MARK:- Logic Methods
+    private func checkActFromAccountInfomation() {
+        guard (m_strActFromAccountInfomation != nil) && (m_aryActList.count > 0) else {
+            return
+        }
+        for i in 0..<m_aryActList.count {
+            let actInfo: AccountStruct = m_aryActList[i]
+            if (m_strActFromAccountInfomation == actInfo.accountNO) {
+                m_strActFromAccountInfomation = nil
+                m_iActIndex = i
+                m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
+                self.send_getGoldInfo(m_dtStart!, m_dtEnd!)
+                return
+            }
+        }
+        NSLog("(交易明細)找不到帳號總覽帶來的帳號[%@]", m_strActFromAccountInfomation!)
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let data: GPTransactionDetailData = sender as! GPTransactionDetailData
         super.prepare(for: segue, sender: sender)
@@ -152,6 +169,7 @@ class GPTransactionDetailViewController: BaseViewController {
                         m_aryActList.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ""))
                     }
                 }
+                self.checkActFromAccountInfomation()
             }
             else {
                 showErrorMessage(nil, ErrorMsg_No_TaskId)
@@ -178,20 +196,20 @@ class GPTransactionDetailViewController: BaseViewController {
             self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
-        dtStart = Date()
-        dtEnd = Date()
-        self.showDatePeriod("當日", start: dtStart!, end: dtEnd!)
-        self.send_getGoldInfo(dtStart!, dtEnd!)
+        m_dtStart = Date()
+        m_dtEnd = Date()
+        self.showDatePeriod("當日", start: m_dtStart!, end: m_dtEnd!)
+        self.send_getGoldInfo(m_dtStart!, m_dtEnd!)
     }
     @IBAction func m_btnWeekClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
             self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
-        dtStart = NSCalendar.current.date(byAdding: .day, value: -6, to: Date())!
-        dtEnd = Date()
-        self.showDatePeriod("近7日", start: dtStart!, end: dtEnd!)
-        self.send_getGoldInfo(dtStart!, dtEnd!)
+        m_dtStart = NSCalendar.current.date(byAdding: .day, value: -6, to: Date())!
+        m_dtEnd = Date()
+        self.showDatePeriod("近7日", start: m_dtStart!, end: m_dtEnd!)
+        self.send_getGoldInfo(m_dtStart!, m_dtEnd!)
     }
     @IBAction func m_btnCustomizeClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
@@ -202,15 +220,17 @@ class GPTransactionDetailViewController: BaseViewController {
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
             dateView.frame = view.frame
             dateView.frame.origin = .zero
-            dateView.showTwoDatePickerView(true, curDate, curDate) { start, end, dtStart, stEnd in
-                var componenets = Calendar.current.dateComponents([.year, .month, .day], from: dtStart!)
+            dateView.showTwoDatePickerView(true, curDate, curDate) { start, end, dtStart, dtEnd in
+                self.m_dtStart = dtStart
+                self.m_dtEnd = dtEnd
+                var componenets = Calendar.current.dateComponents([.year, .month, .day], from: self.m_dtStart!)
                 componenets.month = componenets.month!+6
-                if Calendar.current.compare(Calendar.current.date(from: componenets)!, to: stEnd!, toGranularity: .day) == .orderedAscending {
+                if Calendar.current.compare(Calendar.current.date(from: componenets)!, to: self.m_dtEnd!, toGranularity: .day) == .orderedAscending {
                     self.showErrorMessage(nil, ErrorMsg_DateMonthOnlySix)
                 }
                 else {
-                    self.showDatePeriod("自訂", start: dtStart!, end: stEnd!)
-                    self.send_getGoldInfo(dtStart!, stEnd!)
+                    self.showDatePeriod("自訂", start: self.m_dtStart!, end: self.m_dtEnd!)
+                    self.send_getGoldInfo(self.m_dtStart!, self.m_dtEnd!)
                 }
             }
             view.addSubview(dateView)
@@ -240,7 +260,7 @@ extension GPTransactionDetailViewController : UIActionSheetDelegate {
                 if (m_uiActView?.getContentByType(.First) != actInfo.accountNO)
                 {
                     m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
-                    self.send_getGoldInfo(dtStart!, dtEnd!)
+                    self.send_getGoldInfo(m_dtStart!, m_dtEnd!)
                 }
                 else
                 {

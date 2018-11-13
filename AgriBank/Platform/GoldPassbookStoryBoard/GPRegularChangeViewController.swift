@@ -8,8 +8,14 @@
 
 import UIKit
 
+let GPRegularChangeTitle = "定期投資變更"
+let changeAmount = "修改金額"
+let changeQuantity = "修改數量"
 let pauseDebit = "暫停扣款"
-let stopDebit = "停止扣款"
+let resumeDebit = "取消暫停扣款"
+let stopDebit = "解除約定扣款"
+let dataDateFormat = "yyyyMMdd"
+let showDateFormat = "yyyy/MM/dd"
 
 class GPRegularChangeViewController: BaseViewController {
     var m_uiSettingView: OneRowDropDownView? = nil
@@ -21,6 +27,7 @@ class GPRegularChangeViewController: BaseViewController {
     var m_strPauseEnd: String = Choose_Title
     var m_arySettingList: [String] = [String]()
     var m_strBuyAmount: String = ""
+    var m_enumPauseStatus: GPPauseStatus = GPPauseStatus.GPPauseStatusNone
 
     @IBOutlet var m_lbGPAct: UILabel!
     @IBOutlet var m_lbTransOutAct: UILabel!
@@ -41,15 +48,40 @@ class GPRegularChangeViewController: BaseViewController {
         // Do any additional setup after loading the view.
         m_lbGPAct.text = m_objPassData?.m_accountStruct.accountNO
         m_lbTransOutAct.text = m_objPassData?.m_strTransOutAct
-        m_lbTradeDate.text = (m_objPassData?.m_settingData.m_strDate)! + "日"
-        if (m_objPassData?.m_settingData.m_strType == sameAmount) {
-            m_arySettingList = ["修改金額", pauseDebit, stopDebit]
+        m_lbTradeDate.text = (m_objPassData?.m_settingData.m_strDAY)! + "日"
+        m_enumPauseStatus = checkPauseStatus((m_objPassData?.m_settingData.m_strSDAY)!, (m_objPassData?.m_settingData.m_strEDAY)!, (m_objPassData?.m_settingData.m_strDATE)!)
+        if (m_objPassData?.m_settingData.m_strTYPE == GPRegularType.GPRegularTypeSameAmount) {//定期定額
+            m_lbTradeTitle.text = "投資金額"
+            m_tfTradeInput.placeholder = "請輸入投資金額"
+            if (m_enumPauseStatus == .GPPauseStatusNone ||
+                m_enumPauseStatus == .GPPauseStatusAfter) {
+                m_arySettingList = [changeAmount, pauseDebit, stopDebit]
+            }
+            else if (m_enumPauseStatus == .GPPauseStatusBefore ||
+                m_enumPauseStatus == .GPPauseStatusIng) {
+                m_arySettingList = [changeAmount, resumeDebit, stopDebit]
+                m_iSettingIndex = 1//暫停扣款時，預設扣款設定為"取消暫停扣款"
+                m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+                m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            }
         }
-        else if (m_objPassData?.m_settingData.m_strType == sameQuantity) {
-            m_arySettingList = ["修改數量", pauseDebit, stopDebit]
+        else if (m_objPassData?.m_settingData.m_strTYPE == GPRegularType.GPRegularTypeSameQuantity) {//定期定量
+            m_lbTradeTitle.text = "投資數量"
+            m_tfTradeInput.placeholder = "請輸入投資數量"
+            if (m_enumPauseStatus == .GPPauseStatusNone ||
+                m_enumPauseStatus == .GPPauseStatusAfter) {
+                m_arySettingList = [changeQuantity, pauseDebit, stopDebit]
+            }
+            else if (m_enumPauseStatus == .GPPauseStatusBefore ||
+                m_enumPauseStatus == .GPPauseStatusIng) {
+                m_arySettingList = [changeQuantity, resumeDebit, stopDebit]
+                m_iSettingIndex = 1//暫停扣款時，預設扣款設定為"取消暫停扣款"
+                m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+                m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            }
         }
         else {
-            m_arySettingList = [m_objPassData?.m_settingData.m_strType, pauseDebit, stopDebit] as! [String]
+            m_arySettingList = [m_objPassData?.m_settingData.m_strTYPE.getTitle()] as! [String]
         }
         
         initSettingView()
@@ -58,12 +90,19 @@ class GPRegularChangeViewController: BaseViewController {
 
         self.addGestureForKeyBoard()
         self.changeView(m_arySettingList[m_iSettingIndex])
+        self.send_QueryData()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.topItem?.title = GPRegularChangeTitle
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
     // MARK:- Init Methods
     func setData(_ data: GPPassData) {
         m_objPassData = data
@@ -95,7 +134,190 @@ class GPRegularChangeViewController: BaseViewController {
         m_uiPauseEndView?.m_lbFirstRowTitle.textAlignment = .center
         m_vPauseEndView.addSubview(m_uiPauseEndView!)
     }
+
     // MARK:- UI Methods
+    private func initView4ChangeAmount() {
+        m_tfTradeInput.text = m_objPassData?.m_settingData.m_strAMT.separatorDecimal()
+        m_tfTradeInput.isHidden = false
+        m_strBuyAmount = (m_objPassData?.m_settingData.m_strAMT)!.separatorDecimal()
+        m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAMT.separatorThousand()
+        m_lbTradeAmount.isHidden = true
+        if (m_enumPauseStatus == .GPPauseStatusNone) {
+            m_vPauseStartView.isHidden = true
+            m_vPauseStartBottomLine.isHidden = true
+            m_vPauseEndView.isHidden = true
+            m_vPauseEndBottomLine.isHidden = true
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusBefore) {
+            m_vPauseStartView.isHidden = false
+            m_vPauseStartBottomLine.isHidden = false
+            m_vPauseEndView.isHidden = false
+            m_vPauseEndBottomLine.isHidden = false
+            m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+            m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            m_uiPauseStartView?.setOneRow("暫停起日", m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat))
+            m_uiPauseEndView?.setOneRow("暫停訖日", m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat))
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusIng) {
+            m_vPauseStartView.isHidden = false
+            m_vPauseStartBottomLine.isHidden = false
+            m_vPauseEndView.isHidden = false
+            m_vPauseEndBottomLine.isHidden = false
+            m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+            m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            m_uiPauseStartView?.setOneRow("暫停起日", m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat))
+            m_uiPauseEndView?.setOneRow("暫停訖日", m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat))
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusAfter) {
+            m_vPauseStartView.isHidden = true
+            m_vPauseStartBottomLine.isHidden = true
+            m_vPauseEndView.isHidden = true
+            m_vPauseEndBottomLine.isHidden = true
+        }
+    }
+    private func initView4ChangeQuantity() {
+        m_tfTradeInput.text = m_objPassData?.m_settingData.m_strAMT.separatorDecimal()
+        m_tfTradeInput.isHidden = false
+        m_strBuyAmount = (m_objPassData?.m_settingData.m_strAMT)!.separatorDecimal()
+        m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAMT.separatorThousand()
+        m_lbTradeAmount.isHidden = true
+
+        if (m_enumPauseStatus == .GPPauseStatusNone) {
+            m_vPauseStartView.isHidden = true
+            m_vPauseStartBottomLine.isHidden = true
+            m_vPauseEndView.isHidden = true
+            m_vPauseEndBottomLine.isHidden = true
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusBefore) {
+            m_vPauseStartView.isHidden = false
+            m_vPauseStartBottomLine.isHidden = false
+            m_vPauseEndView.isHidden = false
+            m_vPauseEndBottomLine.isHidden = false
+            m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+            m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            m_uiPauseStartView?.setOneRow("暫停起日", m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat))
+            m_uiPauseEndView?.setOneRow("暫停訖日", m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat))
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusIng) {
+            m_vPauseStartView.isHidden = false
+            m_vPauseStartBottomLine.isHidden = false
+            m_vPauseEndView.isHidden = false
+            m_vPauseEndBottomLine.isHidden = false
+            m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+            m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            m_uiPauseStartView?.setOneRow("暫停起日", m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat))
+            m_uiPauseEndView?.setOneRow("暫停訖日", m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat))
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusAfter) {
+            m_vPauseStartView.isHidden = true
+            m_vPauseStartBottomLine.isHidden = true
+            m_vPauseEndView.isHidden = true
+            m_vPauseEndBottomLine.isHidden = true
+        }
+    }
+    private func initView4PauseDebit() {
+        m_tfTradeInput.text = ""
+        m_tfTradeInput.isHidden = true
+        m_strBuyAmount = (m_objPassData?.m_settingData.m_strAMT)!.separatorDecimal()
+        m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAMT.separatorThousand()
+        m_lbTradeAmount.isHidden = false
+
+        if (m_enumPauseStatus == .GPPauseStatusNone) {
+            m_vPauseStartView.isHidden = false
+            m_vPauseStartBottomLine.isHidden = false
+            m_vPauseEndView.isHidden = false
+            m_vPauseEndBottomLine.isHidden = false
+            m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+            m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            m_uiPauseStartView?.setOneRow("暫停起日", m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat))
+            m_uiPauseEndView?.setOneRow("暫停訖日", m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat))
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusBefore) {//理論上不會有
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusIng) {//理論上不會有
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusAfter) {
+            m_vPauseStartView.isHidden = false
+            m_vPauseStartBottomLine.isHidden = false
+            m_vPauseEndView.isHidden = false
+            m_vPauseEndBottomLine.isHidden = false
+            m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+            m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            m_uiPauseStartView?.setOneRow("暫停起日", m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat))
+            m_uiPauseEndView?.setOneRow("暫停訖日", m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat))
+        }
+    }
+    private func initView4ResumeDebit() {
+        m_tfTradeInput.text = ""
+        m_tfTradeInput.isHidden = true
+        m_strBuyAmount = (m_objPassData?.m_settingData.m_strAMT)!.separatorDecimal()
+        m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAMT.separatorThousand()
+        m_lbTradeAmount.isHidden = false
+
+        if (m_enumPauseStatus == .GPPauseStatusNone) {//理論上不會有
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusBefore) {
+            m_vPauseStartView.isHidden = false
+            m_vPauseStartBottomLine.isHidden = false
+            m_vPauseEndView.isHidden = false
+            m_vPauseEndBottomLine.isHidden = false
+            m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+            m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            m_uiPauseStartView?.setOneRow("暫停起日", m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat), false)
+            m_uiPauseEndView?.setOneRow("暫停訖日", m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat), false)
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusIng) {
+            m_vPauseStartView.isHidden = false
+            m_vPauseStartBottomLine.isHidden = false
+            m_vPauseEndView.isHidden = false
+            m_vPauseEndBottomLine.isHidden = false
+            m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+            m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            m_uiPauseStartView?.setOneRow("暫停起日", m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat), false)
+            m_uiPauseEndView?.setOneRow("暫停訖日", m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat), false)
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusAfter) {//理論上不會有
+        }
+    }
+    private func initView4StopDebit() {
+        m_tfTradeInput.text = ""
+        m_tfTradeInput.isHidden = true
+        m_strBuyAmount = (m_objPassData?.m_settingData.m_strAMT)!.separatorDecimal()
+        m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAMT.separatorThousand()
+        m_lbTradeAmount.isHidden = false
+        if (m_enumPauseStatus == .GPPauseStatusNone) {
+            m_vPauseStartView.isHidden = true
+            m_vPauseStartBottomLine.isHidden = true
+            m_vPauseEndView.isHidden = true
+            m_vPauseEndBottomLine.isHidden = true
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusBefore) {
+            m_vPauseStartView.isHidden = false
+            m_vPauseStartBottomLine.isHidden = false
+            m_vPauseEndView.isHidden = false
+            m_vPauseEndBottomLine.isHidden = false
+            m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+            m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            m_uiPauseStartView?.setOneRow("暫停起日", m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat), false)
+            m_uiPauseEndView?.setOneRow("暫停訖日", m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat), false)
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusIng) {
+            m_vPauseStartView.isHidden = false
+            m_vPauseStartBottomLine.isHidden = false
+            m_vPauseEndView.isHidden = false
+            m_vPauseEndBottomLine.isHidden = false
+            m_strPauseStart = (m_objPassData?.m_settingData.m_strSDAY)!
+            m_strPauseEnd = (m_objPassData?.m_settingData.m_strEDAY)!
+            m_uiPauseStartView?.setOneRow("暫停起日", m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat), false)
+            m_uiPauseEndView?.setOneRow("暫停訖日", m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat), false)
+        }
+        else if (m_enumPauseStatus == .GPPauseStatusAfter) {
+            m_vPauseStartView.isHidden = true
+            m_vPauseStartBottomLine.isHidden = true
+            m_vPauseEndView.isHidden = true
+            m_vPauseEndBottomLine.isHidden = true
+        }
+    }
     func showSettingList() {
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
             for setting in m_arySettingList {
@@ -105,41 +327,51 @@ class GPRegularChangeViewController: BaseViewController {
             actSheet.show(in: view)
     }
     func changeView(_ setting: String) {
-        if (setting == pauseDebit) {
-            m_tfTradeInput.text = ""
-            m_tfTradeInput.isHidden = true
-            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!.separatorDecimal()
-            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount.separatorThousand()
-            m_lbTradeAmount.isHidden = false
-            m_vPauseStartView.isHidden = false
-            m_vPauseStartBottomLine.isHidden = false
-            m_vPauseEndView.isHidden = false
-            m_vPauseEndBottomLine.isHidden = false
-        }
-        else if (setting == stopDebit) {
-            m_tfTradeInput.text = ""
-            m_tfTradeInput.isHidden = true
-            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!.separatorDecimal()
-            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount.separatorThousand()
-            m_lbTradeAmount.isHidden = false
-            m_vPauseStartView.isHidden = true
-            m_vPauseStartBottomLine.isHidden = true
-            m_vPauseEndView.isHidden = true
-            m_vPauseEndBottomLine.isHidden = true
-        }
-        else {
-            m_tfTradeInput.text = m_objPassData?.m_settingData.m_strAmount.separatorDecimal()
-            m_tfTradeInput.isHidden = false
-            m_strBuyAmount = (m_objPassData?.m_settingData.m_strAmount)!.separatorDecimal()
-            m_lbTradeAmount.text = m_objPassData?.m_settingData.m_strAmount.separatorThousand()
-            m_lbTradeAmount.isHidden = true
-            m_vPauseStartView.isHidden = true
-            m_vPauseStartBottomLine.isHidden = true
-            m_vPauseEndView.isHidden = true
-            m_vPauseEndBottomLine.isHidden = true
+        switch setting {
+        case changeAmount:
+            self.initView4ChangeAmount()
+        case changeQuantity:
+            self.initView4ChangeQuantity()
+        case pauseDebit:
+            self.initView4PauseDebit()
+        case resumeDebit:
+            self.initView4ResumeDebit()
+        case stopDebit:
+            self.initView4StopDebit()
+        default:
+            break
         }
     }
     // MARK:- Logic Methods
+    private func checkPauseStatus(_ start: String, _ end: String, _ today: String) -> GPPauseStatus {
+        //是否申請過暫停扣款
+        let emptyDate: String = "00000000"
+        let dateForm: String = dataDateFormat
+        if (start == emptyDate || end == emptyDate) {
+            return GPPauseStatus.GPPauseStatusNone
+        }
+        let startDate: Date? = start.toDate(dateForm)
+        let endDate: Date? = end.toDate(dateForm)
+        let todayDate: Date? = today.toDate(dateForm)
+        if (startDate == nil || endDate == nil || todayDate == nil) {
+            NSLog("===== 日期格式有誤[%@][%@][%@]", start, end, today)
+            return GPPauseStatus.GPPauseStatusNone
+        }
+        if (todayDate?.compare(startDate!) == ComparisonResult.orderedAscending) {//今日在暫停區間前
+            return GPPauseStatus.GPPauseStatusBefore
+        }
+        else if (todayDate?.compare(startDate!) == ComparisonResult.orderedDescending &&
+            todayDate?.compare(endDate!) == ComparisonResult.orderedAscending) {//今日在暫停區間中
+            return GPPauseStatus.GPPauseStatusIng
+        }
+        else if (todayDate?.compare(endDate!) == ComparisonResult.orderedDescending) {//今日在暫停區間後
+            return GPPauseStatus.GPPauseStatusAfter
+        }
+        else {
+            NSLog("===== 日期關係有誤[%@][%@][%@]", start, end, today)
+            return GPPauseStatus.GPPauseStatusNone
+        }
+    }
     func enterConfirmView_SameAmount() {
         var data : [String:String] = [String:String]()
         data["WorkCode"] = "10009"
@@ -147,7 +379,7 @@ class GPRegularChangeViewController: BaseViewController {
         data["TransactionId"] = transactionId
         data["REFNO"] = m_objPassData?.m_accountStruct.accountNO
         data["INVACT"] = m_objPassData?.m_strTransOutAct
-        data["DD"] = m_objPassData?.m_settingData.m_strDate
+        data["DD"] = m_objPassData?.m_settingData.m_strDAY
         data["AMT"] = m_strBuyAmount
         data["SETUP"] = String(m_iSettingIndex)
         
@@ -157,8 +389,8 @@ class GPRegularChangeViewController: BaseViewController {
             data["STPEDAY"] = m_strPauseEnd
         }
         else {
-            data["STPSDAY"] = ""
-            data["STPEDAY"] = ""
+            data["STPSDAY"] = (m_objPassData?.m_settingData.m_strSDAY)!
+            data["STPEDAY"] = (m_objPassData?.m_settingData.m_strEDAY)!
         }
         
         let confirmRequest = RequestStruct(strMethod: "Gold/Gold0402", strSessionDescription: "Gold0402", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
@@ -166,14 +398,16 @@ class GPRegularChangeViewController: BaseViewController {
         var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: (m_objPassData?.m_accountStruct.accountNO)!])
         dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: (m_objPassData?.m_strTransOutAct)!])
-        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)! + "日"])
+        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDAY)! + "日"])
         dataConfirm.list?.append([Response_Key: "投資金額", Response_Value: m_strBuyAmount.separatorThousand()])
         dataConfirm.list?.append([Response_Key: "扣款設定", Response_Value: m_arySettingList[m_iSettingIndex]])
-        if (m_iSettingIndex == 1) {
-            dataConfirm.list?.append([Response_Key: "暫停起日", Response_Value: m_strPauseStart.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")])
-            dataConfirm.list?.append([Response_Key: "暫停訖日", Response_Value: m_strPauseEnd.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")])
+        if (m_vPauseStartView.isHidden == false) {
+            dataConfirm.list?.append([Response_Key: "暫停起日", Response_Value: m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat)])
         }
-        enterConfirmResultController(true, dataConfirm, true)
+        if (m_vPauseEndView.isHidden == false) {
+            dataConfirm.list?.append([Response_Key: "暫停訖日", Response_Value: m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat)])
+        }
+        enterConfirmResultController(true, dataConfirm, true, GPRegularChangeTitle)
     }
     func enterConfirmView_SameQuantity() {
         var data : [String:String] = [String:String]()
@@ -182,7 +416,7 @@ class GPRegularChangeViewController: BaseViewController {
         data["TransactionId"] = transactionId
         data["REFNO"] = m_objPassData?.m_accountStruct.accountNO
         data["INVACT"] = m_objPassData?.m_strTransOutAct
-        data["DD"] = m_objPassData?.m_settingData.m_strDate
+        data["DD"] = m_objPassData?.m_settingData.m_strDAY
         data["QTY"] = m_strBuyAmount
         data["SETUP"] = String(m_iSettingIndex)
         
@@ -192,8 +426,8 @@ class GPRegularChangeViewController: BaseViewController {
             data["STPEDAY"] = m_strPauseEnd
         }
         else {
-            data["STPSDAY"] = ""
-            data["STPEDAY"] = ""
+            data["STPSDAY"] = (m_objPassData?.m_settingData.m_strSDAY)!
+            data["STPEDAY"] = (m_objPassData?.m_settingData.m_strEDAY)!
         }
         
         let confirmRequest = RequestStruct(strMethod: "Gold/Gold0404", strSessionDescription: "Gold0404", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
@@ -201,31 +435,52 @@ class GPRegularChangeViewController: BaseViewController {
         var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: (m_objPassData?.m_accountStruct.accountNO)!])
         dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: (m_objPassData?.m_strTransOutAct)!])
-        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDate)! + "日"])
-        dataConfirm.list?.append([Response_Key: "投資數量", Response_Value: m_strBuyAmount.separatorThousand() + "克"])
+        dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDAY)! + "日"])
+        dataConfirm.list?.append([Response_Key: "投資數量(克)", Response_Value: m_strBuyAmount.separatorThousand()])
         dataConfirm.list?.append([Response_Key: "扣款設定", Response_Value: m_arySettingList[m_iSettingIndex]])
-        if (m_iSettingIndex == 1) {
-            dataConfirm.list?.append([Response_Key: "暫停起日", Response_Value: m_strPauseStart.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")])
-            dataConfirm.list?.append([Response_Key: "暫停訖日", Response_Value: m_strPauseEnd.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")])
+        if (m_vPauseStartView.isHidden == false) {
+            dataConfirm.list?.append([Response_Key: "暫停起日", Response_Value: m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat)])
         }
-        enterConfirmResultController(true, dataConfirm, true)
+        if (m_vPauseEndView.isHidden == false) {
+            dataConfirm.list?.append([Response_Key: "暫停訖日", Response_Value: m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat)])
+        }
+        enterConfirmResultController(true, dataConfirm, true, GPRegularChangeTitle)
+    }
+    func enterConfirmView() {
+        if (m_objPassData?.m_settingData.m_strTYPE == GPRegularType.GPRegularTypeSameAmount) {
+//            getTransactionID("10009", TransactionID_Description)
+            enterConfirmView_SameAmount()
+        }
+        else if (m_objPassData?.m_settingData.m_strTYPE == GPRegularType.GPRegularTypeSameQuantity) {
+//            getTransactionID("10011", TransactionID_Description)
+            enterConfirmView_SameQuantity()
+        }
     }
 
     // MARK:- WebService Methods
+    func send_QueryData() {
+        let strAct: String = (m_objPassData?.m_accountStruct.accountNO)!
+        let strType: String = "IC"
+        postRequest("Gold/Gold0601", "Gold0601", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10014", "Operate":"queryData", "Type":strType, "REFNO":strAct], true), AuthorizationManage.manage.getHttpHead(true))
+    }
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
         case TransactionID_Description:
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
-                if (m_objPassData?.m_settingData.m_strType == sameAmount) {
+                if (m_objPassData?.m_settingData.m_strTYPE == GPRegularType.GPRegularTypeSameAmount) {
                     enterConfirmView_SameAmount()
                 }
-                else if (m_objPassData?.m_settingData.m_strType == sameQuantity) {
+                else if (m_objPassData?.m_settingData.m_strTYPE == GPRegularType.GPRegularTypeSameQuantity) {
                     enterConfirmView_SameQuantity()
                 }
             }
             else {
                 super.didResponse(description, response)
+            }
+        case "Gold0601":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:String], let content = data["Content"] {
+                m_lbCommand.text = content
             }
         default:
             super.didResponse(description, response)
@@ -234,15 +489,15 @@ class GPRegularChangeViewController: BaseViewController {
 
     // MARK:- Handle Actions
     @IBAction func m_btnNextClick(_ sender: Any) {
-        if (m_objPassData?.m_settingData.m_strType == sameAmount) {
-            getTransactionID("10009", TransactionID_Description)
-        }
-        else if (m_objPassData?.m_settingData.m_strType == sameQuantity) {
-            getTransactionID("10011", TransactionID_Description)
+        if (m_enumPauseStatus == .GPPauseStatusIng) {
+        self.showAlert(title: nil, msg: "本筆定期投資已設定暫停扣款，請確認是否繼續？", confirmTitle: "是", cancleTitle: "否", completionHandler: { self.enterConfirmView() }, cancelHandelr: {()})
         }
         else {
-            return
+            self.enterConfirmView()
         }
+//        else {
+//            return
+//        }
     }
     override func clickBackBarItem() {
         for vc in (self.navigationController?.viewControllers)! {
@@ -262,9 +517,15 @@ extension GPRegularChangeViewController : OneRowDropDownViewDelegate {
             if let datePicker = getUIByID(.UIID_DatePickerView) as? DatePickerView {
                 datePicker.frame = view.frame
                 datePicker.frame.origin = .zero
-                datePicker.showOneDatePickerView(true, nil) { start in
-                    self.m_uiPauseStartView?.setOneRow("暫停起日", "\(start.year)/\(start.month)/\(start.day)")
+                var today: Date = (m_objPassData?.m_settingData.m_strDATE.toDate(dataDateFormat))!
+                if (m_strPauseStart != Choose_Title) {
+                    today = m_strPauseStart.toDate(dataDateFormat)!
+                }
+                let curDate = InputDatePickerStruct(minDate: Date(), maxDate: nil, curDate: today)
+                datePicker.showOneDatePickerView(true, curDate) { start in
                     self.m_strPauseStart = "\(start.year)\(start.month)\(start.day)"
+                    self.m_uiPauseStartView?.setOneRow("暫停起日", self.m_strPauseStart.dateFormatter(form: dataDateFormat, to: showDateFormat))
+//                    self.m_uiPauseStartView?.setOneRow("暫停起日", "\(start.year)/\(start.month)/\(start.day)")
                 }
                 view.addSubview(datePicker)
             }
@@ -274,9 +535,15 @@ extension GPRegularChangeViewController : OneRowDropDownViewDelegate {
             if let datePicker = getUIByID(.UIID_DatePickerView) as? DatePickerView {
                 datePicker.frame = view.frame
                 datePicker.frame.origin = .zero
-                datePicker.showOneDatePickerView(true, nil) {  end in
-                    self.m_uiPauseEndView?.setOneRow("暫停訖日", "\(end.year)/\(end.month)/\(end.day)")
+                var today: Date = (m_objPassData?.m_settingData.m_strDATE.toDate(dataDateFormat))!
+                if (m_strPauseEnd != Choose_Title) {
+                    today = m_strPauseEnd.toDate(dataDateFormat)!
+                }
+                let curDate = InputDatePickerStruct(minDate: Date(), maxDate: nil, curDate: today)
+                datePicker.showOneDatePickerView(true, curDate) { end in
                     self.m_strPauseEnd = "\(end.year)\(end.month)\(end.day)"
+                    self.m_uiPauseEndView?.setOneRow("暫停訖日", self.m_strPauseEnd.dateFormatter(form: dataDateFormat, to: showDateFormat))
+//                    self.m_uiPauseEndView?.setOneRow("暫停訖日", "\(end.year)/\(end.month)/\(end.day)")
                 }
                 view.addSubview(datePicker)
             }

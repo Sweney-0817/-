@@ -659,6 +659,7 @@ let ErrorMsg_NoImage = "您尚未設定頭像"
 let ErrorMsg_NoTelephone = "此單位尚無提供電話"
 let ErrorMsg_NoMapAddress = "此單位尚無提供位址"
 /* 黃金存摺 */
+let ErrorMsg_NoGPAccount = "您無黃金存摺帳號"
 let GPAccountTitle = "黃金存摺帳號"
 let ErrorMsg_DateMonthOnlySix = "查詢區間僅能六個月"
 // MARK: - Shadow Direction:

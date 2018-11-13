@@ -27,6 +27,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
     private var curTextfield:UITextField? = nil
     private var isNeedOTP = false
     private var locationManager:CLLocationManager? = nil   // OTP需要開啟定位點
+    var m_strTitle: String? = nil
     
     // MARK: - Public
     func setData(_ data:ConfirmResultStruct) {
@@ -137,7 +138,8 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 getImageConfirm(transactionId)
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
-            
+        case BaseTransactionID_Description, "BaseCOMM0802", "QR0101", "Gold0101"://在Base發的 丟回Base處理
+            super.didResponse(description, response)
         default:
             if isNeedOTP {
                 data = ConfirmResultStruct(image: "", title: "", list: nil, memo: "", confirmBtnName: dataOTP?.confirmBtnName ?? "", resultBtnName: dataOTP?.resultBtnName ?? "", checkRequest: nil)
@@ -218,6 +220,9 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         /* 「即時轉帳」確認頁特殊處理 */
         if getCurrentFeatureID() == .FeatureID_NTTransfer {
             navigationController?.navigationBar.topItem?.title = isNeedOTP ? NonPredesignated_Title : Predesignated_Title
+        }
+        if (m_strTitle != nil) {
+            navigationController?.navigationBar.topItem?.title = m_strTitle
         }
     }
     

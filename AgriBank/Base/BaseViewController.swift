@@ -189,6 +189,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                 
                 if canEnter, let con = navigationController?.viewControllers.first {
                     if con is HomeViewController {
+                        self.navigationController?.popToRootViewController(animated: false)
                         (con as! HomeViewController).pushFeatureController(ID, animated)
                     }
                 }
@@ -214,17 +215,19 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         }
     }
     
-    func enterConfirmResultController(_ isConfirm:Bool, _ data:ConfirmResultStruct, _ animated:Bool) {
+    func enterConfirmResultController(_ isConfirm:Bool, _ data:ConfirmResultStruct, _ animated:Bool, _ title:String? = nil) {
         if isConfirm {
             let controller = getControllerByID(.FeatureID_Confirm)
             (controller as! ConfirmViewController).transactionId = transactionId
             (controller as! ConfirmViewController).setData(data)
+            (controller as! ConfirmViewController).m_strTitle = title
             navigationController?.pushViewController(controller, animated: animated)
         }
         else {
             let controller = getControllerByID(.FeatureID_Result)
             (controller as! ResultViewController).transactionId = transactionId
             (controller as! ResultViewController).setData(data)
+            (controller as! ConfirmViewController).m_strTitle = title
             navigationController?.pushViewController(controller, animated: animated)
         }
     }
@@ -731,7 +734,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
 //                if (AuthorizationManage.manage.canEnterGold()) {
                 if (data["Read"] == "Y") {
                     m_bCanEnterGP = true
-                    enterFeatureByID(curFeatureID!, true)
+                    enterFeatureByID(curFeatureID!, false)
                 }
                 else {
                     let controller = getControllerByID(.FeatureID_GPAcceptRules)

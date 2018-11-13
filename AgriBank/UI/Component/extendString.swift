@@ -46,6 +46,13 @@ extension String {
         
         return strDate
     }
+    
+    func toDate(_ form: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = form
+        let dtDate = dateFormatter.date(from: self)
+        return dtDate
+    }
         
     // MARK: - SubString
     func substring(from: Int?, to: Int?) -> String {

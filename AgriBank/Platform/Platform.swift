@@ -150,7 +150,7 @@ class Platform {
         feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_GPAccountInfomation, .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell, .FeatureID_GPRegularAccountInfomation, .FeatureID_GPTransactionDetail, .FeatureID_GPGoldPrice], belong: nil, name: "黃金存摺")
         informationList[.FeatureID_GoldPassbook] = feature
 
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_GoldPassbook, name: "帳戶資訊")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_GoldPassbook, name: "帳號總覽")
         informationList[.FeatureID_GPAccountInfomation] = feature
 
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_GoldPassbook, name: "單筆申購")
