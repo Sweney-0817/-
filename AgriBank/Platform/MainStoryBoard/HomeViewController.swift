@@ -356,10 +356,11 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             if let title = alertView.buttonTitle(at: buttonIndex), title == Update_Title {
                 if let url = URL(string: AgriBank_AppURL), UIApplication.shared.canOpenURL(url) {
                     if #available(iOS 10, *) {
-                        UIApplication.shared.open(url)
+                        UIApplication.shared.open(url, options:[:], completionHandler:  { (success) in exit(0) })
                     }
                     else {
                         UIApplication.shared.openURL(url)
+                        exit(0)
                     }
                 }
             }
