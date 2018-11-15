@@ -56,7 +56,28 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         lButton.setImage(UIImage(named: imageName), for: .highlighted)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: lButton)
         
-        navigationController?.navigationBar.barTintColor = NavigationBar_Color
+        // 設定NavigationBar顏色
+        if let navigationBar = self.navigationController?.navigationBar {
+            let gradient = CAGradientLayer()
+            gradient.frame = navigationBar.frame
+            gradient.colors = [UIColor(netHex: 0xf0f36c).cgColor, UIColor(netHex: 0xe3a721).cgColor]
+            gradient.locations = [0.0, 1.0]
+            
+            if let image = getImageFrom(gradientLayer: gradient) {
+                navigationBar.setBackgroundImage(image, for: UIBarMetrics.default)
+            }
+        }
+    }
+    
+    func getImageFrom(gradientLayer:CAGradientLayer) -> UIImage? {
+        var gradientImage:UIImage?
+        UIGraphicsBeginImageContext(gradientLayer.frame.size)
+        if let context = UIGraphicsGetCurrentContext() {
+            gradientLayer.render(in: context)
+            gradientImage = UIGraphicsGetImageFromCurrentImageContext()?.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
+        }
+        UIGraphicsEndImageContext()
+        return gradientImage
     }
     
     override func didReceiveMemoryWarning() {

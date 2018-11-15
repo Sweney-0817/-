@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         window?.makeKeyAndVisible()
         // Status bar
         let statusView = UIView(frame: UIApplication.shared.statusBarFrame)
-        statusView.backgroundColor = .white
+        statusView.backgroundColor = .clear
         statusView.tag = ViewTag.View_Status.rawValue
         window?.addSubview(statusView)
         // APNS註冊
