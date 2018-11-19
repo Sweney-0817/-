@@ -8,6 +8,8 @@
 
 import UIKit
 
+let GPRegularSubscriptionTitle = "定期投資申請"
+
 class GPRegularSubscriptionViewController: BaseViewController {
 //    var m_strGPAct: String = ""
 //    var m_strCurrency: String = ""
@@ -31,14 +33,20 @@ class GPRegularSubscriptionViewController: BaseViewController {
 
         // Do any additional setup after loading the view.
         m_lbGPAct.text = m_objPassData?.m_accountStruct.accountNO
-        m_lbCurrency.text = m_objPassData?.m_accountStruct.currency
+        m_lbCurrency.text = (m_objPassData?.m_accountStruct.currency)! == Currency_TWD ? Currency_TWD_Title:(m_objPassData?.m_accountStruct.currency)!
         m_lbTransOutAct.text = m_objPassData?.m_strTransOutAct
-        m_lbTradeDate.text = m_objPassData?.m_settingData.m_strDAY
+        m_lbTradeDate.text = (m_objPassData?.m_settingData.m_strDAY)! + "日"
 //        self.addObserverToKeyBoard()
         self.addGestureForKeyBoard()
         self.changeFunction(true)
+        self.send_queryData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.topItem?.title = GPRegularSubscriptionTitle
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -82,13 +90,13 @@ class GPRegularSubscriptionViewController: BaseViewController {
         data["AMT"] = m_strBuyAmount
         let confirmRequest = RequestStruct(strMethod: "Gold/Gold0401", strSessionDescription: "Gold0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
         
-        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: (m_objPassData?.m_accountStruct.accountNO)!])
         dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: (m_objPassData?.m_accountStruct.currency)! == Currency_TWD ? Currency_TWD_Title:(m_objPassData?.m_accountStruct.currency)!])
         dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: (m_objPassData?.m_strTransOutAct)!])
         dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDAY)! + "日"])
         dataConfirm.list?.append([Response_Key: "投資金額", Response_Value: m_strBuyAmount.separatorThousand()])
-        enterConfirmResultController(true, dataConfirm, true)
+        enterConfirmResultController(true, dataConfirm, true, GPRegularSubscriptionTitle)
     }
     func enterConfirmView_SameQuantity() {
         var data : [String:String] = [String:String]()
@@ -101,30 +109,43 @@ class GPRegularSubscriptionViewController: BaseViewController {
         data["QTY"] = m_strBuyAmount
         let confirmRequest = RequestStruct(strMethod: "Gold/Gold0403", strSessionDescription: "Gold0403", httpBody: AuthorizationManage.manage.converInputToHttpBody(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
         
-        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: (m_objPassData?.m_accountStruct.accountNO)!])
         dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: (m_objPassData?.m_accountStruct.currency)! == Currency_TWD ? Currency_TWD_Title:(m_objPassData?.m_accountStruct.currency)!])
         dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: (m_objPassData?.m_strTransOutAct)!])
         dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDAY)! + "日"])
         dataConfirm.list?.append([Response_Key: "投資數量(克)", Response_Value: m_strBuyAmount.separatorThousand()])
-        enterConfirmResultController(true, dataConfirm, true)
+        enterConfirmResultController(true, dataConfirm, true, GPRegularSubscriptionTitle)
     }
     // MARK:- WebService Methods
+    func send_queryData() {
+        let strAct: String = (m_objPassData?.m_accountStruct.accountNO)!
+        let strType: String = "IA"
+        postRequest("Gold/Gold0601", "Gold0601", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10014", "Operate":"queryData", "Type":strType, "REFNO":strAct], true), AuthorizationManage.manage.getHttpHead(true))
+    }
+    func send_queryData2() {
+        self.setLoading(true)
+        postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
+
+    }
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
-//        case TransactionID_Description:
-//            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
-//                transactionId = tranId
-//                if (m_bIsSameAmount) {
-//                    self.enterConfirmView_SameAmount()
-//                }
-//                else {
-//                    self.enterConfirmView_SameQuantity()
-//                }
-//            }
-//            else {
-//                super.didResponse(description, response)
-//            }
+        case "Gold0601":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:String], let content = data["Content"] {
+                m_lbCommand.text = content
+            }
+        case "COMM0701":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let status = array.first?["CanTrans"] as? String, status == Can_Transaction_Status {
+                if (m_bIsSameAmount) {
+                    self.enterConfirmView_SameAmount()
+                }
+                else {
+                    self.enterConfirmView_SameQuantity()
+                }
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
+            }
         default:
             super.didResponse(description, response)
         }
@@ -141,12 +162,38 @@ class GPRegularSubscriptionViewController: BaseViewController {
     }
     @IBAction func m_btnNextClick(_ sender: Any) {
         if (m_bIsSameAmount) {
-//            getTransactionID("10008", TransactionID_Description)
-            self.enterConfirmView_SameAmount()
+            let iBuyAmount = Int(m_strBuyAmount)
+            guard (iBuyAmount != nil) else {
+                showAlert(title: nil, msg: "請輸入投資金額", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                return
+            }
+            guard (iBuyAmount! > 0) else {
+                showAlert(title: nil, msg: "投資金額不得0元", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                return
+            }
+            guard (iBuyAmount! >= 3000 && iBuyAmount! % 1000 == 0) else {
+                showAlert(title: nil, msg: "投資金額最少3000元，每次增加以1000元為倍數", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                return
+            }
+            self.send_queryData2()
+//            self.enterConfirmView_SameAmount()
         }
         else {
-//            getTransactionID("10010", TransactionID_Description)
-            self.enterConfirmView_SameQuantity()
+            let iBuyAmount = Int(m_strBuyAmount)
+            guard (iBuyAmount != nil) else {
+                showAlert(title: nil, msg: "請輸入投資數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                return
+            }
+            guard (iBuyAmount! > 0) else {
+                showAlert(title: nil, msg: "投資數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                return
+            }
+            guard (iBuyAmount! <= 2999) else {
+                showAlert(title: nil, msg: "投資數量最多2999公克，已超過上限", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                return
+            }
+            self.send_queryData2()
+//            self.enterConfirmView_SameQuantity()
         }
     }
     override func clickBackBarItem() {
@@ -165,7 +212,7 @@ extension GPRegularSubscriptionViewController : UITextFieldDelegate {
         }
         
         let newLength = (textField.text?.count)! - range.length + string.count
-        let maxLength = Max_GoldGram_Length
+        let maxLength = m_bIsSameAmount ? Max_Amount_Length : Max_GoldGram_Length
         if newLength <= maxLength {
             m_strBuyAmount = newString
             return true

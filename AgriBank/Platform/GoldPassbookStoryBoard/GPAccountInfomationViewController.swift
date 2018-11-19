@@ -7,7 +7,7 @@
 //
 
 import UIKit
-let AccountInfomation_CellTitle = ["帳號","幣別","總公克數"]
+let AccountInfomation_CellTitle = ["帳號","幣別","總公克數(克)"]
 
 class GPAccountInfomationViewController: BaseViewController {
 
@@ -15,6 +15,7 @@ class GPAccountInfomationViewController: BaseViewController {
     var m_aryActList : [AccountStruct] = [AccountStruct]()
     var curExpandCell:IndexPath? = nil          // 目前展開的cell
     var m_strSelectAct: String? = nil   //點選的帳號
+    var pushByclickExpandBtn = false            // 判斷是否從cell觸發 進功能畫面
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -100,7 +101,7 @@ extension GPAccountInfomationViewController : UITableViewDelegate, UITableViewDa
         
         cell.detail1Label.text = m_aryActList[indexPath.row].accountNO
         cell.detail2Label.text = (m_aryActList[indexPath.row].currency == Currency_TWD ? Currency_TWD_Title : m_aryActList[indexPath.row].currency)
-        cell.detail3Label.text = m_aryActList[indexPath.row].balance
+        cell.detail3Label.text = m_aryActList[indexPath.row].balance.separatorThousandDecimal()
 
         cell.AddExpnadBtn(self, indexPath)
         if curExpandCell == indexPath {
@@ -118,11 +119,13 @@ extension GPAccountInfomationViewController : OverviewCellDelegate
     func clickExpandBtn1(_ btn:UIButton, _ value:[String:String]) {
         m_strSelectAct = value[AccountInfomation_CellTitle[0]]
         enterFeatureByID(.FeatureID_GPRegularAccountInfomation, true)
+        pushByclickExpandBtn = true
     }
     
     func clickExpandBtn2(_ btn:UIButton, _ value:[String:String]) {
         m_strSelectAct = value[AccountInfomation_CellTitle[0]]
         enterFeatureByID(.FeatureID_GPTransactionDetail, true)
+        pushByclickExpandBtn = true
     }
     
     func endExpanding(_ curRow:IndexPath?) {
@@ -142,12 +145,13 @@ extension GPAccountInfomationViewController : OverviewCellDelegate
 }
 extension GPAccountInfomationViewController : UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        if (viewController is GPRegularAccountInfomationViewController) {
-            (viewController as! GPRegularAccountInfomationViewController).m_strActFromAccountInfomation = m_strSelectAct
-            navigationController.delegate = nil
-        }
-        else if (viewController is GPTransactionDetailViewController) {
-            (viewController as! GPTransactionDetailViewController).m_strActFromAccountInfomation = m_strSelectAct
+        if pushByclickExpandBtn {
+            if (viewController is GPRegularAccountInfomationViewController) {
+                (viewController as! GPRegularAccountInfomationViewController).m_strActFromAccountInfomation = m_strSelectAct
+            }
+            else if (viewController is GPTransactionDetailViewController) {
+                (viewController as! GPTransactionDetailViewController).m_strActFromAccountInfomation = m_strSelectAct
+            }
             navigationController.delegate = nil
         }
     }

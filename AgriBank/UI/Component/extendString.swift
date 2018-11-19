@@ -23,8 +23,26 @@ extension String {
         }
         return temp
     }
-    
-    // 取除小數點
+
+    func separatorThousandDecimal() -> String {
+        var temp = self.replacingOccurrences(of: "+", with: "")
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = ","
+        formatter.groupingSize = 3
+        formatter.usesGroupingSeparator = true
+        formatter.decimalSeparator = "."
+        formatter.minimumIntegerDigits = 1
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        //转换后的string
+        if let number = formatter.number(from: temp) {
+            temp = formatter.string(from: number) ?? temp
+        }
+        //打印
+        return temp
+    }
+
+    // 去除小數點
     func separatorDecimal() -> String {
         var temp = self.replacingOccurrences(of: "+", with: "").replacingOccurrences(of: "-", with: "")
         let formatter = NumberFormatter()
@@ -37,6 +55,9 @@ extension String {
     
     // 日期格式轉換
     func dateFormatter(form: String?, to: String) -> String {
+        if (self == emptyDate) {
+            return "-"
+        }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = form
         let dtDate = dateFormatter.date(from: self)

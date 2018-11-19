@@ -264,30 +264,22 @@ extension ScanCodeView {
             else {
                 switch (qrp?.transactionType)! {
                 case .purchase:
-//                    type = "01"
-//                    self.send_checkQRCode()
-                    type = ""
-                    error = "尚未提供消費扣款服務(QRS-002)"
-//                    showAlert(title: nil, msg: "尚未提供消費扣款服務(QRS-002)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                    type = "01"
+//                    type = ""
+//                    error = "尚未提供消費扣款服務(QRS-002)"
                 case .p2PTransfer:
-//                    type = "02"
-//                    self.send_checkQRCode()
-                    type = ""
-                    error = "尚未提供P2P轉帳服務(QRS-005)"
-//                    showAlert(title: nil, msg: "尚未提供P2P轉帳服務(QRS-005)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                    type = "02"
+//                    type = ""
+//                    error = "尚未提供P2P轉帳服務(QRS-005)"
                 case .bill:
-//                    type = "03"
-//                    self.send_checkQRCode()
-                    type = ""
-                    error = "尚未提供繳費服務(QRS-003)"
-//                    showAlert(title: nil, msg: "尚未提供繳費服務(QRS-003)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                    type = "03"
+//                    type = ""
+//                    error = "尚未提供繳費服務(QRS-003)"
                 case .transferPurchase:
                     type = "51"
-//                    self.send_checkQRCode()
                 default:
                     type = ""
                     error = "尚未提供此服務(QRS-006)"
-//                    showAlert(title: nil, msg: "尚未提供此服務(QRS-006)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
                 }
             }
         }

@@ -37,6 +37,8 @@ struct GPSettingData {
     var m_strUCAP: String = ""
     ///每次投資金額下限
     var m_strDCAP: String = ""
+    ///投資數量
+    var m_strQTY: String = ""
     ///系統時間
     var m_strDATE: String = ""
 
@@ -106,6 +108,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
     var m_iBtnIndex: Int = -1
     var m_uiDiffAmountDetail: GPDiffAmountDetailView? = nil
     var m_strActFromAccountInfomation: String? = nil
+    var m_strACTCreday: String = "N"
     
     @IBOutlet var m_vActView: UIView!
     @IBOutlet var m_svContent: UIScrollView!
@@ -201,7 +204,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         case GPRegularType.GPRegularTypeSameQuantity:
             m_lbAmountTitle1.text = quantityTitle
             m_lbStopTitle1.text = stopTitle
-            m_lbAmount1.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
+            m_lbAmount1.text = data.m_strQTY.separatorThousand() == "0" ? "-" : data.m_strQTY.separatorThousand()
             m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
         case GPRegularType.GPRegularTypeDiffAmount:
             m_lbAmountTitle1.text = basePrice
@@ -209,13 +212,13 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmount1.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
             m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
         default:
-            m_lbAmountTitle1.text = "-"
+            m_lbAmountTitle1.text = "投資金額"
             m_lbStopTitle1.text = "-"
             m_lbAmount1.text = "-"
-            m_btn1.setTitle("-", for: UIControlState.normal)
+            m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
         }
         //暫停訖日為空，且不為定期不定額，隱藏第四行
-        if (data.m_strEDAY.isEmpty == true && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {
+        if (data.m_strEDAY == emptyDate && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {
             m_lbStop1.text = ""
             m_consStopHeight1.constant = 0
         }
@@ -224,6 +227,13 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                 m_lbStop1.text = data.m_strEDAY.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")
             }
             m_consStopHeight1.constant = 36
+        }
+        //KYC無效且不為定期不定額，按鈕disable
+        if ((m_strACTCreday == "N") && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {
+            m_btn1.isEnabled = false
+        }
+        else {
+            m_btn1.isEnabled = true
         }
     }
     func setDate2(_ data: GPSettingData) {
@@ -238,7 +248,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         case GPRegularType.GPRegularTypeSameQuantity:
             m_lbAmountTitle2.text = quantityTitle
             m_lbStopTitle2.text = stopTitle
-            m_lbAmount2.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
+            m_lbAmount2.text = data.m_strQTY.separatorThousand() == "0" ? "-" : data.m_strQTY.separatorThousand()
             m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
         case GPRegularType.GPRegularTypeDiffAmount:
             m_lbAmountTitle2.text = basePrice
@@ -246,13 +256,13 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmount2.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
             m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
         default:
-            m_lbAmountTitle2.text = "-"
+            m_lbAmountTitle2.text = "投資金額"
             m_lbStopTitle2.text = "-"
             m_lbAmount2.text = "-"
-            m_btn2.setTitle("-", for: UIControlState.normal)
+            m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
         }
         //暫停訖日為空，且不為定期不定額，隱藏第四行
-        if (data.m_strEDAY.isEmpty == true && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {
+        if (data.m_strEDAY == emptyDate && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {
             m_lbStop2.text = ""
             m_consStopHeight2.constant = 0
         }
@@ -261,6 +271,13 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                 m_lbStop2.text = data.m_strEDAY.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")
             }
             m_consStopHeight2.constant = 36
+        }
+        //KYC無效且不為定期不定額，按鈕disable
+        if ((m_strACTCreday == "N") && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {
+            m_btn2.isEnabled = false
+        }
+        else {
+            m_btn2.isEnabled = true
         }
     }
     func setDate3(_ data: GPSettingData) {
@@ -275,7 +292,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         case GPRegularType.GPRegularTypeSameQuantity:
             m_lbAmountTitle3.text = quantityTitle
             m_lbStopTitle3.text = stopTitle
-            m_lbAmount3.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
+            m_lbAmount3.text = data.m_strQTY.separatorThousand() == "0" ? "-" : data.m_strQTY.separatorThousand()
             m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
         case GPRegularType.GPRegularTypeDiffAmount:
             m_lbAmountTitle3.text = basePrice
@@ -283,13 +300,13 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmount3.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
             m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
         default:
-            m_lbAmountTitle3.text = "-"
+            m_lbAmountTitle3.text = "投資金額"
             m_lbStopTitle3.text = "-"
             m_lbAmount3.text = "-"
-            m_btn3.setTitle("-", for: UIControlState.normal)
+            m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
         }
         //暫停訖日為空，且不為定期不定額，隱藏第四行
-        if (data.m_strEDAY.isEmpty == true && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {
+        if (data.m_strEDAY == emptyDate && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {
             m_lbStop3.text = ""
             m_consStopHeight3.constant = 0
         }
@@ -298,6 +315,13 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                 m_lbStop3.text = data.m_strEDAY.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd")
             }
             m_consStopHeight3.constant = 36
+        }
+        //KYC無效且不為定期不定額，按鈕disable
+        if ((m_strACTCreday == "N") && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {
+            m_btn3.isEnabled = false
+        }
+        else {
+            m_btn3.isEnabled = true
         }
     }
     func showDiffAmountDetail(_ data: GPSettingData) {
@@ -325,7 +349,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                 m_iActIndex = i
                 m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
                 self.m_lbCurrency.text = (actInfo.currency == Currency_TWD) ? Currency_TWD_Title:actInfo.currency
-                self.send_getGoldList2(actInfo.accountNO)
+                self.send_getGoldAcctInfo(actInfo.accountNO)
                 self.m_svContent.isHidden = true
                 return
             }
@@ -428,6 +452,10 @@ class GPRegularAccountInfomationViewController: BaseViewController {
 //        self.makeFakeData()
         postRequest("Gold/Gold0201", "Gold0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10002","Operate":"getGoldList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
     }
+    func send_getGoldAcctInfo(_ act: String) {
+        self.setLoading(true)
+        postRequest("Gold/Gold0203", "Gold0203", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10004","Operate":"getGoldAcctInfo","TransactionId":transactionId, "REFNO":act], true), AuthorizationManage.manage.getHttpHead(true))
+    }
     func send_getGoldList2(_ act: String) {
         self.setLoading(true)
 //        self.makeFakeActData()
@@ -459,7 +487,29 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                 self.checkActFromAccountInfomation()
             }
             else {
-                showErrorMessage(nil, ErrorMsg_No_TaskId)
+                showErrorMessage(nil, ErrorMsg_NoGPAccount)
+            }
+        case "Gold0203":
+            if let actInfo = response.object(forKey: ReturnData_Key) as? [String:Any] {
+                m_strACTCreday = actInfo["CREDAY"]! as! String
+                self.send_getGoldList2(m_aryActList[m_iActIndex].accountNO)
+//                if (m_strACTCreday == "N") {
+//                    m_tvContentView.isHidden = true
+//                    m_consContentViewHeight.constant = 0
+//                    m_consSellAllHeight.constant = 0
+//                    m_tvContentView.reloadData()
+//                    showAlert(title: nil, msg: "本會依法須定期更新客戶投資風險承受度資訊，以保障客戶權益，貴戶「投資風險屬性評估表」已逾一年有效期限，請速洽本會營業據點或於網路銀行線上填寫上述評估表，即可辦理黃金存摺買進類交易。", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+//                    m_btnNext.isEnabled = false
+//                }
+//                else {
+//                    m_tvContentView.isHidden = false
+//                    m_consContentViewHeight.constant = m_contentViewHeight
+//                    m_consSellAllHeight.constant = m_sellAllHeight
+//                    m_tvContentView.reloadData()
+//                    m_btnNext.isEnabled = true
+//                }
+//            }
+//            self.send_getGoldList2(actInfo.accountNO)
             }
         case "Gold0204":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
@@ -468,9 +518,6 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                     m_aryData.removeAll()
                     for date in result {
                         var tempSettingData: GPSettingData = GPSettingData()
-//                        tempSettingData.m_strDAY = date["DAY"]!
-//                        tempSettingData.m_strDATE = date["DATE"]!
-//                        tempSettingData.m_strTYPE = GPRegularType(rawValue: date["TYPE"]!)!
                         tempSettingData.m_strDAY = date["DAY"]!
                         tempSettingData.m_strTYPE = GPRegularType(rawValue: date["TYPE"]!)!
                         tempSettingData.m_strAMT = date["AMT"]!
@@ -485,44 +532,9 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                         tempSettingData.m_strDAMT = date["DAMT"]!
                         tempSettingData.m_strUCAP = date["UCAP"]!
                         tempSettingData.m_strDCAP = date["DCAP"]!
-                        tempSettingData.m_strDATE = date["DATE"] ?? "19000101"
+                        tempSettingData.m_strQTY = date["QTY"]!
+                        tempSettingData.m_strDATE = (data["DATE"]! as? String)!
                         tempSettingData.m_strBtn = tempSettingData.m_strTYPE.getBtnTitle()
-//                        switch date["TYPE"]! {
-//                        case "1":
-//                            tempSettingData.m_strTYPE = sameAmount
-//                        case "2":
-//                            tempSettingData.m_strTYPE = sameQuantity
-//                        case "3":
-//                            tempSettingData.m_strTYPE = diffAmount
-//                        default:
-//                            tempSettingData.m_strType = "-"
-//                        }
-//                        if (tempSettingData.m_strType == diffAmount) {
-//                            tempSettingData.m_strAmount = date["PRICE"]!
-//                            tempSettingData.m_strBtn = btnTitleCheck
-//
-//                            var tempDiffAmountDetail: DiffAmountDetail = DiffAmountDetail()
-//                            tempDiffAmountDetail.m_strDate = date["DAY"]!
-//                            tempDiffAmountDetail.m_strAmount = date["AMT"]!
-//                            tempDiffAmountDetail.m_strBasePrice = date["PRICE"]!
-//                            tempDiffAmountDetail.m_strUp = date["UPER"]!
-//                            tempDiffAmountDetail.m_strUpAmount = date["USIGN"]! + date["UAMT"]!.separatorThousand()
-//                            tempDiffAmountDetail.m_strDown = date["DPER"]!
-//                            tempDiffAmountDetail.m_strDownAmount = date["DSIGN"]! + date["DAMT"]!.separatorThousand()
-//                            tempDiffAmountDetail.m_strAmountUpLimit = date["UCAP"]!
-//                            tempDiffAmountDetail.m_strAmountDownLimit = date["DCAP"]!.separatorThousand()
-//                            tempSettingData.m_objDiffAmount = tempDiffAmountDetail
-//                        }
-//                        else if (tempSettingData.m_strType == sameAmount || tempSettingData.m_strType == sameQuantity){
-//                            tempSettingData.m_strAmount = date["AMT"]!
-//                            tempSettingData.m_strPauseStart = date["SDAY"]!
-//                            tempSettingData.m_strPauseEnd = date["EDAY"]!
-//                            tempSettingData.m_strBtn = btnTitleChange
-//                        }
-//                        else {
-//                            tempSettingData.m_strAmount = date["AMT"]!
-//                            tempSettingData.m_strBtn = btnTitleNew
-//                        }
                         m_aryData.append(tempSettingData)
                     }
                     if (m_aryData.count >= 3) {
@@ -532,12 +544,15 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                         self.m_svContent.isHidden = false
                     }
                     else {
-                        self.showAlert(title: nil, msg: "Gold0204 資料數不足", confirmTitle: "confirm", cancleTitle: "cancel", completionHandler: {()}, cancelHandelr: {()})
+                        self.showAlert(title: nil, msg: "Gold0204 資料數不足", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                     }
                 }
                 else {
                     self.clearDate()
                     self.m_svContent.isHidden = true
+                }
+                if (m_strACTCreday == "N") {
+                    showAlert(title: nil, msg: "本會依法須定期更新客戶投資風險承受度資訊，以保障客戶權益，貴戶「投資風險屬性評估表」已逾一年有效期限，請速洽本會營業據點或於網路銀行線上填寫上述評估表，即可辦理黃金存摺買進類交易。", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 }
             }
         case "Gold0101A":
@@ -603,10 +618,12 @@ extension GPRegularAccountInfomationViewController : UIActionSheetDelegate {
             case ViewTag.View_AccountActionSheet.rawValue:
                 m_iActIndex = buttonIndex - 1
                 let actInfo : AccountStruct = m_aryActList[m_iActIndex]
-                m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
-                self.m_lbCurrency.text = (actInfo.currency == Currency_TWD) ? Currency_TWD_Title:actInfo.currency
-                self.send_getGoldList2(actInfo.accountNO)
-                self.m_svContent.isHidden = true
+                if (actInfo.accountNO != m_uiActView?.getContentByType(.First)) {
+                    m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
+                    self.m_lbCurrency.text = (actInfo.currency == Currency_TWD) ? Currency_TWD_Title:actInfo.currency
+                    self.send_getGoldAcctInfo(actInfo.accountNO)
+                    self.m_svContent.isHidden = true
+                }
             default:
                 break
             }

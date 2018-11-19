@@ -169,7 +169,8 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             componenetsMin.day = componenetsMin.day!+1
             var componenetsMax = Calendar.current.dateComponents([.day,.year,.month], from: date ?? Date())
             componenetsMax.month = componenetsMax.month!+3
-            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: componenetsMin), maxDate: Calendar.current.date(from: componenetsMax), curDate: date)
+//            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: componenetsMin), maxDate: Calendar.current.date(from: componenetsMax), curDate: date)
+            let startDate = InputDatePickerStruct(minDate: Calendar.current.date(from: componenetsMin), maxDate: Calendar.current.date(from: componenetsMax), curDate: Calendar.current.date(from: componenetsMin))
             dateView.showOneDatePickerView(true, startDate) { start in
                 self.chooseDay = start.day
                 self.chooseMonth = start.month

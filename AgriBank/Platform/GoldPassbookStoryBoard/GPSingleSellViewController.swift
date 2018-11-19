@@ -24,7 +24,8 @@ class GPSingleSellViewController: BaseViewController {
     @IBOutlet var m_vSellAll: UIView!
     @IBOutlet var m_consSellAllHeight: NSLayoutConstraint!
     @IBOutlet var m_btnSellAll: UIButton!
-
+    @IBOutlet var m_btnNext: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -99,13 +100,13 @@ class GPSingleSellViewController: BaseViewController {
         data["DATE"] = strPriceTime
         let confirmRequest = RequestStruct(strMethod: "Gold/Gold0301", strSessionDescription: "Gold0301", httpBody: AuthorizationManage.manage.converInputToHttpBody2(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
         
-        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: m_aryActList[m_iActIndex].accountNO])
         dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: m_aryActList[m_iActIndex].currency == Currency_TWD ? Currency_TWD_Title:m_aryActList[m_iActIndex].currency])
         dataConfirm.list?.append([Response_Key: "入款帳號", Response_Value: m_objActInfo!.PAYACT])
         dataConfirm.list?.append([Response_Key: "牌告時間", Response_Value: strPriceTime])
         dataConfirm.list?.append([Response_Key: "參考價(1克)", Response_Value: m_objPriceInfo!.BUY.separatorThousand()])
-        dataConfirm.list?.append([Response_Key: "回售量(克)", Response_Value: m_strSellGram.separatorThousand()])
+        dataConfirm.list?.append([Response_Key: "回售量(克)", Response_Value: m_bIsSellAll ? m_strSellGram.separatorThousandDecimal() : m_strSellGram.separatorThousand()])
         dataConfirm.list?.append([Response_Key: "試算金額", Response_Value: totalAmount.separatorThousand()])
         enterConfirmResultController(true, dataConfirm, true)
     }
@@ -158,10 +159,21 @@ class GPSingleSellViewController: BaseViewController {
         case "Gold0203":
             if let actInfo = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 m_objActInfo = GPActInfo(PAYACT: actInfo["PAYACT"]! as! String, AVBAL: actInfo["AVBAL"]! as! String, SCORE: actInfo["SCORE"]! as! String, CREDAY: actInfo["CREDAY"]! as! String)
-                m_tvContentView.isHidden = false
-                m_consContentViewHeight.constant = m_contentViewHeight
-                m_consSellAllHeight.constant = m_sellAllHeight
-                m_tvContentView.reloadData()
+//                if (m_objActInfo?.CREDAY == "N") {
+//                    m_tvContentView.isHidden = true
+//                    m_consContentViewHeight.constant = 0
+//                    m_consSellAllHeight.constant = 0
+//                    m_tvContentView.reloadData()
+//                    showAlert(title: nil, msg: "本會依法須定期更新客戶投資風險承受度資訊，以保障客戶權益，貴戶「投資風險屬性評估表」已逾一年有效期限，請速洽本會營業據點或於網路銀行線上填寫上述評估表，即可辦理黃金存摺買進類交易。", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+//                    m_btnNext.isEnabled = false
+//                }
+//                else {
+                    m_tvContentView.isHidden = false
+                    m_consContentViewHeight.constant = m_contentViewHeight
+                    m_consSellAllHeight.constant = m_sellAllHeight
+                    m_tvContentView.reloadData()
+//                    m_btnNext.isEnabled = true
+//                }
             }
         case "Gold0502":
             if let priceInfo = response.object(forKey: ReturnData_Key) as? [String:String] {
@@ -179,8 +191,16 @@ class GPSingleSellViewController: BaseViewController {
     }
     // MARK:- Handle Actions
     @IBAction func m_btnNextClick(_ sender: Any) {
-        guard Int(m_strSellGram)! > 0 else {
-            showAlert(title: nil, msg: "請輸入回售數量", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+        guard m_iActIndex != -1 else {
+            showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return
+        }
+        guard m_strSellGram.isEmpty == false else {
+            showAlert(title: nil, msg: "請輸入回售數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return
+        }
+        guard Float(m_strSellGram)! > 0.0 else {
+            showAlert(title: nil, msg: "回售數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         self.send_queryData()
@@ -188,6 +208,7 @@ class GPSingleSellViewController: BaseViewController {
     @IBAction func m_btnSellAllClick(_ sender: Any) {
         m_bIsSellAll = !m_bIsSellAll
         m_btnSellAll.isSelected = m_bIsSellAll
+        m_strSellGram = m_aryActList[m_iActIndex].balance
         m_tvContentView.reloadData()
     }
 }
@@ -209,11 +230,13 @@ extension GPSingleSellViewController : UIActionSheetDelegate {
             case ViewTag.View_AccountActionSheet.rawValue:
                 self.m_iActIndex = buttonIndex - 1
                 let actInfo : AccountStruct = m_aryActList[self.m_iActIndex]
-                m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
-                self.send_getGoldAcctInfo(actInfo.accountNO)
-                m_vSellAll.isHidden = false
-                m_bIsSellAll = false
-                m_btnSellAll.isSelected = m_bIsSellAll
+                if (actInfo.accountNO != m_uiActView?.getContentByType(.First)) {
+                    m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
+                    self.send_getGoldAcctInfo(actInfo.accountNO)
+                    m_vSellAll.isHidden = false
+                    m_bIsSellAll = false
+                    m_btnSellAll.isSelected = m_bIsSellAll
+                }
             default:
                 m_vSellAll.isHidden = true
                 break
@@ -256,7 +279,7 @@ extension GPSingleSellViewController : UITableViewDelegate, UITableViewDataSourc
                 cell.m_tfEditData.isEnabled = true
                 cell.m_tfEditData.text = ""
                 cell.m_tfEditData.textColor = .black
-                m_strSellGram = "0"
+                m_strSellGram = ""
             }
             return cell
         default:

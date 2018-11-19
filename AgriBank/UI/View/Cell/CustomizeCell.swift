@@ -417,8 +417,8 @@ class GPTransactionDetailCell: UITableViewCell {
         m_lbAmountTitle.text = m_objDetailData?.CRDB == "1" ? "賣出量(克)" : "買進量(克)"
         m_lbTradeDate.text = m_objDetailData?.TXDAY
         m_lbCheckMark.text = m_objDetailData?.HCODE == "0" ? "-" : "更"
-        m_lbAmount.text = m_objDetailData?.TXQTY
-        m_lbBalance.text = m_objDetailData?.AVBAL
+        m_lbAmount.text = m_objDetailData?.TXQTY.separatorThousandDecimal()
+        m_lbBalance.text = m_objDetailData?.AVBAL.separatorThousandDecimal()
         self.tag = tag
     }
     @IBAction func m_btnDetailClick(_ sender: Any) {

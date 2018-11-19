@@ -11,7 +11,7 @@ import UIKit
 class GPSingleBuyViewController: BaseViewController {
     let m_contentViewHeight: CGFloat = 180.0
     var m_uiActView: OneRowDropDownView? = nil
-    var m_strBuyGram: String = "0"
+    var m_strBuyGram: String = ""
     var m_iActIndex: Int = -1
     var m_aryActList : [AccountStruct] = [AccountStruct]()
     var m_objActInfo : GPActInfo? = nil
@@ -19,6 +19,7 @@ class GPSingleBuyViewController: BaseViewController {
     @IBOutlet var m_vActView: UIView!
     @IBOutlet var m_tvContentView: UITableView!
     @IBOutlet var m_consContentViewHeight: NSLayoutConstraint!
+    @IBOutlet var m_btnNext: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,7 +94,7 @@ class GPSingleBuyViewController: BaseViewController {
         data["DATE"] = strPriceTime
         let confirmRequest = RequestStruct(strMethod: "Gold/Gold0302", strSessionDescription: "Gold0302", httpBody: AuthorizationManage.manage.converInputToHttpBody2(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
         
-        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: m_aryActList[m_iActIndex].accountNO])
         dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: m_aryActList[m_iActIndex].currency == Currency_TWD ? Currency_TWD_Title:m_aryActList[m_iActIndex].currency])
         dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: m_objActInfo!.PAYACT])
@@ -153,9 +154,19 @@ class GPSingleBuyViewController: BaseViewController {
         case "Gold0203":
             if let actInfo = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 m_objActInfo = GPActInfo(PAYACT: actInfo["PAYACT"]! as! String, AVBAL: actInfo["AVBAL"]! as! String, SCORE: actInfo["SCORE"]! as! String, CREDAY: actInfo["CREDAY"]! as! String)
-                m_tvContentView.isHidden = false
-                m_consContentViewHeight.constant = m_contentViewHeight
-                m_tvContentView.reloadData()
+                if (m_objActInfo?.CREDAY == "N") {
+                    m_tvContentView.isHidden = false
+                    m_consContentViewHeight.constant = m_contentViewHeight
+                    m_tvContentView.reloadData()
+                    showAlert(title: nil, msg: "本會依法須定期更新客戶投資風險承受度資訊，以保障客戶權益，貴戶「投資風險屬性評估表」已逾一年有效期限，請速洽本會營業據點或於網路銀行線上填寫上述評估表，即可辦理黃金存摺買進類交易。", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                    m_btnNext.isEnabled = false
+                }
+                else {
+                    m_tvContentView.isHidden = false
+                    m_consContentViewHeight.constant = m_contentViewHeight
+                    m_tvContentView.reloadData()
+                    m_btnNext.isEnabled = true
+                }
             }
         case "Gold0502":
             if let priceInfo = response.object(forKey: ReturnData_Key) as? [String:String] {
@@ -168,8 +179,16 @@ class GPSingleBuyViewController: BaseViewController {
     }
     // MARK:- Handle Actions
     @IBAction func m_btnNextClick(_ sender: Any) {
+        guard m_iActIndex != -1 else {
+            showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return
+        }
+        guard m_strBuyGram.isEmpty == false else {
+            showAlert(title: nil, msg: "請輸入申購數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return
+        }
         guard Int(m_strBuyGram)! > 0 else {
-            showAlert(title: nil, msg: "請輸入申購數量", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: nil, msg: "申購數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         self.send_queryData()
@@ -193,8 +212,10 @@ extension GPSingleBuyViewController : UIActionSheetDelegate {
             case ViewTag.View_AccountActionSheet.rawValue:
                 self.m_iActIndex = buttonIndex - 1
                 let actInfo : AccountStruct = m_aryActList[self.m_iActIndex]
-                m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
-                self.send_getGoldAcctInfo(actInfo.accountNO)
+                if (actInfo.accountNO != m_uiActView?.getContentByType(.First)) {
+                    m_uiActView?.setOneRow(GPAccountTitle, actInfo.accountNO)
+                    self.send_getGoldAcctInfo(actInfo.accountNO)
+                }
             default:
                 break
             }
@@ -223,7 +244,7 @@ extension GPSingleBuyViewController : UITableViewDelegate, UITableViewDataSource
             cell.selectionStyle = .none
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultEditCell.NibName()!, for: indexPath) as! ResultEditCell
-            cell.set("", placeholder: "請輸入申購數量(克)")
+            cell.set("", placeholder: "請輸入申購量(克)")
             cell.m_tfEditData.delegate = self
             cell.selectionStyle = .none
             return cell
@@ -244,7 +265,7 @@ extension GPSingleBuyViewController : UITextFieldDelegate {
         }
         
         let newLength = (textField.text?.count)! - range.length + string.count
-        let maxLength = Max_GoldGram_Length
+        let maxLength = Max_GoldSingleBuyGram_Length
         if newLength <= maxLength {
             m_strBuyGram = newString
             return true

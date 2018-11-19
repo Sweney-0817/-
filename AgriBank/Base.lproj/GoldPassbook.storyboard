@@ -84,6 +84,7 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <state key="normal" title="下一步" backgroundImage="ButtonLarge"/>
+                                        <state key="disabled" backgroundImage="buttonDisable"/>
                                         <connections>
                                             <action selector="m_btnNextClick:" destination="ew9-fO-2l8" eventType="touchUpInside" id="pzu-Mg-lkC"/>
                                         </connections>
@@ -116,6 +117,7 @@
                         <viewLayoutGuide key="safeArea" id="XgO-Cd-Z1l"/>
                     </view>
                     <connections>
+                        <outlet property="m_btnNext" destination="VQI-Fi-p0s" id="kgI-O6-Rd9"/>
                         <outlet property="m_consContentViewHeight" destination="mtK-9J-eao" id="I5v-Ge-yOi"/>
                         <outlet property="m_tvContentView" destination="1qG-7k-GAC" id="DdP-7q-H3Z"/>
                         <outlet property="m_vActView" destination="bga-Mc-Tjs" id="3j5-Kg-K6h"/>
@@ -196,6 +198,7 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <state key="normal" title="下一步" backgroundImage="ButtonLarge"/>
+                                        <state key="disabled" backgroundImage="buttonDisable"/>
                                         <connections>
                                             <action selector="m_btnNextClick:" destination="a34-I6-eJM" eventType="touchUpInside" id="Icc-yW-x7e"/>
                                         </connections>
@@ -231,6 +234,7 @@
                         <viewLayoutGuide key="safeArea" id="oUV-7Z-KDp"/>
                     </view>
                     <connections>
+                        <outlet property="m_btnNext" destination="LTP-Ci-802" id="ZsP-lP-dNF"/>
                         <outlet property="m_btnSellAll" destination="ohb-9y-S09" id="qtp-SG-pkm"/>
                         <outlet property="m_consContentViewHeight" destination="Da1-Kr-X30" id="5HB-lv-Rwo"/>
                         <outlet property="m_consSellAllHeight" destination="a0Y-3U-znW" id="Bd8-A4-kLY"/>
@@ -449,10 +453,14 @@
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X6e-Yr-CzN">
                                                         <rect key="frame" x="278" y="55" width="87" height="44"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="87" id="ihq-Zj-bSY"/>
+                                                        </constraints>
                                                         <fontDescription key="fontDescription" name="PingFangTC-Semibold" family="PingFang TC" pointSize="18"/>
                                                         <state key="normal" title="檢視" backgroundImage="ButtonSmall">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
+                                                        <state key="disabled" backgroundImage="buttonDisable"/>
                                                         <connections>
                                                             <action selector="m_btn1Click:" destination="kcm-lI-qjz" eventType="touchUpInside" id="sfH-vy-M2e"/>
                                                         </connections>
@@ -480,7 +488,6 @@
                                                     <constraint firstItem="bLD-08-wX3" firstAttribute="leading" secondItem="N5y-1h-CNB" secondAttribute="leading" id="dPm-5E-nAR"/>
                                                     <constraint firstItem="nfI-NV-neY" firstAttribute="top" secondItem="N5y-1h-CNB" secondAttribute="top" id="dYq-Po-REi"/>
                                                     <constraint firstItem="APl-jg-EgH" firstAttribute="top" secondItem="nfI-NV-neY" secondAttribute="bottom" id="np5-Or-uou"/>
-                                                    <constraint firstItem="X6e-Yr-CzN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="N5y-1h-CNB" secondAttribute="leading" constant="20" symbolic="YES" id="oLV-to-rZr"/>
                                                     <constraint firstItem="Y7m-FF-li3" firstAttribute="leading" secondItem="N5y-1h-CNB" secondAttribute="leading" id="t4n-Yb-Uwu"/>
                                                 </constraints>
                                             </view>
@@ -593,10 +600,14 @@
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="twr-yX-tPj">
                                                         <rect key="frame" x="278" y="55" width="87" height="44"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="87" id="dM1-6E-ei8"/>
+                                                        </constraints>
                                                         <fontDescription key="fontDescription" name="PingFangTC-Semibold" family="PingFang TC" pointSize="18"/>
                                                         <state key="normal" title="檢視" backgroundImage="ButtonSmall">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
+                                                        <state key="disabled" backgroundImage="buttonDisable"/>
                                                         <connections>
                                                             <action selector="m_btn2Click:" destination="kcm-lI-qjz" eventType="touchUpInside" id="Knk-VI-IIf"/>
                                                         </connections>
@@ -624,7 +635,6 @@
                                                     <constraint firstItem="XRj-Nx-iX1" firstAttribute="top" secondItem="Cgc-BZ-bVO" secondAttribute="top" id="kW9-j4-o4g"/>
                                                     <constraint firstItem="XRj-Nx-iX1" firstAttribute="leading" secondItem="Cgc-BZ-bVO" secondAttribute="leading" id="raN-JZ-3CV"/>
                                                     <constraint firstAttribute="bottom" secondItem="N2y-OG-hCy" secondAttribute="bottom" id="rp6-xZ-NIM"/>
-                                                    <constraint firstItem="twr-yX-tPj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Cgc-BZ-bVO" secondAttribute="leading" constant="20" symbolic="YES" id="ymo-zt-DyS"/>
                                                     <constraint firstItem="y2Z-MS-x67" firstAttribute="top" secondItem="o8r-pC-3sn" secondAttribute="bottom" id="z5y-Z9-F2n"/>
                                                 </constraints>
                                             </view>
@@ -735,12 +745,15 @@
                                                             <constraint firstAttribute="trailing" secondItem="65C-u1-bvL" secondAttribute="trailing" id="xLP-8M-X8m"/>
                                                         </constraints>
                                                     </view>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U9H-Vf-XL5">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U9H-Vf-XL5">
                                                         <rect key="frame" x="278" y="55" width="87" height="44"/>
-                                                        <fontDescription key="fontDescription" name="PingFangTC-Semibold" family="PingFang TC" pointSize="18"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="87" id="7EF-P6-Awb"/>
+                                                        </constraints>
                                                         <state key="normal" title="檢視" backgroundImage="ButtonSmall">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
+                                                        <state key="disabled" backgroundImage="buttonDisable"/>
                                                         <connections>
                                                             <action selector="m_btn3Click:" destination="kcm-lI-qjz" eventType="touchUpInside" id="8el-QP-Z1d"/>
                                                         </connections>
@@ -765,7 +778,6 @@
                                                     <constraint firstItem="kvJ-BO-qMk" firstAttribute="top" secondItem="CwD-ah-Mlq" secondAttribute="bottom" id="hDG-nE-Vz3"/>
                                                     <constraint firstItem="hs3-1a-3gg" firstAttribute="leading" secondItem="chJ-ue-Fn2" secondAttribute="leading" id="jYo-9n-tEf"/>
                                                     <constraint firstItem="U9H-Vf-XL5" firstAttribute="centerY" secondItem="chJ-ue-Fn2" secondAttribute="centerY" id="lUe-PY-2wb"/>
-                                                    <constraint firstItem="U9H-Vf-XL5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="chJ-ue-Fn2" secondAttribute="leading" constant="20" symbolic="YES" id="rIc-zO-Wb4"/>
                                                     <constraint firstItem="KvS-1n-nzI" firstAttribute="top" secondItem="kvJ-BO-qMk" secondAttribute="bottom" id="s1K-np-4Ww"/>
                                                     <constraint firstAttribute="bottom" secondItem="C42-Pp-UOk" secondAttribute="bottom" id="uKZ-SJ-ued"/>
                                                     <constraint firstItem="CwD-ah-Mlq" firstAttribute="top" secondItem="hs3-1a-3gg" secondAttribute="bottom" id="w13-il-xh1"/>
@@ -948,7 +960,7 @@
                                 <rect key="frame" x="0.0" y="80" width="375" height="527"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qTU-Hq-PAG">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="320"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1xU-cq-lYN">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
@@ -1029,7 +1041,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w3J-Bu-AWO">
                                                 <rect key="frame" x="0.0" y="120" width="375" height="60"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="轉出帳號" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F5A-aI-x3D">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="扣款帳號" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F5A-aI-x3D">
                                                         <rect key="frame" x="15" y="17.5" width="72.5" height="25.5"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
@@ -1127,26 +1139,26 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOT-E0-2xO">
-                                                <rect key="frame" x="0.0" y="300" width="375" height="0.0"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
+                                                <rect key="frame" x="16" y="310" width="343" height="0.0"/>
+                                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                                                <color key="textColor" red="0.27058823529999998" green="0.65098039220000004" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="RIV-nW-njg" secondAttribute="trailing" id="1q5-nn-tIk"/>
-                                            <constraint firstAttribute="bottom" secondItem="zOT-E0-2xO" secondAttribute="bottom" id="2dH-Nb-KpH"/>
+                                            <constraint firstAttribute="bottom" secondItem="zOT-E0-2xO" secondAttribute="bottom" constant="10" id="2dH-Nb-KpH"/>
                                             <constraint firstItem="Qei-Gf-oIb" firstAttribute="leading" secondItem="qTU-Hq-PAG" secondAttribute="leading" id="7Fn-1W-Y4A"/>
-                                            <constraint firstItem="zOT-E0-2xO" firstAttribute="leading" secondItem="qTU-Hq-PAG" secondAttribute="leading" id="88j-b3-dna"/>
+                                            <constraint firstItem="zOT-E0-2xO" firstAttribute="leading" secondItem="qTU-Hq-PAG" secondAttribute="leading" constant="16" id="88j-b3-dna"/>
                                             <constraint firstItem="w3J-Bu-AWO" firstAttribute="leading" secondItem="qTU-Hq-PAG" secondAttribute="leading" id="BGq-3j-GdD"/>
                                             <constraint firstItem="1xU-cq-lYN" firstAttribute="leading" secondItem="qTU-Hq-PAG" secondAttribute="leading" id="BUC-IX-Kzx"/>
-                                            <constraint firstAttribute="trailing" secondItem="zOT-E0-2xO" secondAttribute="trailing" id="EuB-61-lhb"/>
+                                            <constraint firstAttribute="trailing" secondItem="zOT-E0-2xO" secondAttribute="trailing" constant="16" id="EuB-61-lhb"/>
                                             <constraint firstItem="BFp-Dp-Yfo" firstAttribute="leading" secondItem="qTU-Hq-PAG" secondAttribute="leading" id="GtA-74-xTt"/>
                                             <constraint firstItem="RIV-nW-njg" firstAttribute="top" secondItem="Qei-Gf-oIb" secondAttribute="bottom" id="Ku9-V3-o09"/>
                                             <constraint firstAttribute="trailing" secondItem="Qei-Gf-oIb" secondAttribute="trailing" id="Mq1-Ly-yYx"/>
                                             <constraint firstItem="w3J-Bu-AWO" firstAttribute="top" secondItem="BFp-Dp-Yfo" secondAttribute="bottom" id="PBi-rK-Nxg"/>
-                                            <constraint firstItem="zOT-E0-2xO" firstAttribute="top" secondItem="RIV-nW-njg" secondAttribute="bottom" id="Q48-Mh-1sQ"/>
+                                            <constraint firstItem="zOT-E0-2xO" firstAttribute="top" secondItem="RIV-nW-njg" secondAttribute="bottom" constant="10" id="Q48-Mh-1sQ"/>
                                             <constraint firstItem="BFp-Dp-Yfo" firstAttribute="top" secondItem="1xU-cq-lYN" secondAttribute="bottom" id="Sxg-Tk-XiN"/>
                                             <constraint firstAttribute="trailing" secondItem="BFp-Dp-Yfo" secondAttribute="trailing" id="YcD-ZL-Cc5"/>
                                             <constraint firstAttribute="trailing" secondItem="1xU-cq-lYN" secondAttribute="trailing" id="e24-Fd-YHt"/>
@@ -1209,7 +1221,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="587"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RXh-F2-eE5">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="423"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="443"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xX9-8A-G58">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
@@ -1421,9 +1433,9 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GJk-8j-sgg">
-                                                <rect key="frame" x="0.0" y="423" width="375" height="0.0"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
+                                                <rect key="frame" x="16" y="433" width="343" height="0.0"/>
+                                                <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                                                <color key="textColor" red="0.27058823529999998" green="0.65098039220000004" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -1436,7 +1448,7 @@
                                             <constraint firstItem="YqO-rR-O6j" firstAttribute="leading" secondItem="RXh-F2-eE5" secondAttribute="leading" id="8DW-AQ-cg4"/>
                                             <constraint firstItem="xX9-8A-G58" firstAttribute="top" secondItem="RXh-F2-eE5" secondAttribute="top" id="AQv-QO-bLg"/>
                                             <constraint firstItem="YTe-wZ-sIH" firstAttribute="leading" secondItem="RXh-F2-eE5" secondAttribute="leading" id="Cp3-CO-PD8"/>
-                                            <constraint firstItem="GJk-8j-sgg" firstAttribute="top" secondItem="F3r-4O-BRQ" secondAttribute="bottom" id="FRD-iS-PpC"/>
+                                            <constraint firstItem="GJk-8j-sgg" firstAttribute="top" secondItem="F3r-4O-BRQ" secondAttribute="bottom" constant="10" id="FRD-iS-PpC"/>
                                             <constraint firstAttribute="trailing" secondItem="mVe-aG-t7K" secondAttribute="trailing" id="Imz-wg-pbq"/>
                                             <constraint firstItem="F3r-4O-BRQ" firstAttribute="leading" secondItem="RXh-F2-eE5" secondAttribute="leading" id="J9X-uN-SGU"/>
                                             <constraint firstItem="3xm-MI-zTA" firstAttribute="top" secondItem="YqO-rR-O6j" secondAttribute="bottom" id="Jzz-dT-Riy"/>
@@ -1446,21 +1458,21 @@
                                             <constraint firstItem="QBj-p8-kpG" firstAttribute="top" secondItem="tCt-4q-Smh" secondAttribute="bottom" id="bnE-LK-TzK"/>
                                             <constraint firstItem="QBj-p8-kpG" firstAttribute="leading" secondItem="RXh-F2-eE5" secondAttribute="leading" id="cKh-aQ-tZk"/>
                                             <constraint firstItem="F3r-4O-BRQ" firstAttribute="top" secondItem="3xm-MI-zTA" secondAttribute="bottom" id="cTd-j6-xI2"/>
-                                            <constraint firstAttribute="bottom" secondItem="GJk-8j-sgg" secondAttribute="bottom" id="cxQ-Je-AJb"/>
+                                            <constraint firstAttribute="bottom" secondItem="GJk-8j-sgg" secondAttribute="bottom" constant="10" id="cxQ-Je-AJb"/>
                                             <constraint firstItem="3xm-MI-zTA" firstAttribute="leading" secondItem="RXh-F2-eE5" secondAttribute="leading" id="e5t-j6-RMd"/>
                                             <constraint firstItem="tCt-4q-Smh" firstAttribute="top" secondItem="YTe-wZ-sIH" secondAttribute="bottom" id="f5Z-cf-h6a"/>
                                             <constraint firstItem="tCt-4q-Smh" firstAttribute="leading" secondItem="RXh-F2-eE5" secondAttribute="leading" id="fpC-oQ-2kc"/>
                                             <constraint firstItem="YTe-wZ-sIH" firstAttribute="top" secondItem="EZg-BR-EDD" secondAttribute="bottom" id="g0R-ow-pQj"/>
                                             <constraint firstAttribute="trailing" secondItem="YTe-wZ-sIH" secondAttribute="trailing" id="g1g-LM-Cyk"/>
                                             <constraint firstAttribute="trailing" secondItem="EZg-BR-EDD" secondAttribute="trailing" id="hEZ-pD-QqA"/>
-                                            <constraint firstItem="GJk-8j-sgg" firstAttribute="leading" secondItem="RXh-F2-eE5" secondAttribute="leading" id="hxo-OS-BdH"/>
+                                            <constraint firstItem="GJk-8j-sgg" firstAttribute="leading" secondItem="RXh-F2-eE5" secondAttribute="leading" constant="16" id="hxo-OS-BdH"/>
                                             <constraint firstAttribute="trailing" secondItem="3xm-MI-zTA" secondAttribute="trailing" id="jMv-pX-YxK"/>
                                             <constraint firstAttribute="trailing" secondItem="tCt-4q-Smh" secondAttribute="trailing" id="jQw-uj-FTn"/>
                                             <constraint firstAttribute="trailing" secondItem="F3r-4O-BRQ" secondAttribute="trailing" id="lXR-nu-FpT"/>
                                             <constraint firstAttribute="trailing" secondItem="sKD-Qe-qK5" secondAttribute="trailing" id="qsl-Sg-d5a"/>
                                             <constraint firstAttribute="trailing" secondItem="QBj-p8-kpG" secondAttribute="trailing" id="vbm-gU-06B"/>
                                             <constraint firstItem="EZg-BR-EDD" firstAttribute="top" secondItem="mVe-aG-t7K" secondAttribute="bottom" id="vyF-yg-VuS"/>
-                                            <constraint firstAttribute="trailing" secondItem="GJk-8j-sgg" secondAttribute="trailing" id="ysb-Yw-yTD"/>
+                                            <constraint firstAttribute="trailing" secondItem="GJk-8j-sgg" secondAttribute="trailing" constant="16" id="ysb-Yw-yTD"/>
                                             <constraint firstAttribute="trailing" secondItem="xX9-8A-G58" secondAttribute="trailing" id="zKX-Oy-KHq"/>
                                             <constraint firstItem="xX9-8A-G58" firstAttribute="leading" secondItem="RXh-F2-eE5" secondAttribute="leading" id="zLM-fC-3TX"/>
                                         </constraints>
@@ -1511,6 +1523,8 @@
                         <viewLayoutGuide key="safeArea" id="sDJ-6D-B9F"/>
                     </view>
                     <connections>
+                        <outlet property="m_consPauseEndViewHeight" destination="F43-FO-bGD" id="rjm-06-8c7"/>
+                        <outlet property="m_consPauseStartViewHeight" destination="Xha-dY-KTR" id="RIs-ul-XK3"/>
                         <outlet property="m_lbCommand" destination="GJk-8j-sgg" id="eqM-6y-H5A"/>
                         <outlet property="m_lbGPAct" destination="7gy-16-cUj" id="NsM-7J-FgX"/>
                         <outlet property="m_lbTradeAmount" destination="Csj-3P-e5R" id="FCk-Z4-1fs"/>
@@ -2086,6 +2100,7 @@
         <image name="Checkon" width="24" height="24"/>
         <image name="EntryRight" width="20" height="20"/>
         <image name="Textfield" width="311" height="44"/>
+        <image name="buttonDisable" width="343" height="46"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="6Wl-Cd-3zd"/>

@@ -148,7 +148,9 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 if  (description == "QR0302") ||
                     (description == "Gold0301") ||
                     (description == "Gold0302") ||
+                    (description == "Gold0401") ||
                     (description == "Gold0402") ||
+                    (description == "Gold0403") ||
                     (description == "Gold0404")
                 {
                     if let responseData = response.object(forKey: ReturnData_Key) as? [String:Any] {
@@ -187,7 +189,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
             controller.setData(data!, isNeedOTP ? NonPredesignated_Title : Predesignated_Title)
         }
         else {
-            controller.setData(data!)
+            controller.setData(data!, m_strTitle)
         }
     }
     

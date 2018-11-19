@@ -193,7 +193,7 @@ class GPTransactionDetailViewController: BaseViewController {
     // MARK:- Handle Actions
     @IBAction func m_btnTodayClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
-            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         m_dtStart = Date()
@@ -203,7 +203,7 @@ class GPTransactionDetailViewController: BaseViewController {
     }
     @IBAction func m_btnWeekClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
-            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         m_dtStart = NSCalendar.current.date(byAdding: .day, value: -6, to: Date())!
@@ -213,7 +213,7 @@ class GPTransactionDetailViewController: BaseViewController {
     }
     @IBAction func m_btnCustomizeClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
-            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         let curDate = InputDatePickerStruct(minDate: nil, maxDate: Date(), curDate: Date())

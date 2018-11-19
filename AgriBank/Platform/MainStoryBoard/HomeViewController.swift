@@ -158,9 +158,9 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 logoImage = responseImage
             }
             
-        case "COMM0102":
-            logoImage = UIImage(named: ImageName.DefaultLogo.rawValue)
-            super.didResponse(description, response)
+//        case "COMM0102":
+//            logoImage = UIImage(named: ImageName.DefaultLogo.rawValue)
+//            super.didResponse(description, response)
             
         case "Home\(TransactionID_Description)":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
@@ -350,6 +350,9 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         case ViewTag.View_LogOut.rawValue:
             if buttonIndex != alertView.cancelButtonIndex {
                 postLogout()
+                //for test
+                featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
+                updateLoginStatus(false)
             }
             
         case ViewTag.View_AlertForceUpdate.rawValue:

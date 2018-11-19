@@ -780,7 +780,8 @@ extension BaseViewController: ConnectionUtilityDelegate {
              "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
              "PAY0103","PAY0105","PAY0107",
              "USIF0102","USIF0201","USIF0301",
-             "COMM0102","COMM0801","COMM0103","QR0302":
+             "COMM0102","COMM0801","COMM0103","QR0302",
+             "Gold0301","Gold0302","Gold0401","Gold0402","Gold0403","Gold0404":
             didResponse(description, response)
         case "QR0201"://checkQRCode 自行處理回來的結果(因為有錯誤時，關閉alert後要重啟相機)
             didResponse(description, response)

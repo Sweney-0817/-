@@ -86,19 +86,19 @@ class ScanResultViewController: BaseViewController {
 // MARK:- Logic Methods
     func checkInput() -> Bool {
         if (m_uiActView?.getContentByType(.First) == Choose_Title) {
-            showAlert(title: nil, msg: "請選擇帳戶", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: nil, msg: "請選擇帳戶", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         if (m_strInputAmount.isEmpty == true) {
-            showAlert(title: nil, msg: "請輸入金額", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: nil, msg: "請輸入金額", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         if (Int(m_strInputAmount) == 0) {
-            showAlert(title: nil, msg: "輸入金額不得0元", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: nil, msg: "輸入金額不得0元", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         if (Int(m_strInputAmount) == 0) {
-            showAlert(title: nil, msg: "輸入金額不得小於0元", confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: nil, msg: "輸入金額不得小於0元", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         return true

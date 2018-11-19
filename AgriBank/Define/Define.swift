@@ -500,8 +500,9 @@ let Max_Email_Length:Int = 50       // Email長度
 let Max_Account_Length:Int = 16     // 輸入轉入帳號長度
 let NewInput_MinLength:Int = 8      // 新輸入代號or密碼最小長度
 let NewInput_MaxLength:Int = 16     // 新輸入代號or密碼最大長度
-let Max_Amount_Length:Int = 9       // 輸入金額最大長度
+let Max_Amount_Length:Int = 12       // 輸入金額最大長度
 let Max_GoldGram_Length:Int = 9     // 黃金最大克數
+let Max_GoldSingleBuyGram_Length:Int = 4
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "agriBank_iOS"
