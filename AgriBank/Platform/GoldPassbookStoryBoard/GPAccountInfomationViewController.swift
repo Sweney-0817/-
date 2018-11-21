@@ -118,13 +118,13 @@ extension GPAccountInfomationViewController : OverviewCellDelegate
     // MARK: - OverviewCellDelegate
     func clickExpandBtn1(_ btn:UIButton, _ value:[String:String]) {
         m_strSelectAct = value[AccountInfomation_CellTitle[0]]
-        enterFeatureByID(.FeatureID_GPRegularAccountInfomation, true)
+        enterFeatureByID(.FeatureID_GPRegularAccountInfomation, false)
         pushByclickExpandBtn = true
     }
     
     func clickExpandBtn2(_ btn:UIButton, _ value:[String:String]) {
         m_strSelectAct = value[AccountInfomation_CellTitle[0]]
-        enterFeatureByID(.FeatureID_GPTransactionDetail, true)
+        enterFeatureByID(.FeatureID_GPTransactionDetail, false)
         pushByclickExpandBtn = true
     }
     

@@ -12,9 +12,11 @@ protocol FeatureWallViewDelegate {
     func clickFeatureBtn(_ ID: PlatformFeatureID)
 }
 
-let FeatureWall_PageControl_BottomDistance:CGFloat = 30
-let FeatureWall_PageControl_currentPageColor = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha:1)
-let FeatureWall_PageControl_PageColor = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha:0.2)
+let FeatureWall_PageControl_BottomDistance:CGFloat = 25
+//let FeatureWall_PageControl_currentPageColor = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha:1)
+//let FeatureWall_PageControl_PageColor = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha:0.2)
+let FeatureWall_PageControl_currentPageColor = UIColor(red: 242/255, green: 193/255, blue: 74/255, alpha:1)
+let FeatureWall_PageControl_PageColor = UIColor(red: 181/255, green: 181/255, blue: 181/255, alpha:1)
 
 class FeatureWallView: UIView, UIScrollViewDelegate {
     let scrollview = UIScrollView()
@@ -85,6 +87,7 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
                     }
                     scrollview.addSubview(wallCell)
                 }
+                makeLine(scrollview, vertical, horizontal, page, featureIDList.count)
             }
         }
     }
@@ -97,6 +100,72 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
         return (x, y, page)
     }
     
+    private func makeLine(_ scrollview: UIScrollView, _ vertical: Int, _ horizontal: Int, _ page: CGFloat, _ total: Int) {
+        let Line_Color = UIColor(red: 238/255, green: 238/255, blue: 238/255, alpha: 1)
+        scrollview.subviews.forEach{ view in if view.tag == 9876 {view.removeFromSuperview()} }
+        let verticalLineSize: CGSize = CGSize(width: 1.0, height: scrollview.frame.size.height/CGFloat(horizontal)-40.0)
+        let horizontalLineSize: CGSize = CGSize(width: scrollview.frame.size.width-25.0, height: 1.0)
+        for current in 0..<Int(page) {
+            let xPosition: CGFloat = scrollview.frame.size.width / CGFloat(vertical)
+            let yPosition: CGFloat = scrollview.frame.size.height / CGFloat(horizontal) + 20.0
+            if (current == Int(page)-1) {
+                let lastPageCount = total % (vertical * horizontal)
+                for x in 1..<vertical {
+                    //上半直線
+                    let original: CGPoint = CGPoint(x: xPosition * CGFloat(x) + scrollview.frame.size.width * CGFloat(current), y: 20.0)
+                    let verticalLine: UIView = UIView(frame: CGRect(origin: original, size: verticalLineSize))
+                    verticalLine.backgroundColor = Line_Color
+                    verticalLine.tag = 9876
+                    //下半直線
+                    let original2: CGPoint = CGPoint(x: xPosition * CGFloat(x) + scrollview.frame.size.width * CGFloat(current), y: yPosition)
+                    let verticalLine2: UIView = UIView(frame: CGRect(origin: original2, size: verticalLineSize))
+                    verticalLine2.backgroundColor = Line_Color
+                    verticalLine2.tag = 9876
+                    switch lastPageCount {
+                    case 0:
+                        scrollview.addSubview(verticalLine)
+                        scrollview.addSubview(verticalLine2)
+                    case 1:
+                        if (x == 1) { scrollview.addSubview(verticalLine) }
+                    case 2:
+                        scrollview.addSubview(verticalLine)
+                    case 3:
+                        scrollview.addSubview(verticalLine)
+                    case 4:
+                        scrollview.addSubview(verticalLine)
+                        if (x == 1) { scrollview.addSubview(verticalLine2) }
+                    case 5:
+                        scrollview.addSubview(verticalLine)
+                        scrollview.addSubview(verticalLine2)
+                    default:
+                        break
+                    }
+                }
+            }
+            else {
+                for x in 1..<vertical {
+                    //上半直線
+                    let original: CGPoint = CGPoint(x: xPosition * CGFloat(x) + scrollview.frame.size.width * CGFloat(current), y: 20.0)
+                    let verticalLine: UIView = UIView(frame: CGRect(origin: original, size: verticalLineSize))
+                    verticalLine.backgroundColor = Line_Color
+                    verticalLine.tag = 9876
+                    scrollview.addSubview(verticalLine)
+                    //下半直線
+                    let original2: CGPoint = CGPoint(x: xPosition * CGFloat(x) + scrollview.frame.size.width * CGFloat(current), y: yPosition)
+                    let verticalLine2: UIView = UIView(frame: CGRect(origin: original2, size: verticalLineSize))
+                    verticalLine2.backgroundColor = Line_Color
+                    verticalLine2.tag = 9876
+                    scrollview.addSubview(verticalLine2)
+                }
+            }
+            //畫橫線
+            let horizontalLinePosition: CGPoint = CGPoint(x: scrollview.frame.size.width * CGFloat(current)+12.0, y: scrollview.frame.size.height / CGFloat(horizontal))
+            let horizontalLine: UIView = UIView(frame: CGRect(origin: horizontalLinePosition, size: horizontalLineSize))
+            horizontalLine.backgroundColor = Line_Color
+            horizontalLine.tag = 9876
+            scrollview.addSubview(horizontalLine)
+        }
+    }
     // MARK: - selector
     func clickFeatureBtn(_ sender:UIButton)  {
         featureDelegate?.clickFeatureBtn(PlatformFeatureID(rawValue: sender.tag)!)

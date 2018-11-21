@@ -70,7 +70,7 @@ enum PlatformFeatureID: Int {
     func StoryBoardID() -> String {
         switch self {
         case .FeatureID_Home:
-            return "FeatureID_Home"
+            return "FeatureID_Home2"
         case .FeatureID_Menu:
             return "FeatureID_Menu"
         case .FeatureID_Edit:
@@ -448,7 +448,7 @@ let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFon
 let AgriBank_4sInchSize:CGFloat = 480
 let AgriBank_4sInchFont =  UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(15)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(15))
 let AgriBank_Scale = UIScreen.main.bounds.width / CGFloat(375)
-let Scale_Default_Font = UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(18)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(18))
+let Scale_Default_Font = UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(15)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(15))
 
 // MARK: - Define
 let SystemCell_Identify = "System_Cell"

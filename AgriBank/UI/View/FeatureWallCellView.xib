@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="PingFang.ttc">
-            <string>PingFangTC-Medium</string>
+            <string>PingFangTC-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -27,31 +25,31 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GIQ-hX-gNY">
-                    <rect key="frame" x="20.5" y="0.0" width="60" height="60"/>
+                    <rect key="frame" x="35" y="6" width="30" height="30.5"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="GIQ-hX-gNY" secondAttribute="height" multiplier="1:1" id="UYH-cT-s6X"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kG0-kE-LMP">
-                    <rect key="frame" x="7" y="40" width="86" height="55"/>
-                    <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                    <nil key="textColor"/>
+                    <rect key="frame" x="8" y="40.5" width="84" height="54.5"/>
+                    <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="15"/>
+                    <color key="textColor" red="0.29019607843137252" green="0.29019607843137252" blue="0.29019607843137252" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="kG0-kE-LMP" secondAttribute="trailing" constant="7" id="0hs-wH-q3W"/>
+                <constraint firstAttribute="trailing" secondItem="kG0-kE-LMP" secondAttribute="trailing" constant="8" id="0hs-wH-q3W"/>
                 <constraint firstItem="GIQ-hX-gNY" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="2u9-Zc-bpq"/>
                 <constraint firstItem="rmb-8S-pn8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Ae8-RT-04v"/>
-                <constraint firstItem="kG0-kE-LMP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="7" id="BAu-Zm-SqI"/>
-                <constraint firstItem="GIQ-hX-gNY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BrG-7X-FHK"/>
+                <constraint firstItem="kG0-kE-LMP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="BAu-Zm-SqI"/>
+                <constraint firstItem="GIQ-hX-gNY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="6" id="BrG-7X-FHK"/>
                 <constraint firstAttribute="bottom" secondItem="rmb-8S-pn8" secondAttribute="bottom" id="FmU-HT-tJV"/>
                 <constraint firstAttribute="bottom" secondItem="kG0-kE-LMP" secondAttribute="bottom" constant="5" id="f1m-li-A2m"/>
-                <constraint firstItem="kG0-kE-LMP" firstAttribute="top" secondItem="GIQ-hX-gNY" secondAttribute="bottom" constant="-20" id="gaz-SS-ogE"/>
+                <constraint firstItem="kG0-kE-LMP" firstAttribute="top" secondItem="GIQ-hX-gNY" secondAttribute="bottom" constant="4" id="gaz-SS-ogE"/>
                 <constraint firstAttribute="trailing" secondItem="rmb-8S-pn8" secondAttribute="trailing" id="gdS-DF-3nE"/>
-                <constraint firstItem="GIQ-hX-gNY" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="30:50" id="phZ-Hb-vJd"/>
+                <constraint firstItem="GIQ-hX-gNY" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="38:125" id="phZ-Hb-vJd"/>
                 <constraint firstItem="rmb-8S-pn8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="u2C-jd-AtH"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
@@ -63,7 +61,7 @@
                 <outlet property="imageView" destination="GIQ-hX-gNY" id="uW9-wP-s4l"/>
                 <outlet property="titleLabel" destination="kG0-kE-LMP" id="2PC-JX-taj"/>
             </connections>
-            <point key="canvasLocation" x="32" y="61"/>
+            <point key="canvasLocation" x="32" y="60.26986506746627"/>
         </view>
     </objects>
 </document>

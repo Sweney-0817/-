@@ -159,7 +159,9 @@ class AuthorizationManage {
 
     func getHttpHead(_ isNeedCID:Bool) -> [String:String] {
         var head = AuthorizationManage_HttpHead_Default
+	//for test
         head[AuthorizationManage_HttpHead_Token] = userInfo?.Token ?? ""
+//        head[AuthorizationManage_HttpHead_Token] = userInfo?.Token ?? "123"
     
         if isNeedCID {
             head[AuthorizationManage_HttpHead_CID] = [String](AuthorizationManage_CIDListKey.keys)[AuthorizationManage_Random]

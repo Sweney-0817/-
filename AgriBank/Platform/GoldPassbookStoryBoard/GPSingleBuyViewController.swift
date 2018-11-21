@@ -170,8 +170,13 @@ class GPSingleBuyViewController: BaseViewController {
             }
         case "Gold0502":
             if let priceInfo = response.object(forKey: ReturnData_Key) as? [String:String] {
-                m_objPriceInfo = GPPriceInfo(DATE: priceInfo["DATE"]!, TIME: priceInfo["TIME"]!, CNT: priceInfo["CNT"]!, SELL: priceInfo["SELL"]!, BUY: priceInfo["BUY"]!)
-                self.enterConfirmView()
+                if (priceInfo["CanTrans"] == Can_Transaction_Status) {
+                    m_objPriceInfo = GPPriceInfo(DATE: priceInfo["DATE"]!, TIME: priceInfo["TIME"]!, CNT: priceInfo["CNT"]!, SELL: priceInfo["SELL"]!, BUY: priceInfo["BUY"]!)
+                    self.enterConfirmView()
+                }
+                else {
+                    showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
+                }
             }
         default:
             super.didResponse(description, response)
