@@ -39,7 +39,6 @@ class SideMenuViewController: UIViewController {
     private let SideMenu_shadowOpacity = Float(0.5)
     private let SideMenu_shadowRadius = CGFloat(20)
     private var closeBtn:UIButton? = nil
-    private var viewWhiteBar:UIView? = nil
 //    private var tapGesture:UITapGestureRecognizer? = nil
     
     
@@ -107,18 +106,6 @@ class SideMenuViewController: UIViewController {
     
     // MARK: - private
     private func AnimateSidemenu(_ IsRight:Bool) {
-        
-        let window: UIWindow? = UIApplication.shared.keyWindow
-        if(viewWhiteBar == nil)
-        {
-            let statusView = UIView(frame: UIApplication.shared.statusBarFrame)
-            viewWhiteBar = UIView()
-            viewWhiteBar?.backgroundColor = UIColor.white
-            viewWhiteBar?.translatesAutoresizingMaskIntoConstraints = false
-            viewWhiteBar?.frame = CGRect(x: moveEndX, y: 0, width: statusView.frame.size.width, height: statusView.frame.size.height)
-        }
-        window?.addSubview(viewWhiteBar!)
-        
         UIView.animate(withDuration: animateTime, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { () -> Void in
             if IsRight {
                 self.centerViewController?.view.frame.origin = CGPoint(x:self.moveEndX-self.view.frame.width, y:0)
@@ -150,9 +137,6 @@ class SideMenuViewController: UIViewController {
     }
     
     private func HideSideMenu(_ IsRight:Bool)  {
-
-        viewWhiteBar?.removeFromSuperview()
-        
         UIView.animate(withDuration: animateTime, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { () -> Void in
             self.centerViewController?.view.frame.origin = .zero
         }, completion: { (complete) -> Void in
