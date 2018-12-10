@@ -26,24 +26,9 @@ struct ResponseLoginInfo {
     var Token:String? = nil         // Token
     var USUDID:String? = nil        // 使用者ID
     var Balance:String? = nil       // 餘額
+    var TBalance:String? = nil      // 定期總額
     var STATUS:String? = nil        // 帳戶狀態 
 }
-
-//struct QRPAcception {
-//    //for test
-////    var Read: String = "Y"
-//    var Read: String = "N"
-//    var Version: String = ""
-//    var Content: String = ""
-//}
-
-//struct GoldAcception {
-//    //for test
-////    var Read: String = "Y"
-//    var Read: String = "N"
-//    var Version: String = ""
-//    var Content: String = ""
-//}
 
 class AuthorizationManage {
     static let manage = AuthorizationManage()
@@ -59,10 +44,6 @@ class AuthorizationManage {
     private var canDepositTermination = false            // 是否可以「綜存戶轉存明細解約」
     private var canPayLoan = false                       // 是否可以「繳交放款本息」
     private var canChangeBaseInfo = false                // 是否可以「基本資料變更」
-    //QRP同意條款狀態
-//    private var m_qrpAcception: QRPAcception = QRPAcception()
-    //黃金同意條款狀態
-//    private var m_goldAcception: GoldAcception = GoldAcception()
     
     func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info
@@ -198,7 +179,7 @@ class AuthorizationManage {
         
         let jsonData = try? JSONSerialization.data(withJSONObject: input, options: [])
         let jsonString = String(data: jsonData!, encoding: .utf8)
-        print(jsonString)
+        print(jsonString ?? "empty string")
         
         var httpBody:Data? = nil
         do {
@@ -336,7 +317,7 @@ class AuthorizationManage {
         switch type {
         case .Fixd_Type:
             //for test
-//            list = [.FeatureID_Edit, .FeatureID_QRPay, .FeatureID_GPRegularAccountInfomation]
+//            list = [.FeatureID_Edit, .FeatureID_QRPay, .FeatureID_QRCodeTrans]
             list = [.FeatureID_Edit]
             
         case .Default_Type:
@@ -440,42 +421,4 @@ class AuthorizationManage {
         }
         return temp
     }
-
-//    func setQRPAcception(_ data:[String:String]) {
-//        m_qrpAcception.Read = data["Read"] ?? "N"
-//        m_qrpAcception.Version = data["Version"] ?? ""
-//        m_qrpAcception.Content = data["Content"] ?? ""
-//    }
-    
-//    func getQRPAcception() -> QRPAcception {
-//        return m_qrpAcception
-//    }
-    
-//    func canEnterQRP() -> Bool {
-//        if (m_qrpAcception.Read == "Y") {
-//            return true
-//        }
-//        else {
-//            return false
-//        }
-//    }
-    
-//    func setGoldAcception(_ data:[String:String]) {
-//        m_goldAcception.Read = data["Read"] ?? "N"
-//        m_goldAcception.Version = data["Version"] ?? ""
-//        m_goldAcception.Content = data["Content"] ?? ""
-//    }
-    
-//    func getGoldAcception() -> GoldAcception {
-//        return m_goldAcception
-//    }
-    
-//    func canEnterGold() -> Bool {
-//        if (m_goldAcception.Read == "Y") {
-//            return true
-//        }
-//        else {
-//            return false
-//        }
-//    }
 }

@@ -82,8 +82,7 @@ class GPAccountInfomationViewController: BaseViewController {
             else {
                 showErrorMessage(nil, ErrorMsg_No_TaskId)
             }
-        default:
-            super.didResponse(description, response)
+        default: super.didResponse(description, response)
         }
     }
     // MARK:- Handle Actions

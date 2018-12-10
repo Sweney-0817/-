@@ -185,8 +185,7 @@ class GPSingleSellViewController: BaseViewController {
                     showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
                 }
             }
-        default:
-            super.didResponse(description, response)
+        default: super.didResponse(description, response)
         }
     }
     // MARK:- Handle Actions

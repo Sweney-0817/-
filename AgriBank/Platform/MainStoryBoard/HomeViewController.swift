@@ -10,18 +10,11 @@ import UIKit
 class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, AnnounceNewsDelegate {
     @IBOutlet weak var newsView: UIView!
     @IBOutlet weak var featureWall: FeatureWallView!
-//    @IBOutlet weak var bannerView: UIView!
-//    @IBOutlet weak var loginStatusLabel: UILabel!
-//    @IBOutlet weak var accountBalanceLabel: UILabel!
-//    @IBOutlet weak var loginBtn: UIButton!
-//    @IBOutlet weak var logoImageView: UIImageView!
-//    @IBOutlet weak var loginImageView: UIImageView!
-//    @IBOutlet weak var loginImageShadowView: UIView!
 //Guester 20181024 首頁改版
     @IBOutlet var m_vTitleBackground: UIView!
     @IBOutlet var m_btnAlert: UIButton!
     @IBAction func m_btnAlertClick(_ sender: Any) {
-        enterFeatureByID(.FeatureID_PersonalMessage, true)
+        enterFeatureByID(.FeatureID_PersonalMessage, false)
     }
     @IBOutlet var m_ivLocationLogo: UIImageView!
     @IBOutlet var m_lbLocationTitle: UILabel!
@@ -30,25 +23,26 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     }
 
     @IBAction func m_btnHex1Click(_ sender: Any) {
-        enterFeatureByID(.FeatureID_QRPay, true)
+        enterFeatureByID(.FeatureID_QRPay, false)
     }
     @IBOutlet var m_lbGoldBuyPrice: UILabel!
     @IBOutlet var m_lbGoldSellPrice: UILabel!
     @IBAction func m_btnHex2Click(_ sender: Any) {
     }
     @IBAction func m_btnHex3Click(_ sender: Any) {
-        enterFeatureByID(.FeatureID_QRCodeTrans, true)
+        enterFeatureByID(.FeatureID_QRCodeTrans, false)
     }
 
     @IBOutlet var m_vBeforeLogin: UIView!
     @IBAction func m_btnLoginClick(_ sender: Any) {
-        showLoginView()
+//        showLoginView()
+        self.clickLoginBtn(sender)
     }
     @IBOutlet var m_vAfterLogin: UIView!
     @IBOutlet var m_lbBalance: UILabel!
-    @IBOutlet var m_lbIncome: UILabel!
-    @IBOutlet var m_lbExpense: UILabel!
+    @IBOutlet var m_lbTBalance: UILabel!
     @IBAction func m_btnActInfoClick(_ sender: Any) {
+        self.clickLoginBtn(sender)
     }
     func initNews() {
         let news = getUIByID(.UIID_AnnounceNews) as! AnnounceNews
@@ -73,10 +67,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         gradient.locations = [0.0, 1.0]
         
         m_vTitleBackground.backgroundColor = UIColor(patternImage: getImageFrom(gradientLayer: gradient)!)
-//        m_vTitleBackground. = gradient
-//        if let image = getImageFrom(gradientLayer: gradient) {
-//            m_vTitleBackground.setBackgroundImage(image, for: UIBarMetrics.default)
-//        }
     }
     func updateLoginStatus(_ getAmount:Bool = true) {
         /* Time out登出，不會viewWillAppear */
@@ -92,6 +82,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 m_vBeforeLogin.isHidden = true
                 m_vAfterLogin.isHidden = false
                 m_lbBalance.text = (String(info.Balance ?? "0").separatorThousand())
+                m_lbTBalance.text = (String(info.TBalance ?? "0").separatorThousand())
             }
             if centerNewsList == nil {
                 getAnnounceNewsInfo()
@@ -113,6 +104,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             m_vAfterLogin.isHidden = true
             logoImage = nil
             m_ivLocationLogo.image = UIImage(named: "logo")
+            m_lbLocationTitle.text = "農漁資訊共用"
             list = centerNewsList
         }
 
@@ -123,6 +115,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             }
             (newsView.subviews.first as! AnnounceNews).setContentList(newsList, self)
         }
+        self.send_queryData()
     }
 //Guester 20181024 首頁改版 end
     private var centerNewsList:[[String:Any]]? = nil
@@ -130,38 +123,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     private var logoImage:UIImage? = nil
     
     // MARK: - Override
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        // Do any additional setup after loading the view, typically from a nib.
-//        navigationItem.leftBarButtonItem = nil
-//        navigationItem.setHidesBackButton(true, animated:true)
-//
-//        let news = getUIByID(.UIID_AnnounceNews) as! AnnounceNews
-//        news.frame = newsView.frame
-//        news.frame.origin = .zero
-//        newsView.addSubview(news)
-//
-//        let banner = getUIByID(.UIID_Banner) as! BannerView
-//        banner.frame = bannerView.frame
-//        banner.frame.origin = .zero
-//        bannerView.addSubview(banner)
-//
-//        featureWall.setInitial(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!, setVertical: 3, setHorizontal: 2, SetDelegate: self)
-//
-//        /*  UIImageView無法同時支援 陰影+cornerRadius */
-////        loginImageView.layer.cornerRadius = loginImageView.frame.width/2
-//        loginImageView.layer.masksToBounds = true
-//        /* 陰影效果不好將其移出 */
-////        loginImageShadowView.layer.cornerRadius = loginImageShadowView.frame.width/2
-////        loginImageShadowView.layer.shadowOffset = CGSize(width: 0, height: 10)
-////        loginImageShadowView.layer.shadowRadius = Shadow_Radious
-////        loginImageShadowView.layer.shadowOpacity = Shadow_Opacity
-////        loginImageShadowView.layer.shadowColor = UIColor.gray.cgColor
-//
-//        getVersionInfo()
-//        getBannerInfo()
-//        getAnnounceNewsInfo()
-//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -186,25 +147,13 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         case "COMM0101", "COMM0102":
             super.didResponse(description, response)
             featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
-            updateLoginStatus(false)
-            
-//        case "COMM0201":
-//            var bannerList = [BannerStructure]()
-//            if let data:[String:Any] = response.object(forKey: ReturnData_Key) as? [String:Any] {
-//                if let list:[[String:String]] = data["Result"] as? [[String:String]] {
-//                    for banner in list {
-//                        bannerList.append(BannerStructure(imageURL: banner["picUrl"]!, link: banner["lnkUrl"]!))
-//                    }
-//                    (bannerView.subviews.first as! BannerView).setContentList(bannerList)
-//                }
-//            }
-//            else {
-//                super.didResponse(description, response)
-//            }
-            
+//            updateLoginStatus(false)
+            updateLoginStatus()
+
         case "COMM0404":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let url = data["url"] as? String {
-                postRequest("", LogoImage_Description, nil, nil, url, false, true)
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let surl = data["SUrl"] as? String, let name = data["Name"] as? String {
+                postRequest("", LogoImage_Description, nil, nil, surl, false, true)
+                m_lbLocationTitle.text = name
                 getAnnounceNewsInfo()
             }
             else {
@@ -265,21 +214,20 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 logoImage = responseImage
             }
             
-//        case "COMM0102":
-//            logoImage = UIImage(named: ImageName.DefaultLogo.rawValue)
-//            super.didResponse(description, response)
-            
         case "Home\(TransactionID_Description)":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 getCurrentAmount(tranId)
+                self.transactionId = tranId
             }
             else {
                 super.didResponse(description, response)
             }
         case "ACCT0103":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let TotalBalance = data["TotalBalance"] as? String {
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let TotalBalance = data["TotalBalance"] as? String, let TotalTBalance = data["TotalTBalance"] as? String {
 //                accountBalanceLabel.text = "活存總餘額 \(TotalBalance.separatorThousand())"
                 m_lbBalance.text = TotalBalance.separatorThousand()
+                m_lbTBalance.text = TotalTBalance.separatorThousand()
+                self.send_getList()
             }
             else {
                 super.didResponse(description, response)
@@ -289,8 +237,34 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 if let BUY = priceInfo["BUY"], let SELL = priceInfo["SELL"] {
                     m_lbGoldBuyPrice.text = BUY
                     m_lbGoldSellPrice.text = SELL
-                    m_lbIncome.text = BUY
-                    m_lbExpense.text = SELL
+                }
+            }
+        case "COMM0303":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let list = data["Result"] as? [[String:Any]]
+            {
+                if (list.count > 0 )
+                {
+                    let pushDate: String = (list.first!["pushDate"] as? String)!
+                    let msgUid: String = (list.first!["msgUid"] as? String)!
+                    
+                    if let personalMessageData: [String : String] = UserDefaults.standard.object(forKey: PersonalMessageKey) as? [String:String],
+                        let info = AuthorizationManage.manage.getResponseLoginInfo(),
+                        let USUDID = info.USUDID,
+                        let oldData = personalMessageData[USUDID]
+                    {
+                        if (pushDate + msgUid == oldData)
+                        {//local與最新一則相同
+                            m_btnAlert.setImage(UIImage(named: "alert1"), for: UIControlState.normal)
+                        }
+                        else
+                        {
+                            m_btnAlert.setImage(UIImage(named: "alert2"), for: UIControlState.normal)
+                        }
+                    }
+                    else {
+                        m_btnAlert.setImage(UIImage(named: "alert2"), for: UIControlState.normal)
+
+                    }
                 }
             }
         default: super.didResponse(description, response)
@@ -303,28 +277,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         switch ID {
         case .FeatureID_Edit:
             (controller as! EditViewController).setInitial(true, setShowList: AuthorizationManage.manage.GetPlatformList(.Edit_Type)!, setAddList: AuthorizationManage.manage.GetPlatformList(.User_Type) ?? AuthorizationManage.manage.GetPlatformList(.Default_Type)!)
-            
-//        case .FeatureID_News:
-//            var centerNews:[PromotionStruct]? = nil
-//            var bankNews:[PromotionStruct]? = nil
-//            if centerNewsList != nil {
-//                centerNews = [PromotionStruct]()
-//                for index in centerNewsList! {
-//                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String, let ID = index["CB_ID"] as? String {
-//                        centerNews?.append(PromotionStruct(title, date, "", url, ID))
-//                    }
-//                }
-//            }
-//            if bankNewsList != nil {
-//                bankNews = [PromotionStruct]()
-//                for index in bankNewsList! {
-//                    if let title = index["CB_Title"] as? String, let date = index["CB_AddedDT"] as? String, let url = index["URL"] as? String, let ID = index["CB_ID"] as? String {
-//                        bankNews?.append(PromotionStruct(title, date, "", url, ID))
-//                    }
-//                }
-//            }
-//            (controller as! NewsViewController).SetNewsList(centerNews, bankNews)
-            
+
         case .FeatureID_TaxPayment:
             (controller as! TaxPaymentViewController).transactionId = tempTransactionId
             tempTransactionId = ""
@@ -338,57 +291,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         navigationController?.pushViewController(controller, animated: animated)
     }
 
-//    func updateLoginStatus(_ getAmount:Bool = true) {
-//        /* Time out登出，不會viewWillAppear */
-//        navigationController?.navigationBar.isHidden = true
-//        if let statusView = UIApplication.shared.windows.first?.viewWithTag(ViewTag.View_Status.rawValue) {
-//            statusView.isHidden = true
-//        }
-//        
-//        featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
-//        var list:[[String:Any]]? = nil
-//        if AuthorizationManage.manage.IsLoginSuccess() {
-//            if let info = AuthorizationManage.manage.getResponseLoginInfo(), let USUDID = info.USUDID {
-//                loginImageView.layer.cornerRadius = loginImageView.frame.width/2
-//                loginImageView.image = getPersonalImage(SetAESKey: AES_Key, SetIdentify: USUDID, setAccount: USUDID)
-//            }
-//            if let info = AuthorizationManage.manage.getResponseLoginInfo() {
-//                accountBalanceLabel.text = "活存總餘額 \(String(info.Balance ?? "0").separatorThousand())"
-//            }
-//            loginStatusLabel.text = Login_Title
-//            if centerNewsList == nil {
-//                getAnnounceNewsInfo()
-//            }
-//            if logoImage != nil {
-//                logoImageView.image = logoImage
-//            }
-//            else {
-//                getBankLogoInfo()
-//            }
-//            list = bankNewsList
-//            /* 登入成功不需要發送 */
-//            if getAmount {
-//                getTransactionID("03001", "Home\(TransactionID_Description)")
-//            }
-//        }
-//        else {
-//            loginImageView.layer.cornerRadius = 0
-//            loginImageView.image = UIImage(named: ImageName.LoginLogo.rawValue)
-//            logoImage = nil
-//            logoImageView.image = UIImage(named: ImageName.DefaultLogo.rawValue)
-//            loginStatusLabel.text = NoLogin_Title
-//            accountBalanceLabel.text = "-"
-//            list = centerNewsList
-//        }
-//
-//        if list != nil {
-//            var newsList = [String]()
-//            for dic in list! {
-//                newsList.append("\(dic["CB_Title"] ?? "")")
-//            }
-//            (newsView.subviews.first as! AnnounceNews).setContentList(newsList, self)
-//        }
-//    }
     /* 為了在「最新消息」中更新的列表，更新回首頁 */
     func setNewsList(_ isCenter:Bool, _ list:[[String:Any]]?) {
         if isCenter {
@@ -434,9 +336,14 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         postRequest("ACCT/ACCT0103", "ACCT0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"queryData","TransactionId":tranID], true), AuthorizationManage.manage.getHttpHead(true))
     }
 
-    private func send_queryData(){
+    private func send_queryData() {
         self.setLoading(true)
         postRequest("Gold/Gold0502", "Gold0502", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10013","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
+    }
+    
+    private func send_getList() {//取左上角個人訊息
+        setLoading(true)
+        postRequest("COMM/COMM0303", "COMM0303", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"getList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
     }
     // MARK: - StoryBoard Touch Event
     @IBAction func clickLoginBtn(_ sender: Any) {
@@ -470,9 +377,10 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         case ViewTag.View_LogOut.rawValue:
             if buttonIndex != alertView.cancelButtonIndex {
                 postLogout()
-                //for test
+                //for test 測試點擊登出後直接清除首頁
                 featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
                 updateLoginStatus(false)
+                m_btnAlert.setImage(UIImage(named: "alert1"), for: UIControlState.normal)
             }
             
         case ViewTag.View_AlertForceUpdate.rawValue:

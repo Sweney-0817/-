@@ -89,16 +89,19 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.topItem?.title = getFeatureName(getCurrentFeatureID())
         navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.white]
+        originalY = view.frame.origin.y
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         dismissKeyboard()
+        removeObserverToKeyBoard()
         super.viewWillDisappear(animated)
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        removeObserverToKeyBoard()
         if touchTap != nil {
             view.removeGestureRecognizer(touchTap!)
             touchTap = nil
@@ -178,11 +181,12 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                     }
                     //Guester 20180626
                 case .FeatureID_QRCodeTrans, .FeatureID_QRPay:
+                    //for test
+//                    break
                     canEnter = false
                     if SecurityUtility.utility.isJailBroken() {
                         showErrorMessage(ErrorMsg_IsJailBroken, nil)
                     }
-//                    else if AuthorizationManage.manage.canEnterQRP() == false {
                     else if m_bCanEnterQRP == false {
                         getTransactionID("09001", BaseTransactionID_Description)
                         curFeatureID = ID
@@ -195,7 +199,6 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                     //Guester 20180731
                 case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell:
                     canEnter = false
-//                    if AuthorizationManage.manage.canEnterGold() == false {
                     if m_bCanEnterGP == false {
                         getTransactionID("10001", BaseTransactionID_Description)
                         curFeatureID = ID
@@ -248,7 +251,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             let controller = getControllerByID(.FeatureID_Result)
             (controller as! ResultViewController).transactionId = transactionId
             (controller as! ResultViewController).setData(data)
-            (controller as! ConfirmViewController).m_strTitle = title
+//            (controller as! ConfirmViewController).m_strTitle = title
             navigationController?.pushViewController(controller, animated: animated)
         }
     }
@@ -390,8 +393,9 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             view.removeGestureRecognizer(touchTap!)
             touchTap = nil
         }
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        removeObserverToKeyBoard()
     }
     
     // MARK: - UIBarButtonItem Selector
@@ -413,12 +417,16 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     
     // MARK: - KeyBoard
     func addObserverToKeyBoard() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        removeObserverToKeyBoard()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
+    func removeObserverToKeyBoard() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    var originalY: CGFloat = 0
     func keyboardWillShow(_ notification:NSNotification) {
         if loginView != nil, !(loginView?.isNeedRise())! {
             view.frame.origin.y = 0
@@ -428,11 +436,13 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
         let keyboardHeight = keyboardRectangle.height
-        view.frame.origin.y = -keyboardHeight
+//        view.frame.origin.y = -keyboardHeight
+        view.frame.origin.y = originalY - keyboardHeight
     }
     
     func keyboardWillHide(_ notification:NSNotification) {
-        view.frame.origin.y = 0
+//        view.frame.origin.y = 0
+        view.frame.origin.y = originalY
     }
     
     func addGestureForKeyBoard() {
@@ -515,7 +525,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     let idMd5 = SecurityUtility.utility.MD5(string: info.id)
                     let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
                     setLoading(true)
-                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
                 }
             }
             else {
@@ -562,6 +572,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 }
                 if let balance = data["TotalBalance"] as? String {
                     info.Balance = balance
+                }
+                if let tBalance = data["TotalTBalance"] as? String {
+                    info.TBalance = tBalance
                 }
                 if let STATUS = data["STATUS"] as? String {
                     info.STATUS = STATUS
@@ -615,7 +628,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         alert.addAction(UIAlertAction(title: Cancel_Title, style: .default) { _ in
                             DispatchQueue.main.async {
                                 if self.curFeatureID != nil {
-                                    self.enterFeatureByID(self.curFeatureID!, true)
+                                    self.enterFeatureByID(self.curFeatureID!, false)
                                     if (self.curFeatureID != .FeatureID_QRPay && self.curFeatureID != .FeatureID_QRCodeTrans) {
                                         self.curFeatureID = nil
                                     }
@@ -780,8 +793,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
              "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
              "PAY0103","PAY0105","PAY0107",
              "USIF0102","USIF0201","USIF0301",
-             "COMM0102","COMM0801","COMM0103","QR0302",
-             "Gold0301","Gold0302","Gold0401","Gold0402","Gold0403","Gold0404":
+             "COMM0102","COMM0801","COMM0103",
+             "QR0302","QR0402","QR0502",//QRP
+             "Gold0301","Gold0302","Gold0401","Gold0402","Gold0403","Gold0404"://黃金存摺
             didResponse(description, response)
         case "QR0201"://checkQRCode 自行處理回來的結果(因為有錯誤時，關閉alert後要重啟相機)
             didResponse(description, response)
@@ -804,7 +818,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                 let idMd5 = SecurityUtility.utility.MD5(string: info.id)
                                 let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
                                 self.setLoading(true)
-                                self.postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                                self.postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
                             }
                         }
                     })
@@ -840,7 +854,12 @@ extension BaseViewController: ConnectionUtilityDelegate {
                             
                         default:
                             if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
-                                showErrorMessage(nil, returnMsg)
+                                if (self is HomeViewController && response.object(forKey:"ReturnCode") as? String == "E_TRAN0000_01") {
+                                    //首頁的transactionID無效時不跳錯誤訊息
+                                }
+                                else {
+                                    showErrorMessage(nil, returnMsg)
+                                }
                             }
                         }
                     }

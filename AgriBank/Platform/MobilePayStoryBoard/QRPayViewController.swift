@@ -140,7 +140,12 @@ class QRPayViewController: BaseViewController {
         
         return newImage
     }
-    
+    private func encodeSecureCode(_ sc: String) -> String {
+        //一銀是 !*'();:@&=+$,/?%#[]
+        let strSC = CFURLCreateStringByAddingPercentEscapes(nil, sc as CFString, nil, "!*'();:@&=$,/?%#[]" as CFString, CFStringBuiltInEncodings.UTF8.rawValue)
+        return strSC! as String
+    }
+
     // MARK:- WebService Methods
     private func send_checkQRCode() {
         self.setLoading(true)
@@ -163,14 +168,14 @@ class QRPayViewController: BaseViewController {
             body["merchantId"] = m_qrpInfo?.merchantId()
         }
         if (m_qrpInfo?.merchantName() != nil && m_qrpInfo?.merchantName().isEmpty == false) {
-            body["merchantName"] = m_qrpInfo?.merchantName()
+            body["merchantName"] = m_qrpInfo?.merchantName()//.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         }
         body["paymentType"] = m_qrpInfo?.paymentType()
         if (m_qrpInfo?.secureCode() != nil && m_qrpInfo?.secureCode().isEmpty == false) {
-            body["secureCode"] = m_qrpInfo?.secureCode()
+            body["secureCode"] = self.encodeSecureCode((m_qrpInfo?.secureCode())!)
         }
         if (m_qrpInfo?.secureData() != nil && m_qrpInfo?.secureData().isEmpty == false) {
-            body["secureData"] = m_qrpInfo?.secureData()
+            body["secureData"] = self.encodeSecureCode((m_qrpInfo?.secureData())!)
         }
         if (m_qrpInfo?.acqInfo() != nil && m_qrpInfo?.acqInfo().isEmpty == false) {
             body["acqBankInfo"] = m_qrpInfo?.acqInfo()
@@ -181,7 +186,7 @@ class QRPayViewController: BaseViewController {
         if (m_qrpInfo?.deadlinefinal() != nil && m_qrpInfo?.deadlinefinal().isEmpty == false) {
             body["deadlinefinal"] = m_qrpInfo?.deadlinefinal()
         }
-        postRequest("QR/QR0201", "QR0201", AuthorizationManage.manage.converInputToHttpBody(body, true), AuthorizationManage.manage.getHttpHead(true))
+        postRequest("QR/QR0201", "QR0201", AuthorizationManage.manage.converInputToHttpBody2(body, true), AuthorizationManage.manage.getHttpHead(true))
     }
     private func send_checkPayTaxCode() {
         m_taxInfo?.m_strPayTaxYear = "公元5000年"
@@ -219,8 +224,7 @@ class QRPayViewController: BaseViewController {
             }
         case "checkPayTaxCode":
             performSegue(withIdentifier: "GoScanResult", sender: nil)
-        default:
-            super.didResponse(description, response)
+        default: super.didResponse(description, response)
         }
     }
     // MARK:- Handle Actions

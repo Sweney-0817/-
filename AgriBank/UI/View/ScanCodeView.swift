@@ -248,7 +248,8 @@ extension ScanCodeView {
         }
         return name ?? ""
     }
-    static func analysisQRCode(_ strData : String) -> (type : String, tax : PayTax?, qrp : MWQRPTransactionInfo?, error : String?) {
+    static func analysisQRCode(_ strOriData : String) -> (type : String, tax : PayTax?, qrp : MWQRPTransactionInfo?, error : String?) {
+        let strData = strOriData.replacingOccurrences(of: "+", with: " ")//for test android的URLDecoder.decode有這個行為
         var type : String = ""
         var tax : PayTax? = nil
         var qrp : MWQRPTransactionInfo? = nil

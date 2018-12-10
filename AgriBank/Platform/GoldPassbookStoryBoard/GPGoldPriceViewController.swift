@@ -117,8 +117,7 @@ class GPGoldPriceViewController: BaseViewController {
             
             // 重新ReLoad
             m_tvContentView.reloadData()
-        default:
-            super.didResponse(description, response)
+        default: super.didResponse(description, response)
         }
     }
     

@@ -1126,7 +1126,7 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
             if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 費用資訊(瓦斯費):%@\n", [arrInfo objectAtIndex:2]);
             bValid = ([[arrInfo objectAtIndex:3] length] == 15);
             if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 費用資訊(瓦斯費):%@\n", [arrInfo objectAtIndex:3]);
-            bValid = (_m_strNoticeNbr.length == 16 && ![_m_strNoticeNbr isEqualToString:[arrInfo objectAtIndex:2]]);
+            bValid = (_m_strNoticeNbr.length == 16 && [_m_strNoticeNbr isEqualToString:[arrInfo objectAtIndex:2]]);
             if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 銷帳編號:%@\n", _m_strNoticeNbr);
         }
         else {

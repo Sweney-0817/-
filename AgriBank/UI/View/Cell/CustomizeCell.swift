@@ -263,7 +263,7 @@ class ResultEditCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    func set(_ data:String, placeholder:String = "請輸入金額(新台幣)") {
+    func set(_ data:String, placeholder:String = "請輸入金額") {
         m_tfEditData.text = data
         m_tfEditData.placeholder = placeholder
     }
@@ -293,7 +293,8 @@ class NTRationCell: UITableViewCell {
 }
 
 class LoanPrincipalInterestCell: UITableViewCell {
-    let patBtn_Color = UIColor(red: 130/255, green: 179/255, blue: 66/255, alpha: 1)
+//    let patBtn_Color = UIColor(red: 130/255, green: 179/255, blue: 66/255, alpha: 1)
+    let patBtn_Color = Green_Color
     @IBOutlet weak var calculatePeriodLabel: UILabel!
     @IBOutlet weak var principalInterestLabel: UILabel!
     @IBOutlet weak var breachContractLabel: UILabel!

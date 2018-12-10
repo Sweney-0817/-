@@ -185,8 +185,7 @@ class GPTransactionDetailViewController: BaseViewController {
                 }
                 m_tvContentView.reloadData()
             }
-        default:
-            super.didResponse(description, response)
+        default: super.didResponse(description, response)
         }
     }
     

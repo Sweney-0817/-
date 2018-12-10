@@ -581,8 +581,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                     performSegue(withIdentifier: "showAcceptRules", sender: m_aryData[m_iBtnIndex])
                 }
             }
-        default:
-            super.didResponse(description, response)
+        default: super.didResponse(description, response)
         }
     }
     // MARK:- Handle Actions

@@ -146,8 +146,7 @@ class GPRegularSubscriptionViewController: BaseViewController {
             else {
                 showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
             }
-        default:
-            super.didResponse(description, response)
+        default: super.didResponse(description, response)
         }
     }
 

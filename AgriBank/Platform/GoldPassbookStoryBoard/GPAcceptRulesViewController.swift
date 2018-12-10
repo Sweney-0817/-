@@ -54,8 +54,7 @@ class GPAcceptRulesViewController: BaseViewController {
                 performSegue(withIdentifier: m_dicData!["nextStep"] as! String, sender: m_dicData!["data"])
             }
             break
-        default:
-            super.didResponse(description, response)
+        default: super.didResponse(description, response)
         }
     }
     override func didReceiveMemoryWarning() {

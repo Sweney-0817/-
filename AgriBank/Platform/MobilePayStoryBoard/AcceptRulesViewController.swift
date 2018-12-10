@@ -48,8 +48,7 @@ class AcceptRulesViewController: BaseViewController {
         case "QR0102":
             enterFeatureByID(m_nextFeatureID!, true)
             break
-        default:
-            super.didResponse(description, response)
+        default: super.didResponse(description, response)
         }
     }
     override func didReceiveMemoryWarning() {

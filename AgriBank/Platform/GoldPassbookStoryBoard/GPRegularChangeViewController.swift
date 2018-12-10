@@ -632,8 +632,7 @@ class GPRegularChangeViewController: BaseViewController {
             if let data = response.object(forKey: ReturnData_Key) as? [String:String], let content = data["Content"] {
                 m_lbCommand.text = content
             }
-        default:
-            super.didResponse(description, response)
+        default: super.didResponse(description, response)
         }
     }
 

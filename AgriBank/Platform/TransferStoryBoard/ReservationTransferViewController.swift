@@ -136,7 +136,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             else {
                 showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
             }
-        default: break
+        default: super.didResponse(description, response)
         }
     }
     

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -30,22 +28,22 @@
                     <rect key="frame" x="17" y="118.5" width="341" height="430"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Close" translatesAutoresizingMaskIntoConstraints="NO" id="KG7-43-0yH">
-                            <rect key="frame" x="15" y="15" width="23.5" height="23.5"/>
+                            <rect key="frame" x="15" y="15" width="24" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="KG7-43-0yH" secondAttribute="height" multiplier="1:1" id="Q03-t1-0LI"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="請先登入" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qr5-9A-Sii">
-                            <rect key="frame" x="113.5" y="15" width="115" height="23.5"/>
+                            <rect key="frame" x="113" y="15" width="115" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="115" id="BJz-wL-CYW"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="20"/>
-                            <color key="textColor" red="0.27058823529999998" green="0.65098039220000004" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" red="0.8784313725490196" green="0.41176470588235292" blue="0.30196078431372547" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V4V-ak-80a">
-                            <rect key="frame" x="0.0" y="0.0" width="54.5" height="54.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="55" height="55"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="V4V-ak-80a" secondAttribute="height" multiplier="1:1" id="TPS-0a-W9g"/>
                             </constraints>
@@ -63,7 +61,7 @@
                             </connections>
                         </textField>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropDown" translatesAutoresizingMaskIntoConstraints="NO" id="u6L-Ck-AMf">
-                            <rect key="frame" x="221.5" y="101" width="19.5" height="19"/>
+                            <rect key="frame" x="222" y="100.5" width="19" height="19"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="u6L-Ck-AMf" secondAttribute="height" multiplier="1:1" id="aSI-bm-jxx"/>
                             </constraints>

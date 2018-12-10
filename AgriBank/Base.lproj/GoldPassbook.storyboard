@@ -71,7 +71,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="「本交易受理時間：為各營業單位之營業時間至下午3時30分止。」" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="doG-GH-erL">
                                 <rect key="frame" x="16" y="299" width="343" height="50.5"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                <color key="textColor" red="0.27058823529999998" green="0.65098039220000004" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.87843137250000003" green="0.41176470590000003" blue="0.30196078430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VKd-i1-bKz">
@@ -84,7 +84,7 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <state key="normal" title="下一步" backgroundImage="ButtonLarge"/>
-                                        <state key="disabled" backgroundImage="buttonDisable"/>
+                                        <state key="disabled" backgroundImage="buttonLargeDisable"/>
                                         <connections>
                                             <action selector="m_btnNextClick:" destination="ew9-fO-2l8" eventType="touchUpInside" id="pzu-Mg-lkC"/>
                                         </connections>
@@ -185,7 +185,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="「本交易受理時間：為各營業單位之營業時間至下午3時30分止。」" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nr3-pW-P9V">
                                 <rect key="frame" x="16" y="342" width="343" height="50.5"/>
                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                <color key="textColor" red="0.27058823529999998" green="0.65098039220000004" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.87843137250000003" green="0.41176470590000003" blue="0.30196078430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lNa-Bk-7hi">
@@ -198,7 +198,7 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <state key="normal" title="下一步" backgroundImage="ButtonLarge"/>
-                                        <state key="disabled" backgroundImage="buttonDisable"/>
+                                        <state key="disabled" backgroundImage="buttonLargeDisable"/>
                                         <connections>
                                             <action selector="m_btnNextClick:" destination="a34-I6-eJM" eventType="touchUpInside" id="Icc-yW-x7e"/>
                                         </connections>
@@ -452,7 +452,7 @@
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X6e-Yr-CzN">
-                                                        <rect key="frame" x="278" y="55" width="87" height="44"/>
+                                                        <rect key="frame" x="278" y="54" width="87" height="46"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="87" id="ihq-Zj-bSY"/>
                                                         </constraints>
@@ -460,7 +460,7 @@
                                                         <state key="normal" title="檢視" backgroundImage="ButtonSmall">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
-                                                        <state key="disabled" backgroundImage="buttonDisable"/>
+                                                        <state key="disabled" backgroundImage="buttonSmallDisable"/>
                                                         <connections>
                                                             <action selector="m_btn1Click:" destination="kcm-lI-qjz" eventType="touchUpInside" id="sfH-vy-M2e"/>
                                                         </connections>
@@ -599,7 +599,7 @@
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="twr-yX-tPj">
-                                                        <rect key="frame" x="278" y="55" width="87" height="44"/>
+                                                        <rect key="frame" x="278" y="54" width="87" height="46"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="87" id="dM1-6E-ei8"/>
                                                         </constraints>
@@ -607,7 +607,7 @@
                                                         <state key="normal" title="檢視" backgroundImage="ButtonSmall">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
-                                                        <state key="disabled" backgroundImage="buttonDisable"/>
+                                                        <state key="disabled" backgroundImage="buttonSmallDisable"/>
                                                         <connections>
                                                             <action selector="m_btn2Click:" destination="kcm-lI-qjz" eventType="touchUpInside" id="Knk-VI-IIf"/>
                                                         </connections>
@@ -746,14 +746,14 @@
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U9H-Vf-XL5">
-                                                        <rect key="frame" x="278" y="55" width="87" height="44"/>
+                                                        <rect key="frame" x="278" y="54" width="87" height="46"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="87" id="7EF-P6-Awb"/>
                                                         </constraints>
                                                         <state key="normal" title="檢視" backgroundImage="ButtonSmall">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
-                                                        <state key="disabled" backgroundImage="buttonDisable"/>
+                                                        <state key="disabled" backgroundImage="buttonSmallDisable"/>
                                                         <connections>
                                                             <action selector="m_btn3Click:" destination="kcm-lI-qjz" eventType="touchUpInside" id="8el-QP-Z1d"/>
                                                         </connections>
@@ -888,7 +888,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nZ4-L4-MxA">
                                         <rect key="frame" x="0.0" y="0.0" width="187.5" height="60"/>
-                                        <color key="backgroundColor" red="0.27058823529999998" green="0.65098039220000004" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.87843137250000003" green="0.41176470590000003" blue="0.30196078430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="bpd-Kn-Yw1"/>
                                         </constraints>
@@ -2021,7 +2021,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我已審閱並同意上述事項" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CQQ-Cm-Y5u">
                                         <rect key="frame" x="32" y="4.5" width="191" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.27058823529999998" green="0.65098039220000004" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.87843137250000003" green="0.41176470590000003" blue="0.30196078430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JtN-zr-EWQ">
@@ -2095,15 +2095,16 @@
     </scenes>
     <resources>
         <image name="ButtonLarge" width="346" height="44"/>
-        <image name="ButtonSmall" width="87" height="44"/>
+        <image name="ButtonSmall" width="89" height="46"/>
         <image name="Checkoff" width="24" height="24"/>
         <image name="Checkon" width="24" height="24"/>
         <image name="EntryRight" width="20" height="20"/>
         <image name="Textfield" width="311" height="44"/>
-        <image name="buttonDisable" width="343" height="46"/>
+        <image name="buttonLargeDisable" width="16" height="16"/>
+        <image name="buttonSmallDisable" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="6Wl-Cd-3zd"/>
-        <segue reference="lAR-9G-jyr"/>
+        <segue reference="4ea-dx-xT6"/>
+        <segue reference="iLW-SD-Tii"/>
     </inferredMetricsTieBreakers>
 </document>
