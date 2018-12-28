@@ -53,8 +53,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setTitleBackground()
-
         initNews()
         featureWall.setInitial(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!, setVertical: 3, setHorizontal: 2, SetDelegate: self)
         getVersionInfo()
@@ -131,6 +129,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setTitleBackground()
         updateLoginStatus()
     }
     
