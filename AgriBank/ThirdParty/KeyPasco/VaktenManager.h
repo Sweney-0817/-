@@ -31,8 +31,8 @@ typedef void(^CompleteTasksHandle)(VResultCode resultCode, NSArray *tasks);
 
 - (VGeoOTP*)generateGeoOTPCode;
 
-- (NSString *)getOneTimePassword;
+//- (NSString *)getOneTimePassword;
 
-- (void)nextOneTimePassword;
+//- (void)nextOneTimePassword;
 
 @end

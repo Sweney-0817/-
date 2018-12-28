@@ -174,17 +174,17 @@ static NSString *const kApiKeyLabel = @"1-proto5";
     return otp;
 }
 
-- (NSString *)getOneTimePassword
-{
-    NSURL *url = [self p_GetClientAPI];
-    return [p_context getOneTimePassword:url];
-}
+//- (NSString *)getOneTimePassword
+//{
+//    NSURL *url = [self p_GetClientAPI];
+//    return [p_context getOneTimePassword:url];
+//}
 
-- (void)nextOneTimePassword
-{
-    NSURL *url = [self p_GetClientAPI];
-    [p_context nextOneTimePassword:url];
-}
+//- (void)nextOneTimePassword
+//{
+//    NSURL *url = [self p_GetClientAPI];
+//    [p_context nextOneTimePassword:url];
+//}
 
 - (NSString *)p_AppSupportDirectory
 {
