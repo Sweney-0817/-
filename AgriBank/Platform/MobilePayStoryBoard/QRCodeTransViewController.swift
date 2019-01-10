@@ -29,8 +29,9 @@ class QRCodeTransViewController: BaseViewController {
     private var m_strType : String = ""
     private var m_qrpInfo : MWQRPTransactionInfo? = nil
     private var m_taxInfo : PayTax? = nil
+    var m_dicSecureData : [String:String]? = nil
 
-    var m_arrActList : [[String:String]] = [[String:String]]()
+    var m_arrActList : [AccountStruct] = [AccountStruct]()
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -39,7 +40,8 @@ class QRCodeTransViewController: BaseViewController {
         self.initScanView()
 //        self.addObserverToKeyBoard()
         self.addGestureForKeyBoard()
-        self.send_getActList()
+        getTransactionID("09002", TransactionID_Description)
+//        self.send_getActList()
     }
     func initScanView() {
         m_uiScanView = Bundle.main.loadNibNamed("ScanCodeView", owner: self, options: nil)?.first as? ScanCodeView
@@ -100,10 +102,8 @@ class QRCodeTransViewController: BaseViewController {
     func showActList() {
         if (m_arrActList.count > 0) {
             let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
-            for info in m_arrActList {
-                if let act = info["Act"] {
-                    actSheet.addButton(withTitle: act)
-                }
+            for actInfo in m_arrActList {
+                actSheet.addButton(withTitle: actInfo.accountNO)
             }
             actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
             actSheet.show(in: view)
@@ -123,10 +123,19 @@ class QRCodeTransViewController: BaseViewController {
         m_qrpInfo = result.qrp
         m_taxInfo = result.tax
         switch m_strType {
-        case "01", "03", "51":
+        case "01", "51":
             self.send_checkQRCode()
         case "02":
-            performSegue(withIdentifier: "GoScanResult", sender: nil)
+            if (AuthorizationManage.manage.getCanEnterP2PTrans() == true) {
+                performSegue(withIdentifier: "GoScanResult", sender: nil)
+            }
+            else {
+                showAlert(title: nil, msg: ErrorMsg_NoAuth, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+            }
+        case "03":
+            //for test
+//            performSegue(withIdentifier: "GoScanResult", sender: nil)
+            self.send_checkQRCode()
         case PayTax_Type11_Type, PayTax_Type15_Type:
             self.send_checkPayTaxCode()
         default:
@@ -137,24 +146,89 @@ class QRCodeTransViewController: BaseViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let controller = segue.destination as! ScanResultViewController
-        controller.setData(type: m_strType, qrp: m_qrpInfo, tax: m_taxInfo, transactionId: transactionId)
+        controller.setData(type: m_strType, qrp: m_qrpInfo, tax: m_taxInfo, transactionId: transactionId, secure: m_dicSecureData)
+    }
+    private func encodeSecureCode(_ sc: String) -> String {
+        //一銀是 !*'();:@&=+$,/?%#[]
+        let strSC = CFURLCreateStringByAddingPercentEscapes(nil, sc as CFString, nil, "!*'();:@&=$,/?%#[]" as CFString, CFStringBuiltInEncodings.UTF8.rawValue)
+        return strSC! as String
+    }
+    private func checkQRCodeData() -> Bool {
+        let act: String? = m_uiActView?.getContentByType(.First)
+        if (act == nil || act?.isEmpty == true) {
+            showAlert(title: nil, msg: "請選擇帳戶", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return false
+        }
+        let amount: Int? = Int(m_tfAmount.text!)
+        if (amount != nil) {
+            if (amount! <= 0) {
+                showAlert(title: nil, msg: ErrorMsg_Input_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                return false
+            }
+//            else if (amount! > 30000) {
+//                showAlert(title: nil, msg: ErrorMsg_NotPredesignated_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+//                return false
+//            }
+        }
+        return true
     }
     // MARK:- WebService Methods
     private func makeFakeData() {
         m_arrActList.removeAll()
-        var temp : [String:String] = [String:String]()
         for i in 0..<20 {
-            temp["Act"] = String.init(format: "%05d", i)
-            temp["Amount"] = String.init(format: "%d", i*1000+100)
-            m_arrActList.append(temp)
+            var actInfo: AccountStruct = AccountStruct()
+            actInfo.accountNO = String.init(format: "%05d", i)
+            actInfo.currency = "TWNTD"
+            actInfo.balance = String.init(format: "%d", i*1000+100)
+            actInfo.status = "?"
+            m_arrActList.append(actInfo)
         }
     }
     func send_getActList() {
-        self.makeFakeData()
-        //        postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+//        self.makeFakeData()
+        postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
     }
     private func send_checkQRCode() {
-        self.didResponse("checkQRCode", [String:String]() as NSDictionary)
+        //self.didResponse("checkQRCode", [String:String]() as NSDictionary)
+        self.setLoading(true)
+        var body: [String:String] = [String:String]()
+        body["WorkCode"] = "09002"
+        body["Operate"] = "QRConfirm"
+        body["TransactionId"] = transactionId
+        body["appId"] = AgriBank_AppID
+        body["countryCode"] = m_qrpInfo?.countryCode()
+        body["transType"] = m_strType == "51" ? "01" : m_strType
+        body["processingCode"] = m_strType == "02" ? "000162" : "000163"
+        
+        if (m_qrpInfo?.acqBank() != nil && m_qrpInfo?.acqBank().isEmpty == false) {
+            body["acqBank"] = m_qrpInfo?.acqBank()
+        }
+        if (m_qrpInfo?.terminalId() != nil && m_qrpInfo?.terminalId().isEmpty == false) {
+            body["terminalId"] = m_qrpInfo?.terminalId()
+        }
+        if (m_qrpInfo?.merchantId() != nil && m_qrpInfo?.merchantId().isEmpty == false) {
+            body["merchantId"] = m_qrpInfo?.merchantId()
+        }
+        if (m_qrpInfo?.merchantName() != nil && m_qrpInfo?.merchantName().isEmpty == false) {
+            body["merchantName"] = m_qrpInfo?.merchantName()//.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        }
+        body["paymentType"] = m_qrpInfo?.paymentType()
+        if (m_qrpInfo?.secureCode() != nil && m_qrpInfo?.secureCode().isEmpty == false) {
+            body["secureCode"] = m_qrpInfo?.secureCode()
+        }
+        if (m_qrpInfo?.secureData() != nil && m_qrpInfo?.secureData().isEmpty == false) {
+            body["secureData"] = m_qrpInfo?.secureData()
+        }
+        if (m_qrpInfo?.acqInfo() != nil && m_qrpInfo?.acqInfo().isEmpty == false) {
+            body["acqBankInfo"] = m_qrpInfo?.acqInfo()
+        }
+        if (m_qrpInfo?.qrExpirydate() != nil && m_qrpInfo?.qrExpirydate().isEmpty == false) {
+            body["qrExpirydate"] = m_qrpInfo?.qrExpirydate()
+        }
+        if (m_qrpInfo?.deadlinefinal() != nil && m_qrpInfo?.deadlinefinal().isEmpty == false) {
+            body["deadlinefinal"] = m_qrpInfo?.deadlinefinal()
+        }
+        postRequest("QR/QR0201", "QR0201", AuthorizationManage.manage.converInputToHttpBody2(body, true), AuthorizationManage.manage.getHttpHead(true))
     }
     private func send_checkPayTaxCode() {
         m_taxInfo?.m_strPayTaxYear = "公元5000年"
@@ -172,8 +246,55 @@ class QRCodeTransViewController: BaseViewController {
             else {
                 super.didResponse(description, response)
             }
-        case "checkQRCode":
-            performSegue(withIdentifier: "GoScanResult", sender: nil)
+        case "ACCT0101":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
+                for category in array {
+                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
+                        m_arrActList.removeAll()
+                        for actInfo in result {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
+                                m_arrActList.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                super.didResponse(description, response)
+            }
+//        case "checkQRCode":
+//            performSegue(withIdentifier: "GoScanResult", sender: nil)
+        case "QR0201"://checkQRCode
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String {
+                if returnCode == ReturnCode_Success {
+                    let dicData = response.object(forKey: ReturnData_Key) as? [String:Any]
+                    if (dicData != nil) {
+                        let strSecureData = dicData!["secureData"] as? String
+                        if (strSecureData != nil) {
+                            do {
+                                let jsonDic = try JSONSerialization.jsonObject(with: strSecureData!.data(using: .utf8)!, options: .mutableContainers) as? [String:Any]
+                                m_dicSecureData = jsonDic as? [String : String]
+                            }
+                            catch {
+                                showAlert(title: nil, msg: error.localizedDescription, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                            }
+                        }
+                    }
+                    performSegue(withIdentifier: "GoScanResult", sender: nil)
+                }
+                else {
+                    if let type = response.object(forKey: "ActionType") as? String {
+                        switch type {
+                        case "showMsg":
+                            if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
+                                showAlert(title: UIAlert_Default_Title, msg: returnMsg, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: { self.startScan() }, cancelHandelr: {()})
+                            }
+                        default:
+                            break
+                        }
+                    }
+                }
+            }
         case "checkPayTaxCode":
             performSegue(withIdentifier: "GoScanResult", sender: nil)
         default: super.didResponse(description, response)
@@ -190,10 +311,38 @@ class QRCodeTransViewController: BaseViewController {
     }
     @IBAction func m_btnMakeQRCodeClick(_ sender: Any) {
         self.dismissKeyboard()
-        let strAct : String = (m_uiActView?.getContentByType(.First))!
-        let strAmount : String = m_tfAmount.text!
-        let strQRCode : String = "[\(strAct)][\(strAmount)]"
-        self.m_ivQRCode.image = MakeQRCodeUtility.utility.generateQRCode(from: strQRCode)
+        //=====
+        guard checkQRCodeData() == true else {
+            return
+        }
+        var dicData: [String:String] = [String:String]()
+        dicData["merchantName"] = "農漁行動達人"//"農業金庫"
+        dicData["countryCode"] = "158"
+        dicData["qrVersion"] = "V1"
+        dicData["shopType"] = "TRANSFER"
+        let act = m_uiActView?.getContentByType(.First)
+        dicData["transfereeBank"] = act?.substring(to: 2)//AuthorizationManage.manage.GetLoginInfo()?.bankCode.substring(to: (AuthorizationManage.manage.GetLoginInfo()?.bankCode.count)! - 3)
+        dicData["transfereeAccount"] = act
+
+        var strQR: String? = nil
+        let QRInfo: TPSMerchantInfo = TPSMerchantInfo(dictionary: dicData)
+        let QRMag: TPSQRCodeManager = TPSQRCodeManager.sharedManager
+        QRMag.merchantInfo = QRInfo
+
+        if (m_tfAmount.text!.isEmpty) {
+            strQR = QRMag.staticQRCodeString()
+        }
+        else {
+            strQR = QRMag.dynamicQRCodeString(txnAmt: m_tfAmount.text!)
+        }
+        if (strQR != nil) {
+            self.m_ivQRCode.image = MakeQRCodeUtility.utility.generateQRCode(from: strQR!)
+        }
+        //=====
+//        let strAct : String = (m_uiActView?.getContentByType(.First))!
+//        let strAmount : String = m_tfAmount.text!
+//        let strQRCode : String = "[\(strAct)][\(strAmount)]"
+//        self.m_ivQRCode.image = MakeQRCodeUtility.utility.generateQRCode(from: strQRCode)
     }
 }
 // MARK:- extension
@@ -212,8 +361,17 @@ extension QRCodeTransViewController : ScanCodeViewDelegate {
     }
     func noPermission() {
         let confirmHandler : ()->Void = {() in
-            if (UIApplication.shared.canOpenURL(URL(string:"App-Prefs:root=com.agribank.mbank-sit")!)) {
-                UIApplication.shared.openURL(URL(string: "App-Prefs:root=com.agribank.mbank-sit")!)
+            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                return
+            }
+            if UIApplication.shared.canOpenURL(settingsUrl)  {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    })
+                }
+                else  {
+                    UIApplication.shared.openURL(settingsUrl)
+                }
             }
         }
         let cancelHandler : ()->Void = {()}
@@ -237,8 +395,8 @@ extension QRCodeTransViewController : UIActionSheetDelegate {
             switch (actionSheet.tag) {
             case ViewTag.View_AccountActionSheet.rawValue:
                 let iIndex : Int = buttonIndex - 1
-                let info : [String:String] = m_arrActList[iIndex]
-                let act : String = info["Act"]!
+                let info : AccountStruct = m_arrActList[iIndex]
+                let act : String = info.accountNO
                 if (m_uiActView?.getContentByType(.First) != act) {
                     m_uiActView?.setOneRow("轉入帳號", act)
                     self.m_ivQRCode.image = nil
@@ -267,9 +425,9 @@ extension QRCodeTransViewController : UITextFieldDelegate {
         }
         
         let newLength = (textField.text?.count)! - range.length + string.count
-        let maxLength = Max_Amount_Length
+        let maxLength = Max_GetAmount_Length
         if newLength <= maxLength {
-            m_tfAmount.text = newString
+//            m_tfAmount.text = newString
             self.m_ivQRCode.image = nil
             return true
         }

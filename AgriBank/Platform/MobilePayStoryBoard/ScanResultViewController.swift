@@ -20,7 +20,7 @@ class ScanResultViewController: BaseViewController {
     var m_uiActView : TwoRowDropDownView? = nil
 
     var m_strInputAmount : String = ""
-    var m_dicDecrypt : [String:String] = [String:String]()
+    var m_dicDecrypt : [String:String]? = nil//[String:String]()
     var m_aryShowData : [[String:String]] = [[String:String]]()
     var m_arrActList : [AccountStruct] = [AccountStruct]()//[[String:String]] = [[String:String]]()
 
@@ -28,6 +28,7 @@ class ScanResultViewController: BaseViewController {
     private var m_qrpInfo : MWQRPTransactionInfo? = nil
     private var m_taxInfo : PayTax? = nil
     private var m_strTempOrderNumber : String = ""
+    private var m_strTitle: String? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,16 +44,29 @@ class ScanResultViewController: BaseViewController {
         self.send_QueryData()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        m_consScanResultHeight.constant = 0
+        for item:[String:String] in m_aryShowData {
+            let height = ResultCell.GetStringHeightByWidthAndFontSize(item[Response_Value]!, m_tvScanResult.frame.size.width)
+            m_consScanResultHeight.constant += height
+        }
+        if (m_strTitle != nil) {
+            navigationController?.navigationBar.topItem?.title = m_strTitle
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
 // MARK:- Init Methods
-    func setData(type : String,  qrp : MWQRPTransactionInfo?, tax : PayTax?, transactionId : String) {
+    func setData(type : String,  qrp : MWQRPTransactionInfo?, tax : PayTax?, transactionId : String, secure : [String:String]?) {
         m_strType = type
         m_qrpInfo = qrp
         m_taxInfo = tax
         self.transactionId = transactionId
+        m_dicDecrypt = secure
+        m_strTitle = m_strType == "02" ? "掃描轉帳" : "台灣Pay"
     }
     private func initTableView() {
         m_tvScanResult.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
@@ -93,11 +107,15 @@ class ScanResultViewController: BaseViewController {
             return false
         }
         if (Int(m_strInputAmount) == 0) {
-            showAlert(title: nil, msg: "輸入金額不得0元", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: nil, msg: ErrorMsg_Input_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         if (Int(m_strInputAmount) == 0) {
             showAlert(title: nil, msg: "輸入金額不得小於0元", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            return false
+        }
+        if (m_strType == "02" && m_qrpInfo?.txnAmt() == nil && Int(m_strInputAmount)! > 30000) {
+            showAlert(title: nil, msg: ErrorMsg_NotPredesignated_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         return true
@@ -141,7 +159,7 @@ class ScanResultViewController: BaseViewController {
         default:
             break
         }
-        m_consScanResultHeight.constant = CGFloat(60 * m_aryShowData.count)
+//        m_consScanResultHeight.constant = CGFloat(60 * m_aryShowData.count)
         m_tvScanResult.reloadData()
     }
     private func makePurchaseData() {
@@ -225,14 +243,14 @@ class ScanResultViewController: BaseViewController {
         temp[Response_Value] = "轉帳"
         m_aryShowData.append(temp)
         
-        if ((m_qrpInfo?.merchantName()) != nil) {
-            temp[Response_Key] = "名稱"
-            temp[Response_Value] = m_qrpInfo?.merchantName()
-            temp[Response_Type] = "N"
-            m_aryShowData.append(temp)
-        }
+//        if ((m_qrpInfo?.merchantName()) != nil) {
+//            temp[Response_Key] = "名稱"
+//            temp[Response_Value] = m_qrpInfo?.merchantName()
+//            temp[Response_Type] = "N"
+//            m_aryShowData.append(temp)
+//        }
         if ((m_qrpInfo?.transfereeBank()) != nil) {
-            temp[Response_Key] = "轉入行代碼"
+            temp[Response_Key] = "銀行代碼"
             temp[Response_Value] = m_qrpInfo?.transfereeBank()
             temp[Response_Type] = self.checkType("5")
             m_aryShowData.append(temp)
@@ -255,20 +273,32 @@ class ScanResultViewController: BaseViewController {
             m_strInputAmount = ""
         }
         else {
+            let showAmt: String = (m_qrpInfo?.txnAmt()?.substring(to: (m_qrpInfo?.txnAmt().count)! - 3).separatorThousandDecimal())!
             let strAmt: String = (m_qrpInfo?.txnAmt()?.substring(to: (m_qrpInfo?.txnAmt().count)! - 3).separatorDecimal())!
+//            let showAmt: String = (m_qrpInfo?.txnAmt().substring(to: (m_qrpInfo?.txnAmt().count)! - 3))! + "." + (m_qrpInfo?.txnAmt().substring(from: (m_qrpInfo?.txnAmt().count)! - 2))!
 //            let strAmt: String = (m_qrpInfo?.txnAmt().substring(to: (m_qrpInfo?.txnAmt().count)! - 3))!
-            temp[Response_Value] = strAmt
+            temp[Response_Value] = showAmt
             m_strInputAmount = strAmt
         }
+//        if (m_qrpInfo?.txnAmt() == nil) {
+//            temp[Response_Value] = ""
+//            m_strInputAmount = ""
+//        }
+//        else {
+//            let strAmt: String = (m_qrpInfo?.txnAmt()?.substring(to: (m_qrpInfo?.txnAmt().count)! - 3).separatorDecimal())!
+////            let strAmt: String = (m_qrpInfo?.txnAmt().substring(to: (m_qrpInfo?.txnAmt().count)! - 3))!
+//            temp[Response_Value] = strAmt
+//            m_strInputAmount = strAmt
+//        }
         temp[Response_Type] = self.checkType("1")
         m_aryShowData.append(temp)
 
-        if ((m_qrpInfo?.note()) != nil) {
-            temp[Response_Key] = "備註"
-            temp[Response_Value] = m_qrpInfo?.note()
-            temp[Response_Type] = self.checkType("9")
-            m_aryShowData.append(temp)
-        }
+//        if ((m_qrpInfo?.note()) != nil) {
+//            temp[Response_Key] = "備註"
+//            temp[Response_Value] = m_qrpInfo?.note()
+//            temp[Response_Type] = self.checkType("9")
+//            m_aryShowData.append(temp)
+//        }
     }
     private func makeBillData() {
         var temp : [String:String] = [String:String]()
@@ -304,8 +334,14 @@ class ScanResultViewController: BaseViewController {
                 else if (arrInfo![0] == "3") {
                     fName = "電費"
                 }
-                else {
+                else if (arrInfo![0] == "4") {
                     fName = "瓦斯費"
+                }
+                else if (arrInfo![0] == "5") {
+                    fName = "中華電信費"
+                }
+                else {
+                    fName = "繳費"
                 }
             }
             temp[Response_Key] = "費用名稱"
@@ -342,9 +378,9 @@ class ScanResultViewController: BaseViewController {
             temp[Response_Type] = self.checkType("7")
             m_aryShowData.append(temp)
         }
-        else if (m_dicDecrypt["E7"] != nil) {
+        else if (m_dicDecrypt != nil && m_dicDecrypt!["E7"] != nil) {
             temp[Response_Key] = "銷帳編號"
-            temp[Response_Value] = m_dicDecrypt["E7"]
+            temp[Response_Value] = (m_dicDecrypt!["E7"]! as NSString).replacingCharacters(in: NSRange(location: 3, length: 3), with: "***")
             temp[Response_Type] = "E"
             m_aryShowData.append(temp)
         }
@@ -531,8 +567,14 @@ class ScanResultViewController: BaseViewController {
                 else if (arrInfo![0] == "3") {
                     fName = "電費"
                 }
-                else {
+                else if (arrInfo![0] == "4") {
                     fName = "瓦斯費"
+                }
+                else if (arrInfo![0] == "5") {
+                    fName = "中華電信費"
+                }
+                else {
+                    fName = "繳費"
                 }
             }
             item[Response_Key] = "費用名稱"
@@ -580,7 +622,7 @@ class ScanResultViewController: BaseViewController {
             send_PurchaseConfirm(data!)
         case "02":
             data = makeP2PTransferConfirmData()
-            send_P2PTransferConfirm(data!)
+            send_P2PTransfer(data!)
         case "03":
             data = makeBillConfirmData()
             send_BillConfirm(data!)
@@ -688,9 +730,15 @@ class ScanResultViewController: BaseViewController {
     }
     private func makeP2PTransferConfirmData() -> [String:String]  {
         var body: [String:String] = [String:String]()
-        body["WorkCode"] = ""
+        body["WorkCode"] = "09007"
         body["Operate"] = "dataConfirm"
         body["TransactionId"] = transactionId
+        body["CARDACTNO"] = m_uiActView?.getContentByType(.First)
+        body["INACT"] = m_qrpInfo?.transfereeAccount()
+        body["INBANK"] = m_qrpInfo?.transfereeBank()
+        body["TXAMT"] = String(Int(m_strInputAmount) ?? 0)
+        body["TXMEMO"] = ""//"P2P轉帳"
+        body["MAIL"] = ""
         return body
     }
     private func makeBillConfirmData() -> [String:String]  {
@@ -753,6 +801,10 @@ class ScanResultViewController: BaseViewController {
         if ((m_qrpInfo?.noticeNbr()) != nil) {
             body["noticeNbr"] = m_qrpInfo?.noticeNbr()
         }
+        else if (m_dicDecrypt != nil && m_dicDecrypt!["E7"] != nil) {
+            body["noticeNbr"] = m_dicDecrypt!["E7"]!
+        }
+
         //費用資訊
 //        if ((m_qrpInfo?.feeInfo()) != nil) {
             body["feeInfo"] = m_qrpInfo?.feeInfo() ?? ""
@@ -783,6 +835,44 @@ class ScanResultViewController: BaseViewController {
         let subOrderNumber2: String = fmt.string(from: Date())
         m_strTempOrderNumber = subOrderNumber1 + subOrderNumber2
         return m_strTempOrderNumber
+    }
+    private func transNonPredesignated(_ taskList:[VTask], _ taskID:String) {
+        var task:VTask? = nil
+        for info in taskList {
+            if info.taskID == taskID {
+                task = info
+                break
+            }
+        }
+        if task != nil, let data = task?.message.data(using: .utf8) {
+            do {
+                let jsonDic = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:Any]
+                
+                let confirmRequest = RequestStruct(strMethod: "QR/QR0702", strSessionDescription: "QR0702", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: TIME_OUT_125)
+                
+                let CARDACTNO = (jsonDic?["CARDACTNO"] as? String) ?? ""
+                let INACT = (jsonDic?["INACT"] as? String) ?? ""
+                let INBANK = (jsonDic?["INBANK"] as? String) ?? ""
+                let TXAMT = (jsonDic?["TXAMT"] as? String) ?? ""
+                let TXMEMO = (jsonDic?["TXMEMO"] as? String) ?? ""
+                let MAIL = (jsonDic?["MAIL"] as? String) ?? ""
+                
+                var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認交易", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"09007","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":CARDACTNO,"INACT":INACT,"INBANK":INBANK,"TXAMT":TXAMT,"TXMEMO":TXMEMO,"MAIL":MAIL,"taskId":taskID,"otp":""],task: task)
+                
+                dataConfirm.list?.append([Response_Key: "類別", Response_Value:"轉帳"])
+//                dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:CARDACTNO])
+                dataConfirm.list?.append([Response_Key: "銀行代碼", Response_Value:INBANK])
+                dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:INACT])
+                dataConfirm.list?.append([Response_Key: "金額", Response_Value:TXAMT.separatorThousandDecimal()])
+//                dataConfirm.list?.append([Response_Key: "備註/交易備記", Response_Value:TXMEMO])
+//                dataConfirm.list?.append([Response_Key: "受款人E-mail", Response_Value:MAIL])
+                
+                enterConfirmOTPController(dataConfirm, true, "掃描轉帳")
+            }
+            catch {
+                showErrorMessage(nil, error.localizedDescription)
+            }
+        }
     }
     private func enterConfirmView(_ taskList:[VTask], _ taskID:String) {
         var task:VTask? = nil
@@ -818,7 +908,7 @@ class ScanResultViewController: BaseViewController {
                     data["taskId"] = taskID
                     data["otp"] = (jsonDic?["otp"] as? String) ?? ""
                     
-                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
+                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認交易", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
 
 //                    dataConfirm.list?.append([Response_Key: "商店名稱", Response_Value:data["merchant"]!])
 //                    dataConfirm.list?.append([Response_Key: "特店代號", Response_Value:data["merchantId"]!])
@@ -826,7 +916,7 @@ class ScanResultViewController: BaseViewController {
 //                    let showAmt: String = (data["txnAmt"]!.substring(to: (data["txnAmt"]!.count) - 3).separatorThousandDecimal())
 //                    dataConfirm.list?.append([Response_Key: "金額", Response_Value:showAmt])
                     dataConfirm.list = makePurchaseConfirmShowData(data)
-                    enterConfirmOTPController(dataConfirm, true)
+                    enterConfirmOTPController(dataConfirm, true, "台灣Pay")
                 case "02":
                     break
                 case "03":
@@ -854,9 +944,9 @@ class ScanResultViewController: BaseViewController {
                     data["charge"] = (jsonDic?["charge"] as? String) ?? ""
                     data["taskId"] = taskID
                     data["otp"] = (jsonDic?["otp"] as? String) ?? ""
-                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
+                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認交易", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
                     dataConfirm.list = makeBillConfirmShowData(data)
-                    enterConfirmOTPController(dataConfirm, true)
+                    enterConfirmOTPController(dataConfirm, true, "台灣Pay")
                 case "51":
                     let confirmRequest = RequestStruct(strMethod: "QR/QR0302", strSessionDescription: "QR0302", httpBody: nil, loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: TIME_OUT_125)
                     
@@ -874,7 +964,7 @@ class ScanResultViewController: BaseViewController {
                     data["taskId"] = taskID
                     data["otp"] = (jsonDic?["otp"] as? String) ?? ""
                     
-                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
+                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認交易", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
                     dataConfirm.list = makePurchaseConfirmShowData(data)
 //                    dataConfirm.list?.append([Response_Key: "商店名稱", Response_Value:data["merchantName"]!])
 //                    dataConfirm.list?.append([Response_Key: "特店代號", Response_Value:data["merchantId"]!])
@@ -882,7 +972,7 @@ class ScanResultViewController: BaseViewController {
 //                    dataConfirm.list?.append([Response_Key: "訂單編號", Response_Value:data["orderNumber"]!])
 //                    let showAmt: String = (data["TXAMT"]!.substring(to: (data["TXAMT"]!.count) - 3).separatorThousandDecimal())
 //                    dataConfirm.list?.append([Response_Key: "金額", Response_Value:showAmt])
-                    enterConfirmOTPController(dataConfirm, true)
+                    enterConfirmOTPController(dataConfirm, true, "台灣Pay")
                 case PayTax_Type11_Type:
 //                    makePayTaxType11Data()
                     break
@@ -953,14 +1043,15 @@ class ScanResultViewController: BaseViewController {
         setLoading(true)
         postRequest("QR/QR0301", "QR0301", AuthorizationManage.manage.converInputToHttpBody(data, true), AuthorizationManage.manage.getHttpHead(true))
     }
-    private func send_P2PTransferConfirm(_ data:[String:String]) {
+    private func send_P2PTransfer(_ data:[String:String]) {
         setLoading(true)
-        postRequest("", "", AuthorizationManage.manage.converInputToHttpBody(data, true), AuthorizationManage.manage.getHttpHead(true))
+        postRequest("QR/QR0701", "QR0701", AuthorizationManage.manage.converInputToHttpBody(data, true), AuthorizationManage.manage.getHttpHead(true))
     }
     private func send_BillConfirm(_ data:[String:String]) {
         setLoading(true)
-        postRequest("QR/QR0501", "QR0501", AuthorizationManage.manage.converInputToHttpBody(data, true), AuthorizationManage.manage.getHttpHead(true))
+        postRequest("QR/QR0501", "QR0501", AuthorizationManage.manage.converInputToHttpBody2(data, true), AuthorizationManage.manage.getHttpHead(true))
     }
+
     override func didResponse(_ description:String, _ response: NSDictionary) {
         self.setLoading(false)
         switch description {
@@ -1028,6 +1119,20 @@ class ScanResultViewController: BaseViewController {
                 let content = data["Content"] as? String
                 m_wvMemo.loadHTMLString(content!, baseURL: nil)
             }
+        case "QR0701":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let Id = data["taskId"] as? String {
+                VaktenManager.sharedInstance().getTasksOperation{ resultCode, tasks  in
+                    if VIsSuccessful(resultCode) && tasks != nil {
+                        self.transNonPredesignated(tasks! as! [VTask], Id)
+                    }
+                    else {
+                        self.showErrorMessage(nil, "\(ErrorMsg_GetTasks_Faild) \(resultCode.rawValue)")
+                    }
+                }
+            }
+            else {
+                showErrorMessage(nil, ErrorMsg_No_TaskId)
+            }
         default: super.didResponse(description, response)
         }
     }
@@ -1094,7 +1199,7 @@ extension ScanResultViewController : UITextFieldDelegate {
         }
         
         let newLength = (textField.text?.count)! - range.length + string.count
-        let maxLength = Max_MobliePhone_Length
+        let maxLength = Max_GetAmount_Length
         if newLength <= maxLength {
             m_strInputAmount = newString
 //            self.checkBtnConfirm()

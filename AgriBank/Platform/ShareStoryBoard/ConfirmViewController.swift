@@ -105,7 +105,13 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                             let otp = VaktenManager.sharedInstance().generateGeoOTPCode()
                             if VIsSuccessful((otp?.resultCode)!) {
                                 self.dataOTP?.httpBodyList?["otp"] = otp?.otp
-                                self.dataOTP?.checkRequest?.httpBody = AuthorizationManage.manage.converInputToHttpBody((self.dataOTP?.httpBodyList!)!, true)
+                                if ((self.dataOTP?.httpBodyList?["WorkCode"] as! String) == "09005") {
+                                    //掃qrcode的繳費交易的銷帳編號可能會有space，特別拉出來判斷
+                                    self.dataOTP?.checkRequest?.httpBody = AuthorizationManage.manage.converInputToHttpBody2((self.dataOTP?.httpBodyList!)!, true)
+                                }
+                                else {
+                                    self.dataOTP?.checkRequest?.httpBody = AuthorizationManage.manage.converInputToHttpBody((self.dataOTP?.httpBodyList!)!, true)
+                                }
                                 self.postRequest((self.dataOTP?.checkRequest?.strMethod)!, (self.dataOTP?.checkRequest?.strSessionDescription)!, self.dataOTP?.checkRequest?.httpBody, self.dataOTP?.checkRequest?.loginHttpHead, self.dataOTP?.checkRequest?.strURL, (self.dataOTP?.checkRequest?.needCertificate)!, (self.dataOTP?.checkRequest?.isImage)!, (self.dataOTP?.checkRequest?.timeOut)!)
                             }
                             else {
@@ -146,6 +152,8 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
             }
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
                 if  (description == "QR0302") ||
+                    (description == "QR0402") ||
+                    (description == "QR0502") ||
                     (description == "Gold0301") ||
                     (description == "Gold0302") ||
                     (description == "Gold0401") ||
@@ -162,7 +170,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                         }
                     }
                 }
-                else if let responseData = response.object(forKey: ReturnData_Key) as? [[String:String]] {
+                else if let responseData = response.object(forKey: ReturnData_Key) as? [[String:Any]] {
                     data?.list = responseData
                 }
                 data?.title = Transaction_Successful_Title
@@ -235,7 +243,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
             return Confirm_ImageConfirm_Cell_Height
         }
         else {
-            let height = ResultCell.GetStringHeightByWidthAndFontSize((list?[indexPath.row][Response_Value])!, m_tvData.frame.size.width)
+            let height = ResultCell.GetStringHeightByWidthAndFontSize((list?[indexPath.row][Response_Value]) as? String ?? "", m_tvData.frame.size.width)
             return height
         }
     }
@@ -306,7 +314,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
-            cell.set((list?[indexPath.row][Response_Key])!, (list?[indexPath.row][Response_Value])!)
+            cell.set((list?[indexPath.row][Response_Key]) as? String ?? "", (list?[indexPath.row][Response_Value]) as? String ?? "")
             return cell
         }
     }

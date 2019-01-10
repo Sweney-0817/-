@@ -97,6 +97,26 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             else {
                 list.append([Response_Key:"處理結果", Response_Value:""])
             }
+            //Guester 20181120 新增轉帳生效、終止日
+            input.bIsSpecific = isSpecific
+            if (isSpecific == false) {
+                if let STDATE = dic["STDATE"] as? String, STDATE != emptyDate, STDATE != "0000000" {
+                    input.STDATE = STDATE
+                    list.append([Response_Key:"轉帳生效日", Response_Value:STDATE])
+                }
+                else {
+                    list.append([Response_Key:"轉帳生效日", Response_Value:"-"])
+                }
+                
+                if let STPDAY = dic["STPDAY"] as? String, STPDAY != emptyDate, STPDAY != "0000000" {
+                    input.STPDAY = STPDAY
+                    list.append([Response_Key:"轉帳終止日", Response_Value:STPDAY])
+                }
+                else {
+                    list.append([Response_Key:"轉帳終止日", Response_Value:"-"])
+                }
+            }
+            //Guester 20181120 新增轉帳生效、終止日 End
             if let TRACTNO = dic["TRACTNO"] as? String{
                 input.inAccount = TRACTNO
             }

@@ -157,9 +157,18 @@ extension ScanCodeView {
             }
             else {
                 for strSubString : String in arrInput {
-                    if ((strSubString.range(of: "TWQRP", options: String.CompareOptions.caseInsensitive)) != nil) {
+                    if (strSubString.hasPrefix("TWQRP")) {
+//                    if ((strSubString.range(of: "TWQRP", options: String.CompareOptions.caseInsensitive)) != nil) {
                         let strNeed = strSubString.replacingOccurrences(of: "\r", with: "")
                         return strNeed
+                    }
+                    else
+                    {
+                        if ((strSubString.range(of: "TWQRP", options: String.CompareOptions.caseInsensitive)) != nil) {
+                            let ranTWQRP : Range = (strSubString.range(of: "TWQRP", options: String.CompareOptions.caseInsensitive))!
+                            let strNeed : String = strSubString.substring(from: (ranTWQRP.lowerBound))
+                            return strNeed
+                        }
                     }
                 }
             }
@@ -174,9 +183,10 @@ extension ScanCodeView {
         return setPayTaxData(nsData!)
     }
     static private func getPayTaxData(_ nsURL : String) -> String? {
-        let url : NSURL = NSURL(string: nsURL)!
-        if (url.scheme == PayTax_URL_scheme && url.host == PayTax_URL_host) {
-            let urlComponents : [String] = url.query!.components(separatedBy:"&")
+        let url : NSURL? = NSURL(string: nsURL)
+        if (url != nil) {
+        if (url!.scheme == PayTax_URL_scheme && url!.host == PayTax_URL_host) {
+            let urlComponents : [String] = url!.query!.components(separatedBy:"&")
             for keyValuePair : String in urlComponents {
                 let pairComponents : [String] = keyValuePair.components(separatedBy:"=")
                 let key : String = pairComponents.first!.removingPercentEncoding!
@@ -184,6 +194,7 @@ extension ScanCodeView {
                     return pairComponents.last!.removingPercentEncoding!
                 }
             }
+        }
         }
         return nil
     }
@@ -249,7 +260,7 @@ extension ScanCodeView {
         return name ?? ""
     }
     static func analysisQRCode(_ strOriData : String) -> (type : String, tax : PayTax?, qrp : MWQRPTransactionInfo?, error : String?) {
-        let strData = strOriData.replacingOccurrences(of: "+", with: " ")//for test android的URLDecoder.decode有這個行為
+        let strData = strOriData.replacingOccurrences(of: "+", with: " ")
         var type : String = ""
         var tax : PayTax? = nil
         var qrp : MWQRPTransactionInfo? = nil
@@ -294,7 +305,7 @@ extension ScanCodeView {
         }
         else {
             type = ""
-            error = "QRCODE格式有誤(QRS-001)"
+            error = "QRCODE格式有誤"
 //            showAlert(title: nil, msg: "QRCODE格式有誤(QRS-001)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
         }
         

@@ -36,10 +36,10 @@ enum PlatformFeatureID: Int {
     case FeatureID_ExchangeRate = 150200            // 牌告匯率
     case FeatureID_RegularSavingCalculation = 150300// 定期儲蓄試算
     //Guester 20180626
-    case FeatureID_MobilePay = 200000               // 行動支付
-    case FeatureID_QRPay = 200100                   // QR Pay
-    case FeatureID_QRCodeTrans = 200200             // QR Code轉帳
-    case FeatureID_AcceptRules = 200101             // 同意條款
+    case FeatureID_MobilePay = 200000               // 農漁行動Pay
+    case FeatureID_QRPay = 200100                   // 台灣Pay
+    case FeatureID_QRCodeTrans = 200200             // 掃描轉帳
+    case FeatureID_AcceptRules = 200101             // 農漁行動Pay服務注意事項
     //Guester 20180626 End
     
     //Guester 20180731
@@ -246,7 +246,7 @@ struct FeatureStruct {
 struct ConfirmResultStruct {
     var image:String = ""
     var title:String = ""
-    var list:[[String:String]]? = nil
+    var list:[[String:Any]]? = nil
     var memo:String = ""
     var confirmBtnName = ""
     var resultBtnName = ""
@@ -451,6 +451,10 @@ let AgriBank_4sInchSize:CGFloat = 480
 let AgriBank_4sInchFont =  UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(15)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(15))
 let AgriBank_Scale = UIScreen.main.bounds.width / CGFloat(375)
 let Scale_Default_Font = UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(15)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(15))
+// MARK: - 日期格式
+let dataDateFormat = "yyyyMMdd"
+let showDateFormat = "yyyy/MM/dd"
+let emptyDate: String = "00000000"
 
 // MARK: - Define
 let SystemCell_Identify = "System_Cell"
@@ -505,6 +509,7 @@ let NewInput_MinLength:Int = 8      // 新輸入代號or密碼最小長度
 let NewInput_MaxLength:Int = 16     // 新輸入代號or密碼最大長度
 let Max_Amount_Length:Int = 12       // 輸入金額最大長度
 let Max_GoldGram_Length:Int = 9     // 黃金最大克數
+let Max_GetAmount_Length:Int = 7    //我要收款金額最大長度
 let Max_GoldSingleBuyGram_Length:Int = 4
 
 let AgriBank_Type = Int(1)

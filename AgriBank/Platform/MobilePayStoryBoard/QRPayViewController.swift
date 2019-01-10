@@ -18,6 +18,7 @@ class QRPayViewController: BaseViewController {
     var m_strType : String = ""
     private var m_qrpInfo : MWQRPTransactionInfo? = nil
     var m_taxInfo : PayTax? = nil
+    var m_dicSecureData : [String:String]? = nil
     var m_bIsLoadFromAlbum : Bool = false
 
     override func viewDidLoad() {
@@ -90,10 +91,19 @@ class QRPayViewController: BaseViewController {
         m_qrpInfo = result.qrp
         m_taxInfo = result.tax
         switch m_strType {
-        case "01", "03", "51":
+        case "01", "51":
             self.send_checkQRCode()
         case "02":
-            performSegue(withIdentifier: "GoScanResult", sender: nil)
+            if (AuthorizationManage.manage.getCanEnterP2PTrans() == true) {
+                performSegue(withIdentifier: "GoScanResult", sender: nil)
+            }
+            else {
+                showAlert(title: nil, msg: ErrorMsg_NoAuth, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+            }
+        case "03":
+            //for test
+//            performSegue(withIdentifier: "GoScanResult", sender: nil)
+            self.send_checkQRCode()
         case PayTax_Type11_Type, PayTax_Type15_Type:
             self.send_checkPayTaxCode()
         default:
@@ -104,7 +114,7 @@ class QRPayViewController: BaseViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let controller = segue.destination as! ScanResultViewController
-        controller.setData(type: m_strType, qrp: m_qrpInfo, tax: m_taxInfo, transactionId: transactionId)
+        controller.setData(type: m_strType, qrp: m_qrpInfo, tax: m_taxInfo, transactionId: transactionId, secure: m_dicSecureData)
     }
     func checkPhotoAuthorize() -> Bool {
         let status = PHPhotoLibrary.authorizationStatus()
@@ -122,7 +132,7 @@ class QRPayViewController: BaseViewController {
             })
             
         default:
-            showAlert(title: nil, msg: "無相簿權限", confirmTitle: "確認", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: nil, msg: "無相簿權限", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
         }
         return false
     }
@@ -156,7 +166,7 @@ class QRPayViewController: BaseViewController {
         body["appId"] = AgriBank_AppID
         body["countryCode"] = m_qrpInfo?.countryCode()
         body["transType"] = m_strType == "51" ? "01" : m_strType
-        body["processingCode"] = "000163"
+        body["processingCode"] = m_strType == "02" ? "000162" : "000163"
         
         if (m_qrpInfo?.acqBank() != nil && m_qrpInfo?.acqBank().isEmpty == false) {
             body["acqBank"] = m_qrpInfo?.acqBank()
@@ -172,10 +182,10 @@ class QRPayViewController: BaseViewController {
         }
         body["paymentType"] = m_qrpInfo?.paymentType()
         if (m_qrpInfo?.secureCode() != nil && m_qrpInfo?.secureCode().isEmpty == false) {
-            body["secureCode"] = self.encodeSecureCode((m_qrpInfo?.secureCode())!)
+            body["secureCode"] = m_qrpInfo?.secureCode()
         }
         if (m_qrpInfo?.secureData() != nil && m_qrpInfo?.secureData().isEmpty == false) {
-            body["secureData"] = self.encodeSecureCode((m_qrpInfo?.secureData())!)
+            body["secureData"] = m_qrpInfo?.secureData()
         }
         if (m_qrpInfo?.acqInfo() != nil && m_qrpInfo?.acqInfo().isEmpty == false) {
             body["acqBankInfo"] = m_qrpInfo?.acqInfo()
@@ -206,6 +216,19 @@ class QRPayViewController: BaseViewController {
         case "QR0201"://checkQRCode
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String {
                 if returnCode == ReturnCode_Success {
+                    let dicData = response.object(forKey: ReturnData_Key) as? [String:Any]
+                    if (dicData != nil) {
+                        let strSecureData = dicData!["secureData"] as? String
+                        if (strSecureData != nil) {
+                            do {
+                            let jsonDic = try JSONSerialization.jsonObject(with: strSecureData!.data(using: .utf8)!, options: .mutableContainers) as? [String:Any]
+                            m_dicSecureData = jsonDic as? [String : String]
+                            }
+                            catch {
+                                showAlert(title: nil, msg: error.localizedDescription, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                            }
+                        }
+                    }
                     performSegue(withIdentifier: "GoScanResult", sender: nil)
                 }
                 else {
@@ -214,7 +237,6 @@ class QRPayViewController: BaseViewController {
                         case "showMsg":
                             if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
                                 showAlert(title: UIAlert_Default_Title, msg: returnMsg, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: { self.startScan() }, cancelHandelr: {()})
-                                showErrorMessage(nil, returnMsg)
                             }
                         default:
                             break
@@ -228,18 +250,7 @@ class QRPayViewController: BaseViewController {
         }
     }
     // MARK:- Handle Actions
-//    @IBAction func m_btnAlbumClick(_ sender: Any) {
-//        let status: PHAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
-//        if (status == .authorized) {
-//            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
-//                stopScan()
-//                let controller : UIImagePickerController = UIImagePickerController()
-//                controller.delegate = self
-//                controller.sourceType = UIImagePickerControllerSourceType.photoLibrary
-//                self.present(controller, animated: true, completion: nil)
-//            }
-//        }
-//    }
+
 }
 // MARK:- extension
 extension QRPayViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -309,19 +320,20 @@ extension QRPayViewController : ScanCodeViewDelegate {
         self.analysisQRCode(strQRCode)
     }
     func noPermission() {
-#if DEBUG
         let confirmHandler : ()->Void = {() in
-            if (UIApplication.shared.canOpenURL(URL(string:"App-Prefs:root=com.agribank.mbank-sit")!)) {
-                UIApplication.shared.openURL(URL(string: "App-Prefs:root=com.agribank.mbank-sit")!)
+            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                return
+            }
+            if UIApplication.shared.canOpenURL(settingsUrl)  {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    })
+                }
+                else  {
+                    UIApplication.shared.openURL(settingsUrl)
+                }
             }
         }
-#else
-        let confirmHandler : ()->Void = {() in
-            if (UIApplication.shared.canOpenURL(URL(string:"App-Prefs:root=org.naffic.mbank")!)) {
-                UIApplication.shared.openURL(URL(string: "App-Prefs:root=org.naffic.mbank")!)
-            }
-        }
-#endif
         let cancelHandler : ()->Void = {()}
         showAlert(title: "尚未授權相機功能", msg: "請先至設定啟用相機權限", confirmTitle: "設定", cancleTitle: "取消", completionHandler: confirmHandler, cancelHandelr: cancelHandler)
     }

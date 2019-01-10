@@ -14,9 +14,9 @@ let changeQuantity = "修改數量"
 let pauseDebit = "暫停扣款設定"
 let resumeDebit = "取消暫停扣款"
 let stopDebit = "解除約定扣款"
-let dataDateFormat = "yyyyMMdd"
-let showDateFormat = "yyyy/MM/dd"
-let emptyDate: String = "00000000"
+//let dataDateFormat = "yyyyMMdd"
+//let showDateFormat = "yyyy/MM/dd"
+//let emptyDate: String = "00000000"
 
 class GPRegularChangeViewController: BaseViewController {
     var m_uiSettingView: OneRowDropDownView? = nil

@@ -44,6 +44,8 @@ class AuthorizationManage {
     private var canDepositTermination = false            // 是否可以「綜存戶轉存明細解約」
     private var canPayLoan = false                       // 是否可以「繳交放款本息」
     private var canChangeBaseInfo = false                // 是否可以「基本資料變更」
+    private var canEnterQRPay = false                   // 是否可以進入QRPay
+    private var canEnterP2PTrans = false                // 是否可進入p2p轉帳
     
     func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info
@@ -67,6 +69,16 @@ class AuthorizationManage {
                     case "T37":
                         canChangeBaseInfo = true
                         
+                    case "T43":
+                        canEnterQRPay = true
+                        if let pID = getPlatformIDByAuthID(ID) {
+                            if authList?.index(of: pID) == nil {
+                                authList?.append(pID)
+                            }
+                        }
+                    case "T56":
+                        canEnterP2PTrans = true
+
                     default:
                         if let pID = getPlatformIDByAuthID(ID) {
                             if authList?.index(of: pID) == nil {
@@ -115,6 +127,8 @@ class AuthorizationManage {
             canDepositTermination = false
             canPayLoan = false
             canChangeBaseInfo = false
+            canEnterQRPay = false
+            canEnterP2PTrans = false
         }
     }
     
@@ -136,6 +150,14 @@ class AuthorizationManage {
     
     func getChangeBaseInfoStaus() -> Bool {
         return canChangeBaseInfo
+    }
+    
+    func getCanEnterQRPay() -> Bool {
+        return canEnterQRPay
+    }
+
+    func getCanEnterP2PTrans() -> Bool {
+        return canEnterP2PTrans
     }
 
     func getHttpHead(_ isNeedCID:Bool) -> [String:String] {
@@ -269,8 +291,8 @@ class AuthorizationManage {
         case "T40": return PlatformFeatureID.FeatureID_ContactCustomerService
     //Guester 20180626
         case "T41": return PlatformFeatureID.FeatureID_MobilePay    // 行動支付
-        case "T42": return PlatformFeatureID.FeatureID_QRCodeTrans  // QR Code轉帳
-        case "T43": return PlatformFeatureID.FeatureID_QRPay        // QR Pay
+        case "T42": return PlatformFeatureID.FeatureID_QRCodeTrans  // 掃描轉帳
+        case "T43": return PlatformFeatureID.FeatureID_QRPay        // 台灣Pay
     //Guester 20180626 End
 
     //Guester 20180731
@@ -285,7 +307,81 @@ class AuthorizationManage {
         default: return nil
         }
     }
-    
+    func getAuthIDByPlatformID(_ ID:PlatformFeatureID) -> String? {
+        switch ID {
+        case PlatformFeatureID.FeatureID_AccountOverView: return "T01"
+        case PlatformFeatureID.FeatureID_AccountDetailView: return "T02"
+        case PlatformFeatureID.FeatureID_NTAccountTransfer: return "T03"
+        case PlatformFeatureID.FeatureID_NTTransfer: return "T04"               // 約轉
+        case PlatformFeatureID.FeatureID_ReservationTransfer: return "T06"
+        case PlatformFeatureID.FeatureID_ReservationTransferSearchCancel: return "T07"
+        case PlatformFeatureID.FeatureID_DepositCombinedToDeposit: return "T08"
+        case PlatformFeatureID.FeatureID_DepositCombinedToDepositSearch: return "T09"
+        case PlatformFeatureID.FeatureID_LoanPrincipalInterest: return "T10"
+        case PlatformFeatureID.FeatureID_LoseApply: return "T11"
+        case PlatformFeatureID.FeatureID_PassbookLoseApply: return "T12"
+        case PlatformFeatureID.FeatureID_DebitCardLoseApply: return "T13"
+        case PlatformFeatureID.FeatureID_CheckLoseApply: return "T14"
+        case PlatformFeatureID.FeatureID_Payment: return "T15"
+        case PlatformFeatureID.FeatureID_TaxPayment: return "T16"
+        case PlatformFeatureID.FeatureID_BillPayment: return "T17"
+        case PlatformFeatureID.FeatureID_FinancialInformation: return "T18"
+        case PlatformFeatureID.FeatureID_NTRation: return "T19"
+        case PlatformFeatureID.FeatureID_ExchangeRate: return "T20"
+        case PlatformFeatureID.FeatureID_RegularSavingCalculation: return "T21"
+        case PlatformFeatureID.FeatureID_CustomerService: return "T22"
+        case PlatformFeatureID.FeatureID_Promotion: return "T23"
+        case PlatformFeatureID.FeatureID_News: return "T24"
+        case PlatformFeatureID.FeatureID_ServiceBase: return "T25"
+        case PlatformFeatureID.FeatureID_PersonalMessage: return "T26"
+        case PlatformFeatureID.FeatureID_PersopnalSetting: return "T27"
+        case PlatformFeatureID.FeatureID_BasicInfoChange: return "T28"
+        case PlatformFeatureID.FeatureID_UserNameChange: return "T29"
+        case PlatformFeatureID.FeatureID_UserPwdChange: return "T30"
+        case PlatformFeatureID.FeatureID_MessageSwitch: return "T31"
+        case PlatformFeatureID.FeatureID_SetAvatar: return "T32"
+        case PlatformFeatureID.FeatureID_DeviceBinding: return "T33"
+        case PlatformFeatureID.FeatureID_ContactCustomerService: return "T40"
+        //Guester 20180626
+        case PlatformFeatureID.FeatureID_MobilePay: return "T41"    // 行動支付
+        case PlatformFeatureID.FeatureID_QRCodeTrans: return "T42"  // 掃描轉帳
+        case PlatformFeatureID.FeatureID_QRPay: return "T43"        // 台灣Pay
+            //Guester 20180626 End
+            
+        //Guester 20180731
+        case PlatformFeatureID.FeatureID_GoldPassbook: return "T44"         // 黃金存摺
+        case PlatformFeatureID.FeatureID_GPAccountInfomation: return "T45"  // 帳號總覽
+        case PlatformFeatureID.FeatureID_GPSingleBuy: return "T46"          // 單筆申購
+        case PlatformFeatureID.FeatureID_GPSingleSell: return "T47"         // 單筆回售
+        case PlatformFeatureID.FeatureID_GPRegularAccountInfomation: return "T48"   // 定期投資戶總覽
+        case PlatformFeatureID.FeatureID_GPTransactionDetail: return "T49"  // 交易明細
+        case PlatformFeatureID.FeatureID_GPGoldPrice: return "T50"          // 牌告價格
+        //Guester 20180731 End
+        default: return nil
+        }
+    }
+    func checkAuth(_ pID:PlatformFeatureID) -> Bool {
+        switch pID {
+        case .FeatureID_NTRation,
+             .FeatureID_ExchangeRate,
+             .FeatureID_RegularSavingCalculation,
+             .FeatureID_Promotion,
+             .FeatureID_News,
+             .FeatureID_ServiceBase,
+             .FeatureID_Home,
+             .FeatureID_Edit,
+             .FeatureID_DeviceBinding,
+             .FeatureID_ContactCustomerService:
+            return true
+        default:
+            if authList?.index(of: pID) == nil {
+                return false
+            }
+            else {
+                return true
+            }
+        }
+    }
     func SaveIDListInFile(_ addList:[PlatformFeatureID]) {
         var IDList = [String]()
         addList.forEach{ ID in IDList.append(ID.rawValue.description) }

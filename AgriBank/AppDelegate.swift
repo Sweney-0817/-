@@ -8,6 +8,7 @@
 
 import UIKit
 import UserNotifications
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate, UNUserNotificationCenterDelegate, UIAlertViewDelegate {
@@ -17,7 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     var notification:NSObjectProtocol? = nil
     var enterBackgroundTime:Date? = nil
     var interval:TimeInterval = 0
-    
+    let m_locationManager = CLLocationManager()
+    var m_location: CLLocation = CLLocation(latitude: 0.0, longitude: 0.0)
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // 連線暫存檔清除
         SecurityUtility.utility.removeConnectCatche()
@@ -49,6 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
             }
         }
         UIApplication.shared.registerForRemoteNotifications()
+        // 檢查定位權限
+        checkLocation()
         return true
     }
 
@@ -179,4 +184,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     }
 }
 
-
+extension AppDelegate: CLLocationManagerDelegate {
+    func checkLocation() {
+        m_locationManager.delegate = self
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined:
+            m_locationManager.requestWhenInUseAuthorization()
+            break
+        case .restricted, .denied:
+            break
+        case .authorizedWhenInUse, .authorizedAlways:
+            m_locationManager.startUpdatingLocation()
+            break
+        }
+    }
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .restricted, .denied:
+            break
+        case .authorizedWhenInUse, .authorizedAlways:
+            m_locationManager.startUpdatingLocation()
+            break
+        case .notDetermined:
+            break
+        }
+    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        m_location = locations.last ?? CLLocation(latitude: 0.0, longitude: 0.0)
+    }
+}

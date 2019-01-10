@@ -8,12 +8,15 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
 #if DEBUG
 let URL_PROTOCOL = "http"
 let URL_DOMAIN = "mbapiqa.naffic.org.tw/APP/api"
 //for test
 //let URL_DOMAIN = "122.147.4.202/FFICMAPI/api"//Roy測試假電文
+//let URL_PROTOCOL = "https"
+//let URL_DOMAIN = "mbapi.naffic.org.tw/APP/api"
 #else
 let URL_PROTOCOL = "https"
 let URL_DOMAIN = "mbapi.naffic.org.tw/APP/api"
@@ -85,6 +88,10 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        originalY = view.frame.origin.y
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.topItem?.title = getFeatureName(getCurrentFeatureID())
@@ -159,63 +166,85 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             Platform.plat.popToRootViewController()
             navigationController?.popToRootViewController(animated: animated)
         }
+        //for test
+//        else if ID == .FeatureID_QRPay {
+//            let con = navigationController?.viewControllers.first
+//                if con is HomeViewController {
+//                    self.navigationController?.popToRootViewController(animated: false)
+//                    (con as! HomeViewController).pushFeatureController(ID, animated)
+//                }
+//        }
         else {
             if AuthorizationManage.manage.CanEnterFeature(ID) { // 判斷是否需要登入
-                var canEnter = true
-                switch ID {
-                case .FeatureID_TaxPayment, .FeatureID_BillPayment:
-                    canEnter = false
-                    if SecurityUtility.utility.isJailBroken() {
-                        showErrorMessage(ErrorMsg_IsJailBroken, nil)
-                    }
-                    else {
-                        var workCode = ""
-                        if ID == .FeatureID_TaxPayment {
-                            workCode = "05001"
+                if (AuthorizationManage.manage.checkAuth(ID) == true) {
+                    var canEnter = true
+                    switch ID {
+                    case .FeatureID_TaxPayment, .FeatureID_BillPayment:
+                        canEnter = false
+                        if SecurityUtility.utility.isJailBroken() {
+                            showErrorMessage(ErrorMsg_IsJailBroken, nil)
                         }
-                        else if ID == .FeatureID_BillPayment {
-                            workCode = "05002"
+                        else {
+                            if (checkLocationAuthorization() == true) {
+                                var workCode = ""
+                                if ID == .FeatureID_TaxPayment {
+                                    workCode = "05001"
+                                }
+                                else if ID == .FeatureID_BillPayment {
+                                    workCode = "05002"
+                                }
+                                getTransactionID(workCode, BaseTransactionID_Description)
+                                curFeatureID = ID
+                            }
                         }
-                        getTransactionID(workCode, BaseTransactionID_Description)
-                        curFeatureID = ID
-                    }
                     //Guester 20180626
-                case .FeatureID_QRCodeTrans, .FeatureID_QRPay:
-                    //for test
-//                    break
-                    canEnter = false
-                    if SecurityUtility.utility.isJailBroken() {
-                        showErrorMessage(ErrorMsg_IsJailBroken, nil)
-                    }
-                    else if m_bCanEnterQRP == false {
-                        getTransactionID("09001", BaseTransactionID_Description)
-                        curFeatureID = ID
-                    }
-                    else {
-                        canEnter = true
-                        m_bCanEnterQRP = false
-                    }
+                    case .FeatureID_QRCodeTrans, .FeatureID_QRPay:
+                        canEnter = false
+                        if SecurityUtility.utility.isJailBroken() {
+                            showErrorMessage(ErrorMsg_IsJailBroken, nil)
+                        }
+                        else if m_bCanEnterQRP == false {
+                            if !AuthorizationManage.manage.getCanEnterQRPay() {
+                                showErrorMessage(nil, ErrorMsg_NoAuth)
+                            }
+                            else if (checkLocationAuthorization() == true) {
+                                getTransactionID("09001", BaseTransactionID_Description)
+                                curFeatureID = ID
+                            }
+                        }
+                        else {
+                            canEnter = true
+                            m_bCanEnterQRP = false
+                        }
                     //Guester 20180626 End
                     //Guester 20180731
-                case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell:
-                    canEnter = false
-                    if m_bCanEnterGP == false {
-                        getTransactionID("10001", BaseTransactionID_Description)
-                        curFeatureID = ID
-                    }
-                    else {
-                        canEnter = true
-                        m_bCanEnterGP = false
-                    }
+                    case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell:
+                        canEnter = false
+                        if m_bCanEnterGP == false {
+                            getTransactionID("10001", BaseTransactionID_Description)
+                            curFeatureID = ID
+                        }
+                        else {
+                            canEnter = true
+                            m_bCanEnterGP = false
+                        }
                     //Guester 20180731 End
-                default: break
-                }
-                
-                if canEnter, let con = navigationController?.viewControllers.first {
-                    if con is HomeViewController {
-                        self.navigationController?.popToRootViewController(animated: false)
-                        (con as! HomeViewController).pushFeatureController(ID, animated)
+                    case .FeatureID_DeviceBinding:
+                        if (checkLocationAuthorization() == false) {
+                            canEnter = false
+                        }
+                    default: break
                     }
+                    
+                    if canEnter, let con = navigationController?.viewControllers.first {
+                        if con is HomeViewController {
+                            self.navigationController?.popToRootViewController(animated: false)
+                            (con as! HomeViewController).pushFeatureController(ID, animated)
+                        }
+                    }
+                }
+                else {
+                    showErrorMessage(nil, ErrorMsg_NoAuth)
                 }
             }
             else {
@@ -256,10 +285,11 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         }
     }
     
-    func enterConfirmOTPController(_ data:ConfirmOTPStruct, _ animated:Bool) {
+    func enterConfirmOTPController(_ data:ConfirmOTPStruct, _ animated:Bool, _ title:String? = nil) {
         let controller = getControllerByID(.FeatureID_Confirm)
         (controller as! ConfirmViewController).transactionId = transactionId
         (controller as! ConfirmViewController).setDataNeedOTP(data)
+        (controller as! ConfirmViewController).m_strTitle = title
         navigationController?.pushViewController(controller, animated: animated)
     }
     
@@ -436,12 +466,10 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
         let keyboardHeight = keyboardRectangle.height
-//        view.frame.origin.y = -keyboardHeight
         view.frame.origin.y = originalY - keyboardHeight
     }
     
     func keyboardWillHide(_ notification:NSNotification) {
-//        view.frame.origin.y = 0
         view.frame.origin.y = originalY
     }
     
@@ -883,6 +911,33 @@ extension BaseViewController: ConnectionUtilityDelegate {
         }
         else {
             showErrorMessage(nil, error.localizedDescription)
+        }
+    }
+}
+//Mark - 檢查定位權限
+extension BaseViewController {
+    func checkLocationAuthorization() -> Bool {
+        if (CLLocationManager.authorizationStatus() == .authorizedAlways ||
+            CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
+            return true
+        }
+        else {
+            showAlert(title: nil, msg: ErrorMsg_NoPositioning, confirmTitle: Determine_Title, cancleTitle: Cancel_Title, completionHandler: { self.goToSetting() }, cancelHandelr: {()})
+            return false
+        }
+    }
+    func goToSetting() {
+        guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+            return
+        }
+        if UIApplication.shared.canOpenURL(settingsUrl)  {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                })
+            }
+            else  {
+                UIApplication.shared.openURL(settingsUrl)
+            }
         }
     }
 }

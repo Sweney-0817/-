@@ -133,16 +133,16 @@ class Platform {
     //Guester 20180626
 //        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_QRPay], belong: nil, name: "行動支付")
 //        informationList[.FeatureID_MobilePay] = feature
-        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_QRCodeTrans, .FeatureID_QRPay], belong: nil, name: "行動支付")
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_QRCodeTrans, .FeatureID_QRPay], belong: nil, name: "農漁行動Pay")
         informationList[.FeatureID_MobilePay] = feature
 
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "QR Code轉帳")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "掃描轉帳")
         informationList[.FeatureID_QRCodeTrans] = feature
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "台灣Pay")
         informationList[.FeatureID_QRPay] = feature
 
-        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "QRCode支付約定條款")
+        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "農漁行動Pay服務注意事項")
         informationList[.FeatureID_AcceptRules] = feature
     //Guester 20180626 End
     
