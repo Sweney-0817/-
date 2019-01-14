@@ -291,7 +291,7 @@ extension ScanCodeView {
                     type = "51"
                 default:
                     type = ""
-                    error = "尚未提供此服務(QRS-006)"
+                    error = "尚未提供此服務"
                 }
             }
         }
@@ -300,7 +300,7 @@ extension ScanCodeView {
             tax = a.tax
             //            self.send_checkPayTaxCode()
             type = ""
-            error = "尚未提供繳稅服務(QRS-004)"
+            error = "尚未提供繳稅服務"
 //            showAlert(title: nil, msg: "尚未提供繳稅服務(QRS-004)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
         }
         else {

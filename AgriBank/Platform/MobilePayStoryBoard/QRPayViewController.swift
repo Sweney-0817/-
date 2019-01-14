@@ -25,11 +25,9 @@ class QRPayViewController: BaseViewController {
         super.viewDidLoad()
         getTransactionID("09002", TransactionID_Description)
     }
-    
     func appWillEnterBackground(_ notification:NSNotification) {
         stopScan()
     }
-    
     func appWillEnterForeground(_ notification:NSNotification) {
         if (m_bIsLoadFromAlbum == false) {
             startScan()

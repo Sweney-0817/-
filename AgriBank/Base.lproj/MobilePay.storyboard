@@ -150,7 +150,7 @@
                                                                     <constraint firstAttribute="height" constant="60" id="kNi-a0-7Hr"/>
                                                                 </constraints>
                                                             </view>
-                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="請輸入金額" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="7qs-5s-tNg" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="收款金額" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="7qs-5s-tNg" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
                                                                 <rect key="frame" x="15" y="68.5" width="313" height="44"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="AsC-zm-p4z"/>
@@ -472,7 +472,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                 <state key="normal" title="確認送出" backgroundImage="ButtonLarge"/>
-                                                <state key="disabled" backgroundImage="buttonLargeDisable"/>
+                                                <state key="disabled" backgroundImage="ButtonLargeDisable"/>
                                                 <connections>
                                                     <action selector="m_btnConfirmClick:" destination="Oef-s9-HmD" eventType="touchUpInside" id="9Wm-Fi-089"/>
                                                 </connections>
@@ -560,11 +560,11 @@
     </scenes>
     <resources>
         <image name="ButtonLarge" width="346" height="44"/>
+        <image name="ButtonLargeDisable" width="346" height="44"/>
         <image name="Checkoff" width="24" height="24"/>
         <image name="Checkon" width="24" height="24"/>
         <image name="HintDownArrow" width="375" height="36"/>
         <image name="Textfield" width="311" height="44"/>
-        <image name="buttonLargeDisable" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="3Tj-wx-QYb"/>

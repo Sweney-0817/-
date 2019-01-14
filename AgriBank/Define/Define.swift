@@ -670,7 +670,7 @@ let ErrorMsg_NoMapAddress = "此單位尚無提供位址"
 /* 黃金存摺 */
 let ErrorMsg_NoGPAccount = "您無黃金存摺帳號"
 let GPAccountTitle = "黃金存摺帳號"
-let ErrorMsg_DateMonthOnlySix = "查詢區間僅能六個月"
+let ErrorMsg_DateMonthOnlySix = "查詢區間僅能半年"
 // MARK: - Shadow Direction:
 enum ShadowDirection {
     case All

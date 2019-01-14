@@ -330,7 +330,8 @@ class GPRegularAccountInfomationViewController: BaseViewController {
 //        }
         if m_uiDiffAmountDetail == nil {
             m_uiDiffAmountDetail = getUIByID(.UIID_GPDiffAmountDetailView) as? GPDiffAmountDetailView
-            m_uiDiffAmountDetail?.frame = view.frame
+            let frame = CGRect(origin: .zero, size: view.frame.size)
+            m_uiDiffAmountDetail?.frame = frame
             m_uiDiffAmountDetail?.delegate = self
             m_uiDiffAmountDetail?.setData(data)
             view.addSubview(m_uiDiffAmountDetail!)

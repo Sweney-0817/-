@@ -595,10 +595,10 @@ class GPRegularChangeViewController: BaseViewController {
                 showAlert(title: nil, msg: "請輸入投資數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
-//            guard (iBuyAmount! > 0) else {
-//                showAlert(title: nil, msg: "投資數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
-//                return
-//            }
+            guard (iBuyAmount! > 0) else {
+                showAlert(title: nil, msg: "投資數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                return
+            }
             guard (iBuyAmount! <= 2999) else {
                 showAlert(title: nil, msg: "投資數量最多2999公克，已超過上限", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return

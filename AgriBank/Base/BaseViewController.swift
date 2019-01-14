@@ -167,7 +167,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             navigationController?.popToRootViewController(animated: animated)
         }
         //for test
-//        else if ID == .FeatureID_QRPay {
+//        else if ID == .FeatureID_QRCodeTrans || ID == .FeatureID_QRPay {
 //            let con = navigationController?.viewControllers.first
 //                if con is HomeViewController {
 //                    self.navigationController?.popToRootViewController(animated: false)
