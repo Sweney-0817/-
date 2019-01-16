@@ -137,8 +137,7 @@ class GPGoldPriceViewController: BaseViewController {
     @IBAction func m_btnCustomizeClick(_ sender: Any) {
         let curDate = InputDatePickerStruct(minDate: nil, maxDate: Date(), curDate: Date())
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-            dateView.frame = view.frame
-            dateView.frame.origin = .zero
+            dateView.frame = CGRect(origin: .zero, size: view.frame.size)
             dateView.showTwoDatePickerView(true, curDate, curDate) { start, end, sDate, eDate in
                 var componenets = Calendar.current.dateComponents([.year, .month, .day], from: sDate!)
                 componenets.month = componenets.month!+6

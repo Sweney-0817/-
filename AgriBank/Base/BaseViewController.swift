@@ -361,7 +361,6 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     func showLoginView() { // 顯示Login畫面
         if loginView == nil {
             loginView = getUIByID(.UIID_Login) as? LoginView
-//            loginView?.frame = view.frame
             loginView?.frame = CGRect(origin: .zero, size: view.frame.size)
             loginView?.delegate = self
             getCanLoginBankInfo()
@@ -779,7 +778,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
 //                if (AuthorizationManage.manage.canEnterQRP()) {
                 if (data["Read"] == "Y") {
                     m_bCanEnterQRP = true
-                    enterFeatureByID(curFeatureID!, true)
+                    enterFeatureByID(curFeatureID!, false)
                 }
                 else {
                     let controller = getControllerByID(.FeatureID_AcceptRules)

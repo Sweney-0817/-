@@ -245,8 +245,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
                 componenets.day = componenets.day!+1
                 let curDate = InputDatePickerStruct(minDate: nil, maxDate: nil, curDate: Calendar.current.date(from: componenets))
                 if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-                    dateView.frame = view.frame
-                    dateView.frame.origin = .zero
+                    dateView.frame = CGRect(origin: .zero, size: view.frame.size)
                     dateView.showTwoDatePickerView(isSpecific, curDate, curDate) { startDate, endDate, _, _ in
                         if self.isSpecific {
                             self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.year)/\(startDate.month)/\(startDate.day) - \(endDate.year)/\(endDate.month)/\(endDate.day)")

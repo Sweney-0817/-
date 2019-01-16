@@ -146,7 +146,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             else {
                 showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
             }
-        default: break
+        default: super.didResponse(description, response)
         }
     }
     //Guester 20181120 新增轉帳生效、終止日
@@ -234,7 +234,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         isFixedDate = false
         self.showTransDate(isFixedDate)
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-            dateView.frame = view.frame
+            dateView.frame = CGRect(origin: .zero, size: view.frame.size)
 //            var componenets = Calendar.current.dateComponents([.day,.year,.month], from: Date())
             //Guester 20180605 多發 COMM0701 以取得 CurrentDate
             let dateFormatter = DateFormatter()
@@ -263,7 +263,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         isFixedDate = true
         self.showTransDate(isFixedDate)
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-            dateView.frame = view.frame
+            dateView.frame = CGRect(origin: .zero, size: view.frame.size)
             dateView.showOneDatePickerView(false, nil) { start in
                 let date = start.day
                 self.chooseDay = date.replacingOccurrences(of: "日", with: "")
@@ -457,8 +457,7 @@ extension ReservationTransferViewController : OneRowDropDownViewDelegate {
         self.dismissKeyboard()
         if (sender == m_uiTransStartDateView) {
             if let datePicker = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-                datePicker.frame = view.frame
-                datePicker.frame.origin = .zero
+                datePicker.frame = CGRect(origin: .zero, size: view.frame.size)
                 let today: Date = self.m_strCurrentDate!.toDate(showDateFormat)!
                 var componenetsMin = Calendar.current.dateComponents([.day, .month, .year], from: today)
                 componenetsMin.day = componenetsMin.day!+1
@@ -475,8 +474,7 @@ extension ReservationTransferViewController : OneRowDropDownViewDelegate {
         }
         else if (sender == m_uiTransStopDateView) {
             if let datePicker = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-                datePicker.frame = view.frame
-                datePicker.frame.origin = .zero
+                datePicker.frame = CGRect(origin: .zero, size: view.frame.size)
                 let today: Date = self.m_strCurrentDate!.toDate(showDateFormat)!
                 var componenetsMin = Calendar.current.dateComponents([.day, .month, .year], from: today)
                 componenetsMin.day = componenetsMin.day!+2

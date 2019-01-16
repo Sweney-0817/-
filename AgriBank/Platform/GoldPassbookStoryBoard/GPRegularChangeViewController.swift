@@ -663,8 +663,7 @@ extension GPRegularChangeViewController : OneRowDropDownViewDelegate {
         }
         else if (sender == m_uiPauseStartView) {
             if let datePicker = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-                datePicker.frame = view.frame
-                datePicker.frame.origin = .zero
+                datePicker.frame = CGRect(origin: .zero, size: view.frame.size)
                 let today: Date = (m_objPassData?.m_settingData.m_strDATE.toDate(showDateFormat))!
                 var componenetsMin = Calendar.current.dateComponents([.day, .month, .year], from: today)
                 componenetsMin.day = componenetsMin.day!+1
@@ -680,8 +679,7 @@ extension GPRegularChangeViewController : OneRowDropDownViewDelegate {
         }
         else if (sender == m_uiPauseEndView) {
             if let datePicker = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-                datePicker.frame = view.frame
-                datePicker.frame.origin = .zero
+                datePicker.frame = CGRect(origin: .zero, size: view.frame.size)
                 let today: Date = (m_objPassData?.m_settingData.m_strDATE.toDate(showDateFormat))!
                 var componenetsMin = Calendar.current.dateComponents([.day, .month, .year], from: today)
                 componenetsMin.day = componenetsMin.day!+1

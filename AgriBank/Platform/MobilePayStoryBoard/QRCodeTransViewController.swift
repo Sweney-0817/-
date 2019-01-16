@@ -36,7 +36,6 @@ class QRCodeTransViewController: BaseViewController {
     var m_arrActList : [AccountStruct] = [AccountStruct]()
     override func viewDidLoad() {
         super.viewDidLoad()
-
         self.initActView()
         self.initQRCodeArea()
         self.initScanView()
@@ -49,7 +48,7 @@ class QRCodeTransViewController: BaseViewController {
         stopScan()
     }
     func appWillEnterForeground(_ notification:NSNotification) {
-        if (m_bIsLoadFromAlbum == false) {
+        if (m_bIsLoadFromAlbum == false && m_vPaymentView.isHidden == false) {
             startScan()
         }
         m_bIsLoadFromAlbum = false
@@ -81,10 +80,17 @@ class QRCodeTransViewController: BaseViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterBackground(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         super.viewDidAppear(animated)
-        if (m_bIsLoadFromAlbum == false) {
+        if (m_bIsLoadFromAlbum == false && m_vPaymentView.isHidden == false) {
             startScan()
         }
         m_bIsLoadFromAlbum = false
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name:NSNotification.Name.UIApplicationWillResignActive, object:nil)
+        NotificationCenter.default.removeObserver(self, name:NSNotification.Name.UIApplicationDidBecomeActive, object:nil)
+        
+        stopScan()
+        super.viewDidDisappear(animated)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

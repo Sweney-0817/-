@@ -217,8 +217,7 @@ class GPTransactionDetailViewController: BaseViewController {
         }
         let curDate = InputDatePickerStruct(minDate: nil, maxDate: Date(), curDate: Date())
         if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-            dateView.frame = view.frame
-            dateView.frame.origin = .zero
+            dateView.frame = CGRect(origin: .zero, size: view.frame.size)
             dateView.showTwoDatePickerView(true, curDate, curDate) { start, end, dtStart, dtEnd in
                 self.m_dtStart = dtStart
                 self.m_dtEnd = dtEnd

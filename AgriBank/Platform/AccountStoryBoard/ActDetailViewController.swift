@@ -590,8 +590,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             
         case customizeDayButton:
             if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-                dateView.frame = view.frame
-                dateView.frame.origin = .zero
+                dateView.frame = CGRect(origin: .zero, size: view.frame.size)
                 dateView.showTwoDatePickerView(true, nil, nil) { start, end, sDate, eDate in
                     var componenets = Calendar.current.dateComponents([.year, .month, .day], from: sDate!)
                     componenets.month = componenets.month!+2

@@ -337,8 +337,7 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField == m_tfInput2 && curType == TaxPayment_Type2 {
             if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-                dateView.frame = view.frame
-                dateView.frame.origin = .zero
+                dateView.frame = CGRect(origin: .zero, size: view.frame.size)
                 dateView.showOneDatePickerView(true, nil) {  end in
                     self.endDate = "\(end.year)\(end.month)\(end.day)"
                     self.m_tfInput2.text = "\(end.year)/\(end.month)/\(end.day)"

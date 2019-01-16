@@ -284,7 +284,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         m_curDropDownView = sender
         if m_curDropDownView == m_CheckDate {
             if let datePicker = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-                datePicker.frame = view.frame
+                datePicker.frame = CGRect(origin: .zero, size: view.frame.size)
                 datePicker.showOneDatePickerView(true, nil) { start in
                     self.m_CheckDate?.setOneRow(CheckLoseApply_Date_Title, "\(start.year)/\(start.month)/\(start.day)")
                 }
