@@ -99,23 +99,23 @@ class ScanResultViewController: BaseViewController {
 // MARK:- Logic Methods
     func checkInput() -> Bool {
         if (m_uiActView?.getContentByType(.First) == Choose_Title) {
-            showAlert(title: nil, msg: "請選擇帳戶", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: "請選擇帳戶", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         if (m_strInputAmount.isEmpty == true) {
-            showAlert(title: nil, msg: "請輸入金額", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: "請輸入金額", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         if (Int(m_strInputAmount) == 0) {
-            showAlert(title: nil, msg: ErrorMsg_Input_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_Input_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         if (Int(m_strInputAmount) == 0) {
-            showAlert(title: nil, msg: "輸入金額不得小於0元", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: "輸入金額不得小於0元", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         if (m_strType == "02" && m_qrpInfo?.txnAmt() == nil && Int(m_strInputAmount)! > 30000) {
-            showAlert(title: nil, msg: ErrorMsg_NotPredesignated_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_NotPredesignated_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         return true
@@ -405,15 +405,15 @@ class ScanResultViewController: BaseViewController {
         }
         temp[Response_Type] = self.checkType("1")
         m_aryShowData.append(temp)
-//        if ((m_qrpInfo?.charge()) != nil) {
+        if ((m_qrpInfo?.charge()) != nil) {
 //            if ((m_qrpInfo?.acqBank() == "007" && m_qrpInfo?.feeInfo() != nil) ||
 //                (m_qrpInfo?.acqBank() != "007")) {
-//                temp[Response_Key] = "使用者支付手續費"
-//                temp[Response_Value] = m_qrpInfo?.charge()
-//                temp[Response_Type] = self.checkType("15")
-//                m_aryShowData.append(temp)
+                temp[Response_Key] = "使用者支付手續費"
+            temp[Response_Value] = (m_qrpInfo?.charge()?.substring(to: (m_qrpInfo?.charge().count)! - 3).separatorThousandDecimal())!
+                temp[Response_Type] = self.checkType("15")
+                m_aryShowData.append(temp)
 //            }
-//        }
+        }
     }
     private func makePayTaxType11Data() {
         var temp : [String:String] = [String:String]()
@@ -481,6 +481,9 @@ class ScanResultViewController: BaseViewController {
     private func makePurchaseConfirmShowData(_ data: [String:String]) -> [[String:String]] {
         var list: [[String:String]] = [[String:String]]()
         var item: [String:String] = [String:String]()
+        item[Response_Key] = "轉出帳號"
+        item[Response_Value] = m_uiActView?.getContentByType(.First)
+        list.append(item)
         if (m_strType == "51") {
             if (data["merchantName"] != nil && data["merchantName"]!.isEmpty != true) {
                 item[Response_Key] = "商店名稱"
@@ -541,6 +544,9 @@ class ScanResultViewController: BaseViewController {
     private func makeBillConfirmShowData(_ data: [String:String]) -> [[String:String]] {
         var list: [[String:String]] = [[String:String]]()
         var item: [String:String] = [String:String]()
+        item[Response_Key] = "轉出帳號"
+        item[Response_Value] = m_uiActView?.getContentByType(.First)
+        list.append(item)
         if (data["feeName"] != nil && data["feeName"]!.isEmpty != true) {
             item[Response_Key] = "費用名稱"
             if (data["feeName"] == data["merchant"]) {
@@ -610,7 +616,12 @@ class ScanResultViewController: BaseViewController {
         item[Response_Key] = "金額"
         item[Response_Value] = data["txnAmt"]!.substring(to: data["txnAmt"]!.count - 3).separatorThousandDecimal()
         list.append(item)
-        
+        if (data["charge"] != nil) {
+            item[Response_Key] = "使用者支付手續費"
+            item[Response_Value] = data["charge"]!.substring(to: data["charge"]!.count - 3).separatorThousandDecimal()
+            list.append(item)
+        }
+
         return list
     }
     //====== 處理確認頁的電文
@@ -810,8 +821,39 @@ class ScanResultViewController: BaseViewController {
             body["feeInfo"] = m_qrpInfo?.feeInfo() ?? ""
 //        }
         //費用名稱
+//        if ((m_qrpInfo?.feeName()) != nil) {
+//            body["feeName"] = m_qrpInfo?.feeName()
+//        }
         if ((m_qrpInfo?.feeName()) != nil) {
             body["feeName"] = m_qrpInfo?.feeName()
+        }
+        else if ((m_qrpInfo?.feeInfo()) != nil) {
+            let arrInfo : [String]? = (m_qrpInfo?.feeInfo().components(separatedBy: ","))
+            var fName : String = ""
+            if (arrInfo != nil && arrInfo!.count > 0 ) {
+                if (arrInfo![0] == "0") {
+                    fName = "全國繳費網"
+                }
+                else if (arrInfo![0] == "1") {
+                    fName = "汽燃費"
+                }
+                else if (arrInfo![0] == "2") {
+                    fName = "台灣自來水費"
+                }
+                else if (arrInfo![0] == "3") {
+                    fName = "電費"
+                }
+                else if (arrInfo![0] == "4") {
+                    fName = "瓦斯費"
+                }
+                else if (arrInfo![0] == "5") {
+                    fName = "中華電信費"
+                }
+                else {
+                    fName = "繳費"
+                }
+            }
+            body["feeName"] = fName
         }
         //使用者支付手續費
         if ((m_qrpInfo?.charge()) != nil) {
@@ -860,7 +902,7 @@ class ScanResultViewController: BaseViewController {
                 var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認交易", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"09007","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":CARDACTNO,"INACT":INACT,"INBANK":INBANK,"TXAMT":TXAMT,"TXMEMO":TXMEMO,"MAIL":MAIL,"taskId":taskID,"otp":""],task: task)
                 
                 dataConfirm.list?.append([Response_Key: "類別", Response_Value:"轉帳"])
-//                dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:CARDACTNO])
+                dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:CARDACTNO])
                 dataConfirm.list?.append([Response_Key: "銀行代碼", Response_Value:INBANK])
                 dataConfirm.list?.append([Response_Key: "轉入帳號", Response_Value:INACT])
                 dataConfirm.list?.append([Response_Key: "金額", Response_Value:TXAMT.separatorThousandDecimal()])

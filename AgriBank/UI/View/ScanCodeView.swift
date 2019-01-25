@@ -301,12 +301,12 @@ extension ScanCodeView {
             //            self.send_checkPayTaxCode()
             type = ""
             error = "尚未提供繳稅服務"
-//            showAlert(title: nil, msg: "尚未提供繳稅服務(QRS-004)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+//            showAlert(title: UIAlert_Default_Title, msg: "尚未提供繳稅服務(QRS-004)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
         }
         else {
             type = ""
             error = "QRCODE格式有誤"
-//            showAlert(title: nil, msg: "QRCODE格式有誤(QRS-001)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+//            showAlert(title: UIAlert_Default_Title, msg: "QRCODE格式有誤(QRS-001)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
         }
         
         return (type, tax, qrp, error)

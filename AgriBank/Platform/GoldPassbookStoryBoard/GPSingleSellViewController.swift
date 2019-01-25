@@ -191,15 +191,15 @@ class GPSingleSellViewController: BaseViewController {
     // MARK:- Handle Actions
     @IBAction func m_btnNextClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
-            showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         guard m_strSellGram.isEmpty == false else {
-            showAlert(title: nil, msg: "請輸入回售數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: "請輸入回售數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         guard Float(m_strSellGram)! > 0.0 else {
-            showAlert(title: nil, msg: "回售數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: "回售數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         self.send_queryData()

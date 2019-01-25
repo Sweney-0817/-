@@ -44,11 +44,11 @@ enum PlatformFeatureID: Int {
     
     //Guester 20180731
     case FeatureID_GoldPassbook = 210000                // 黃金存摺
-    case FeatureID_GPAccountInfomation = 210100         // 帳號總覽
+    case FeatureID_GPAccountInfomation = 210100         // 帳戶總覽
     case FeatureID_GPSingleBuy = 210200                 // 單筆申購
     case FeatureID_GPSingleSell = 210300                // 單筆回售
     case FeatureID_GPRegularAccountInfomation = 210400  // 定期投資戶總覽
-    case FeatureID_GPTransactionDetail = 210500         // 交易明細
+    case FeatureID_GPTransactionDetail = 210500         // 往來明細
     case FeatureID_GPGoldPrice = 210600                 // 牌告價格
     case FeatureID_GPAcceptRules = 210001               // 同意條款
     //Guester 20180731 End
@@ -296,7 +296,7 @@ enum UIID: Int {
     case UIID_ShowMessageHeadView     // ShowMessageHeadView class
     case UIID_ExchangeRateCell        // ExchangeRateCell class for牌告匯率
     case UIID_ResultEditCell        //QRCode掃描無金額用
-    case UIID_GPTransactionDetailCell //黃金存摺交易明細
+    case UIID_GPTransactionDetailCell //黃金存摺往來明細
     case UIID_GPGoldPriceCell       //黃金存摺牌告價格
     case UIID_GPDiffAmountDetailView//黃金定期不定額投資檢視
     

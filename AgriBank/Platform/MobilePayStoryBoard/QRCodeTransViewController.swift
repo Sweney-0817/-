@@ -146,7 +146,7 @@ class QRCodeTransViewController: BaseViewController {
     func analysisQRCode(_ strData : String) {
         let result = ScanCodeView.analysisQRCode(strData)
         guard result.error == nil else {
-            showAlert(title: nil, msg: result.error, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: result.error, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
             return
         }
         m_strType = result.type
@@ -160,7 +160,7 @@ class QRCodeTransViewController: BaseViewController {
                 performSegue(withIdentifier: "GoScanResult", sender: nil)
             }
             else {
-                showAlert(title: nil, msg: ErrorMsg_NoAuth, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_NoAuth, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
             }
         case "03":
             //for test
@@ -194,7 +194,7 @@ class QRCodeTransViewController: BaseViewController {
             })
             
         default:
-            showAlert(title: nil, msg: "無相簿權限", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: "無相簿權限", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
         }
         return false
     }
@@ -220,17 +220,17 @@ class QRCodeTransViewController: BaseViewController {
     private func checkQRCodeData() -> Bool {
         let act: String? = m_uiActView?.getContentByType(.First)
         if (act == nil || act?.isEmpty == true || act == Choose_Title) {
-            showAlert(title: nil, msg: "請選擇帳戶", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: "請選擇帳戶", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return false
         }
         let amount: Int? = Int(m_tfAmount.text!)
         if (amount != nil) {
             if (amount! <= 0) {
-                showAlert(title: nil, msg: ErrorMsg_Input_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_Input_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return false
             }
 //            else if (amount! > 30000) {
-//                showAlert(title: nil, msg: ErrorMsg_NotPredesignated_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+//                showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_NotPredesignated_Amount, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
 //                return false
 //            }
         }
@@ -340,7 +340,7 @@ class QRCodeTransViewController: BaseViewController {
                                 m_dicSecureData = jsonDic as? [String : String]
                             }
                             catch {
-                                showAlert(title: nil, msg: error.localizedDescription, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                                showAlert(title: UIAlert_Default_Title, msg: error.localizedDescription, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
                             }
                         }
                     }
@@ -507,7 +507,7 @@ extension QRCodeTransViewController : UIImagePickerControllerDelegate, UINavigat
                     }
                 }
                 else {
-                    self.showAlert(title: nil, msg: "QR Code解析錯誤-請協助確認條碼是否清晰並排除圖片中非條碼的圖片內容", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: { self.startScan() }, cancelHandelr: {()})
+                    self.showAlert(title: UIAlert_Default_Title, msg: "QR Code解析錯誤-請協助確認條碼是否清晰並排除圖片中非條碼的圖片內容", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: { self.startScan() }, cancelHandelr: {()})
                     self.setLoading(false)
                     return
                 }

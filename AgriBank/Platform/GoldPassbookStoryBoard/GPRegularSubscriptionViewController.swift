@@ -26,7 +26,8 @@ class GPRegularSubscriptionViewController: BaseViewController {
     @IBOutlet var m_lbTransOutAct: UILabel!
     @IBOutlet var m_lbTradeDate: UILabel!
     @IBOutlet var m_tfTradeInput: TextField!
-    @IBOutlet var m_lbCommand: UILabel!
+    @IBOutlet var m_wvMemo: UIWebView!
+    @IBOutlet var m_consMemoHeight: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,7 +133,7 @@ class GPRegularSubscriptionViewController: BaseViewController {
         switch description {
         case "Gold0601":
             if let data = response.object(forKey: ReturnData_Key) as? [String:String], let content = data["Content"] {
-                m_lbCommand.text = content
+                m_wvMemo.loadHTMLString(content, baseURL: nil)
             }
         case "COMM0701":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let status = array.first?["CanTrans"] as? String, status == Can_Transaction_Status {
@@ -163,15 +164,15 @@ class GPRegularSubscriptionViewController: BaseViewController {
         if (m_bIsSameAmount) {
             let iBuyAmount = Int(m_strBuyAmount)
             guard (iBuyAmount != nil) else {
-                showAlert(title: nil, msg: "請輸入投資金額", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "請輸入投資金額", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             guard (iBuyAmount! > 0) else {
-                showAlert(title: nil, msg: "投資金額不得0元", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "投資金額不得0元", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             guard (iBuyAmount! >= 3000 && iBuyAmount! % 1000 == 0) else {
-                showAlert(title: nil, msg: "投資金額最少3000元，每次增加以1000元為倍數", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "投資金額最少3000元，每次增加以1000元為倍數", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             self.send_queryData2()
@@ -180,15 +181,15 @@ class GPRegularSubscriptionViewController: BaseViewController {
         else {
             let iBuyAmount = Int(m_strBuyAmount)
             guard (iBuyAmount != nil) else {
-                showAlert(title: nil, msg: "請輸入投資數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "請輸入投資數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             guard (iBuyAmount! > 0) else {
-                showAlert(title: nil, msg: "投資數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "投資數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             guard (iBuyAmount! <= 2999) else {
-                showAlert(title: nil, msg: "投資數量最多2999公克，已超過上限", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "投資數量最多2999公克，已超過上限", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             self.send_queryData2()
@@ -219,5 +220,16 @@ extension GPRegularSubscriptionViewController : UITextFieldDelegate {
         else {
             return false
         }
+    }
+}
+extension GPRegularSubscriptionViewController : UIWebViewDelegate {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        var frame: CGRect = self.m_wvMemo.frame
+        frame.size.height = 1
+        self.m_wvMemo.frame = frame
+        let fittingSize = self.m_wvMemo.sizeThatFits(CGSize(width: 0, height: 0))
+        frame.size = fittingSize
+        self.m_wvMemo.frame = frame
+        m_consMemoHeight.constant = fittingSize.height
     }
 }

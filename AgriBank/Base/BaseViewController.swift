@@ -922,7 +922,7 @@ extension BaseViewController {
             return true
         }
         else {
-            showAlert(title: nil, msg: ErrorMsg_NoPositioning, confirmTitle: Determine_Title, cancleTitle: Cancel_Title, completionHandler: { self.goToSetting() }, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_NoPositioning, confirmTitle: Determine_Title, cancleTitle: Cancel_Title, completionHandler: { self.goToSetting() }, cancelHandelr: {()})
             return false
         }
     }

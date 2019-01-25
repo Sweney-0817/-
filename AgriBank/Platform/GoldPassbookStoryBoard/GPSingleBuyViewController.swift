@@ -158,7 +158,7 @@ class GPSingleBuyViewController: BaseViewController {
                     m_tvContentView.isHidden = false
                     m_consContentViewHeight.constant = m_contentViewHeight
                     m_tvContentView.reloadData()
-                    showAlert(title: nil, msg: "本會依法須定期更新客戶投資風險承受度資訊，以保障客戶權益，貴戶「投資風險屬性評估表」已逾一年有效期限，請速洽本會營業據點或於網路銀行線上填寫上述評估表，即可辦理黃金存摺買進類交易。", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                    showAlert(title: UIAlert_Default_Title, msg: "本會依法須定期更新客戶投資風險承受度資訊，以保障客戶權益，貴戶「投資風險屬性評估表」已逾一年有效期限，請速洽本會營業據點或於網路銀行線上填寫上述評估表，即可辦理黃金存摺買進類交易。", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                     m_btnNext.isEnabled = false
                 }
                 else {
@@ -184,15 +184,15 @@ class GPSingleBuyViewController: BaseViewController {
     // MARK:- Handle Actions
     @IBAction func m_btnNextClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
-            showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         guard m_strBuyGram.isEmpty == false else {
-            showAlert(title: nil, msg: "請輸入申購數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: "請輸入申購數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         guard Int(m_strBuyGram)! > 0 else {
-            showAlert(title: nil, msg: "申購數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            showAlert(title: UIAlert_Default_Title, msg: "申購數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         self.send_queryData()

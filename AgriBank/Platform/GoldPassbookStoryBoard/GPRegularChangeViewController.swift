@@ -43,7 +43,8 @@ class GPRegularChangeViewController: BaseViewController {
     @IBOutlet var m_vPauseEndView: UIView!
     @IBOutlet var m_vPauseEndBottomLine: UIView!
     @IBOutlet var m_consPauseEndViewHeight: NSLayoutConstraint!
-    @IBOutlet var m_lbCommand: UILabel!
+    @IBOutlet var m_wvMemo: UIWebView!
+    @IBOutlet var m_consMemoHeight: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -561,30 +562,30 @@ class GPRegularChangeViewController: BaseViewController {
         if (m_uiPauseStartView?.clickBtn.isEnabled == true &&
             m_uiPauseEndView?.clickBtn.isEnabled == true) {
             guard (m_strPauseStart != Choose_Title) else {
-                showAlert(title: nil, msg: "請選擇暫停起日", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "請選擇暫停起日", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             guard (m_strPauseEnd != Choose_Title) else {
-                showAlert(title: nil, msg: "請選擇暫停訖日", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "請選擇暫停訖日", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             guard (self.checkDate(m_strPauseStart.toDate(dataDateFormat)!, m_strPauseEnd.toDate(dataDateFormat)!) == true) else {
-                showAlert(title: nil, msg: "暫停起日不得大於暫停訖日", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "暫停起日不得大於暫停訖日", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
         }
         if (m_objPassData?.m_settingData.m_strTYPE == GPRegularType.GPRegularTypeSameAmount) {
             let iBuyAmount = Int(m_strBuyAmount)
             guard (iBuyAmount != nil) else {
-                showAlert(title: nil, msg: "請輸入投資金額", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "請輸入投資金額", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             guard (iBuyAmount! > 0) else {
-                showAlert(title: nil, msg: "投資金額不得0元", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "投資金額不得0元", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             guard (iBuyAmount! >= 3000 && iBuyAmount! % 1000 == 0) else {
-                showAlert(title: nil, msg: "投資金額最少3000元，每次增加以1000元為倍數", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "投資金額最少3000元，每次增加以1000元為倍數", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             enterConfirmView_SameAmount()
@@ -592,15 +593,15 @@ class GPRegularChangeViewController: BaseViewController {
         else if (m_objPassData?.m_settingData.m_strTYPE == GPRegularType.GPRegularTypeSameQuantity) {
             let iBuyAmount = Int(m_strBuyAmount)
             guard (iBuyAmount != nil) else {
-                showAlert(title: nil, msg: "請輸入投資數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "請輸入投資數量", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             guard (iBuyAmount! > 0) else {
-                showAlert(title: nil, msg: "投資數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "投資數量不得0克", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             guard (iBuyAmount! <= 2999) else {
-                showAlert(title: nil, msg: "投資數量最多2999公克，已超過上限", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                showAlert(title: UIAlert_Default_Title, msg: "投資數量最多2999公克，已超過上限", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 return
             }
             enterConfirmView_SameQuantity()
@@ -630,7 +631,7 @@ class GPRegularChangeViewController: BaseViewController {
             }
         case "Gold0601":
             if let data = response.object(forKey: ReturnData_Key) as? [String:String], let content = data["Content"] {
-                m_lbCommand.text = content
+                m_wvMemo.loadHTMLString(content, baseURL: nil)
             }
         default: super.didResponse(description, response)
         }
@@ -641,7 +642,7 @@ class GPRegularChangeViewController: BaseViewController {
         let settingType = m_arySettingList[m_iSettingIndex]
         if (m_enumPauseStatus == .GPPauseStatusIng || m_enumPauseStatus == .GPPauseStatusBefore) &&
             (settingType == changeAmount || settingType == changeQuantity || settingType == pauseDebit) {
-        self.showAlert(title: nil, msg: "本筆定期投資已設定暫停扣款，請確認是否繼續？", confirmTitle: "是", cancleTitle: "否", completionHandler: { self.enterConfirmView() }, cancelHandelr: {()})
+        self.showAlert(title: UIAlert_Default_Title, msg: "本筆定期投資已設定暫停扣款，請確認是否繼續？", confirmTitle: "是", cancleTitle: "否", completionHandler: { self.enterConfirmView() }, cancelHandelr: {()})
         }
         else {
             self.enterConfirmView()
@@ -724,5 +725,16 @@ extension GPRegularChangeViewController : UITextFieldDelegate {
         else {
             return false
         }
+    }
+}
+extension GPRegularChangeViewController : UIWebViewDelegate {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        var frame: CGRect = self.m_wvMemo.frame
+        frame.size.height = 1
+        self.m_wvMemo.frame = frame
+        let fittingSize = self.m_wvMemo.sizeThatFits(CGSize(width: 0, height: 0))
+        frame.size = fittingSize
+        self.m_wvMemo.frame = frame
+        m_consMemoHeight.constant = fittingSize.height
     }
 }

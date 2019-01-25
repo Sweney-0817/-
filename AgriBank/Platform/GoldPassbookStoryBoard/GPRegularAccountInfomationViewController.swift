@@ -355,7 +355,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                 return
             }
         }
-        NSLog("(定期投資戶總覽)找不到帳號總覽帶來的帳號[%@]", m_strActFromAccountInfomation!)
+        NSLog("(定期投資戶總覽)找不到帳戶總覽帶來的帳號[%@]", m_strActFromAccountInfomation!)
     }
     func processBtnClick(_ data: GPSettingData) {
         switch data.m_strTYPE {
@@ -545,7 +545,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                         self.m_svContent.isHidden = false
                     }
                     else {
-                        self.showAlert(title: nil, msg: "Gold0204 資料數不足", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                        self.showAlert(title: UIAlert_Default_Title, msg: "Gold0204 資料數不足", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                     }
                 }
                 else {
@@ -553,7 +553,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                     self.m_svContent.isHidden = true
                 }
                 if (m_strACTCreday == "N") {
-                    showAlert(title: nil, msg: "本會依法須定期更新客戶投資風險承受度資訊，以保障客戶權益，貴戶「投資風險屬性評估表」已逾一年有效期限，請速洽本會營業據點或於網路銀行線上填寫上述評估表，即可辦理黃金存摺買進類交易。", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+                    showAlert(title: UIAlert_Default_Title, msg: "本會依法須定期更新客戶投資風險承受度資訊，以保障客戶權益，貴戶「投資風險屬性評估表」已逾一年有效期限，請速洽本會營業據點或於網路銀行線上填寫上述評估表，即可辦理黃金存摺買進類交易。", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 }
             }
         case "Gold0101A":

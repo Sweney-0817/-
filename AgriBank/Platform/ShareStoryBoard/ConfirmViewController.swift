@@ -154,6 +154,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 if  (description == "QR0302") ||
                     (description == "QR0402") ||
                     (description == "QR0502") ||
+                    (description == "QR0702") ||
                     (description == "Gold0301") ||
                     (description == "Gold0302") ||
                     (description == "Gold0401") ||

@@ -126,7 +126,7 @@ class GPTransactionDetailViewController: BaseViewController {
                 return
             }
         }
-        NSLog("(交易明細)找不到帳號總覽帶來的帳號[%@]", m_strActFromAccountInfomation!)
+        NSLog("(往來明細)找不到帳戶總覽帶來的帳號[%@]", m_strActFromAccountInfomation!)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let data: GPTransactionDetailData = sender as! GPTransactionDetailData
@@ -192,7 +192,7 @@ class GPTransactionDetailViewController: BaseViewController {
     // MARK:- Handle Actions
     @IBAction func m_btnTodayClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
-            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            self.showAlert(title: UIAlert_Default_Title, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         m_dtStart = Date()
@@ -202,7 +202,7 @@ class GPTransactionDetailViewController: BaseViewController {
     }
     @IBAction func m_btnWeekClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
-            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            self.showAlert(title: UIAlert_Default_Title, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         m_dtStart = NSCalendar.current.date(byAdding: .day, value: -6, to: Date())!
@@ -212,7 +212,7 @@ class GPTransactionDetailViewController: BaseViewController {
     }
     @IBAction func m_btnCustomizeClick(_ sender: Any) {
         guard m_iActIndex != -1 else {
-            self.showAlert(title: nil, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+            self.showAlert(title: UIAlert_Default_Title, msg: "請選擇黃金存摺帳號", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
             return
         }
         let curDate = InputDatePickerStruct(minDate: nil, maxDate: Date(), curDate: Date())

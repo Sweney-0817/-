@@ -150,7 +150,7 @@ class OverviewCell: UITableViewCell {
         }
         expandView?.SetStatus(true, true)
         Button_Width = (expandView?.frame.size.width)!
-        expandView?.SetLabelTitle("定期\n投資", "交易\n明細")
+        expandView?.SetLabelTitle("定期\n投資", "往來\n明細")
 //        expandView?.button1.tag = type.rawValue
 //        expandView?.button2.tag = type.rawValue
         expandView?.frame = CGRect(x: contentView.frame.maxX, y: 0, width: (expandView?.frame.size.width)!, height: contentView.frame.height-1)

@@ -361,8 +361,16 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
     return self.m_strDeadlinefinal;
 }
 
+- (void)setDeadlinefinal:(NSString *)deadlinefinal {
+    self.m_strDeadlinefinal = deadlinefinal;
+}
+
 - (NSString *)noticeNbr {
     return self.m_strNoticeNbr;
+}
+
+- (void)setNoticeNbr:(NSString *)noticeNbr {
+    self.m_strNoticeNbr = noticeNbr;
 }
 
 - (NSString *)feeInfo {
