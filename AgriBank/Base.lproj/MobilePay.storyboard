@@ -471,7 +471,7 @@
                                                     <constraint firstAttribute="height" constant="44" id="jWM-ss-hTs"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                                <state key="normal" title="確認送出" backgroundImage="ButtonLarge"/>
+                                                <state key="normal" title="送出" backgroundImage="ButtonLarge"/>
                                                 <state key="disabled" backgroundImage="ButtonLargeDisable"/>
                                                 <connections>
                                                     <action selector="m_btnConfirmClick:" destination="Oef-s9-HmD" eventType="touchUpInside" id="9Wm-Fi-089"/>

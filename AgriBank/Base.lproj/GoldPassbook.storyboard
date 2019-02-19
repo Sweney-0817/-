@@ -83,7 +83,7 @@
                                             <constraint firstAttribute="height" constant="44" id="Tkf-1q-VxB"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                        <state key="normal" title="下一步" backgroundImage="ButtonLarge"/>
+                                        <state key="normal" title="送出" backgroundImage="ButtonLarge"/>
                                         <state key="disabled" backgroundImage="ButtonLargeDisable"/>
                                         <connections>
                                             <action selector="m_btnNextClick:" destination="ew9-fO-2l8" eventType="touchUpInside" id="pzu-Mg-lkC"/>
@@ -197,7 +197,7 @@
                                             <constraint firstAttribute="height" constant="44" id="Xua-YE-1Cw"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                        <state key="normal" title="下一步" backgroundImage="ButtonLarge"/>
+                                        <state key="normal" title="送出" backgroundImage="ButtonLarge"/>
                                         <state key="disabled" backgroundImage="ButtonLargeDisable"/>
                                         <connections>
                                             <action selector="m_btnNextClick:" destination="a34-I6-eJM" eventType="touchUpInside" id="Icc-yW-x7e"/>
@@ -942,7 +942,7 @@
                                             <constraint firstAttribute="height" constant="44" id="ptY-5d-4ey"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                        <state key="normal" title="下一步" backgroundImage="ButtonLarge"/>
+                                        <state key="normal" title="送出" backgroundImage="ButtonLarge"/>
                                         <connections>
                                             <action selector="m_btnNextClick:" destination="Rrc-H6-GTB" eventType="touchUpInside" id="MKE-tL-1Ur"/>
                                         </connections>
@@ -1514,7 +1514,7 @@
                                             <constraint firstAttribute="height" constant="44" id="L5M-1F-hZ5"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                        <state key="normal" title="下一步" backgroundImage="ButtonLarge"/>
+                                        <state key="normal" title="送出" backgroundImage="ButtonLarge"/>
                                         <connections>
                                             <action selector="m_btnNextClick:" destination="wOj-gJ-tHX" eventType="touchUpInside" id="au5-qu-454"/>
                                         </connections>

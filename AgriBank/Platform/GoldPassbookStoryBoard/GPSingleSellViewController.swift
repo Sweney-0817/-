@@ -100,7 +100,7 @@ class GPSingleSellViewController: BaseViewController {
         data["DATE"] = strPriceTime
         let confirmRequest = RequestStruct(strMethod: "Gold/Gold0301", strSessionDescription: "Gold0301", httpBody: AuthorizationManage.manage.converInputToHttpBody2(data, true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
         
-        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+        var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: m_aryActList[m_iActIndex].accountNO])
         dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: m_aryActList[m_iActIndex].currency == Currency_TWD ? Currency_TWD_Title:m_aryActList[m_iActIndex].currency])
         dataConfirm.list?.append([Response_Key: "入款帳號", Response_Value: m_objActInfo!.PAYACT])

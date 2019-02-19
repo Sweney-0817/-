@@ -899,7 +899,7 @@ class ScanResultViewController: BaseViewController {
                 let TXMEMO = (jsonDic?["TXMEMO"] as? String) ?? ""
                 let MAIL = (jsonDic?["MAIL"] as? String) ?? ""
                 
-                var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認交易", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"09007","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":CARDACTNO,"INACT":INACT,"INBANK":INBANK,"TXAMT":TXAMT,"TXMEMO":TXMEMO,"MAIL":MAIL,"taskId":taskID,"otp":""],task: task)
+                var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList: ["WorkCode":"09007","Operate":"dataConfirm","TransactionId":transactionId,"CARDACTNO":CARDACTNO,"INACT":INACT,"INBANK":INBANK,"TXAMT":TXAMT,"TXMEMO":TXMEMO,"MAIL":MAIL,"taskId":taskID,"otp":""],task: task)
                 
                 dataConfirm.list?.append([Response_Key: "類別", Response_Value:"轉帳"])
                 dataConfirm.list?.append([Response_Key: "轉出帳號", Response_Value:CARDACTNO])
@@ -950,7 +950,7 @@ class ScanResultViewController: BaseViewController {
                     data["taskId"] = taskID
                     data["otp"] = (jsonDic?["otp"] as? String) ?? ""
                     
-                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認交易", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
+                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
 
 //                    dataConfirm.list?.append([Response_Key: "商店名稱", Response_Value:data["merchant"]!])
 //                    dataConfirm.list?.append([Response_Key: "特店代號", Response_Value:data["merchantId"]!])
@@ -986,7 +986,7 @@ class ScanResultViewController: BaseViewController {
                     data["charge"] = (jsonDic?["charge"] as? String) ?? ""
                     data["taskId"] = taskID
                     data["otp"] = (jsonDic?["otp"] as? String) ?? ""
-                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認交易", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
+                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
                     dataConfirm.list = makeBillConfirmShowData(data)
                     enterConfirmOTPController(dataConfirm, true, "台灣Pay")
                 case "51":
@@ -1006,7 +1006,7 @@ class ScanResultViewController: BaseViewController {
                     data["taskId"] = taskID
                     data["otp"] = (jsonDic?["otp"] as? String) ?? ""
                     
-                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認交易", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
+                    var dataConfirm = ConfirmOTPStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest, httpBodyList:data, task: task)
                     dataConfirm.list = makePurchaseConfirmShowData(data)
 //                    dataConfirm.list?.append([Response_Key: "商店名稱", Response_Value:data["merchantName"]!])
 //                    dataConfirm.list?.append([Response_Key: "特店代號", Response_Value:data["merchantId"]!])
