@@ -259,11 +259,11 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     
     // MARK: - StoryBoard Touch Event
     @IBAction func clickBindingBtn(_ sender: Any) {
-        let location: CLLocation = (UIApplication.shared.delegate as! AppDelegate).m_location
-        guard (location.coordinate.latitude != 0.0 && location.coordinate.longitude != 0.0) else {
-            showAlert(title: UIAlert_Default_Title, msg: "無法取得您的位置，請開啟GPS或網路定位服務", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
-            return
-        }
+//        let location: CLLocation = (UIApplication.shared.delegate as! AppDelegate).m_location
+//        guard (location.coordinate.latitude != 0.0 && location.coordinate.longitude != 0.0) else {
+//            showAlert(title: UIAlert_Default_Title, msg: "無法取得您的位置，請開啟GPS或網路定位服務", confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+//            return
+//        }
         if inputIsCorrect() {
             setLoading(true)
             let uuid = UUID().uuidString

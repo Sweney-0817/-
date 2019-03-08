@@ -355,7 +355,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                 return
             }
         }
-        NSLog("(定期投資戶總覽)找不到帳戶總覽帶來的帳號[%@]", m_strActFromAccountInfomation!)
+//        NSLog("(定期投資戶總覽)找不到帳戶總覽帶來的帳號[%@]", m_strActFromAccountInfomation!)
     }
     func processBtnClick(_ data: GPSettingData) {
         switch data.m_strTYPE {

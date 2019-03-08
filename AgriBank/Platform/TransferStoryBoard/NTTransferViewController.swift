@@ -470,16 +470,16 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     }
  
     @IBAction func clickNonPredesignatedBtn(_ sender: Any) { // 非約定轉帳
-        guard self.checkLocationAuthorization() == true else {
-            return
-        }
+//        guard self.checkLocationAuthorization() == true else {
+//            return
+//        }
         setLoading(true)
         if AuthorizationManage.manage.canEnterNTNonAgreedTransfer() {
             if !SecurityUtility.utility.isJailBroken() {
                 if let info = AuthorizationManage.manage.getResponseLoginInfo() {
                     VaktenManager.sharedInstance().authenticateOperation(withSessionID: info.Token ?? "") { resultCode in
                         if VIsSuccessful(resultCode) {
-                            self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
+                            self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                         }
                         else {
                             self.SetBtnColor(true)

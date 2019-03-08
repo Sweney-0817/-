@@ -54,6 +54,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         UIApplication.shared.registerForRemoteNotifications()
         // 檢查定位權限
         checkLocation()
+        // 偵測APP縮至背景
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillResignActive, object: nil, queue: OperationQueue.current, using: appWillEnterBackground)
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.current, using: appWillEnterForeground)
         return true
     }
 
@@ -181,6 +184,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         center.popToRootViewController(animated: true)
         (center.viewControllers.first as! HomeViewController).updateLoginStatus()
         (window?.rootViewController as! SideMenuViewController).ShowSideMenu(false)
+    }
+    
+    func appWillEnterBackground(_ notification: Notification?) {
+        let vc:UIViewController = UIStoryboard(name: "LaunchScreen", bundle: nil).instantiateViewController(withIdentifier: "FeatureID_LaunchScreenView") as UIViewController
+        let window: UIWindow = UIApplication.shared.keyWindow!
+        vc.view.frame = window.frame
+        vc.view.tag = 8866
+        window.addSubview(vc.view)
+    }
+    func appWillEnterForeground(_ notification: Notification?) {
+        let window: UIWindow = UIApplication.shared.keyWindow!
+        window.viewWithTag(8866)?.removeFromSuperview()
     }
 }
 

@@ -126,7 +126,7 @@ class GPTransactionDetailViewController: BaseViewController {
                 return
             }
         }
-        NSLog("(往來明細)找不到帳戶總覽帶來的帳號[%@]", m_strActFromAccountInfomation!)
+//        NSLog("(往來明細)找不到帳戶總覽帶來的帳號[%@]", m_strActFromAccountInfomation!)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let data: GPTransactionDetailData = sender as! GPTransactionDetailData

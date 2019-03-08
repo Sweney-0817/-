@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CoreLocation
+import SystemConfiguration.CaptiveNetwork
 
 #if DEBUG
 let URL_PROTOCOL = "http"
@@ -185,7 +186,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                             showErrorMessage(ErrorMsg_IsJailBroken, nil)
                         }
                         else {
-                            if (checkLocationAuthorization() == true) {
+//                            if (checkLocationAuthorization() == true) {
                                 var workCode = ""
                                 if ID == .FeatureID_TaxPayment {
                                     workCode = "05001"
@@ -195,7 +196,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                                 }
                                 getTransactionID(workCode, BaseTransactionID_Description)
                                 curFeatureID = ID
-                            }
+//                            }
                         }
                     //Guester 20180626
                     case .FeatureID_QRCodeTrans, .FeatureID_QRPay:
@@ -207,7 +208,8 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                             if !AuthorizationManage.manage.getCanEnterQRPay() {
                                 showErrorMessage(nil, ErrorMsg_NoAuth)
                             }
-                            else if (checkLocationAuthorization() == true) {
+//                            else if (checkLocationAuthorization() == true) {
+                            else {
                                 getTransactionID("09001", BaseTransactionID_Description)
                                 curFeatureID = ID
                             }
@@ -229,10 +231,10 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
                             m_bCanEnterGP = false
                         }
                     //Guester 20180731 End
-                    case .FeatureID_DeviceBinding:
-                        if (checkLocationAuthorization() == false) {
-                            canEnter = false
-                        }
+//                    case .FeatureID_DeviceBinding:
+//                        if (checkLocationAuthorization() == false) {
+//                            canEnter = false
+//                        }
                     default: break
                     }
                     
@@ -370,8 +372,51 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             addGestureForKeyBoard()
         }
     }
-    
-    func getLocalIPAddressForCurrentWiFi() -> String {
+    //取得連線的網路，wifi回名稱，4G回空
+    private func getUsedSSID() -> String {
+        let interfaces = CNCopySupportedInterfaces()
+        var ssid = ""
+        if interfaces != nil {
+            let interfacesArray = CFBridgingRetain(interfaces) as! Array<AnyObject>
+            if interfacesArray.count > 0 {
+                let interfaceName = interfacesArray[0] as! CFString
+                let ussafeInterfaceData = CNCopyCurrentNetworkInfo(interfaceName)
+                if (ussafeInterfaceData != nil) {
+                    let interfaceData = ussafeInterfaceData as! Dictionary<String, Any>
+                    ssid = interfaceData["SSID"]! as! String
+                }
+            }
+        }
+        return ssid
+    }
+    //取得4G IP
+    private func GetIPAddresses() -> String? {
+        var addresses = [String]()
+        
+        var ifaddr : UnsafeMutablePointer<ifaddrs>? = nil
+        if getifaddrs(&ifaddr) == 0 {
+            var ptr = ifaddr
+            while (ptr != nil) {
+                let flags = Int32(ptr!.pointee.ifa_flags)
+                var addr = ptr!.pointee.ifa_addr.pointee
+                if (flags & (IFF_UP|IFF_RUNNING|IFF_LOOPBACK)) == (IFF_UP|IFF_RUNNING) {
+                    if addr.sa_family == UInt8(AF_INET) || addr.sa_family == UInt8(AF_INET6) {
+                        var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                        if (getnameinfo(&addr, socklen_t(addr.sa_len), &hostname, socklen_t(hostname.count),nil, socklen_t(0), NI_NUMERICHOST) == 0) {
+                            if let address = String(validatingUTF8:hostname) {
+                                addresses.append(address)
+                            }
+                        }
+                    }
+                }
+                ptr = ptr!.pointee.ifa_next
+            }
+            freeifaddrs(ifaddr)
+        }
+        return addresses.first
+    }
+    //取得wifi IP
+    private func getLocalIPAddressForCurrentWiFi() -> String {
         var address:String = Default_IP_Address
         // get list of all interfaces on the local machine
         var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
@@ -403,6 +448,14 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
 
         freeifaddrs(ifaddr)
         return address
+    }
+    func getIP() -> String {
+        if (getUsedSSID().isEmpty == true) {
+            return GetIPAddresses() ?? Default_IP_Address
+        }
+        else {
+            return getLocalIPAddressForCurrentWiFi()
+        }
     }
 
     // MARK: - LoginDelegate
@@ -555,7 +608,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     let idMd5_1 = SecurityUtility.utility.MD5(string: info.id.uppercased())
                     let pdMd5_1 = SecurityUtility.utility.MD5(string: info.password.uppercased())
                     setLoading(true)
-                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"ID1":idMd5_1,"PWD1":pdMd5_1, "KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
+                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"ID1":idMd5_1,"PWD1":pdMd5_1, "KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                 }
             }
             else {
@@ -743,9 +796,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                     else if self.curFeatureID! == .FeatureID_BillPayment {
                                         workCode = "05002"
                                     }
-                                    self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
+                                    self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                                 case .FeatureID_QRCodeTrans?, .FeatureID_QRPay?:
-                                    self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
+                                    self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                                 default:
                                     break
                                 }
@@ -850,7 +903,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                 let idMd5_1 = SecurityUtility.utility.MD5(string: info.id.uppercased())
                                 let pdMd5_1 = SecurityUtility.utility.MD5(string: info.password.uppercased())
                                 self.setLoading(true)
-                                self.postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"ID1":idMd5_1,"PWD1":pdMd5_1,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
+                                self.postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"ID1":idMd5_1,"PWD1":pdMd5_1,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                             }
                         }
                     })
