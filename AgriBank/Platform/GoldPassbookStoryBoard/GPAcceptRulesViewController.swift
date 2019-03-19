@@ -68,9 +68,11 @@ class GPAcceptRulesViewController: BaseViewController {
         case "showBuy":
             let controller = segue.destination as! GPRegularSubscriptionViewController
             controller.setData(data)
+            controller.transactionId = self.transactionId
         case "showChange":
             let controller = segue.destination as! GPRegularChangeViewController
             controller.setData(data)
+            controller.transactionId = self.transactionId
         default:
             return
         }

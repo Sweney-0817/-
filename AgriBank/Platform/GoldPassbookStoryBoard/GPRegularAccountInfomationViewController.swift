@@ -84,22 +84,15 @@ enum GPRegularType: String {
 }
 //帶到申請或變更頁面的資訊
 struct GPPassData {
-//    var m_strDate: String
     var m_accountStruct: AccountStruct
     var m_strTransOutAct: String
     var m_settingData: GPSettingData
 }
-//let sameAmount = "定期定額"
-//let sameQuantity = "定期定量"
-//let diffAmount = "定期不定額"
 let amountTitle = "投資金額"
 let quantityTitle = "投資數量"
 let basePrice = "基準價格"
 let stopTitle = "暫停訖日"
 let diffAmountCommand = "此投資方式請洽臨櫃辦理"
-//let btnTitleNew = "申請"
-//let btnTitleChange = "變更"
-//let btnTitleCheck = "檢視"
 class GPRegularAccountInfomationViewController: BaseViewController {
     var m_uiActView: OneRowDropDownView? = nil
     var m_iActIndex: Int = -1
@@ -109,6 +102,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
     var m_uiDiffAmountDetail: GPDiffAmountDetailView? = nil
     var m_strActFromAccountInfomation: String? = nil
     var m_strACTCreday: String = "N"
+    var m_dicAcceptData: [String:String]? = nil
     
     @IBOutlet var m_vActView: UIView!
     @IBOutlet var m_svContent: UIScrollView!
@@ -368,28 +362,6 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         default:
             send_getTerms()
         }
-//        switch data.m_strBtn {
-//        case btnTitleNew, btnTitleChange :
-//            send_getTerms()
-//        case btnTitleNew:
-//            if AuthorizationManage.manage.canEnterGold() == false {
-//                send_getTerms()
-//            }
-//            else {
-//                performSegue(withIdentifier: "showBuy", sender: data)
-//            }
-//        case btnTitleChange:
-//            if AuthorizationManage.manage.canEnterGold() == false {
-//                send_getTerms()
-//            }
-//            else {
-//                performSegue(withIdentifier: "showChange", sender: data)
-//            }
-//        case btnTitleCheck:
-//            self.showDiffAmountDetail(data)
-//        default:
-//            break
-//        }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let data: GPSettingData = sender as! GPSettingData
@@ -407,7 +379,6 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         case "showAcceptRules":
             let controller = segue.destination as! GPAcceptRulesViewController
             var dicData: [String:Any] = [String:Any]()
-//            dicData["nextStep"] = data.m_strBtn == btnTitleNew ? "showBuy" : "showChange"
             switch data.m_strTYPE {
             case GPRegularType.GPRegularTypeSameAmount:
                 dicData["nextStep"] = "showChange"
@@ -420,6 +391,8 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             }
             dicData["data"] = passData
             controller.m_dicData = dicData
+            controller.m_dicAcceptData = m_dicAcceptData
+            controller.transactionId = transactionId
         default:
             return
         }
@@ -558,8 +531,6 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             }
         case "Gold0101A":
             if let data = response.object(forKey: ReturnData_Key) as? [String:String] {
-//                AuthorizationManage.manage.setGoldAcception(data)
-//                if (AuthorizationManage.manage.canEnterGold()) {
                 if (data["Read"] == "Y") {
                     switch m_aryData[m_iBtnIndex].m_strTYPE {
                     case GPRegularType.GPRegularTypeSameAmount:
@@ -571,14 +542,9 @@ class GPRegularAccountInfomationViewController: BaseViewController {
                     default:
                         performSegue(withIdentifier: "showBuy", sender: m_aryData[m_iBtnIndex])
                     }
-//                    if(m_aryData[m_iBtnIndex].m_strBtn == btnTitleNew) {
-//                        performSegue(withIdentifier: "showBuy", sender: m_aryData[m_iBtnIndex])
-//                    }
-//                    else if(m_aryData[m_iBtnIndex].m_strBtn == btnTitleChange) {
-//                        performSegue(withIdentifier: "showChange", sender: m_aryData[m_iBtnIndex])
-//                    }
                 }
                 else {
+                    m_dicAcceptData = data
                     performSegue(withIdentifier: "showAcceptRules", sender: m_aryData[m_iBtnIndex])
                 }
             }
