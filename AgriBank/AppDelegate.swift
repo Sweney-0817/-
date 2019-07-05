@@ -84,6 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         if enterBackgroundTime != nil {
             if Date().timeIntervalSince(enterBackgroundTime!) + interval >= AgriBank_TimeOut {
                 if AuthorizationManage.manage.IsLoginSuccess() {
+                    appWillEnterForeground(nil)
                     let alert = UIAlertView(title: UIAlert_Default_Title, message: Timeout_Title, delegate: self, cancelButtonTitle: Determine_Title)
                     alert.show()
                 }

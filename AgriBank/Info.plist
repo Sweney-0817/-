@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3.3</string>
+	<string>1.3.5</string>
 	<key>CFBundleVersion</key>
-	<string>2019031801</string>
+	<string>2019060301</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -28,17 +28,21 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>需要開啟相機鏡頭</string>
+	<string>農漁行動達人需要使用您的相機，以提供掃描轉帳、農漁行動Pay等功能與服務。</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>需要開啟定位</string>
+	<string>選擇允許可搜尋「目前位置」附近的農漁會資訊！
+提醒：持續在背景執行GPS可能會降低電池使用時間。</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>需要開啟定位</string>
+	<string>選擇允許可搜尋「目前位置」附近的農漁會資訊！
+提醒：持續在背景執行GPS可能會降低電池使用時間。</string>
 	<key>NSLocationUsageDescription</key>
-	<string>需要開啟定位</string>
+	<string>選擇允許可搜尋「目前位置」附近的農漁會資訊！
+提醒：持續在背景執行GPS可能會降低電池使用時間。</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>需要開啟定位</string>
+	<string>選擇允許可搜尋「目前位置」附近的農漁會資訊！
+提醒：持續在背景執行GPS可能會降低電池使用時間。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>需要存取您的相簿</string>
+	<string>農漁行動達人需要存取您的照片，以提供讀取QR Code等功能與服務。</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

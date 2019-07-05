@@ -367,34 +367,36 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         let data: GPSettingData = sender as! GPSettingData
         let passData: GPPassData = GPPassData(m_accountStruct: m_aryActList[m_iActIndex], m_strTransOutAct: self.m_lbTransOutAct.text!, m_settingData: data)
         super.prepare(for: segue, sender: sender)
-        switch segue.identifier {
-        case "showBuy":
-            let controller = segue.destination as! GPRegularSubscriptionViewController
-            controller.setData(passData)
-            controller.transactionId = self.transactionId
-        case "showChange":
-            let controller = segue.destination as! GPRegularChangeViewController
-            controller.setData(passData)
-            controller.transactionId = self.transactionId
-        case "showAcceptRules":
-            let controller = segue.destination as! GPAcceptRulesViewController
-            var dicData: [String:Any] = [String:Any]()
-            switch data.m_strTYPE {
-            case GPRegularType.GPRegularTypeSameAmount:
-                dicData["nextStep"] = "showChange"
-            case GPRegularType.GPRegularTypeSameQuantity:
-                dicData["nextStep"] = "showChange"
-            case GPRegularType.GPRegularTypeDiffAmount:
-                break
+        if (segue.identifier != nil) {
+            switch segue.identifier! {
+            case "showBuy":
+                let controller = segue.destination as! GPRegularSubscriptionViewController
+                controller.setData(passData)
+                controller.transactionId = self.transactionId
+            case "showChange":
+                let controller = segue.destination as! GPRegularChangeViewController
+                controller.setData(passData)
+                controller.transactionId = self.transactionId
+            case "showAcceptRules":
+                let controller = segue.destination as! GPAcceptRulesViewController
+                var dicData: [String:Any] = [String:Any]()
+                switch data.m_strTYPE {
+                case GPRegularType.GPRegularTypeSameAmount:
+                    dicData["nextStep"] = "showChange"
+                case GPRegularType.GPRegularTypeSameQuantity:
+                    dicData["nextStep"] = "showChange"
+                case GPRegularType.GPRegularTypeDiffAmount:
+                    break
+                default:
+                    dicData["nextStep"] = "showBuy"
+                }
+                dicData["data"] = passData
+                controller.m_dicData = dicData
+                controller.m_dicAcceptData = m_dicAcceptData
+                controller.transactionId = transactionId
             default:
-                dicData["nextStep"] = "showBuy"
+                return
             }
-            dicData["data"] = passData
-            controller.m_dicData = dicData
-            controller.m_dicAcceptData = m_dicAcceptData
-            controller.transactionId = transactionId
-        default:
-            return
         }
     }
     // MARK:- WebService Methods

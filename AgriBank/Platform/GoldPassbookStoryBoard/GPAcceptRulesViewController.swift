@@ -64,17 +64,19 @@ class GPAcceptRulesViewController: BaseViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let data: GPPassData = sender as! GPPassData
-        switch segue.identifier {
-        case "showBuy":
-            let controller = segue.destination as! GPRegularSubscriptionViewController
-            controller.setData(data)
-            controller.transactionId = self.transactionId
-        case "showChange":
-            let controller = segue.destination as! GPRegularChangeViewController
-            controller.setData(data)
-            controller.transactionId = self.transactionId
-        default:
-            return
+        if (segue.identifier != nil) {
+            switch segue.identifier! {
+            case "showBuy":
+                let controller = segue.destination as! GPRegularSubscriptionViewController
+                controller.setData(data)
+                controller.transactionId = self.transactionId
+            case "showChange":
+                let controller = segue.destination as! GPRegularChangeViewController
+                controller.setData(data)
+                controller.transactionId = self.transactionId
+            default:
+                return
+            }
         }
     }
 }
