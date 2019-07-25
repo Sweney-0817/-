@@ -57,6 +57,7 @@ protocol OverviewCellDelegate {
     func endExpanding(_ curRow:IndexPath?)
 }
 
+@objcMembers
 class OverviewCell: UITableViewCell {
     @IBOutlet weak var title1Label: UILabel!
     @IBOutlet weak var title2Label: UILabel!
@@ -249,7 +250,7 @@ class ResultCell: UITableViewCell {
         let dataWidth = width-171-(15*3)
 //        let plusHeight:CGFloat = 17+18
         
-        let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSFontAttributeName: Default_Font], context: nil)
+        let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedStringKey.font: Default_Font], context: nil)
         return (boundingBox.height < CGFloat(60) ? CGFloat(60) : boundingBox.height)
     }
 }

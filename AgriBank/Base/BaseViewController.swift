@@ -28,6 +28,7 @@ let BarItem_Height_Weight = 40
 let Loading_Weight = 100
 let Loading_Height = 100
 
+@objcMembers
 class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     var request:ConnectionUtility? = nil        // 連線元件
     var needShowBackBarItem:Bool = true         // 是否需要顯示返回鍵
@@ -96,7 +97,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.topItem?.title = getFeatureName(getCurrentFeatureID())
-        navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font:Default_Font,NSAttributedStringKey.foregroundColor:UIColor.white]
         originalY = view.frame.origin.y
     }
     

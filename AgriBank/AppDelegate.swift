@@ -11,6 +11,7 @@ import UserNotifications
 import CoreLocation
 
 @UIApplicationMain
+@objcMembers
 class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate, UNUserNotificationCenterDelegate, UIAlertViewDelegate {
 
     var window: UIWindow?

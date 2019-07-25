@@ -162,8 +162,8 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
             }
             let formatter = NumberFormatter()
             if let rate = formatter.number(from: m_tfRate.text!) {
-                if CGFloat(rate) <= RegularSavingCalculation_MaxRate {
-                    if CGFloat(rate) == 0 {
+                if CGFloat(truncating: rate) <= RegularSavingCalculation_MaxRate {
+                    if CGFloat(truncating: rate) == 0 {
                         showErrorMessage(nil, m_tfRate.placeholder!+ErrorMsg_Not_Zero)
                         return false
                     }
@@ -189,8 +189,8 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
             }
             let formatter = NumberFormatter()
             if let rate = formatter.number(from: m_tfRate.text!) {
-                if CGFloat(rate) <= RegularSavingCalculation_MaxRate {
-                    if CGFloat(rate) == 0 {
+                if CGFloat(truncating: rate) <= RegularSavingCalculation_MaxRate {
+                    if CGFloat(truncating: rate) == 0 {
                         showErrorMessage(nil, m_tfRate.placeholder!+ErrorMsg_Not_Zero)
                         return false
                     }

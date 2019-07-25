@@ -18,6 +18,7 @@ let FeatureWall_PageControl_BottomDistance:CGFloat = 25
 let FeatureWall_PageControl_currentPageColor = UIColor(red: 242/255, green: 193/255, blue: 74/255, alpha:1)
 let FeatureWall_PageControl_PageColor = UIColor(red: 181/255, green: 181/255, blue: 181/255, alpha:1)
 
+@objcMembers
 class FeatureWallView: UIView, UIScrollViewDelegate {
     let scrollview = UIScrollView()
     var pageCon = UIPageControl()

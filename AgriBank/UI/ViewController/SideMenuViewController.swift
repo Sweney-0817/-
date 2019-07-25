@@ -18,6 +18,7 @@ enum SideMenuType {
     case right
 }
 
+@objcMembers
 class SideMenuViewController: UIViewController {
     
     private enum MenuState {

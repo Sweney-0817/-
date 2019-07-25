@@ -12,6 +12,7 @@ protocol IntroductionViewDelegate {
     func closeIntroductionView()
 }
 
+@objcMembers
 class IntroductionView: UIView, UIScrollViewDelegate {
     var introductionDelegate:IntroductionViewDelegate? = nil
     var pageControl:UIPageControl? = nil

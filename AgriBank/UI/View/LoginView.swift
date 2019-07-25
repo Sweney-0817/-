@@ -26,6 +26,7 @@ protocol LoginDelegate {
     func clickLoginCloseBtn()
 }
 
+@objcMembers
 class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, ImageConfirmViewDelegate {
     @IBOutlet weak var locationTextfield: UITextField!
     @IBOutlet weak var accountTextfield: UITextField!   // 身分證

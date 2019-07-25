@@ -80,7 +80,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         accountTypeSegCon.layer.borderWidth = Layer_BorderWidth
         accountTypeSegCon.layer.cornerRadius = Layer_BorderRadius
         accountTypeSegCon.layer.borderColor = Green_Color.cgColor
-        accountTypeSegCon.setTitleTextAttributes([NSFontAttributeName:Default_Font], for: .normal)
+        accountTypeSegCon.setTitleTextAttributes([NSAttributedStringKey.font:Default_Font], for: .normal)
         
         sShowBankAccountHeight = showBankAccountHeight.constant
         sChooseActTypeHeight = chooseActTypeHeight.constant
