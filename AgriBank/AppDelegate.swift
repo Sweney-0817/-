@@ -8,6 +8,7 @@
 
 import UIKit
 import UserNotifications
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate, UNUserNotificationCenterDelegate, UIAlertViewDelegate {
@@ -17,7 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
     var notification:NSObjectProtocol? = nil
     var enterBackgroundTime:Date? = nil
     var interval:TimeInterval = 0
-    
+    let m_locationManager = CLLocationManager()
+    var m_location: CLLocation = CLLocation(latitude: 0.0, longitude: 0.0)
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // 連線暫存檔清除
         SecurityUtility.utility.removeConnectCatche()
@@ -27,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         window?.makeKeyAndVisible()
         // Status bar
         let statusView = UIView(frame: UIApplication.shared.statusBarFrame)
-        statusView.backgroundColor = .white
+        statusView.backgroundColor = .clear
         statusView.tag = ViewTag.View_Status.rawValue
         window?.addSubview(statusView)
         // APNS註冊
@@ -49,6 +52,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
             }
         }
         UIApplication.shared.registerForRemoteNotifications()
+        // 檢查定位權限
+        checkLocation()
+        // 偵測APP縮至背景
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillResignActive, object: nil, queue: OperationQueue.current, using: appWillEnterBackground)
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.current, using: appWillEnterForeground)
         return true
     }
 
@@ -76,6 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         if enterBackgroundTime != nil {
             if Date().timeIntervalSince(enterBackgroundTime!) + interval >= AgriBank_TimeOut {
                 if AuthorizationManage.manage.IsLoginSuccess() {
+                    appWillEnterForeground(nil)
                     let alert = UIAlertView(title: UIAlert_Default_Title, message: Timeout_Title, delegate: self, cancelButtonTitle: Determine_Title)
                     alert.show()
                 }
@@ -177,6 +186,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         (center.viewControllers.first as! HomeViewController).updateLoginStatus()
         (window?.rootViewController as! SideMenuViewController).ShowSideMenu(false)
     }
+    
+    func appWillEnterBackground(_ notification: Notification?) {
+        let vc:UIViewController = UIStoryboard(name: "LaunchScreen", bundle: nil).instantiateViewController(withIdentifier: "FeatureID_LaunchScreenView") as UIViewController
+        let window: UIWindow = UIApplication.shared.keyWindow!
+        vc.view.frame = window.frame
+        vc.view.tag = 8866
+        window.addSubview(vc.view)
+    }
+    func appWillEnterForeground(_ notification: Notification?) {
+        let window: UIWindow = UIApplication.shared.keyWindow!
+        window.viewWithTag(8866)?.removeFromSuperview()
+    }
 }
 
-
+extension AppDelegate: CLLocationManagerDelegate {
+    func checkLocation() {
+        m_locationManager.delegate = self
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined:
+            m_locationManager.requestWhenInUseAuthorization()
+            break
+        case .restricted, .denied:
+            break
+        case .authorizedWhenInUse, .authorizedAlways:
+            m_locationManager.startUpdatingLocation()
+            break
+        }
+    }
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .restricted, .denied:
+            break
+        case .authorizedWhenInUse, .authorizedAlways:
+            m_locationManager.startUpdatingLocation()
+            break
+        case .notDetermined:
+            break
+        }
+    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        m_location = locations.last ?? CLLocation(latitude: 0.0, longitude: 0.0)
+    }
+}

@@ -26,15 +26,8 @@ struct ResponseLoginInfo {
     var Token:String? = nil         // Token
     var USUDID:String? = nil        // 使用者ID
     var Balance:String? = nil       // 餘額
+    var TBalance:String? = nil      // 定期總額
     var STATUS:String? = nil        // 帳戶狀態 
-}
-
-struct QRPAcception {
-    //for test
-//    var Read: String = "Y"
-    var Read: String = "N"
-    var Version: String = ""
-    var Content: String = ""
 }
 
 class AuthorizationManage {
@@ -51,9 +44,8 @@ class AuthorizationManage {
     private var canDepositTermination = false            // 是否可以「綜存戶轉存明細解約」
     private var canPayLoan = false                       // 是否可以「繳交放款本息」
     private var canChangeBaseInfo = false                // 是否可以「基本資料變更」
-    //QRP同意條款狀態
-    private var m_qrpAcception: QRPAcception = QRPAcception()
-    
+    private var canEnterQRPay = false                   // 是否可以進入QRPay
+    private var canEnterP2PTrans = false                // 是否可進入p2p轉帳
     
     func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info
@@ -77,6 +69,16 @@ class AuthorizationManage {
                     case "T37":
                         canChangeBaseInfo = true
                         
+                    case "T43":
+                        canEnterQRPay = true
+                        if let pID = getPlatformIDByAuthID(ID) {
+                            if authList?.index(of: pID) == nil {
+                                authList?.append(pID)
+                            }
+                        }
+                    case "T56":
+                        canEnterP2PTrans = true
+
                     default:
                         if let pID = getPlatformIDByAuthID(ID) {
                             if authList?.index(of: pID) == nil {
@@ -125,6 +127,8 @@ class AuthorizationManage {
             canDepositTermination = false
             canPayLoan = false
             canChangeBaseInfo = false
+            canEnterQRPay = false
+            canEnterP2PTrans = false
         }
     }
     
@@ -147,10 +151,20 @@ class AuthorizationManage {
     func getChangeBaseInfoStaus() -> Bool {
         return canChangeBaseInfo
     }
+    
+    func getCanEnterQRPay() -> Bool {
+        return canEnterQRPay
+    }
+
+    func getCanEnterP2PTrans() -> Bool {
+        return canEnterP2PTrans
+    }
 
     func getHttpHead(_ isNeedCID:Bool) -> [String:String] {
         var head = AuthorizationManage_HttpHead_Default
+	//for test
         head[AuthorizationManage_HttpHead_Token] = userInfo?.Token ?? ""
+//        head[AuthorizationManage_HttpHead_Token] = userInfo?.Token ?? "123"
     
         if isNeedCID {
             head[AuthorizationManage_HttpHead_CID] = [String](AuthorizationManage_CIDListKey.keys)[AuthorizationManage_Random]
@@ -182,6 +196,32 @@ class AuthorizationManage {
         return httpBody
     }
     
+    // 不濾空白
+    func converInputToHttpBody2(_ input:[String:Any], _ needEncrypt:Bool) -> Data? {
+        
+        let jsonData = try? JSONSerialization.data(withJSONObject: input, options: [])
+        let jsonString = String(data: jsonData!, encoding: .utf8)
+        print(jsonString ?? "empty string")
+        
+        var httpBody:Data? = nil
+        do {
+            httpBody = try JSONSerialization.data(withJSONObject: input, options: .prettyPrinted)
+            if needEncrypt {
+                let encryptID = [String](AuthorizationManage_CIDListKey.keys)[AuthorizationManage_Random]
+                if let encrypt = String(data: httpBody!, encoding: .utf8)?.replacingOccurrences(of: "\n", with: ""), let key = AuthorizationManage_CIDListKey[encryptID] {
+                    // 中台需求: " + body + "
+                    let encryptString = "\"" + SecurityUtility.utility.AES256Encrypt( encrypt, key ) + "\""
+                    httpBody = encryptString.data(using: .utf8)
+                }
+            }
+        }
+        catch {
+            print(error)
+        }
+        
+        return httpBody
+    }
+    
     func CanEnterFeature(_ ID:PlatformFeatureID) -> Bool { // 判斷是否需要登入
         var canEnter = false
         switch ID {
@@ -199,6 +239,12 @@ class AuthorizationManage {
 //        .FeatureID_QRCodeTrans,
 //        .FeatureID_QRPay,
 //        .FeatureID_AcceptRules,
+//        .FeatureID_GPAccountInfomation,
+//        .FeatureID_GPSingleBuy,
+//        .FeatureID_GPSingleSell,
+//        .FeatureID_GPRegularAccountInfomation,
+//        .FeatureID_GPTransactionDetail,
+//        .FeatureID_GPGoldPrice,
              .FeatureID_ContactCustomerService:
             canEnter = true
             
@@ -245,14 +291,97 @@ class AuthorizationManage {
         case "T40": return PlatformFeatureID.FeatureID_ContactCustomerService
     //Guester 20180626
         case "T41": return PlatformFeatureID.FeatureID_MobilePay    // 行動支付
-        case "T42": return PlatformFeatureID.FeatureID_QRCodeTrans  // QR Code轉帳
-        case "T43": return PlatformFeatureID.FeatureID_QRPay        // QR Pay
+        case "T42": return PlatformFeatureID.FeatureID_QRCodeTrans  // 掃描轉帳
+        case "T43": return PlatformFeatureID.FeatureID_QRPay        // 台灣Pay
     //Guester 20180626 End
 
+    //Guester 20180731
+        case "T44": return PlatformFeatureID.FeatureID_GoldPassbook         // 黃金存摺
+        case "T45": return PlatformFeatureID.FeatureID_GPAccountInfomation  // 帳戶總覽
+        case "T46": return PlatformFeatureID.FeatureID_GPSingleBuy          // 單筆申購
+        case "T47": return PlatformFeatureID.FeatureID_GPSingleSell         // 單筆回售
+        case "T48": return PlatformFeatureID.FeatureID_GPRegularAccountInfomation   // 定期投資戶總覽
+        case "T49": return PlatformFeatureID.FeatureID_GPTransactionDetail  // 往來明細
+        case "T50": return PlatformFeatureID.FeatureID_GPGoldPrice          // 牌告價格
+    //Guester 20180731 End
         default: return nil
         }
     }
-    
+    func getAuthIDByPlatformID(_ ID:PlatformFeatureID) -> String? {
+        switch ID {
+        case PlatformFeatureID.FeatureID_AccountOverView: return "T01"
+        case PlatformFeatureID.FeatureID_AccountDetailView: return "T02"
+        case PlatformFeatureID.FeatureID_NTAccountTransfer: return "T03"
+        case PlatformFeatureID.FeatureID_NTTransfer: return "T04"               // 約轉
+        case PlatformFeatureID.FeatureID_ReservationTransfer: return "T06"
+        case PlatformFeatureID.FeatureID_ReservationTransferSearchCancel: return "T07"
+        case PlatformFeatureID.FeatureID_DepositCombinedToDeposit: return "T08"
+        case PlatformFeatureID.FeatureID_DepositCombinedToDepositSearch: return "T09"
+        case PlatformFeatureID.FeatureID_LoanPrincipalInterest: return "T10"
+        case PlatformFeatureID.FeatureID_LoseApply: return "T11"
+        case PlatformFeatureID.FeatureID_PassbookLoseApply: return "T12"
+        case PlatformFeatureID.FeatureID_DebitCardLoseApply: return "T13"
+        case PlatformFeatureID.FeatureID_CheckLoseApply: return "T14"
+        case PlatformFeatureID.FeatureID_Payment: return "T15"
+        case PlatformFeatureID.FeatureID_TaxPayment: return "T16"
+        case PlatformFeatureID.FeatureID_BillPayment: return "T17"
+        case PlatformFeatureID.FeatureID_FinancialInformation: return "T18"
+        case PlatformFeatureID.FeatureID_NTRation: return "T19"
+        case PlatformFeatureID.FeatureID_ExchangeRate: return "T20"
+        case PlatformFeatureID.FeatureID_RegularSavingCalculation: return "T21"
+        case PlatformFeatureID.FeatureID_CustomerService: return "T22"
+        case PlatformFeatureID.FeatureID_Promotion: return "T23"
+        case PlatformFeatureID.FeatureID_News: return "T24"
+        case PlatformFeatureID.FeatureID_ServiceBase: return "T25"
+        case PlatformFeatureID.FeatureID_PersonalMessage: return "T26"
+        case PlatformFeatureID.FeatureID_PersopnalSetting: return "T27"
+        case PlatformFeatureID.FeatureID_BasicInfoChange: return "T28"
+        case PlatformFeatureID.FeatureID_UserNameChange: return "T29"
+        case PlatformFeatureID.FeatureID_UserPwdChange: return "T30"
+        case PlatformFeatureID.FeatureID_MessageSwitch: return "T31"
+        case PlatformFeatureID.FeatureID_SetAvatar: return "T32"
+        case PlatformFeatureID.FeatureID_DeviceBinding: return "T33"
+        case PlatformFeatureID.FeatureID_ContactCustomerService: return "T40"
+        //Guester 20180626
+        case PlatformFeatureID.FeatureID_MobilePay: return "T41"    // 行動支付
+        case PlatformFeatureID.FeatureID_QRCodeTrans: return "T42"  // 掃描轉帳
+        case PlatformFeatureID.FeatureID_QRPay: return "T43"        // 台灣Pay
+            //Guester 20180626 End
+            
+        //Guester 20180731
+        case PlatformFeatureID.FeatureID_GoldPassbook: return "T44"         // 黃金存摺
+        case PlatformFeatureID.FeatureID_GPAccountInfomation: return "T45"  // 帳戶總覽
+        case PlatformFeatureID.FeatureID_GPSingleBuy: return "T46"          // 單筆申購
+        case PlatformFeatureID.FeatureID_GPSingleSell: return "T47"         // 單筆回售
+        case PlatformFeatureID.FeatureID_GPRegularAccountInfomation: return "T48"   // 定期投資戶總覽
+        case PlatformFeatureID.FeatureID_GPTransactionDetail: return "T49"  // 往來明細
+        case PlatformFeatureID.FeatureID_GPGoldPrice: return "T50"          // 牌告價格
+        //Guester 20180731 End
+        default: return nil
+        }
+    }
+    func checkAuth(_ pID:PlatformFeatureID) -> Bool {
+        switch pID {
+        case .FeatureID_NTRation,
+             .FeatureID_ExchangeRate,
+             .FeatureID_RegularSavingCalculation,
+             .FeatureID_Promotion,
+             .FeatureID_News,
+             .FeatureID_ServiceBase,
+             .FeatureID_Home,
+             .FeatureID_Edit,
+             .FeatureID_DeviceBinding,
+             .FeatureID_ContactCustomerService:
+            return true
+        default:
+            if authList?.index(of: pID) == nil {
+                return false
+            }
+            else {
+                return true
+            }
+        }
+    }
     func SaveIDListInFile(_ addList:[PlatformFeatureID]) {
         var IDList = [String]()
         addList.forEach{ ID in IDList.append(ID.rawValue.description) }
@@ -284,7 +413,7 @@ class AuthorizationManage {
         switch type {
         case .Fixd_Type:
             //for test
-//            list = [.FeatureID_Edit, .FeatureID_QRPay, .FeatureID_GPRegularAccountInfomation]
+//            list = [.FeatureID_Edit, .FeatureID_QRPay, .FeatureID_QRCodeTrans]
             list = [.FeatureID_Edit]
             
         case .Default_Type:
@@ -354,7 +483,7 @@ class AuthorizationManage {
                 list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_MobilePay, /* .FeatureID_GoldPassbook,*/ .FeatureID_CustomerService, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
             }
             else {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_MobilePay, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_MobilePay, .FeatureID_GoldPassbook, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding, .FeatureID_ContactCustomerService]
             }
         }
         
@@ -387,24 +516,5 @@ class AuthorizationManage {
             }
         }
         return temp
-    }
-
-    func setQRPAcception(_ data:[String:String]) {
-        m_qrpAcception.Read = data["Read"] ?? "N"
-        m_qrpAcception.Version = data["Version"] ?? ""
-        m_qrpAcception.Content = data["Content"] ?? ""
-    }
-    
-    func getQRPAcception() -> QRPAcception {
-        return m_qrpAcception
-    }
-    
-    func canEnterQRP() -> Bool {
-        if (m_qrpAcception.Read == "Y") {
-            return true
-        }
-        else {
-            return false
-        }
     }
 }

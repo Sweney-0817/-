@@ -178,37 +178,6 @@
 - (BOOL)isAssociated;
 
 /*!
- @brief Returns the current one time time password.
-
- @discussion
-    Returns the current one time password for the currently set API. Returns nil if there is no password available. Call
- -[VContext nextOneTimePassword:] to generate the next password.
- Passwords become available after Vakten has been associated to an API using the VAssociateOperation class.
-
- @see nextOneTimePassword: Call nextOneTimePassword if the method returns nil.
-
- @note Passwords becomes available after Vakten has been associated to an API using the VAssociateOperation class.
-
- @param api The api with version.
-
- @return The current One Time Password for the currently set API. Returns nil if there is no password available
- */
-- (NSString *)getOneTimePassword:(NSURL *)api;
-
-/*!
- @brief Generates the next one time password.
-
- @discussion
-    Generates the next password. If the OTP is not initialized then this method does nothing. Generating a new password
- should be a user initiated action and not done automatically every time the OTP view is displayed.
-
- @see getOneTimePassword:
-
- @param api The api with version.
- */
-- (void)nextOneTimePassword:(NSURL *)api;
-
-/*!
  @brief Generates an OTP based on the devices location, time and identity.
 
  @discussion

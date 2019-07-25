@@ -131,20 +131,46 @@ class Platform {
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_FinancialInformation, name: "定期儲蓄試算")
         informationList[.FeatureID_RegularSavingCalculation] = feature
     //Guester 20180626
-        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_QRPay], belong: nil, name: "行動支付")
-        informationList[.FeatureID_MobilePay] = feature
-//        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_QRCodeTrans, .FeatureID_QRPay], belong: nil, name: "行動支付")
+//        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_QRPay], belong: nil, name: "行動支付")
 //        informationList[.FeatureID_MobilePay] = feature
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_QRCodeTrans, .FeatureID_QRPay], belong: nil, name: "農漁行動Pay")
+        informationList[.FeatureID_MobilePay] = feature
 
-//        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "QR Code轉帳")
-//        informationList[.FeatureID_QRCodeTrans] = feature
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "掃描轉帳")
+        informationList[.FeatureID_QRCodeTrans] = feature
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_MobilePay, name: "台灣Pay")
         informationList[.FeatureID_QRPay] = feature
 
-        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "QRCode支付約定條款")
+        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "農漁行動Pay服務注意事項")
         informationList[.FeatureID_AcceptRules] = feature
     //Guester 20180626 End
+    
+    //Guester 20180731
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_GPAccountInfomation, .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell, .FeatureID_GPRegularAccountInfomation, .FeatureID_GPTransactionDetail, .FeatureID_GPGoldPrice], belong: nil, name: "黃金存摺")
+        informationList[.FeatureID_GoldPassbook] = feature
+
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_GoldPassbook, name: "帳戶總覽")
+        informationList[.FeatureID_GPAccountInfomation] = feature
+
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_GoldPassbook, name: "單筆申購")
+        informationList[.FeatureID_GPSingleBuy] = feature
+
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_GoldPassbook, name: "單筆回售")
+        informationList[.FeatureID_GPSingleSell] = feature
+
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_GoldPassbook, name: "定期投資戶總覽")
+        informationList[.FeatureID_GPRegularAccountInfomation] = feature
+
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_GoldPassbook, name: "往來明細")
+        informationList[.FeatureID_GPTransactionDetail] = feature
+
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_GoldPassbook, name: "牌告價格")
+        informationList[.FeatureID_GPGoldPrice] = feature
+        
+        feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "黃金存摺約定條款")
+        informationList[.FeatureID_GPAcceptRules] = feature
+//Guester 20180731 End
         feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_Promotion, .FeatureID_News, .FeatureID_ServiceBase, .FeatureID_PersonalMessage], belong: nil, name: "客戶服務")
         informationList[.FeatureID_CustomerService] = feature
         

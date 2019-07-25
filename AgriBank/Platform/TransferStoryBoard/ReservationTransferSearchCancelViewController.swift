@@ -97,6 +97,26 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             else {
                 list.append([Response_Key:"處理結果", Response_Value:""])
             }
+            //Guester 20181120 新增轉帳生效、終止日
+            input.bIsSpecific = isSpecific
+            if (isSpecific == false) {
+                if let STDATE = dic["STDATE"] as? String, STDATE != emptyDate, STDATE != "0000000" {
+                    input.STDATE = STDATE
+                    list.append([Response_Key:"轉帳生效日", Response_Value:STDATE])
+                }
+                else {
+                    list.append([Response_Key:"轉帳生效日", Response_Value:"-"])
+                }
+                
+                if let STPDAY = dic["STPDAY"] as? String, STPDAY != emptyDate, STPDAY != "0000000" {
+                    input.STPDAY = STPDAY
+                    list.append([Response_Key:"轉帳終止日", Response_Value:STPDAY])
+                }
+                else {
+                    list.append([Response_Key:"轉帳終止日", Response_Value:"-"])
+                }
+            }
+            //Guester 20181120 新增轉帳生效、終止日 End
             if let TRACTNO = dic["TRACTNO"] as? String{
                 input.inAccount = TRACTNO
             }
@@ -225,8 +245,7 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
                 componenets.day = componenets.day!+1
                 let curDate = InputDatePickerStruct(minDate: nil, maxDate: nil, curDate: Calendar.current.date(from: componenets))
                 if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
-                    dateView.frame = view.frame
-                    dateView.frame.origin = .zero
+                    dateView.frame = CGRect(origin: .zero, size: view.frame.size)
                     dateView.showTwoDatePickerView(isSpecific, curDate, curDate) { startDate, endDate, _, _ in
                         if self.isSpecific {
                             self.loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, "\(startDate.year)/\(startDate.month)/\(startDate.day) - \(endDate.year)/\(endDate.month)/\(endDate.day)")

@@ -33,6 +33,9 @@ class ScanCodeView: UIView {
     }
     
     func startScan() {
+        guard scanning == false else {
+            return
+        }
         NSLog("======== ScanCodeView startScan ========")
         let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
         var input: AVCaptureDeviceInput? = nil
@@ -53,6 +56,18 @@ class ScanCodeView: UIView {
         output?.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
         output?.metadataObjectTypes = output?.availableMetadataObjectTypes
         
+        //計算中間可探測區域
+        let windowSize = m_vCameraArea.bounds.size
+        var scanRect = m_vScanArea.frame
+        //計算rectOfInterest 注意x,y交換位置
+        scanRect = CGRect(x:scanRect.origin.y/windowSize.height,
+                          y:scanRect.origin.x/windowSize.width,
+                          width:scanRect.size.height/windowSize.height,
+                          height:scanRect.size.width/windowSize.width);
+        
+        //設置可探測區域
+        output?.rectOfInterest = scanRect
+        
         videoPreviewLayer = AVCaptureVideoPreviewLayer.init(session: captureSession)
         videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         videoPreviewLayer?.frame = m_vCameraArea.frame
@@ -62,13 +77,16 @@ class ScanCodeView: UIView {
         captureSession?.startRunning()
         
         drawrect()
-        startNotification()
+//        startNotification()
         scanning = true
     }
     func stopScan() {
+        guard scanning == true else {
+            return
+        }
         NSLog("======== ScanCodeView stopScan ========")
         scanning = false
-        stopNotification()
+//        stopNotification()
         captureSession?.stopRunning()
         captureSession = nil
         videoPreviewLayer?.removeFromSuperlayer()
@@ -90,19 +108,19 @@ class ScanCodeView: UIView {
 //        m_vScanArea.layer.borderColor = Green_Color.cgColor
 //        m_vScanArea.layer.borderWidth = 2
     }
-    private func startNotification() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil, queue: OperationQueue.current, using: avCaptureInputPortFormatDescriptionDidChangeNotification)
-    }
-    private func stopNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil)
-    }
-    func avCaptureInputPortFormatDescriptionDidChangeNotification(_ notification: Notification?) {
-        guard scanning else {
-            return
-        }
-        let rect : CGRect = m_vScanArea.frame
-        output?.rectOfInterest = (videoPreviewLayer?.metadataOutputRectOfInterest(for: rect))!
-    }
+//    private func startNotification() {
+//        NotificationCenter.default.addObserver(forName: NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil, queue: OperationQueue.current, using: avCaptureInputPortFormatDescriptionDidChangeNotification)
+//    }
+//    private func stopNotification() {
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil)
+//    }
+//    func avCaptureInputPortFormatDescriptionDidChangeNotification(_ notification: Notification?) {
+//        guard scanning else {
+//            return
+//        }
+//        let rect : CGRect = m_vScanArea.frame
+//        output?.rectOfInterest = (videoPreviewLayer?.metadataOutputRectOfInterest(for: rect))!
+//    }
 }
 extension ScanCodeView : AVCaptureMetadataOutputObjectsDelegate {
     func captureOutput(_ output: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
@@ -119,7 +137,7 @@ extension ScanCodeView : AVCaptureMetadataOutputObjectsDelegate {
             NSLog("掃到空的")
             return
         }
-        AudioServicesPlayAlertSound(1016)//震動
+//        AudioServicesPlayAlertSound(1016)//震動
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {() in
             NSLog("掃到[%@]", StringCodeValue)
             self.stopScan()
@@ -139,9 +157,18 @@ extension ScanCodeView {
             }
             else {
                 for strSubString : String in arrInput {
-                    if ((strSubString.range(of: "TWQRP", options: String.CompareOptions.caseInsensitive)) != nil) {
+                    if (strSubString.hasPrefix("TWQRP")) {
+//                    if ((strSubString.range(of: "TWQRP", options: String.CompareOptions.caseInsensitive)) != nil) {
                         let strNeed = strSubString.replacingOccurrences(of: "\r", with: "")
                         return strNeed
+                    }
+                    else
+                    {
+                        if ((strSubString.range(of: "TWQRP", options: String.CompareOptions.caseInsensitive)) != nil) {
+                            let ranTWQRP : Range = (strSubString.range(of: "TWQRP", options: String.CompareOptions.caseInsensitive))!
+                            let strNeed : String = strSubString.substring(from: (ranTWQRP.lowerBound))
+                            return strNeed
+                        }
                     }
                 }
             }
@@ -156,9 +183,10 @@ extension ScanCodeView {
         return setPayTaxData(nsData!)
     }
     static private func getPayTaxData(_ nsURL : String) -> String? {
-        let url : NSURL = NSURL(string: nsURL)!
-        if (url.scheme == PayTax_URL_scheme && url.host == PayTax_URL_host) {
-            let urlComponents : [String] = url.query!.components(separatedBy:"&")
+        let url : NSURL? = NSURL(string: nsURL)
+        if (url != nil) {
+        if (url!.scheme == PayTax_URL_scheme && url!.host == PayTax_URL_host) {
+            let urlComponents : [String] = url!.query!.components(separatedBy:"&")
             for keyValuePair : String in urlComponents {
                 let pairComponents : [String] = keyValuePair.components(separatedBy:"=")
                 let key : String = pairComponents.first!.removingPercentEncoding!
@@ -166,6 +194,7 @@ extension ScanCodeView {
                     return pairComponents.last!.removingPercentEncoding!
                 }
             }
+        }
         }
         return nil
     }
@@ -230,7 +259,8 @@ extension ScanCodeView {
         }
         return name ?? ""
     }
-    static func analysisQRCode(_ strData : String) -> (type : String, tax : PayTax?, qrp : MWQRPTransactionInfo?, error : String?) {
+    static func analysisQRCode(_ strOriData : String) -> (type : String, tax : PayTax?, qrp : MWQRPTransactionInfo?, error : String?) {
+        let strData = strOriData.replacingOccurrences(of: "+", with: " ")
         var type : String = ""
         var tax : PayTax? = nil
         var qrp : MWQRPTransactionInfo? = nil
@@ -242,35 +272,26 @@ extension ScanCodeView {
             if qrp?.txnCurrencyCode() != nil && qrp?.txnCurrencyCode() != "901" {
                 type = ""
                 error = String(format: "尚不支援此交易幣別(%@)", (qrp?.txnCurrencyCode())!)
-//                showAlert(title: nil, msg: String(format: "尚不支援此交易幣別(%@)", (m_qrpInfo?.txnCurrencyCode())!), confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
             }
             else {
                 switch (qrp?.transactionType)! {
                 case .purchase:
-//                    type = "01"
-//                    self.send_checkQRCode()
-                    type = ""
-                    error = "尚未提供消費扣款服務(QRS-002)"
-//                    showAlert(title: nil, msg: "尚未提供消費扣款服務(QRS-002)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                    type = "01"
+//                    type = ""
+//                    error = "尚未提供消費扣款服務(QRS-002)"
                 case .p2PTransfer:
-//                    type = "02"
-//                    self.send_checkQRCode()
-                    type = ""
-                    error = "尚未提供P2P轉帳服務(QRS-005)"
-//                    showAlert(title: nil, msg: "尚未提供P2P轉帳服務(QRS-005)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                    type = "02"
+//                    type = ""
+//                    error = "尚未提供P2P轉帳服務(QRS-005)"
                 case .bill:
-//                    type = "03"
-//                    self.send_checkQRCode()
-                    type = ""
-                    error = "尚未提供繳費服務(QRS-003)"
-//                    showAlert(title: nil, msg: "尚未提供繳費服務(QRS-003)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                    type = "03"
+//                    type = ""
+//                    error = "尚未提供繳費服務(QRS-003)"
                 case .transferPurchase:
                     type = "51"
-//                    self.send_checkQRCode()
                 default:
                     type = ""
-                    error = "尚未提供此服務(QRS-006)"
-//                    showAlert(title: nil, msg: "尚未提供此服務(QRS-006)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                    error = "尚未提供此服務"
                 }
             }
         }
@@ -279,13 +300,13 @@ extension ScanCodeView {
             tax = a.tax
             //            self.send_checkPayTaxCode()
             type = ""
-            error = "尚未提供繳稅服務(QRS-004)"
-//            showAlert(title: nil, msg: "尚未提供繳稅服務(QRS-004)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+            error = "尚未提供繳稅服務"
+//            showAlert(title: UIAlert_Default_Title, msg: "尚未提供繳稅服務(QRS-004)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
         }
         else {
             type = ""
-            error = "QRCODE格式有誤(QRS-001)"
-//            showAlert(title: nil, msg: "QRCODE格式有誤(QRS-001)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+            error = "QRCODE格式有誤"
+//            showAlert(title: UIAlert_Default_Title, msg: "QRCODE格式有誤(QRS-001)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
         }
         
         return (type, tax, qrp, error)

@@ -113,6 +113,8 @@
 		61FE9D171F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */; };
 		61FE9D181F15D23400FA32FE /* UserChangeIDPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */; };
 		61FE9D1B1F15D24500FA32FE /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61FE9D191F15D24500FA32FE /* Setting.storyboard */; };
+		BE00496121DC8FF9002122AE /* TPSMerchantInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00495F21DC8FF9002122AE /* TPSMerchantInfo.swift */; };
+		BE00496221DC8FF9002122AE /* TPSQRCodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00496021DC8FF9002122AE /* TPSQRCodeManager.swift */; };
 		BE49D0DF20FEEDF0004E6BD6 /* PolygonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE49D0DE20FEEDF0004E6BD6 /* PolygonView.swift */; };
 		BE4E900420E6270300EDDEEA /* MWQRPTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E900320E6270300EDDEEA /* MWQRPTransactionInfo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BE4E900820ECDBFF00EDDEEA /* ResultEditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE4E900720ECDBFF00EDDEEA /* ResultEditCell.xib */; };
@@ -121,6 +123,7 @@
 		BE4E901220F32BB000EDDEEA /* MakeQRCodeUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4E901120F32BB000EDDEEA /* MakeQRCodeUtility.swift */; };
 		BE4E901820F35E0F00EDDEEA /* PayTaxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4E901720F35E0F00EDDEEA /* PayTaxInfo.swift */; };
 		BE4E901A20F70D6500EDDEEA /* ScanResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4E901920F70D6400EDDEEA /* ScanResultViewController.swift */; };
+		BE741076219BF540007AF75B /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE741075219BF540007AF75B /* ColorExtension.swift */; };
 		BE7675301F0CC71400E1A461 /* FinancialInformation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE76752E1F0CC71400E1A461 /* FinancialInformation.storyboard */; };
 		BE7675331F0CCB2B00E1A461 /* NTRationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7675321F0CCB2B00E1A461 /* NTRationViewController.swift */; };
 		BE7675351F0CCBC700E1A461 /* ExchangeRateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7675341F0CCBC700E1A461 /* ExchangeRateViewController.swift */; };
@@ -139,9 +142,22 @@
 		BE86EEA21F136715003C7A36 /* NewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE86EEA11F136715003C7A36 /* NewsCell.xib */; };
 		BE86EEA41F136B9A003C7A36 /* ServiceBaseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE86EEA31F136B9A003C7A36 /* ServiceBaseCell.xib */; };
 		BE86EEA61F149A42003C7A36 /* PromotionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE86EEA51F149A42003C7A36 /* PromotionCell.xib */; };
+		BE8CDF9421228C7B004D3632 /* GPRegularAccountInfomationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8CDF9321228C7B004D3632 /* GPRegularAccountInfomationViewController.swift */; };
+		BE8CDFA22123FBD6004D3632 /* GPAcceptRulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8CDFA12123FBD6004D3632 /* GPAcceptRulesViewController.swift */; };
+		BE8CDFA421256121004D3632 /* GPTransactionDetailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8CDFA321256121004D3632 /* GPTransactionDetailDetailViewController.swift */; };
+		BE8CDFA6212AC971004D3632 /* GPDiffAmountDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE8CDFA5212AC971004D3632 /* GPDiffAmountDetailView.xib */; };
+		BE8CDFA8212AC9B2004D3632 /* GPDiffAmountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8CDFA7212AC9B2004D3632 /* GPDiffAmountDetailView.swift */; };
 		BEB38A6A1F0A27EE006094AC /* BillPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB38A681F0A27EE006094AC /* BillPaymentViewController.swift */; };
 		BEB38A6B1F0A27EE006094AC /* TaxPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB38A691F0A27EE006094AC /* TaxPaymentViewController.swift */; };
 		BEB38A6E1F0A2800006094AC /* Payment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEB38A6C1F0A2800006094AC /* Payment.storyboard */; };
+		BED66B90210EC0FF00D0D5D4 /* GoldPassbook.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BED66B8E210EC0FF00D0D5D4 /* GoldPassbook.storyboard */; };
+		BED66B95211010DB00D0D5D4 /* GPAccountInfomationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B94211010DB00D0D5D4 /* GPAccountInfomationViewController.swift */; };
+		BED66B972110112F00D0D5D4 /* GPSingleBuyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B962110112F00D0D5D4 /* GPSingleBuyViewController.swift */; };
+		BED66B992110119F00D0D5D4 /* GPSingleSellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B982110119F00D0D5D4 /* GPSingleSellViewController.swift */; };
+		BED66B9B211012B100D0D5D4 /* GPRegularSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B9A211012B100D0D5D4 /* GPRegularSubscriptionViewController.swift */; };
+		BED66B9D2110135600D0D5D4 /* GPRegularChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B9C2110135600D0D5D4 /* GPRegularChangeViewController.swift */; };
+		BED66B9F2110139800D0D5D4 /* GPTransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B9E2110139800D0D5D4 /* GPTransactionDetailViewController.swift */; };
+		BED66BA1211013F200D0D5D4 /* GPGoldPriceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66BA0211013F200D0D5D4 /* GPGoldPriceViewController.swift */; };
 		BEF0D9D220E24D0500BC9833 /* MobilePay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEF0D9D020E24D0500BC9833 /* MobilePay.storyboard */; };
 		BEF0D9D520E2512D00BC9833 /* AcceptRulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF0D9D420E2512D00BC9833 /* AcceptRulesViewController.swift */; };
 		BEF0D9D720E2519000BC9833 /* QRCodeTransViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF0D9D620E2519000BC9833 /* QRCodeTransViewController.swift */; };
@@ -290,6 +306,8 @@
 		61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdResultViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdResultViewController.swift; sourceTree = "<group>"; };
 		61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdViewController.swift; sourceTree = "<group>"; };
 		61FE9D1A1F15D24500FA32FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Setting.storyboard; sourceTree = "<group>"; };
+		BE00495F21DC8FF9002122AE /* TPSMerchantInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TPSMerchantInfo.swift; sourceTree = "<group>"; };
+		BE00496021DC8FF9002122AE /* TPSQRCodeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TPSQRCodeManager.swift; sourceTree = "<group>"; };
 		BE49D0DE20FEEDF0004E6BD6 /* PolygonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PolygonView.swift; path = UI/View/PolygonView.swift; sourceTree = "<group>"; };
 		BE4E900220E6270300EDDEEA /* MWQRPTransactionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWQRPTransactionInfo.h; sourceTree = "<group>"; };
 		BE4E900320E6270300EDDEEA /* MWQRPTransactionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWQRPTransactionInfo.m; sourceTree = "<group>"; };
@@ -299,6 +317,7 @@
 		BE4E901120F32BB000EDDEEA /* MakeQRCodeUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeQRCodeUtility.swift; sourceTree = "<group>"; };
 		BE4E901720F35E0F00EDDEEA /* PayTaxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayTaxInfo.swift; sourceTree = "<group>"; };
 		BE4E901920F70D6400EDDEEA /* ScanResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScanResultViewController.swift; path = Platform/MobilePayStoryBoard/ScanResultViewController.swift; sourceTree = "<group>"; };
+		BE741075219BF540007AF75B /* ColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorExtension.swift; path = UI/Component/ColorExtension.swift; sourceTree = "<group>"; };
 		BE76752F1F0CC71400E1A461 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FinancialInformation.storyboard; sourceTree = "<group>"; };
 		BE7675321F0CCB2B00E1A461 /* NTRationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NTRationViewController.swift; path = Platform/FinancialInformationStoryBoard/NTRationViewController.swift; sourceTree = "<group>"; };
 		BE7675341F0CCBC700E1A461 /* ExchangeRateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExchangeRateViewController.swift; path = Platform/FinancialInformationStoryBoard/ExchangeRateViewController.swift; sourceTree = "<group>"; };
@@ -317,9 +336,22 @@
 		BE86EEA11F136715003C7A36 /* NewsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewsCell.xib; path = UI/View/Cell/NewsCell.xib; sourceTree = "<group>"; };
 		BE86EEA31F136B9A003C7A36 /* ServiceBaseCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ServiceBaseCell.xib; path = UI/View/Cell/ServiceBaseCell.xib; sourceTree = "<group>"; };
 		BE86EEA51F149A42003C7A36 /* PromotionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PromotionCell.xib; path = UI/View/Cell/PromotionCell.xib; sourceTree = "<group>"; };
+		BE8CDF9321228C7B004D3632 /* GPRegularAccountInfomationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPRegularAccountInfomationViewController.swift; path = Platform/GoldPassbookStoryBoard/GPRegularAccountInfomationViewController.swift; sourceTree = "<group>"; };
+		BE8CDFA12123FBD6004D3632 /* GPAcceptRulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPAcceptRulesViewController.swift; path = Platform/GoldPassbookStoryBoard/GPAcceptRulesViewController.swift; sourceTree = "<group>"; };
+		BE8CDFA321256121004D3632 /* GPTransactionDetailDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPTransactionDetailDetailViewController.swift; path = Platform/GoldPassbookStoryBoard/GPTransactionDetailDetailViewController.swift; sourceTree = "<group>"; };
+		BE8CDFA5212AC971004D3632 /* GPDiffAmountDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GPDiffAmountDetailView.xib; path = UI/View/GPDiffAmountDetailView.xib; sourceTree = "<group>"; };
+		BE8CDFA7212AC9B2004D3632 /* GPDiffAmountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPDiffAmountDetailView.swift; path = UI/View/GPDiffAmountDetailView.swift; sourceTree = "<group>"; };
 		BEB38A681F0A27EE006094AC /* BillPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BillPaymentViewController.swift; sourceTree = "<group>"; };
 		BEB38A691F0A27EE006094AC /* TaxPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxPaymentViewController.swift; sourceTree = "<group>"; };
 		BEB38A6D1F0A2800006094AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Payment.storyboard; sourceTree = "<group>"; };
+		BED66B8F210EC0FF00D0D5D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/GoldPassbook.storyboard; sourceTree = "<group>"; };
+		BED66B94211010DB00D0D5D4 /* GPAccountInfomationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPAccountInfomationViewController.swift; path = Platform/GoldPassbookStoryBoard/GPAccountInfomationViewController.swift; sourceTree = "<group>"; };
+		BED66B962110112F00D0D5D4 /* GPSingleBuyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPSingleBuyViewController.swift; path = Platform/GoldPassbookStoryBoard/GPSingleBuyViewController.swift; sourceTree = "<group>"; };
+		BED66B982110119F00D0D5D4 /* GPSingleSellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPSingleSellViewController.swift; path = Platform/GoldPassbookStoryBoard/GPSingleSellViewController.swift; sourceTree = "<group>"; };
+		BED66B9A211012B100D0D5D4 /* GPRegularSubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPRegularSubscriptionViewController.swift; path = Platform/GoldPassbookStoryBoard/GPRegularSubscriptionViewController.swift; sourceTree = "<group>"; };
+		BED66B9C2110135600D0D5D4 /* GPRegularChangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPRegularChangeViewController.swift; path = Platform/GoldPassbookStoryBoard/GPRegularChangeViewController.swift; sourceTree = "<group>"; };
+		BED66B9E2110139800D0D5D4 /* GPTransactionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPTransactionDetailViewController.swift; path = Platform/GoldPassbookStoryBoard/GPTransactionDetailViewController.swift; sourceTree = "<group>"; };
+		BED66BA0211013F200D0D5D4 /* GPGoldPriceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPGoldPriceViewController.swift; path = Platform/GoldPassbookStoryBoard/GPGoldPriceViewController.swift; sourceTree = "<group>"; };
 		BEF0D9D120E24D0500BC9833 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MobilePay.storyboard; sourceTree = "<group>"; };
 		BEF0D9D420E2512D00BC9833 /* AcceptRulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AcceptRulesViewController.swift; path = Platform/MobilePayStoryBoard/AcceptRulesViewController.swift; sourceTree = "<group>"; };
 		BEF0D9D620E2519000BC9833 /* QRCodeTransViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QRCodeTransViewController.swift; path = Platform/MobilePayStoryBoard/QRCodeTransViewController.swift; sourceTree = "<group>"; };
@@ -467,6 +499,7 @@
 		6148D9FC1EDFE62B00C02CA3 /* Platform */ = {
 			isa = PBXGroup;
 			children = (
+				BED66B91210EC11400D0D5D4 /* GoldPassbookStoryBoard */,
 				BEF0D9D320E2502B00BC9833 /* MobilePayStoryBoard */,
 				61FE9D0A1F15D21E00FA32FE /* SettingStoryBoard */,
 				BE86EE901F135504003C7A36 /* CustomerServiceStoryBoard */,
@@ -555,6 +588,7 @@
 		6148DA1C1EDFE78E00C02CA3 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				BE741075219BF540007AF75B /* ColorExtension.swift */,
 				6125ABF11EF5509C00A2A9A3 /* TextField.swift */,
 				612A82D51F74DC7C002D280D /* extendString.swift */,
 			);
@@ -595,6 +629,8 @@
 				BE4E900920EF203400EDDEEA /* ScanCodeView.swift */,
 				BE4E900B20EF205100EDDEEA /* ScanCodeView.xib */,
 				BE49D0DE20FEEDF0004E6BD6 /* PolygonView.swift */,
+				BE8CDFA5212AC971004D3632 /* GPDiffAmountDetailView.xib */,
+				BE8CDFA7212AC9B2004D3632 /* GPDiffAmountDetailView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -610,6 +646,7 @@
 		6148DA2F1EDFE7C200C02CA3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				BE00495E21DC8FF9002122AE /* QRP_QRCode */,
 				BE4E901320F3446D00EDDEEA /* PayTaxInfo */,
 				BE4E900D20F32B1200EDDEEA /* Bank */,
 				BE4E900120E6270300EDDEEA /* QRPTransactionInfo */,
@@ -658,6 +695,7 @@
 				BE86EE8D1F135292003C7A36 /* CustomerService.storyboard */,
 				61FE9D191F15D24500FA32FE /* Setting.storyboard */,
 				BEF0D9D020E24D0500BC9833 /* MobilePay.storyboard */,
+				BED66B8E210EC0FF00D0D5D4 /* GoldPassbook.storyboard */,
 			);
 			name = StoryBoard;
 			sourceTree = "<group>";
@@ -770,6 +808,16 @@
 			name = SettingStoryBoard;
 			sourceTree = "<group>";
 		};
+		BE00495E21DC8FF9002122AE /* QRP_QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				BE00495F21DC8FF9002122AE /* TPSMerchantInfo.swift */,
+				BE00496021DC8FF9002122AE /* TPSQRCodeManager.swift */,
+			);
+			name = QRP_QRCode;
+			path = Utility/QRP_QRCode;
+			sourceTree = "<group>";
+		};
 		BE4E900120E6270300EDDEEA /* QRPTransactionInfo */ = {
 			isa = PBXGroup;
 			children = (
@@ -831,6 +879,23 @@
 			);
 			name = PaymentStoryBoard;
 			path = Platform/PaymentStoryBoard;
+			sourceTree = "<group>";
+		};
+		BED66B91210EC11400D0D5D4 /* GoldPassbookStoryBoard */ = {
+			isa = PBXGroup;
+			children = (
+				BE8CDFA12123FBD6004D3632 /* GPAcceptRulesViewController.swift */,
+				BED66B94211010DB00D0D5D4 /* GPAccountInfomationViewController.swift */,
+				BED66B962110112F00D0D5D4 /* GPSingleBuyViewController.swift */,
+				BED66B982110119F00D0D5D4 /* GPSingleSellViewController.swift */,
+				BE8CDF9321228C7B004D3632 /* GPRegularAccountInfomationViewController.swift */,
+				BED66B9A211012B100D0D5D4 /* GPRegularSubscriptionViewController.swift */,
+				BED66B9C2110135600D0D5D4 /* GPRegularChangeViewController.swift */,
+				BED66B9E2110139800D0D5D4 /* GPTransactionDetailViewController.swift */,
+				BE8CDFA321256121004D3632 /* GPTransactionDetailDetailViewController.swift */,
+				BED66BA0211013F200D0D5D4 /* GPGoldPriceViewController.swift */,
+			);
+			name = GoldPassbookStoryBoard;
 			sourceTree = "<group>";
 		};
 		BEF0D9D320E2502B00BC9833 /* MobilePayStoryBoard */ = {
@@ -988,12 +1053,14 @@
 				6173181B1EEFD12100133F7A /* LoginView.xib in Resources */,
 				BEB38A6E1F0A2800006094AC /* Payment.storyboard in Resources */,
 				61F019091EF8006A00849E94 /* ExpandView.xib in Resources */,
+				BED66B90210EC0FF00D0D5D4 /* GoldPassbook.storyboard in Resources */,
 				61564A871F09E7D900CB6C4A /* OneRowDropDownView.xib in Resources */,
 				615A77FE1FB4371000D0D03C /* agribank_pro_credential.bin in Resources */,
 				615B8D741EFCDDA8002B4B53 /* MemoView.xib in Resources */,
 				615A77F71FB436A900D0D03C /* agribank_dev_credential.bin in Resources */,
 				615A77F81FB436A900D0D03C /* 1-proto5-pub.der in Resources */,
 				614FB4131EF9013100DDD270 /* Share.storyboard in Resources */,
+				BE8CDFA6212AC971004D3632 /* GPDiffAmountDetailView.xib in Resources */,
 				BE76753D1F0E3D2F00E1A461 /* ImageConfirmView.xib in Resources */,
 				61F4F42A1EF27B9F001E3872 /* TypeSection.xib in Resources */,
 				BE7675301F0CC71400E1A461 /* FinancialInformation.storyboard in Resources */,
@@ -1034,9 +1101,11 @@
 				61DAE3481F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift in Sources */,
 				6129E6B31F038E7900C23D67 /* PassbookLoseApplyViewController.swift in Sources */,
 				BEF0D9D920E251DD00BC9833 /* QRPayViewController.swift in Sources */,
+				BED66BA1211013F200D0D5D4 /* GPGoldPriceViewController.swift in Sources */,
 				61FE9D151F15D23400FA32FE /* MessageSwitchViewController.swift in Sources */,
 				6148DA071EDFE6E500C02CA3 /* BasePhotoViewController.swift in Sources */,
 				61FE9D171F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift in Sources */,
+				BE741076219BF540007AF75B /* ColorExtension.swift in Sources */,
 				6122726F1F8F5046001FA028 /* ShowMessageHeadView.swift in Sources */,
 				BE86EE9E1F136024003C7A36 /* ServiceBaseDetailViewController.swift in Sources */,
 				BE4E901220F32BB000EDDEEA /* MakeQRCodeUtility.swift in Sources */,
@@ -1055,6 +1124,7 @@
 				6117CF3D1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift in Sources */,
 				61DB5C3A1F0E0D85006622EC /* DepositCombinedDetailViewController.swift in Sources */,
 				61352B521FC3DA1E00730082 /* SGGridMenu.m in Sources */,
+				BED66B9D2110135600D0D5D4 /* GPRegularChangeViewController.swift in Sources */,
 				617318191EEFCB4B00133F7A /* LoginView.swift in Sources */,
 				615B8D7D1EFD0CA5002B4B53 /* ConfirmViewController.swift in Sources */,
 				615006A91F0B9CD800269891 /* DepositCombinedToDepositViewController.swift in Sources */,
@@ -1064,12 +1134,15 @@
 				6148D9FF1EDFE6AC00C02CA3 /* AuthorizationManage.swift in Sources */,
 				BE86EE9C1F135F6F003C7A36 /* PersonalMessageDetailViewController.swift in Sources */,
 				6148DA2A1EDFE7A400C02CA3 /* FeatureWallView.swift in Sources */,
+				BED66B992110119F00D0D5D4 /* GPSingleSellViewController.swift in Sources */,
 				61564A8A1F09E7D900CB6C4A /* TwoRowDropDownView.swift in Sources */,
 				61B7CD0B1F458B5200145517 /* DatePickerView.swift in Sources */,
 				61F4F4281EF27B77001E3872 /* TypeSection.swift in Sources */,
+				BED66B95211010DB00D0D5D4 /* GPAccountInfomationViewController.swift in Sources */,
 				615B8D731EFCDDA8002B4B53 /* MemoView.swift in Sources */,
 				BE7675351F0CCBC700E1A461 /* ExchangeRateViewController.swift in Sources */,
 				61352B511FC3DA1E00730082 /* SGSheetMenu.m in Sources */,
+				BE8CDFA22123FBD6004D3632 /* GPAcceptRulesViewController.swift in Sources */,
 				6148D9CF1EDFD10000C02CA3 /* AppDelegate.swift in Sources */,
 				6148DA421EE1428B00C02CA3 /* MenuViewController.swift in Sources */,
 				61FE9D181F15D23400FA32FE /* UserChangeIDPwdViewController.swift in Sources */,
@@ -1088,7 +1161,9 @@
 				61F4F4301EF2B807001E3872 /* ActDetailViewController.swift in Sources */,
 				BEF0D9D520E2512D00BC9833 /* AcceptRulesViewController.swift in Sources */,
 				6148DA251EDFE7A400C02CA3 /* AnnounceNews.swift in Sources */,
+				BE00496121DC8FF9002122AE /* TPSMerchantInfo.swift in Sources */,
 				BE49D0DF20FEEDF0004E6BD6 /* PolygonView.swift in Sources */,
+				BE8CDFA8212AC9B2004D3632 /* GPDiffAmountDetailView.swift in Sources */,
 				6148DA321EDFE7D800C02CA3 /* ConnectionUtility.swift in Sources */,
 				6148DA081EDFE6E500C02CA3 /* BaseViewController.swift in Sources */,
 				61564A881F09E7D900CB6C4A /* ThreeRowDropDownView.swift in Sources */,
@@ -1098,15 +1173,21 @@
 				BEB38A6A1F0A27EE006094AC /* BillPaymentViewController.swift in Sources */,
 				6148DA271EDFE7A400C02CA3 /* BannerView.swift in Sources */,
 				61E374A41F0F6DF80044EE3A /* LoanPrincipalInterestDetailViewController.swift in Sources */,
+				BE8CDFA421256121004D3632 /* GPTransactionDetailDetailViewController.swift in Sources */,
 				BE86EE941F135598003C7A36 /* NewsViewController.swift in Sources */,
 				617318171EEFC89300133F7A /* VPImageCropperViewController.m in Sources */,
 				6148DA351EDFE7E900C02CA3 /* DetermineUtility.swift in Sources */,
+				BED66B972110112F00D0D5D4 /* GPSingleBuyViewController.swift in Sources */,
+				BED66B9B211012B100D0D5D4 /* GPRegularSubscriptionViewController.swift in Sources */,
 				61F019071EF8000B00849E94 /* ExpandView.swift in Sources */,
 				61564A8D1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift in Sources */,
 				61E374A01F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift in Sources */,
+				BE8CDF9421228C7B004D3632 /* GPRegularAccountInfomationViewController.swift in Sources */,
 				61F4F42E1EF2ADAD001E3872 /* ShowDetailViewController.swift in Sources */,
 				61FE9D121F15D23400FA32FE /* BasicInfoChangeViewController.swift in Sources */,
 				BE4E900A20EF203400EDDEEA /* ScanCodeView.swift in Sources */,
+				BE00496221DC8FF9002122AE /* TPSQRCodeManager.swift in Sources */,
+				BED66B9F2110139800D0D5D4 /* GPTransactionDetailViewController.swift in Sources */,
 				BE86EE961F1355B5003C7A36 /* ServiceBaseViewController.swift in Sources */,
 				BE4E900420E6270300EDDEEA /* MWQRPTransactionInfo.m in Sources */,
 				BE86EE981F1355CD003C7A36 /* PersonalMessageViewController.swift in Sources */,
@@ -1227,6 +1308,14 @@
 				BEB38A6D1F0A2800006094AC /* Base */,
 			);
 			name = Payment.storyboard;
+			sourceTree = "<group>";
+		};
+		BED66B8E210EC0FF00D0D5D4 /* GoldPassbook.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BED66B8F210EC0FF00D0D5D4 /* Base */,
+			);
+			name = GoldPassbook.storyboard;
 			sourceTree = "<group>";
 		};
 		BEF0D9D020E24D0500BC9833 /* MobilePay.storyboard */ = {

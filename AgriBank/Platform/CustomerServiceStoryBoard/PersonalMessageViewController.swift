@@ -56,11 +56,23 @@ class PersonalMessageViewController: BaseViewController, UITableViewDelegate, UI
                     let pushDate = (dic["pushDate"] as? String) ?? ""
                     m_Data.append(PromotionStruct(msg, pushDate, "", "", ""))
                 }
+                if (list.count > 0) {
+                    let pushDate: String = (list.first!["pushDate"] as? String)!
+                    let msgUid: String = (list.first!["msgUid"] as? String)!
+                    var personalMessageData: [String:String]? = UserDefaults.standard.object(forKey: PersonalMessageKey) as? [String:String]
+                    if (personalMessageData == nil) {
+                        personalMessageData = [String:String]()
+                    }
+                    let info = AuthorizationManage.manage.getResponseLoginInfo()
+                    let USUDID = info!.USUDID
+
+                    personalMessageData![USUDID!] = pushDate + msgUid
+                    UserDefaults.standard.set(personalMessageData, forKey: PersonalMessageKey)
+                }
                 m_tvData.reloadData()
             }
             
         default: super.didResponse(description, response)
-            
         }
     }
     

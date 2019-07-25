@@ -125,9 +125,19 @@ static NSString * const kQRPTransactionSupportPaymentType = @"10000000"; // 僅�
 - (NSString *)deadlinefinal;
 
 /**
+ * 設定繳納期限(截止日)
+ */
+- (void)setDeadlinefinal:(NSString *)deadlinefinal;
+
+/**
  * 銷帳編號
  */
 - (NSString *)noticeNbr;
+
+/**
+ * 設定銷帳編號
+ */
+- (void)setNoticeNbr:(NSString *)noticeNbr;
 
 /**
  * 費用資訊

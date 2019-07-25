@@ -117,7 +117,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         topView.layer.borderColor = Gray_Color.cgColor
 
         showBankAccountDropView = getUIByID(.UIID_TwoRowDropDownView) as? TwoRowDropDownView
-        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, Choose_Title, NTTransfer_InAccount, "")
+        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, Choose_Title)
         showBankAccountDropView?.frame = showBankAccountView.frame
         showBankAccountDropView?.frame.origin = .zero
         showBankAccountDropView?.delegate = self
@@ -287,14 +287,22 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
     private func showInAccountList(_ isAgreedAccount:Bool) {
         if isAgreedAccount {
             if agreedAccountList != nil && (agreedAccountList?.count)! > 0 {
-                let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
+                //Guester 20181120 轉入帳號增加暱稱
+                var aryBank = [String]()
+                var aryNote = [String]()
                 for info in agreedAccountList! {
-                    if let account = info["TRAC"] as? String, let bankCode = info["BKNO"] as? String {
-                        actSheet.addButton(withTitle: "(\(bankCode)) \(account)")
+                    if let account = info["TRAC"] as? String, let bankCode = info["BKNO"] as? String, let note = info["NOTE"] as? String {
+                        aryBank.append("(\(bankCode)) \(account)")
+                        aryNote.append(note)
                     }
                 }
-                actSheet.tag = ViewTag.View_InAccountActionSheet.rawValue
-                actSheet.show(in: view)
+                SGActionView.showSheet(withTitle: Choose_Title, itemTitles: aryBank, itemSubTitles: aryNote, selectedIndex: 0) { index in
+                    self.inAccountIndex = index
+                    if let info = self.agreedAccountList?[self.inAccountIndex!], let account = info["TRAC"] as? String, let bankCode = info["BKNO"] as? String {
+                        self.showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, bankCode, NTTransfer_InAccount, account)
+                    }
+                }
+                //Guester 20181120 轉入帳號增加暱稱 End
             }
             else {
                 showErrorMessage(nil, ErrorMsg_GetList_InAgreedAccount)
@@ -405,7 +413,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         bankNameIndex = nil
         showBankDorpView?.setOneRow(NTTransfer_BankCode, Choose_Title)
         inAccountIndex = nil
-        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, Choose_Title, NTTransfer_InAccount, "")
+        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, Choose_Title)
         accountTypeSegCon.selectedSegmentIndex = 0
     }
     
@@ -458,17 +466,20 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         showBankAccountView.isHidden = false
         showBankAccountHeight.constant = sShowBankAccountHeight
         inAccountIndex = nil
-        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, Choose_Title, NTTransfer_InAccount, "")
+        showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, Choose_Title)
     }
  
     @IBAction func clickNonPredesignatedBtn(_ sender: Any) { // 非約定轉帳
+//        guard self.checkLocationAuthorization() == true else {
+//            return
+//        }
         setLoading(true)
         if AuthorizationManage.manage.canEnterNTNonAgreedTransfer() {
             if !SecurityUtility.utility.isJailBroken() {
                 if let info = AuthorizationManage.manage.getResponseLoginInfo() {
                     VaktenManager.sharedInstance().authenticateOperation(withSessionID: info.Token ?? "") { resultCode in
                         if VIsSuccessful(resultCode) {
-                            self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
+                            self.postRequest("Comm/COMM0802", "COMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03001","Operate":"KPDeviceCF","TransactionId":self.transactionId,"userIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                         }
                         else {
                             self.SetBtnColor(true)
@@ -511,12 +522,13 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
             showBankAccountView.isHidden = false
             showBankAccountHeight.constant = sShowBankAccountHeight
             inAccountIndex = nil
-            showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, Choose_Title, NTTransfer_InAccount, "")
+            showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, Choose_Title)
     //Guester 20180626
         case 2: // QR Code轉帳
-            let controller = getControllerByID(.FeatureID_AcceptRules)
-            (controller as! AcceptRulesViewController).m_nextFeatureID = .FeatureID_QRCodeTrans
-            navigationController?.pushViewController(controller, animated: true)
+            enterFeatureByID(.FeatureID_QRCodeTrans, false)
+//            let controller = getControllerByID(.FeatureID_AcceptRules)
+//            (controller as! AcceptRulesViewController).m_nextFeatureID = .FeatureID_QRCodeTrans
+//            navigationController?.pushViewController(controller, animated: true)
     //Guester 20180626 End
         default:
             break
@@ -671,7 +683,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
                 transAmountTextfield.text = ""
                 memoTextfield.text = ""
                 emailTextfield.text = ""
-                showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, Choose_Title, NTTransfer_InAccount, "")
+                showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, Choose_Title)
                 
             case ViewTag.View_InAccountActionSheet.rawValue:
                 inAccountIndex = buttonIndex-1

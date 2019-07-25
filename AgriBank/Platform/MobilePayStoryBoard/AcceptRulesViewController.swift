@@ -10,6 +10,8 @@ import UIKit
 
 class AcceptRulesViewController: BaseViewController {
     var m_nextFeatureID : PlatformFeatureID? = nil
+    var m_dicData : [String:String]? = nil
+    private var gesture:UIPanGestureRecognizer? = nil
     @IBOutlet var m_wvContent: UIWebView!
     @IBOutlet var m_btnCheck: UIButton!
     @IBAction func m_btnCheckClick(_ sender: Any) {
@@ -24,7 +26,6 @@ class AcceptRulesViewController: BaseViewController {
             showErrorMessage("錯誤", "沒帶FeatureID")
             return
         }
-//        enterFeatureByID(m_nextFeatureID!, false)
         self.send_confirm()
     }
     
@@ -32,21 +33,37 @@ class AcceptRulesViewController: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-//        m_wvContent.loadRequest(URLRequest.init(url: URL.init(string: "https://www.google.com")!))
-        let content: String = AuthorizationManage.manage.getQRPAcception().Content
+        let lButton = UIButton(type: .custom)
+        lButton.frame = CGRect(x: 0, y: 0, width: BarItem_Height_Weight, height: BarItem_Height_Weight)
+        lButton.addTarget(self, action: #selector(clickBackBarItem), for: .touchUpInside)
+        lButton.setImage(UIImage(named: ImageName.BackBarItem.rawValue), for: .normal)
+        lButton.setImage(UIImage(named: ImageName.BackBarItem.rawValue), for: .highlighted)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: lButton)
+        navigationItem.hidesBackButton = true
+        navigationItem.rightBarButtonItem = nil
+        gesture = UIPanGestureRecognizer(target: self, action: #selector(HandlePanGesture))
+        navigationController?.view.addGestureRecognizer(gesture!)
+
+        let content: String = m_dicData?["Content"] ?? ""
         m_wvContent.loadHTMLString(content, baseURL: nil)
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        if gesture != nil {
+            navigationController?.view.removeGestureRecognizer(gesture!)
+        }
+        super.viewWillDisappear(animated)
+    }
     func send_confirm() {
-        let version: String = AuthorizationManage.manage.getQRPAcception().Version
+        self.setLoading(true)
+//        let version: String = AuthorizationManage.manage.getQRPAcception().Version
+        let version: String = m_dicData?["Version"] ?? ""
         postRequest("QR/QR0102", "QR0102", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"termsConfirm","TransactionId":transactionId,"Version":version,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
     }
     override func didResponse(_ description:String, _ response: NSDictionary) {
+        self.setLoading(false)
         switch description {
         case "QR0102":
-//            if let data = response.object(forKey: ReturnData_Key) as? [String:String] {
-//                AuthorizationManage.manage.setQRPAcception(data)
-                enterFeatureByID(m_nextFeatureID!, true)
-//            }
+            enterFeatureByID(m_nextFeatureID!, true)
             break
         default:
             super.didResponse(description, response)
@@ -56,5 +73,6 @@ class AcceptRulesViewController: BaseViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    func HandlePanGesture(_ sender: UIPanGestureRecognizer) {}
+
 }

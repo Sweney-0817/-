@@ -59,7 +59,7 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let height = ResultCell.GetStringHeightByWidthAndFontSize((data?.list?[indexPath.row][Response_Value]!)!, m_tvData.frame.size.width)
+        let height = ResultCell.GetStringHeightByWidthAndFontSize((data?.list?[indexPath.row][Response_Value] as? String ?? "")!, m_tvData.frame.size.width)
         return height
     }
     
@@ -67,13 +67,16 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
         if section == 0 {
             return tableView.sectionFooterHeight
         }
-        else {
+        else if section == 2 {
             if (data?.memo)!.isEmpty {
                 return 0
             }
             else {
                 return MemoView.GetStringHeightByWidthAndFontSize((data?.memo)!, m_tvData.frame.width)
             }
+        }
+        else {
+            return 0
         }
     }
     
@@ -84,39 +87,56 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
             head.titleLabel.text = data?.title
             return head
         }
+//        else {
+//            if (data?.memo)!.isEmpty {
+//                return nil
+//            }
+//            else {
+//                let footer = getUIByID(.UIID_MemoView) as! MemoView
+//                footer.set((data?.memo)!)
+//                return footer
+//            }
+//        }
+        else if section == 2 {
+            let footer = getUIByID(.UIID_MemoView) as! MemoView
+            footer.set((data?.memo)!)
+            return footer
+        }
         else {
-            if (data?.memo)!.isEmpty {
-                return nil
-            }
-            else {
-                let footer = getUIByID(.UIID_MemoView) as! MemoView
-                footer.set((data?.memo)!)
-                return footer
-            }
+            return nil
         }
     }
     
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 0
-        }
-        else {
+        if section == 1 {
             if data?.list?.count != nil {
                 return (data?.list?.count)!
             }
-            
             return 0
         }
+        else {
+            return 0
+        }
+//        if section == 0 {
+//            return 0
+//        }
+//        else {
+//            if data?.list?.count != nil {
+//                return (data?.list?.count)!
+//            }
+//
+//            return 0
+//        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
-        cell.set((data?.list?[indexPath.row][Response_Key]!)!, (data?.list?[indexPath.row][Response_Value]!)!)
+        cell.set((data?.list?[indexPath.row][Response_Key] as? String ?? "")!, (data?.list?[indexPath.row][Response_Value] as? String ?? "")!)
         return cell
     }
 }

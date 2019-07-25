@@ -36,17 +36,17 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         self.backgroundColor = Disable_Color
         
         let xStrart:CGFloat = 30
-        let yStart:CGFloat = 100
-        let pickerWidth = frame.size.width - 2*xStrart
-        var pickerHeight:CGFloat = 200
+        let yStart:CGFloat = self.frame.size.height * 0.1//100
         let titleHeight:CGFloat = 30
-        let doneButtonHeight:CGFloat = 40
         let space:CGFloat = 10
-        
-        let maxY = yStart + titleHeight*2 + pickerHeight*2 + space*2
-        if maxY > self.frame.maxY {
-            pickerHeight = 150
-        }
+        let doneButtonHeight:CGFloat = 40
+        let pickerWidth = frame.size.width - 2 * xStrart
+        let pickerHeight:CGFloat = (self.frame.size.height * 0.8 - titleHeight * 2 - space * 2 - doneButtonHeight) / 2//200
+
+//        let maxY = yStart + titleHeight*2 + pickerHeight*2 + space*2 + doneButtonHeight
+//        if maxY > self.frame.maxY {
+//            pickerHeight = 150
+//        }
         
         let startLabel = UILabel(frame: CGRect(x: xStrart, y: yStart, width: pickerWidth, height: titleHeight))
         startLabel.text = "起始日"

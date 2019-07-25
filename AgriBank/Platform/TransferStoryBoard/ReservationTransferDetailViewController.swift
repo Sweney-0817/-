@@ -19,6 +19,11 @@ struct ReservationTransDetailStruct {
     var amount = ""                // 金額
     var memo = ""                  // 交易備註
     var trmseq = ""                // 櫃檯機編號
+    //Guester 20181120 新增轉帳生效、終止日
+    var bIsSpecific: Bool = true    //是否為特定日期
+    var STDATE: String? = nil     //轉帳生效日
+    var STPDAY: String? = nil     //轉帳終止日
+    //Guester 20181120 新增轉帳生效、終止日 End
 }
 
 class ReservationTransferDetailViewController: BaseViewController, UITableViewDataSource {
@@ -89,6 +94,22 @@ class ReservationTransferDetailViewController: BaseViewController, UITableViewDa
             dataConfirm.list?.append([Response_Key:"金額",Response_Value:input?.amount.separatorThousand() ?? ""])
             dataConfirm.list?.append([Response_Key:"交易備註",Response_Value:input?.memo ?? ""])
             dataConfirm.list?.append([Response_Key:"登錄序號",Response_Value:input?.serialNumber ?? ""])
+            //Guester 20181120 新增轉帳生效、終止日
+            if (input?.bIsSpecific == false) {
+                if (input?.STDATE != nil) {
+                    dataConfirm.list?.append([Response_Key:"轉帳生效日",Response_Value:(input?.STDATE!)!])
+                }
+                else {
+                    dataConfirm.list?.append([Response_Key:"轉帳生效日",Response_Value: "-"])
+                }
+                if (input?.STPDAY != nil) {
+                    dataConfirm.list?.append([Response_Key:"轉帳終止日",Response_Value:(input?.STPDAY!)!])
+                }
+                else {
+                    dataConfirm.list?.append([Response_Key:"轉帳終止日",Response_Value: "-"])
+                }
+            }
+            //Guester 20181120 新增轉帳生效、終止日 End
             enterConfirmResultController(true, dataConfirm, true)
         }
     }

@@ -8,10 +8,16 @@
 
 import Foundation
 import UIKit
+import CoreLocation
+import SystemConfiguration.CaptiveNetwork
 
 #if DEBUG
 let URL_PROTOCOL = "http"
-let URL_DOMAIN = "172.16.132.52/APP/api"
+let URL_DOMAIN = "mbapiqa.naffic.org.tw/APP/api"
+//for test
+//let URL_DOMAIN = "122.147.4.202/FFICMAPI/api"//Roy測試假電文
+//let URL_PROTOCOL = "https"
+//let URL_DOMAIN = "mbapi.naffic.org.tw/APP/api"
 #else
 let URL_PROTOCOL = "https"
 let URL_DOMAIN = "mbapi.naffic.org.tw/APP/api"
@@ -32,6 +38,8 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     var curFeatureID:PlatformFeatureID? = nil   // 即將要登入的功能ID
     var touchTap:UITapGestureRecognizer? = nil  // 手勢: 用來關閉Textfield
     var tempTransactionId = ""                  // 暫存「繳費」「繳稅」的transactionId
+    var m_bCanEnterQRP: Bool = false            // 暫存是否可進入QRP
+    var m_bCanEnterGP: Bool = false             // 暫存是否可進入黃金存摺
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -52,7 +60,28 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         lButton.setImage(UIImage(named: imageName), for: .highlighted)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: lButton)
         
-        navigationController?.navigationBar.barTintColor = NavigationBar_Color
+        // 設定NavigationBar顏色
+        if let navigationBar = self.navigationController?.navigationBar {
+            let gradient = CAGradientLayer()
+            gradient.frame = navigationBar.frame
+            gradient.colors = [UIColor(netHex: 0xf0f36c).cgColor, UIColor(netHex: 0xe3a721).cgColor]
+            gradient.locations = [0.0, 1.0]
+            
+            if let image = getImageFrom(gradientLayer: gradient) {
+                navigationBar.setBackgroundImage(image, for: UIBarMetrics.default)
+            }
+        }
+    }
+    
+    func getImageFrom(gradientLayer:CAGradientLayer) -> UIImage? {
+        var gradientImage:UIImage?
+        UIGraphicsBeginImageContext(gradientLayer.frame.size)
+        if let context = UIGraphicsGetCurrentContext() {
+            gradientLayer.render(in: context)
+            gradientImage = UIGraphicsGetImageFromCurrentImageContext()?.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
+        }
+        UIGraphicsEndImageContext()
+        return gradientImage
     }
     
     override func didReceiveMemoryWarning() {
@@ -60,20 +89,27 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        originalY = view.frame.origin.y
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.topItem?.title = getFeatureName(getCurrentFeatureID())
         navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.white]
+        originalY = view.frame.origin.y
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         dismissKeyboard()
+        removeObserverToKeyBoard()
         super.viewWillDisappear(animated)
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        removeObserverToKeyBoard()
         if touchTap != nil {
             view.removeGestureRecognizer(touchTap!)
             touchTap = nil
@@ -131,59 +167,86 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             Platform.plat.popToRootViewController()
             navigationController?.popToRootViewController(animated: animated)
         }
+        //for test
+//        else if ID == .FeatureID_QRCodeTrans || ID == .FeatureID_QRPay {
+//            let con = navigationController?.viewControllers.first
+//                if con is HomeViewController {
+//                    self.navigationController?.popToRootViewController(animated: false)
+//                    (con as! HomeViewController).pushFeatureController(ID, animated)
+//                }
+//        }
         else {
             if AuthorizationManage.manage.CanEnterFeature(ID) { // 判斷是否需要登入
-                var canEnter = true
-                switch ID {
-                case .FeatureID_TaxPayment, .FeatureID_BillPayment:
-                    canEnter = false
-                    if SecurityUtility.utility.isJailBroken() {
-                        showErrorMessage(ErrorMsg_IsJailBroken, nil)
-                    }
-                    else {
-                        var workCode = ""
-                        if ID == .FeatureID_TaxPayment {
-                            workCode = "05001"
-                        }
-                        else if ID == .FeatureID_BillPayment {
-                            workCode = "05002"
-                        }
-                        getTransactionID(workCode, BaseTransactionID_Description)
-                        curFeatureID = ID
-                    }
-                    //Guester 20180626
-                case .FeatureID_QRCodeTrans, .FeatureID_QRPay:
-                    canEnter = false
-                    if SecurityUtility.utility.isJailBroken() {
-                        showErrorMessage(ErrorMsg_IsJailBroken, nil)
-                    }
-                    else if AuthorizationManage.manage.canEnterQRP() == false {
-                        //for test
-                        getTransactionID("09001", BaseTransactionID_Description)
-//                        self.postRequest("QR/QR0101", "QR0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"getTerms","TransactionId":"tranId","LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
-                        curFeatureID = ID
-                        
-                    }
-                    else {
-                        canEnter = true
-                    }
-                    //Guester 20180626 End
-                    //for test
-                    let i = Int(Date().timeIntervalSince1970)
-                    if (i % 2 == 0) {
+                if (AuthorizationManage.manage.checkAuth(ID) == true) {
+                    var canEnter = true
+                    switch ID {
+                    case .FeatureID_TaxPayment, .FeatureID_BillPayment:
                         canEnter = false
-                        let controller = getControllerByID(.FeatureID_AcceptRules)
-                        (controller as! AcceptRulesViewController).m_nextFeatureID = ID
-                        navigationController?.pushViewController(controller, animated: true)
-                    }
+                        if SecurityUtility.utility.isJailBroken() {
+                            showErrorMessage(ErrorMsg_IsJailBroken, nil)
+                        }
+                        else {
+//                            if (checkLocationAuthorization() == true) {
+                                var workCode = ""
+                                if ID == .FeatureID_TaxPayment {
+                                    workCode = "05001"
+                                }
+                                else if ID == .FeatureID_BillPayment {
+                                    workCode = "05002"
+                                }
+                                getTransactionID(workCode, BaseTransactionID_Description)
+                                curFeatureID = ID
+//                            }
+                        }
+                    //Guester 20180626
+                    case .FeatureID_QRCodeTrans, .FeatureID_QRPay:
+                        canEnter = false
+                        if SecurityUtility.utility.isJailBroken() {
+                            showErrorMessage(ErrorMsg_IsJailBroken, nil)
+                        }
+                        else if m_bCanEnterQRP == false {
+                            if !AuthorizationManage.manage.getCanEnterQRPay() {
+                                showErrorMessage(nil, ErrorMsg_NoAuth)
+                            }
+//                            else if (checkLocationAuthorization() == true) {
+                            else {
+                                getTransactionID("09001", BaseTransactionID_Description)
+                                curFeatureID = ID
+                            }
+                        }
+                        else {
+                            canEnter = true
+                            m_bCanEnterQRP = false
+                        }
                     //Guester 20180626 End
-                default: break
-                }
-                
-                if canEnter, let con = navigationController?.viewControllers.first {
-                    if con is HomeViewController {
-                        (con as! HomeViewController).pushFeatureController(ID, animated)
+                    //Guester 20180731
+                    case .FeatureID_GPSingleBuy, .FeatureID_GPSingleSell:
+                        canEnter = false
+                        if m_bCanEnterGP == false {
+                            getTransactionID("10001", BaseTransactionID_Description)
+                            curFeatureID = ID
+                        }
+                        else {
+                            canEnter = true
+                            m_bCanEnterGP = false
+                        }
+                    //Guester 20180731 End
+//                    case .FeatureID_DeviceBinding:
+//                        if (checkLocationAuthorization() == false) {
+//                            canEnter = false
+//                        }
+                    default: break
                     }
+                    
+                    if canEnter, let con = navigationController?.viewControllers.first {
+                        if con is HomeViewController {
+                            self.navigationController?.popToRootViewController(animated: false)
+                            (con as! HomeViewController).pushFeatureController(ID, animated)
+                        }
+                    }
+                }
+                else {
+                    showErrorMessage(nil, ErrorMsg_NoAuth)
                 }
             }
             else {
@@ -207,25 +270,28 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         }
     }
     
-    func enterConfirmResultController(_ isConfirm:Bool, _ data:ConfirmResultStruct, _ animated:Bool) {
+    func enterConfirmResultController(_ isConfirm:Bool, _ data:ConfirmResultStruct, _ animated:Bool, _ title:String? = nil) {
         if isConfirm {
             let controller = getControllerByID(.FeatureID_Confirm)
             (controller as! ConfirmViewController).transactionId = transactionId
             (controller as! ConfirmViewController).setData(data)
+            (controller as! ConfirmViewController).m_strTitle = title
             navigationController?.pushViewController(controller, animated: animated)
         }
         else {
             let controller = getControllerByID(.FeatureID_Result)
             (controller as! ResultViewController).transactionId = transactionId
             (controller as! ResultViewController).setData(data)
+//            (controller as! ConfirmViewController).m_strTitle = title
             navigationController?.pushViewController(controller, animated: animated)
         }
     }
     
-    func enterConfirmOTPController(_ data:ConfirmOTPStruct, _ animated:Bool) {
+    func enterConfirmOTPController(_ data:ConfirmOTPStruct, _ animated:Bool, _ title:String? = nil) {
         let controller = getControllerByID(.FeatureID_Confirm)
         (controller as! ConfirmViewController).transactionId = transactionId
         (controller as! ConfirmViewController).setDataNeedOTP(data)
+        (controller as! ConfirmViewController).m_strTitle = title
         navigationController?.pushViewController(controller, animated: animated)
     }
     
@@ -297,7 +363,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     func showLoginView() { // 顯示Login畫面
         if loginView == nil {
             loginView = getUIByID(.UIID_Login) as? LoginView
-            loginView?.frame = view.frame
+            loginView?.frame = CGRect(origin: .zero, size: view.frame.size)
             loginView?.delegate = self
             getCanLoginBankInfo()
             getImageConfirm()
@@ -306,8 +372,51 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             addGestureForKeyBoard()
         }
     }
-    
-    func getLocalIPAddressForCurrentWiFi() -> String {
+    //取得連線的網路，wifi回名稱，4G回空
+    private func getUsedSSID() -> String {
+        let interfaces = CNCopySupportedInterfaces()
+        var ssid = ""
+        if interfaces != nil {
+            let interfacesArray = CFBridgingRetain(interfaces) as! Array<AnyObject>
+            if interfacesArray.count > 0 {
+                let interfaceName = interfacesArray[0] as! CFString
+                let ussafeInterfaceData = CNCopyCurrentNetworkInfo(interfaceName)
+                if (ussafeInterfaceData != nil) {
+                    let interfaceData = ussafeInterfaceData as! Dictionary<String, Any>
+                    ssid = interfaceData["SSID"]! as! String
+                }
+            }
+        }
+        return ssid
+    }
+    //取得4G IP
+    private func GetIPAddresses() -> String? {
+        var addresses = [String]()
+        
+        var ifaddr : UnsafeMutablePointer<ifaddrs>? = nil
+        if getifaddrs(&ifaddr) == 0 {
+            var ptr = ifaddr
+            while (ptr != nil) {
+                let flags = Int32(ptr!.pointee.ifa_flags)
+                var addr = ptr!.pointee.ifa_addr.pointee
+                if (flags & (IFF_UP|IFF_RUNNING|IFF_LOOPBACK)) == (IFF_UP|IFF_RUNNING) {
+                    if addr.sa_family == UInt8(AF_INET) || addr.sa_family == UInt8(AF_INET6) {
+                        var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                        if (getnameinfo(&addr, socklen_t(addr.sa_len), &hostname, socklen_t(hostname.count),nil, socklen_t(0), NI_NUMERICHOST) == 0) {
+                            if let address = String(validatingUTF8:hostname) {
+                                addresses.append(address)
+                            }
+                        }
+                    }
+                }
+                ptr = ptr!.pointee.ifa_next
+            }
+            freeifaddrs(ifaddr)
+        }
+        return addresses.first
+    }
+    //取得wifi IP
+    private func getLocalIPAddressForCurrentWiFi() -> String {
         var address:String = Default_IP_Address
         // get list of all interfaces on the local machine
         var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
@@ -340,6 +449,14 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         freeifaddrs(ifaddr)
         return address
     }
+    func getIP() -> String {
+        if (getUsedSSID().isEmpty == true) {
+            return GetIPAddresses() ?? Default_IP_Address
+        }
+        else {
+            return getLocalIPAddressForCurrentWiFi()
+        }
+    }
 
     // MARK: - LoginDelegate
     func clickLoginBtn(_ info:LoginStrcture) {
@@ -359,8 +476,9 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
             view.removeGestureRecognizer(touchTap!)
             touchTap = nil
         }
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        removeObserverToKeyBoard()
     }
     
     // MARK: - UIBarButtonItem Selector
@@ -382,12 +500,16 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     
     // MARK: - KeyBoard
     func addObserverToKeyBoard() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        removeObserverToKeyBoard()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
+    func removeObserverToKeyBoard() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    var originalY: CGFloat = 0
     func keyboardWillShow(_ notification:NSNotification) {
         if loginView != nil, !(loginView?.isNeedRise())! {
             view.frame.origin.y = 0
@@ -397,11 +519,11 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
         let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
         let keyboardHeight = keyboardRectangle.height
-        view.frame.origin.y = -keyboardHeight
+        view.frame.origin.y = originalY - keyboardHeight
     }
     
     func keyboardWillHide(_ notification:NSNotification) {
-        view.frame.origin.y = 0
+        view.frame.origin.y = originalY
     }
     
     func addGestureForKeyBoard() {
@@ -483,8 +605,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 if let info = AuthorizationManage.manage.GetLoginInfo() {
                     let idMd5 = SecurityUtility.utility.MD5(string: info.id)
                     let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
+                    let idMd5_1 = SecurityUtility.utility.MD5(string: info.id.uppercased())
+                    let pdMd5_1 = SecurityUtility.utility.MD5(string: info.password.uppercased())
                     setLoading(true)
-                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                    postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"ID1":idMd5_1,"PWD1":pdMd5_1, "KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                 }
             }
             else {
@@ -532,6 +656,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 if let balance = data["TotalBalance"] as? String {
                     info.Balance = balance
                 }
+                if let tBalance = data["TotalTBalance"] as? String {
+                    info.TBalance = tBalance
+                }
                 if let STATUS = data["STATUS"] as? String {
                     info.STATUS = STATUS
                 }
@@ -557,7 +684,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         AuthorizationManage.manage.setLoginStatus(true)
                         if curFeatureID != nil {
                             enterFeatureByID(curFeatureID!, true)
-                            curFeatureID = nil
+                            if (curFeatureID != .FeatureID_QRPay && curFeatureID != .FeatureID_QRCodeTrans) {
+                                curFeatureID = nil
+                            }
                         }
                         
                     case Account_Status_ForcedChange_Password:
@@ -582,8 +711,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
                         alert.addAction(UIAlertAction(title: Cancel_Title, style: .default) { _ in
                             DispatchQueue.main.async {
                                 if self.curFeatureID != nil {
-                                    self.enterFeatureByID(self.curFeatureID!, true)
-                                    self.curFeatureID = nil
+                                    self.enterFeatureByID(self.curFeatureID!, false)
+                                    if (self.curFeatureID != .FeatureID_QRPay && self.curFeatureID != .FeatureID_QRCodeTrans) {
+                                        self.curFeatureID = nil
+                                    }
                                 }
                                 else {
                                     if self is HomeViewController {
@@ -643,7 +774,13 @@ extension BaseViewController: ConnectionUtilityDelegate {
 //            curFeatureID = nil
             
         case BaseTransactionID_Description:
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+            if (self.curFeatureID == .FeatureID_GPSingleBuy || self.curFeatureID == .FeatureID_GPSingleSell) {
+                if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
+                    tempTransactionId = tranId
+                    self.postRequest("Gold/Gold0101", "Gold0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10001","Operate":"getTerms","TransactionId":tempTransactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+                }
+            }
+            else if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 tempTransactionId = tranId
                 if let info = AuthorizationManage.manage.getResponseLoginInfo() {
                     setLoading(true)
@@ -659,10 +796,9 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                     else if self.curFeatureID! == .FeatureID_BillPayment {
                                         workCode = "05002"
                                     }
-                                    self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
+                                    self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":workCode,"Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                                 case .FeatureID_QRCodeTrans?, .FeatureID_QRPay?:
-                                    self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getLocalIPAddressForCurrentWiFi()], true), AuthorizationManage.manage.getHttpHead(true))
-//                                    self.postRequest("QR/QR0101", "QR0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"getTerms","TransactionId":tranId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+                                    self.postRequest("Comm/COMM0802", "BaseCOMM0802", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"KPDeviceCF","TransactionId":tranId,"userIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                                 default:
                                     break
                                 }
@@ -693,16 +829,35 @@ extension BaseViewController: ConnectionUtilityDelegate {
 //            print(response)
         case "QR0101":
             if let data = response.object(forKey: ReturnData_Key) as? [String:String] {
-                AuthorizationManage.manage.setQRPAcception(data)
-                if (AuthorizationManage.manage.canEnterQRP()) {
-                    enterFeatureByID(curFeatureID!, true)
+//                AuthorizationManage.manage.setQRPAcception(data)
+//                if (AuthorizationManage.manage.canEnterQRP()) {
+                if (data["Read"] == "Y") {
+                    m_bCanEnterQRP = true
+                    enterFeatureByID(curFeatureID!, false)
                 }
                 else {
                     let controller = getControllerByID(.FeatureID_AcceptRules)
-                    //for test
+                    (controller as! AcceptRulesViewController).m_dicData = data
                     (controller as! AcceptRulesViewController).m_nextFeatureID = curFeatureID
-//                    (controller as! AcceptRulesViewController).m_nextFeatureID = .FeatureID_QRPay
                     (controller as! AcceptRulesViewController).transactionId = tempTransactionId
+                    navigationController?.pushViewController(controller, animated: true)
+                }
+            }
+            curFeatureID = nil
+            tempTransactionId = ""
+        case "Gold0101":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:String] {
+//                AuthorizationManage.manage.setGoldAcception(data)
+//                if (AuthorizationManage.manage.canEnterGold()) {
+                if (data["Read"] == "Y") {
+                    m_bCanEnterGP = true
+                    enterFeatureByID(curFeatureID!, false)
+                }
+                else {
+                    let controller = getControllerByID(.FeatureID_GPAcceptRules)
+                    (controller as! GPAcceptRulesViewController).m_dicAcceptData = data
+                    (controller as! GPAcceptRulesViewController).m_nextFeatureID = curFeatureID
+                    (controller as! GPAcceptRulesViewController).transactionId = tempTransactionId
                     navigationController?.pushViewController(controller, animated: true)
                 }
             }
@@ -721,9 +876,12 @@ extension BaseViewController: ConnectionUtilityDelegate {
              "LOSE0101","LOSE0201","LOSE0301","LOSE0302",
              "PAY0103","PAY0105","PAY0107",
              "USIF0102","USIF0201","USIF0301",
-             "COMM0102","COMM0801","COMM0103","QR0302":
+             "COMM0102","COMM0801","COMM0103",
+             "QR0302","QR0402","QR0502","QR0702",//QRP
+             "Gold0301","Gold0302","Gold0401","Gold0402","Gold0403","Gold0404"://黃金存摺
             didResponse(description, response)
-            
+        case "QR0201"://checkQRCode 自行處理回來的結果(因為有錯誤時，關閉alert後要重啟相機)
+            didResponse(description, response)
         default:
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String {
                 if returnCode == ReturnCode_Success {
@@ -742,8 +900,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
                             if let info = AuthorizationManage.manage.GetLoginInfo() {
                                 let idMd5 = SecurityUtility.utility.MD5(string: info.id)
                                 let pdMd5 = SecurityUtility.utility.MD5(string: info.password)
+                                let idMd5_1 = SecurityUtility.utility.MD5(string: info.id.uppercased())
+                                let pdMd5_1 = SecurityUtility.utility.MD5(string: info.password.uppercased())
                                 self.setLoading(true)
-                                self.postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark], true), AuthorizationManage.manage.getHttpHead(true))
+                                self.postRequest("Comm/COMM0101", "COMM0101",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.account,"ID":idMd5,"PWD":pdMd5,"ID1":idMd5_1,"PWD1":pdMd5_1,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                             }
                         }
                     })
@@ -779,17 +939,18 @@ extension BaseViewController: ConnectionUtilityDelegate {
                             
                         default:
                             if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
-                                showErrorMessage(nil, returnMsg)
+                                if (self is HomeViewController && response.object(forKey:"ReturnCode") as? String == "E_TRAN0000_01") {
+                                    //首頁的transactionID無效時不跳錯誤訊息
+                                }
+                                else {
+                                    showErrorMessage(nil, returnMsg)
+                                }
                             }
                         }
                     }
                     /*  登入失敗，需要重取圖形驗證碼 */
                     if description == "COMM0101" {
                         getImageConfirm()
-                    }
-                    //checkQRCode回錯時須重啟相機
-                    if (description == "QR0201") {
-                        (self as! QRPayViewController).startScan()
                     }
                 }
             }
@@ -807,6 +968,33 @@ extension BaseViewController: ConnectionUtilityDelegate {
         }
         else {
             showErrorMessage(nil, error.localizedDescription)
+        }
+    }
+}
+//Mark - 檢查定位權限
+extension BaseViewController {
+    func checkLocationAuthorization() -> Bool {
+        if (CLLocationManager.authorizationStatus() == .authorizedAlways ||
+            CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
+            return true
+        }
+        else {
+            showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_NoPositioning, confirmTitle: Determine_Title, cancleTitle: Cancel_Title, completionHandler: { self.goToSetting() }, cancelHandelr: {()})
+            return false
+        }
+    }
+    func goToSetting() {
+        guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+            return
+        }
+        if UIApplication.shared.canOpenURL(settingsUrl)  {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                })
+            }
+            else  {
+                UIApplication.shared.openURL(settingsUrl)
+            }
         }
     }
 }

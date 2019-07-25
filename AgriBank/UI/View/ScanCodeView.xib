@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -40,7 +39,11 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a1n-Au-qQG">
-                    <rect key="frame" x="328" y="614" width="30" height="25"/>
+                    <rect key="frame" x="292" y="597" width="78" height="65"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="a1n-Au-qQG" secondAttribute="height" multiplier="6:5" id="Bxy-Yl-gQc"/>
+                        <constraint firstAttribute="width" constant="78" id="EhD-HL-Hhr"/>
+                    </constraints>
                     <state key="normal" image="icImage"/>
                     <connections>
                         <action selector="m_btnAlbumClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="kvn-xY-C0L"/>
@@ -51,10 +54,10 @@
             <constraints>
                 <constraint firstItem="mMV-gz-Phi" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="09h-xS-dGO"/>
                 <constraint firstItem="mMV-gz-Phi" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="2S4-fN-IRS"/>
-                <constraint firstAttribute="bottom" secondItem="a1n-Au-qQG" secondAttribute="bottom" constant="28" id="AZW-PH-Rl1"/>
+                <constraint firstAttribute="bottom" secondItem="a1n-Au-qQG" secondAttribute="bottom" constant="5" id="AZW-PH-Rl1"/>
                 <constraint firstItem="mMV-gz-Phi" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" constant="-34" id="I6d-ud-bPM"/>
                 <constraint firstItem="hbT-o0-24U" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Jg8-A3-2WR"/>
-                <constraint firstAttribute="trailing" secondItem="a1n-Au-qQG" secondAttribute="trailing" constant="17" id="Sjm-Z4-RUU"/>
+                <constraint firstAttribute="trailing" secondItem="a1n-Au-qQG" secondAttribute="trailing" constant="5" id="Sjm-Z4-RUU"/>
                 <constraint firstItem="mMV-gz-Phi" firstAttribute="top" secondItem="hbT-o0-24U" secondAttribute="bottom" constant="30" id="TFw-HE-WZz"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

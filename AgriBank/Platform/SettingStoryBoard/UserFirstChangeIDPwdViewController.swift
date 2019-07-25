@@ -164,7 +164,12 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     @IBAction func clickCheckBtn(_ sender: Any) {
         if inputIsCorrect() {
             setLoading(true)
-            postRequest("Comm/COMM0103", "COMM0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01013","Operate":"commitTxn","OID":SecurityUtility.utility.MD5(string: sourceIDTextfield.text!),"NID":SecurityUtility.utility.MD5(string: againIDTextfield.text!),"OPWD":SecurityUtility.utility.MD5(string: sourcePasswordTextfield.text!),"NPWD":SecurityUtility.utility.MD5(string: againPasswordTextfield.text!), "TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
+            let idMd5 = SecurityUtility.utility.MD5(string: sourceIDTextfield.text!)
+            let pdMd5 = SecurityUtility.utility.MD5(string: sourcePasswordTextfield.text!)
+            let idMd5_1 = SecurityUtility.utility.MD5(string: sourceIDTextfield.text!.uppercased())
+            let pdMd5_1 = SecurityUtility.utility.MD5(string: sourcePasswordTextfield.text!.uppercased())
+
+            postRequest("Comm/COMM0103", "COMM0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01013","Operate":"commitTxn","OID":idMd5,"NID":SecurityUtility.utility.MD5(string: againIDTextfield.text!),"OPWD":pdMd5,"NPWD":SecurityUtility.utility.MD5(string: againPasswordTextfield.text!),"ID1":idMd5_1,"PWD1":pdMd5_1, "TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
         }
     }
     

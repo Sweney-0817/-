@@ -36,11 +36,22 @@ enum PlatformFeatureID: Int {
     case FeatureID_ExchangeRate = 150200            // 牌告匯率
     case FeatureID_RegularSavingCalculation = 150300// 定期儲蓄試算
     //Guester 20180626
-    case FeatureID_MobilePay = 200000               // 行動支付
-    case FeatureID_QRPay = 200100                   // QR Pay
-    case FeatureID_QRCodeTrans = 200200             // QR Code轉帳
-    case FeatureID_AcceptRules = 200101             // 同意條款
+    case FeatureID_MobilePay = 200000               // 農漁行動Pay
+    case FeatureID_QRPay = 200100                   // 台灣Pay
+    case FeatureID_QRCodeTrans = 200200             // 掃描轉帳
+    case FeatureID_AcceptRules = 200101             // 農漁行動Pay服務注意事項
     //Guester 20180626 End
+    
+    //Guester 20180731
+    case FeatureID_GoldPassbook = 210000                // 黃金存摺
+    case FeatureID_GPAccountInfomation = 210100         // 帳戶總覽
+    case FeatureID_GPSingleBuy = 210200                 // 單筆申購
+    case FeatureID_GPSingleSell = 210300                // 單筆回售
+    case FeatureID_GPRegularAccountInfomation = 210400  // 定期投資戶總覽
+    case FeatureID_GPTransactionDetail = 210500         // 往來明細
+    case FeatureID_GPGoldPrice = 210600                 // 牌告價格
+    case FeatureID_GPAcceptRules = 210001               // 同意條款
+    //Guester 20180731 End
     case FeatureID_CustomerService = 160000         // 客戶服務
     case FeatureID_Promotion = 160100               // 農漁會優惠產品
     case FeatureID_News = 160200                    // 最新消息
@@ -59,7 +70,7 @@ enum PlatformFeatureID: Int {
     func StoryBoardID() -> String {
         switch self {
         case .FeatureID_Home:
-            return "FeatureID_Home"
+            return "FeatureID_Home2"
         case .FeatureID_Menu:
             return "FeatureID_Menu"
         case .FeatureID_Edit:
@@ -106,6 +117,23 @@ enum PlatformFeatureID: Int {
         case .FeatureID_QRPay:
             return "FeatureID_QRPay"
     //Guester 20180626 End
+
+    //Guester 20180731
+        case .FeatureID_GPAccountInfomation:
+            return "FeatureID_GPAccountInfomation"
+        case .FeatureID_GPSingleBuy:
+            return "FeatureID_GPSingleBuy"
+        case .FeatureID_GPSingleSell:
+            return "FeatureID_GPSingleSell"
+        case .FeatureID_GPRegularAccountInfomation:
+            return "FeatureID_GPRegularAccountInfomation"
+        case .FeatureID_GPTransactionDetail:
+            return "FeatureID_GPTransactionDetail"
+        case .FeatureID_GPGoldPrice:
+            return "FeatureID_GPGoldPrice"
+        case .FeatureID_GPAcceptRules:
+            return "FeatureID_GPAcceptRules"
+    //Guester 20180731 End
         case .FeatureID_LoanPrincipalInterest:
             return "FeatureID_LoanPrincipalInterest"
         case .FeatureID_Promotion:
@@ -171,6 +199,17 @@ enum PlatformFeatureID: Int {
              .FeatureID_QRPay:
             return "MobilePay"
         //Guester 20180626 End
+        
+        //Guester 20180731
+        case .FeatureID_GPAccountInfomation,
+             .FeatureID_GPSingleBuy,
+             .FeatureID_GPSingleSell,
+             .FeatureID_GPRegularAccountInfomation,
+             .FeatureID_GPTransactionDetail,
+             .FeatureID_GPGoldPrice,
+             .FeatureID_GPAcceptRules:
+            return "GoldPassbook"
+        //Guester 20180731 End
         case .FeatureID_Promotion,
              .FeatureID_News,
              .FeatureID_ServiceBase,
@@ -207,7 +246,7 @@ struct FeatureStruct {
 struct ConfirmResultStruct {
     var image:String = ""
     var title:String = ""
-    var list:[[String:String]]? = nil
+    var list:[[String:Any]]? = nil
     var memo:String = ""
     var confirmBtnName = ""
     var resultBtnName = ""
@@ -257,6 +296,9 @@ enum UIID: Int {
     case UIID_ShowMessageHeadView     // ShowMessageHeadView class
     case UIID_ExchangeRateCell        // ExchangeRateCell class for牌告匯率
     case UIID_ResultEditCell        //QRCode掃描無金額用
+    case UIID_GPTransactionDetailCell //黃金存摺往來明細
+    case UIID_GPGoldPriceCell       //黃金存摺牌告價格
+    case UIID_GPDiffAmountDetailView//黃金定期不定額投資檢視
     
     func NibName() -> String? {
         switch self {
@@ -308,6 +350,12 @@ enum UIID: Int {
             return "ExchangeRateCell"
         case .UIID_ResultEditCell:
             return "ResultEditCell"
+        case .UIID_GPTransactionDetailCell:
+            return "GPTransactionDetailCell"
+        case .UIID_GPGoldPriceCell:
+            return "GPGoldPriceCell"
+        case .UIID_GPDiffAmountDetailView:
+            return "GPDiffAmountDetailView"
         default:
             return nil
         }
@@ -380,7 +428,9 @@ let Shadow_Radious10 = CGFloat(10)
 let Shadow_Radious15 = CGFloat(15)
 let Shadow_Opacity = Float(0.5)
 let Shadow_Color = UIColor(red: 219/255, green: 217/255, blue: 217/255, alpha: 1)
-let Green_Color = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha: 1)
+//let Green_Color = UIColor(red: 69/255, green: 166/255, blue: 108/255, alpha: 1)
+let Green_Color = UIColor(red: 224/255, green: 105/255, blue: 77/255, alpha: 1)
+let Orange_Color = UIColor(red: 224/255, green: 105/255, blue: 77/255, alpha: 1)
 let Gray_Color = UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1)
 let Cell_Title_Color = UIColor(red: 127/255, green: 127/255, blue: 127/255, alpha: 1)
 let Cell_Detail_Color = UIColor.black
@@ -400,7 +450,11 @@ let Default_Font = UIFont(name: "PingFangTC-Medium", size: CGFloat(18)) ?? UIFon
 let AgriBank_4sInchSize:CGFloat = 480
 let AgriBank_4sInchFont =  UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(15)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(15))
 let AgriBank_Scale = UIScreen.main.bounds.width / CGFloat(375)
-let Scale_Default_Font = UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(18)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(18))
+let Scale_Default_Font = UIFont(name: "PingFangTC-Medium", size: AgriBank_Scale*CGFloat(15)) ?? UIFont.systemFont(ofSize: AgriBank_Scale*CGFloat(15))
+// MARK: - 日期格式
+let dataDateFormat = "yyyyMMdd"
+let showDateFormat = "yyyy/MM/dd"
+let emptyDate: String = "00000000"
 
 // MARK: - Define
 let SystemCell_Identify = "System_Cell"
@@ -441,6 +495,7 @@ let SetNotification_Title = "您要打開系統應用通知才可收到推播通
 let Setting_Title = "設定"
 let Timeout_Title = "待機時間過長即將登出"
 let ProvideUnit_Title = "提供單位"
+let PersonalMessageKey = "PersonalMessageData"
 
 let Max_ID_Password_Length:Int = 16 // 使用者代號、使用者密碼的長度限制
 let Max_MobliePhone_Length:Int = 10 // 手機號碼
@@ -452,7 +507,10 @@ let Max_Email_Length:Int = 50       // Email長度
 let Max_Account_Length:Int = 16     // 輸入轉入帳號長度
 let NewInput_MinLength:Int = 8      // 新輸入代號or密碼最小長度
 let NewInput_MaxLength:Int = 16     // 新輸入代號or密碼最大長度
-let Max_Amount_Length:Int = 9       // 輸入金額最大長度
+let Max_Amount_Length:Int = 12       // 輸入金額最大長度
+let Max_GoldGram_Length:Int = 9     // 黃金最大克數
+let Max_GetAmount_Length:Int = 7    //我要收款金額最大長度
+let Max_GoldSingleBuyGram_Length:Int = 4
 
 let AgriBank_Type = Int(1)
 let AgriBank_AppID = "agriBank_iOS"
@@ -483,6 +541,29 @@ struct AccountStruct {
     var currency = ""
     var balance = ""
     var status = ""
+}
+
+struct GPActInfo {  //黃金存摺帳戶對應的約定轉帳戶
+    ///約定轉帳帳號
+    var PAYACT = ""
+    ///可用餘額
+    var AVBAL = ""
+    ///風險評量分數
+    var SCORE = ""
+    ///風險評量建檔日
+    var CREDAY = ""
+}
+struct GPPriceInfo {//黃金牌告價格
+    ///牌告日期
+    var DATE = ""
+    ///牌告時間
+    var TIME = ""
+    ///牌次
+    var CNT = ""
+    ///銀行賣出價
+    var SELL = ""
+    ///銀行買入價
+    var BUY = ""
 }
 
 // MARK: - 電文定義
@@ -586,7 +667,10 @@ let ErrorMsg_NoImage = "您尚未設定頭像"
 /* 用於「服務據點」 */
 let ErrorMsg_NoTelephone = "此單位尚無提供電話"
 let ErrorMsg_NoMapAddress = "此單位尚無提供位址"
-
+/* 黃金存摺 */
+let ErrorMsg_NoGPAccount = "您無黃金存摺帳號"
+let GPAccountTitle = "黃金存摺帳號"
+let ErrorMsg_DateMonthOnlySix = "查詢區間僅能半年"
 // MARK: - Shadow Direction:
 enum ShadowDirection {
     case All

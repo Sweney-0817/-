@@ -361,8 +361,16 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
     return self.m_strDeadlinefinal;
 }
 
+- (void)setDeadlinefinal:(NSString *)deadlinefinal {
+    self.m_strDeadlinefinal = deadlinefinal;
+}
+
 - (NSString *)noticeNbr {
     return self.m_strNoticeNbr;
+}
+
+- (void)setNoticeNbr:(NSString *)noticeNbr {
+    self.m_strNoticeNbr = noticeNbr;
 }
 
 - (NSString *)feeInfo {
@@ -937,7 +945,7 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
 - (BOOL)isValidNoticeNbrIsNecessary:(BOOL)isNecessary {
     BOOL bValid = NO;
     if (nil != _m_strNoticeNbr) {
-        bValid = [self CheckString:_m_strNoticeNbr isValidWithRegex:@"^[a-zA-Z0-9]{1,16}$"];
+        bValid = [self CheckString:_m_strNoticeNbr isValidWithRegex:@"^[a-zA-Z0-9\\/:*?\"<>|%$’@+ ]{1,16}$"];
         if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 銷帳編號:%@\n", _m_strNoticeNbr);
     }else {
         NSString *strEncryptKey = [self getEncryptKeyWithTag:QRPTransactionQueryTag_NoticeNbr];
@@ -1126,9 +1134,20 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
             if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 費用資訊(瓦斯費):%@\n", [arrInfo objectAtIndex:2]);
             bValid = ([[arrInfo objectAtIndex:3] length] == 15);
             if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 費用資訊(瓦斯費):%@\n", [arrInfo objectAtIndex:3]);
-            bValid = (_m_strNoticeNbr.length == 16 && ![_m_strNoticeNbr isEqualToString:[arrInfo objectAtIndex:2]]);
+            bValid = (_m_strNoticeNbr.length == 16 && [_m_strNoticeNbr isEqualToString:[arrInfo objectAtIndex:2]]);
             if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 銷帳編號:%@\n", _m_strNoticeNbr);
         }
+        // Sam 20180723 中華電信費 Start
+        // 中華電信費 - 列帳年月(4), 校對碼(2), 第一條條碼(9)
+        else if ([[arrInfo objectAtIndex:0] isEqualToString:@"5"] && [arrInfo count] == 4) {
+            bValid = ([[arrInfo objectAtIndex:1] length] == 4);
+            if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 費用資訊(中華電信費):%@\n", [arrInfo objectAtIndex:1]);
+            bValid = ([[arrInfo objectAtIndex:2] length] == 2);
+            if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 費用資訊(中華電信費):%@\n", [arrInfo objectAtIndex:2]);
+            bValid = ([[arrInfo objectAtIndex:3] length] == 9);
+            if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 費用資訊(中華電信費):%@\n", [arrInfo objectAtIndex:3]);
+        }
+        // Sam 20180723 中華電信費 End
         else {
             bValid = NO;
             if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 費用資訊欄位錯誤:%@\n", _m_strFeeInfo);
@@ -1442,7 +1461,8 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
             // Query
             NSString *strQuery = [url query];
             if (0 < strQuery.length) {
-                [self parserURLWithQuery:strQuery];
+                //[self parserURLWithQuery:strQuery];
+                [self parserURLWithQuery:[strQuery stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             }
         }
     }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -48,7 +47,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我已審閱並同意上述事項" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yic-56-4Pa">
                                         <rect key="frame" x="32" y="4.5" width="191" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.27058823529411763" green="0.65098039215686276" blue="0.42352941176470588" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.87843137250000003" green="0.41176470590000003" blue="0.30196078430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ra-bq-kV4">
@@ -128,7 +127,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Rv-lz-ov0">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Rv-lz-ov0">
                                 <rect key="frame" x="0.0" y="80" width="375" height="587"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -151,14 +150,17 @@
                                                                     <constraint firstAttribute="height" constant="60" id="kNi-a0-7Hr"/>
                                                                 </constraints>
                                                             </view>
-                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="請輸入金額" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="7qs-5s-tNg" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
-                                                                <rect key="frame" x="15" y="68" width="313" height="44"/>
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="收款金額" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="7qs-5s-tNg" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                                                                <rect key="frame" x="15" y="68.5" width="313" height="44"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="AsC-zm-p4z"/>
                                                                 </constraints>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                                <connections>
+                                                                    <outlet property="delegate" destination="qaq-aI-WCF" id="qyz-6h-zzP"/>
+                                                                </connections>
                                                             </textField>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FS7-DW-WLT">
                                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="1"/>
@@ -253,7 +255,7 @@
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本QR Code支援台灣Pay，付款人可使&lt;全國農漁達人&gt;或其他支援台灣Pay QR Code之APP進行掃描轉帳" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cuq-MI-nfd">
                                                         <rect key="frame" x="10" y="467" width="323" height="50.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" red="0.27058823529999998" green="0.65098039220000004" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="textColor" red="0.87843137250000003" green="0.41176470590000003" blue="0.30196078430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
@@ -297,7 +299,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fh-kX-4dI">
                                         <rect key="frame" x="0.0" y="0.0" width="187.5" height="60"/>
-                                        <color key="backgroundColor" red="0.27058823529999998" green="0.65098039220000004" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.87843137250000003" green="0.41176470590000003" blue="0.30196078430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="HVA-aD-QkQ"/>
                                         </constraints>
@@ -423,6 +425,16 @@
                                                             <outlet property="delegate" destination="Oef-s9-HmD" id="HuC-v8-CPm"/>
                                                         </connections>
                                                     </tableView>
+                                                    <webView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0WQ-NQ-eA9">
+                                                        <rect key="frame" x="0.0" y="536" width="375" height="0.0"/>
+                                                        <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" id="trh-lf-Q8c"/>
+                                                        </constraints>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="Oef-s9-HmD" id="Him-8T-o50"/>
+                                                        </connections>
+                                                    </webView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -433,9 +445,12 @@
                                                     <constraint firstAttribute="trailing" secondItem="eRW-XG-ffJ" secondAttribute="trailing" id="HxM-aF-2KN"/>
                                                     <constraint firstItem="8Iq-9N-aL5" firstAttribute="top" secondItem="SOB-uz-zpp" secondAttribute="top" id="MZi-NI-ki3"/>
                                                     <constraint firstAttribute="trailing" secondItem="8Iq-9N-aL5" secondAttribute="trailing" constant="15" id="PU2-DS-viL"/>
-                                                    <constraint firstAttribute="bottom" secondItem="eRW-XG-ffJ" secondAttribute="bottom" id="Uf7-AT-w7N"/>
+                                                    <constraint firstAttribute="bottom" secondItem="0WQ-NQ-eA9" secondAttribute="bottom" id="ZZj-YU-z2m"/>
+                                                    <constraint firstItem="0WQ-NQ-eA9" firstAttribute="leading" secondItem="SOB-uz-zpp" secondAttribute="leading" id="ooq-Jy-1rI"/>
+                                                    <constraint firstAttribute="trailing" secondItem="0WQ-NQ-eA9" secondAttribute="trailing" id="pJP-m9-TgM"/>
                                                     <constraint firstItem="8Iq-9N-aL5" firstAttribute="leading" secondItem="SOB-uz-zpp" secondAttribute="leading" constant="15" id="qIa-zE-n2Y"/>
                                                     <constraint firstItem="o7s-pH-evV" firstAttribute="top" secondItem="8Iq-9N-aL5" secondAttribute="bottom" constant="16" id="rlD-rI-1OD"/>
+                                                    <constraint firstItem="0WQ-NQ-eA9" firstAttribute="top" secondItem="eRW-XG-ffJ" secondAttribute="bottom" id="zfa-q2-oap"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -456,8 +471,8 @@
                                                     <constraint firstAttribute="height" constant="44" id="jWM-ss-hTs"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
-                                                <state key="normal" title="確認送出" backgroundImage="ButtonLarge"/>
-                                                <state key="disabled" backgroundImage="buttonDisable"/>
+                                                <state key="normal" title="送出" backgroundImage="ButtonLarge"/>
+                                                <state key="disabled" backgroundImage="ButtonLargeDisable"/>
                                                 <connections>
                                                     <action selector="m_btnConfirmClick:" destination="Oef-s9-HmD" eventType="touchUpInside" id="9Wm-Fi-089"/>
                                                 </connections>
@@ -495,11 +510,13 @@
                     </view>
                     <connections>
                         <outlet property="m_btnConfirm" destination="p2x-gE-US0" id="esE-dm-OaS"/>
+                        <outlet property="m_consMemoHeight" destination="trh-lf-Q8c" id="55o-oz-t4j"/>
                         <outlet property="m_consScanResultHeight" destination="otg-zI-KYc" id="WT6-DP-Kgi"/>
                         <outlet property="m_tvScanResult" destination="eRW-XG-ffJ" id="IGj-O4-v2p"/>
                         <outlet property="m_vActView" destination="8Iq-9N-aL5" id="B4g-z4-Vo9"/>
                         <outlet property="m_vButtonView" destination="9UX-tV-yWs" id="qr3-mn-3Yu"/>
                         <outlet property="m_vScanResultView" destination="SOB-uz-zpp" id="YSA-SW-ERS"/>
+                        <outlet property="m_wvMemo" destination="0WQ-NQ-eA9" id="wNw-qn-bbt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0TX-ey-gfd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -543,11 +560,11 @@
     </scenes>
     <resources>
         <image name="ButtonLarge" width="346" height="44"/>
+        <image name="ButtonLargeDisable" width="346" height="44"/>
         <image name="Checkoff" width="24" height="24"/>
         <image name="Checkon" width="24" height="24"/>
         <image name="HintDownArrow" width="375" height="36"/>
         <image name="Textfield" width="311" height="44"/>
-        <image name="buttonDisable" width="343" height="46"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="3Tj-wx-QYb"/>
