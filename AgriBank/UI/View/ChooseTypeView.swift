@@ -15,7 +15,6 @@ protocol ChooseTypeDelegate{
 let ChooseType_Width = CGFloat(100)
 let ChooseType_Font_Size = UIFont(name: "PingFangTC-Medium", size: 18)
 
-@objcMembers
 class ChooseTypeView: UIView {
     private var scrollView:UIScrollView? = nil
     private var delegate:ChooseTypeDelegate? = nil
@@ -72,7 +71,7 @@ class ChooseTypeView: UIView {
     }
   
     // MARK: - selecotr
-    func clickTypeBtn(_ sender:Any) {
+    @objc func clickTypeBtn(_ sender:Any) {
         let currentBtn = scrollView?.viewWithTag(currentIndex) as! UIButton
         currentBtn.setTitleColor(.black, for: .normal)
         currentBtn.backgroundColor = .white

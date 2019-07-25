@@ -15,7 +15,6 @@ protocol AnnounceNewsDelegate {
     func clickNews(_ index:Int)
 }
 
-@objcMembers
 class AnnounceNews: UIView, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var newsTableView: UITableView!
@@ -33,7 +32,7 @@ class AnnounceNews: UIView, UITableViewDelegate, UITableViewDataSource {
         self.delegate = delegate
     }
     
-    func scrollNewsView(_ theTimer:Timer) {
+    @objc func scrollNewsView(_ theTimer:Timer) {
         if list != nil && (list?.count)! > 1 {
             let lastIndexPath = newsTableView.indexPathsForVisibleRows?.last
             let scrollIndexPath = IndexPath(row:((lastIndexPath?.row)!+1 < (list?.count)! ? (lastIndexPath?.row)!+1 : 0), section: 0)

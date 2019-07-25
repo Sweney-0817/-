@@ -57,7 +57,6 @@ protocol OverviewCellDelegate {
     func endExpanding(_ curRow:IndexPath?)
 }
 
-@objcMembers
 class OverviewCell: UITableViewCell {
     @IBOutlet weak var title1Label: UILabel!
     @IBOutlet weak var title2Label: UILabel!
@@ -167,7 +166,7 @@ class OverviewCell: UITableViewCell {
     }
     
     // MARK: - selector
-    func HandlePanGesture(_ sender: UIPanGestureRecognizer)  {
+    @objc func HandlePanGesture(_ sender: UIPanGestureRecognizer)  {
         switch sender.state {
         case .began:
             let poiont = sender.velocity(in: self)
@@ -212,14 +211,14 @@ class OverviewCell: UITableViewCell {
         }
     }
     
-    func clickButton1(_ sender:Any) {
+    @objc func clickButton1(_ sender:Any) {
         let btn = sender as! UIButton
         if btn.backgroundColor != Disable_Color {
             delegate?.clickExpandBtn1(sender as! UIButton, [title1Label.text!:detail1Label.text!,title2Label.text!:detail2Label.text!,title3Label.text!:detail3Label.text!])
         }
     }
     
-    func clickButton2(_ sender:Any) {
+    @objc func clickButton2(_ sender:Any) {
         let btn = sender as! UIButton
         if btn.backgroundColor != Disable_Color {
             delegate?.clickExpandBtn2(sender as! UIButton, [title1Label.text!:detail1Label.text!,title2Label.text!:detail2Label.text!,title3Label.text!:detail3Label.text!])

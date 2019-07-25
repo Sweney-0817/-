@@ -12,7 +12,6 @@ protocol IntroductionViewDelegate {
     func closeIntroductionView()
 }
 
-@objcMembers
 class IntroductionView: UIView, UIScrollViewDelegate {
     var introductionDelegate:IntroductionViewDelegate? = nil
     var pageControl:UIPageControl? = nil
@@ -49,7 +48,7 @@ class IntroductionView: UIView, UIScrollViewDelegate {
         scrollView?.addSubview(closeButton)
     }
     
-    func clickCloseButton(_ senden: UIButton) {
+    @objc func clickCloseButton(_ senden: UIButton) {
         introductionDelegate?.closeIntroductionView()
     }
     

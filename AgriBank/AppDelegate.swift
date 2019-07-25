@@ -11,7 +11,6 @@ import UserNotifications
 import CoreLocation
 
 @UIApplicationMain
-@objcMembers
 class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate, UNUserNotificationCenterDelegate, UIAlertViewDelegate {
 
     var window: UIWindow?
@@ -114,7 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         AuthorizationManage.manage.SetAPNSToken(token)
     }
 
-    func timeOut(_ sender:Timer) {
+    @objc func timeOut(_ sender:Timer) {
         if sender == logoutTimer {
             if AuthorizationManage.manage.IsLoginSuccess() {
                 let alert = UIAlertView(title: UIAlert_Default_Title, message: Timeout_Title, delegate: self, cancelButtonTitle: Determine_Title)

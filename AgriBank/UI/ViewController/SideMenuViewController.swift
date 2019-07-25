@@ -18,7 +18,6 @@ enum SideMenuType {
     case right
 }
 
-@objcMembers
 class SideMenuViewController: UIViewController {
     
     private enum MenuState {
@@ -192,7 +191,7 @@ class SideMenuViewController: UIViewController {
     }
     
     // MARK: - GestureRecognizer Selector
-    func HandlePanGesture(_ sender: UIPanGestureRecognizer) {
+    @objc func HandlePanGesture(_ sender: UIPanGestureRecognizer) {
         switch sender.state {
         case .began:
             if currentMenuState == .Expand {
@@ -265,7 +264,7 @@ class SideMenuViewController: UIViewController {
 //        }
 //    }
     
-    func clickCloseBtn(_ sender:Any) {
+    @objc func clickCloseBtn(_ sender:Any) {
         if currentMenuState == .Expand {
             HideSideMenu(isRightMenuShow)
         }

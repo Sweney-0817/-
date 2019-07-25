@@ -26,7 +26,6 @@ protocol LoginDelegate {
     func clickLoginCloseBtn()
 }
 
-@objcMembers
 class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, ImageConfirmViewDelegate {
     @IBOutlet weak var locationTextfield: UITextField!
     @IBOutlet weak var accountTextfield: UITextField!   // 身分證
@@ -245,11 +244,11 @@ class LoginView: UIView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerVi
     }
 
     // MARK: - selector
-    func clickCancelBtn(_ sender:Any) {
+    @objc func clickCancelBtn(_ sender:Any) {
         locationTextfield.resignFirstResponder()
     }
     
-    func clickDoneBtn(_ sender:Any) {
+    @objc func clickDoneBtn(_ sender:Any) {
         let pickerView = locationTextfield.inputView as! UIPickerView
         let dic = list[pickerView.selectedRow(inComponent: 0)]
         let city = [String](dic.keys).first ?? ""
