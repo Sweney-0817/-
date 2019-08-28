@@ -466,7 +466,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         if let type = categoryType[ActOverview_TypeList[index]], let array = categoryList[type] {
             cell.detail1Label.text = array[indexPath.row].accountNO
             cell.detail2Label.text = (array[indexPath.row].currency == Currency_TWD) ? Currency_TWD_Title : array[indexPath.row].currency
-            cell.detail3Label.text = String(array[indexPath.row].balance)?.separatorThousand()
+            cell.detail3Label.text = String(array[indexPath.row].balance).separatorThousand()
             if let cellType = getTypeByInputString(ActOverview_TypeList[index]) {
                 switch cellType {
                 case .Type1:

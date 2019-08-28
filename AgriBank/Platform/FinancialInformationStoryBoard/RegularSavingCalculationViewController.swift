@@ -32,7 +32,7 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
     
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnCalculateClick(_ sender: Any) {
-        // 參照 https://ebank.naffic.org.tw/ibank/Login/A001_3
+        // 參照 https://ebank.afisc.com.tw/ibank/Login/A001_3
         if inputIsCorrect() {
             let sum = Double( m_tfAmount.text ?? "0" ) ?? 0
             let rate = (Double( m_tfRate.text ?? "0" ) ?? 0) / Double(12) / Double(100)
@@ -162,8 +162,8 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
             }
             let formatter = NumberFormatter()
             if let rate = formatter.number(from: m_tfRate.text!) {
-                if CGFloat(rate) <= RegularSavingCalculation_MaxRate {
-                    if CGFloat(rate) == 0 {
+                if CGFloat(truncating: rate) <= RegularSavingCalculation_MaxRate {
+                    if CGFloat(truncating: rate) == 0 {
                         showErrorMessage(nil, m_tfRate.placeholder!+ErrorMsg_Not_Zero)
                         return false
                     }
@@ -189,8 +189,8 @@ class RegularSavingCalculationViewController: BaseViewController, ChooseTypeDele
             }
             let formatter = NumberFormatter()
             if let rate = formatter.number(from: m_tfRate.text!) {
-                if CGFloat(rate) <= RegularSavingCalculation_MaxRate {
-                    if CGFloat(rate) == 0 {
+                if CGFloat(truncating: rate) <= RegularSavingCalculation_MaxRate {
+                    if CGFloat(truncating: rate) == 0 {
                         showErrorMessage(nil, m_tfRate.placeholder!+ErrorMsg_Not_Zero)
                         return false
                     }

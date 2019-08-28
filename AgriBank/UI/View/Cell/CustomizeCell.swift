@@ -166,7 +166,7 @@ class OverviewCell: UITableViewCell {
     }
     
     // MARK: - selector
-    func HandlePanGesture(_ sender: UIPanGestureRecognizer)  {
+    @objc func HandlePanGesture(_ sender: UIPanGestureRecognizer)  {
         switch sender.state {
         case .began:
             let poiont = sender.velocity(in: self)
@@ -211,14 +211,14 @@ class OverviewCell: UITableViewCell {
         }
     }
     
-    func clickButton1(_ sender:Any) {
+    @objc func clickButton1(_ sender:Any) {
         let btn = sender as! UIButton
         if btn.backgroundColor != Disable_Color {
             delegate?.clickExpandBtn1(sender as! UIButton, [title1Label.text!:detail1Label.text!,title2Label.text!:detail2Label.text!,title3Label.text!:detail3Label.text!])
         }
     }
     
-    func clickButton2(_ sender:Any) {
+    @objc func clickButton2(_ sender:Any) {
         let btn = sender as! UIButton
         if btn.backgroundColor != Disable_Color {
             delegate?.clickExpandBtn2(sender as! UIButton, [title1Label.text!:detail1Label.text!,title2Label.text!:detail2Label.text!,title3Label.text!:detail3Label.text!])
@@ -249,7 +249,7 @@ class ResultCell: UITableViewCell {
         let dataWidth = width-171-(15*3)
 //        let plusHeight:CGFloat = 17+18
         
-        let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSFontAttributeName: Default_Font], context: nil)
+        let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedStringKey.font: Default_Font], context: nil)
         return (boundingBox.height < CGFloat(60) ? CGFloat(60) : boundingBox.height)
     }
 }

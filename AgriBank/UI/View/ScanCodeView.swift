@@ -37,10 +37,10 @@ class ScanCodeView: UIView {
             return
         }
         NSLog("======== ScanCodeView startScan ========")
-        let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+        let captureDevice = AVCaptureDevice.default(for: .video)
         var input: AVCaptureDeviceInput? = nil
         do {
-            input = try AVCaptureDeviceInput.init(device: captureDevice)
+            input = try AVCaptureDeviceInput.init(device: captureDevice!)
         }
         catch {
             self.m_delegate.noPermission()
@@ -48,9 +48,9 @@ class ScanCodeView: UIView {
         }
         
         captureSession = AVCaptureSession.init()
-        captureSession?.addInput(input)
+        captureSession?.addInput(input!)
         output = AVCaptureMetadataOutput.init()
-        captureSession?.addOutput(output)
+        captureSession?.addOutput(output!)
 //        let captureQueue = DispatchQueue.init(label: "captureQueue")
 //        output?.setMetadataObjectsDelegate(self, queue: captureQueue)
         output?.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
@@ -68,8 +68,8 @@ class ScanCodeView: UIView {
         //設置可探測區域
         output?.rectOfInterest = scanRect
         
-        videoPreviewLayer = AVCaptureVideoPreviewLayer.init(session: captureSession)
-        videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+        videoPreviewLayer = AVCaptureVideoPreviewLayer.init(session: captureSession!)
+        videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         videoPreviewLayer?.frame = m_vCameraArea.frame
         videoPreviewLayer?.frame.origin = CGPoint(x: 0, y: 0)
         

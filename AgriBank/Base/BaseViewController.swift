@@ -17,10 +17,10 @@ let URL_DOMAIN = "mbapiqa.naffic.org.tw/APP/api"
 //for test
 //let URL_DOMAIN = "122.147.4.202/FFICMAPI/api"//Roy測試假電文
 //let URL_PROTOCOL = "https"
-//let URL_DOMAIN = "mbapi.naffic.org.tw/APP/api"
+//let URL_DOMAIN = "mbapi.afisc.com.tw/APP/api"
 #else
 let URL_PROTOCOL = "https"
-let URL_DOMAIN = "mbapi.naffic.org.tw/APP/api"
+let URL_DOMAIN = "mbapi.afisc.com.tw/APP/api"
 #endif
 
 let REQUEST_URL = "\(URL_PROTOCOL)://\(URL_DOMAIN)"
@@ -28,6 +28,7 @@ let BarItem_Height_Weight = 40
 let Loading_Weight = 100
 let Loading_Height = 100
 
+@objcMembers
 class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     var request:ConnectionUtility? = nil        // 連線元件
     var needShowBackBarItem:Bool = true         // 是否需要顯示返回鍵
@@ -96,7 +97,7 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.topItem?.title = getFeatureName(getCurrentFeatureID())
-        navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font:Default_Font,NSAttributedStringKey.foregroundColor:UIColor.white]
         originalY = view.frame.origin.y
     }
     
@@ -117,10 +118,17 @@ class BaseViewController: UIViewController, LoginDelegate, UIAlertViewDelegate {
     }
     
     // MARK: - Public
+#if DEBUG
     func postRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:[String:String]?, _ strURL:String? = nil, _ needCertificate:Bool = false, _ isImage:Bool = false, _ timeOut:TimeInterval = REQUEST_TIME_OUT)  {
         request = !isImage ? ConnectionUtility(.Json) : ConnectionUtility(.Image)
         request?.requestData(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, loginHttpHead, needCertificate, timeOut)
     }
+#else
+    func postRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:[String:String]?, _ strURL:String? = nil, _ needCertificate:Bool = true, _ isImage:Bool = false, _ timeOut:TimeInterval = REQUEST_TIME_OUT)  {
+        request = !isImage ? ConnectionUtility(.Json) : ConnectionUtility(.Image)
+        request?.requestData(self, strURL == nil ? "\(REQUEST_URL)/\(strMethod)": strURL!, strSessionDescription, httpBody, loginHttpHead, needCertificate, timeOut)
+    }
+#endif
     
     func getRequest(_ strMethod:String, _ strSessionDescription:String, _ httpBody:Data?, _ loginHttpHead:[String:String]?, _ strURL:String?, _ needCertificate:Bool, _ type:DownloadType)  {
         request = ConnectionUtility(type, false)
@@ -555,10 +563,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
     func getImageConfirm(_ varifyID:String? = nil) { // 取得圖形驗證碼
         setLoading(true)
         if varifyID == nil {
-            getRequest("Comm/COMM0501", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
+            getRequest("Comm/COMM0501", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, true, .ImageConfirm)
         }
         else {
-           getRequest("Comm/COMM0501?varifyId=\(varifyID!)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirm)
+           getRequest("Comm/COMM0501?varifyId=\(varifyID!)", "COMM0501", nil, AuthorizationManage.manage.getHttpHead(false), nil, true, .ImageConfirm)
         }
     }
     
@@ -569,7 +577,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
         else {
             setLoading(true)
             let ID = varifyID == nil ? headVarifyID : varifyID!
-            getRequest("Comm/COMM0502?varifyId=\(ID)&captchaCode=\(passWord)", "COMM0502", nil, AuthorizationManage.manage.getHttpHead(false), nil, false, .ImageConfirmResult)
+            getRequest("Comm/COMM0502?varifyId=\(ID)&captchaCode=\(passWord)", "COMM0502", nil, AuthorizationManage.manage.getHttpHead(false), nil, true, .ImageConfirmResult)
         }
     }
     
@@ -708,7 +716,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     case Account_Status_Change_Password:
                         AuthorizationManage.manage.setLoginStatus(true)
                         let alert = UIAlertController(title: UIAlert_Default_Title, message: ErrorMsg_Suggest_ChangePassword, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: Cancel_Title, style: .default) { _ in
+                        alert.addAction(UIAlertAction(title: NextChange_Title, style: .default) { _ in
                             DispatchQueue.main.async {
                                 if self.curFeatureID != nil {
                                     self.enterFeatureByID(self.curFeatureID!, false)
@@ -723,7 +731,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                 }
                             }
                         })
-                        alert.addAction(UIAlertAction(title: Determine_Title, style: .default) { _ in
+                        alert.addAction(UIAlertAction(title: PerformChange_Title, style: .default) { _ in
                             DispatchQueue.main.async {
                                 self.curFeatureID = nil
                                 /* 此時尚未登入成功，使用enterFeatureByID會失敗 */

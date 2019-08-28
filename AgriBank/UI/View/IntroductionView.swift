@@ -48,7 +48,7 @@ class IntroductionView: UIView, UIScrollViewDelegate {
         scrollView?.addSubview(closeButton)
     }
     
-    func clickCloseButton(_ senden: UIButton) {
+    @objc func clickCloseButton(_ senden: UIButton) {
         introductionDelegate?.closeIntroductionView()
     }
     

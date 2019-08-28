@@ -21,7 +21,7 @@ static NSString *const kCredentialFile =  @"agribank_dev_credential";
 static NSString *const kAppConstFile = @"agribank_dev_app_const";
 static NSString *const kApiKeyFile = @"1-proto5-pub";
 #else
-static NSString *const kDefaultKAPI = @"https://mbapi.naffic.org.tw/OTP";
+static NSString *const kDefaultKAPI = @"https://mbapi.afisc.com.tw/OTP";
 static NSString *const kCredentialFile =  @"agribank_pro_credential";
 static NSString *const kAppConstFile = @"agribank_pro_app_const";
 static NSString *const kApiKeyFile = @"1-proto5-pub_pro";

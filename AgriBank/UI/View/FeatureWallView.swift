@@ -167,7 +167,7 @@ class FeatureWallView: UIView, UIScrollViewDelegate {
         }
     }
     // MARK: - selector
-    func clickFeatureBtn(_ sender:UIButton)  {
+    @objc func clickFeatureBtn(_ sender:UIButton)  {
         featureDelegate?.clickFeatureBtn(PlatformFeatureID(rawValue: sender.tag)!)
     }
     

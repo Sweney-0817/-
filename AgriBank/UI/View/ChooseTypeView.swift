@@ -71,7 +71,7 @@ class ChooseTypeView: UIView {
     }
   
     // MARK: - selecotr
-    func clickTypeBtn(_ sender:Any) {
+    @objc func clickTypeBtn(_ sender:Any) {
         let currentBtn = scrollView?.viewWithTag(currentIndex) as! UIButton
         currentBtn.setTitleColor(.black, for: .normal)
         currentBtn.backgroundColor = .white

@@ -251,8 +251,8 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
                 self.chooseYear = start.year
                 let date = "\(start.year)/\(start.month)/\(start.day)"
                 let detailDate = NSString(string:"特定日期(3個月內) \(date) 轉出")
-                let attributeDate = NSMutableAttributedString(string: (detailDate as String), attributes: [NSFontAttributeName:Default_Font])
-                attributeDate.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: detailDate.range(of: date))
+                let attributeDate = NSMutableAttributedString(string: (detailDate as String), attributes: [NSAttributedStringKey.font:Default_Font])
+                attributeDate.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: detailDate.range(of: date))
                 self.dateLabel.attributedText = attributeDate
             }
             view.addSubview(dateView)
@@ -268,8 +268,8 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
                 let date = start.day
                 self.chooseDay = date.replacingOccurrences(of: "日", with: "")
                 let detailDate = NSString(string:"固定每月 \(date) 轉出")
-                let attributeDate = NSMutableAttributedString(string: (detailDate as String), attributes: [NSFontAttributeName:Default_Font])
-                attributeDate.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: detailDate.range(of: date))
+                let attributeDate = NSMutableAttributedString(string: (detailDate as String), attributes: [NSAttributedStringKey.font:Default_Font])
+                attributeDate.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: detailDate.range(of: date))
                 self.dateLabel.attributedText = attributeDate
             }
             view.addSubview(dateView)

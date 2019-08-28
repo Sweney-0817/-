@@ -32,7 +32,7 @@ class AnnounceNews: UIView, UITableViewDelegate, UITableViewDataSource {
         self.delegate = delegate
     }
     
-    func scrollNewsView(_ theTimer:Timer) {
+    @objc func scrollNewsView(_ theTimer:Timer) {
         if list != nil && (list?.count)! > 1 {
             let lastIndexPath = newsTableView.indexPathsForVisibleRows?.last
             let scrollIndexPath = IndexPath(row:((lastIndexPath?.row)!+1 < (list?.count)! ? (lastIndexPath?.row)!+1 : 0), section: 0)
@@ -57,7 +57,7 @@ class AnnounceNews: UIView, UITableViewDelegate, UITableViewDataSource {
             cell?.selectionStyle = .none
         }
 //        cell?.textLabel?.attributedText = NSAttributedString(string: list?[indexPath.row] ?? "", attributes: [NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.white])
-        cell?.textLabel?.attributedText = NSAttributedString(string: list?[indexPath.row] ?? "", attributes:[NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.init(red: 156.0/255.0, green: 98.0/255.0, blue: 47.0/255.0, alpha: 1.0)])
+        cell?.textLabel?.attributedText = NSAttributedString(string: list?[indexPath.row] ?? "", attributes:[NSAttributedStringKey.font:Default_Font,NSAttributedStringKey.foregroundColor:UIColor.init(red: 156.0/255.0, green: 98.0/255.0, blue: 47.0/255.0, alpha: 1.0)])
         
         return cell!
     }

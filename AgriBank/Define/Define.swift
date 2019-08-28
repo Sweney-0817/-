@@ -15,6 +15,7 @@ enum PlatformFeatureID: Int {
     case FeatureID_Confirm                          // 確認頁
     case FeatureID_Result                           // 結果頁
     case FeatureID_FirstLoginChange                 // 首次登入變更
+    case FeatureID_GetPersonalData                  //
     case FeatureID_AccountOverView = 100100         // 帳戶總覽
     case FeatureID_AccountDetailView = 110100       // 帳戶往來明細
     case FeatureID_NTAccountTransfer = 120000       // 臺幣帳戶交易
@@ -61,8 +62,8 @@ enum PlatformFeatureID: Int {
     case FeatureID_BasicInfoChange = 170100         // 基本資料變更
     case FeatureID_UserNameChange = 170200          // 使用者代號變更
     case FeatureID_UserPwdChange = 170300           // 使用者密碼變更
-    case FeatureID_MessageSwitch = 170400           // 個人訊息開關
-    case FeatureID_SetAvatar = 170500               // 登入頭像設定
+    case FeatureID_MessageSwitch = 170400           // 個人設定開關
+//    case FeatureID_SetAvatar = 170500               // 登入頭像設定
     case FeatureID_DeviceBinding = 180100           // 設備綁定
     case FeatureID_ContactCustomerService = 190100  // 聯絡客服
     case FeatureID_Edit = 990300                    // 新增/編輯
@@ -152,12 +153,14 @@ enum PlatformFeatureID: Int {
             return "FeatureID_FirstLoginChange"
         case .FeatureID_MessageSwitch:
             return "FeatureID_MessageSwitch"
-        case .FeatureID_SetAvatar:
-            return "FeatureID_SetAvatar"
+//        case .FeatureID_SetAvatar:
+//            return "FeatureID_SetAvatar"
         case .FeatureID_DeviceBinding:
             return "FeatureID_DeviceBinding"
         case .FeatureID_ContactCustomerService:
             return "FeatureID_ContactCustomerService"
+        case .FeatureID_GetPersonalData:
+            return "FeatureID_GetPersonalData"
         default:
             return ""
         }
@@ -167,7 +170,8 @@ enum PlatformFeatureID: Int {
         switch self {
         case .FeatureID_Home,
              .FeatureID_Menu,
-             .FeatureID_Edit:
+             .FeatureID_Edit,
+            .FeatureID_GetPersonalData:
             return "Main"
         case .FeatureID_AccountOverView,
              .FeatureID_AccountDetailView:
@@ -220,7 +224,7 @@ enum PlatformFeatureID: Int {
              .FeatureID_UserNameChange,
              .FeatureID_UserPwdChange,
              .FeatureID_MessageSwitch,
-             .FeatureID_SetAvatar,
+//             .FeatureID_SetAvatar,
              .FeatureID_DeviceBinding,
              .FeatureID_FirstLoginChange:
             return "Setting"
@@ -489,7 +493,7 @@ let Lose_Successful_Title = "掛失成功"
 let Lose_Faild_Title = "掛失失敗"
 let Currency_TWD_Title = "新臺幣"
 let Update_Title = "更新"
-let NextChange_Title = "下次變更"
+let NextChange_Title = "沿用舊密碼"
 let PerformChange_Title = "執行變更"
 let SetNotification_Title = "您要打開系統應用通知才可收到推播通知"
 let Setting_Title = "設定"

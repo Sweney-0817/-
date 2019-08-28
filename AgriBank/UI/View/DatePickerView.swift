@@ -159,7 +159,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     }
 
     // MARK: - Selector
-    func clickTwoDateDetermineBtn(_ sender:Any) {
+    @objc func clickTwoDateDetermineBtn(_ sender:Any) {
         var start = DatePickerStruct()
         var end = DatePickerStruct()
         if isSpecific {
@@ -221,7 +221,7 @@ class DatePickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         }
     }
     
-    func clickOneDeteDetermineBtn(_ sender:Any) {
+    @objc func clickOneDeteDetermineBtn(_ sender:Any) {
         var start = DatePickerStruct()
         if isSpecific {
             if let startPicker = self.viewWithTag(ViewTag.View_StartDatePickerView.rawValue) as? UIDatePicker {

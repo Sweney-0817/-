@@ -9,7 +9,7 @@
 import Foundation
 
 let REQUEST_TIME_OUT:TimeInterval = 65  // Time out Default
-let CERTIFICATE_NAME = ""               // 憑證名稱
+let CERTIFICATE_NAME = "server2019"               // 憑證名稱
 let CERTIFICATE_TYPE = "cer"            // 憑證副檔名
 let TIME_OUT_125:TimeInterval = 305     // TRAN0101、TRAN0102、PAY0103、PAY0105、PAY0107 這幾支呼叫API於時時間請大於120秒，因為是跨行，EAI那邊可以等待120
                                         // 20180320 要求修改為300
@@ -21,7 +21,11 @@ protocol ConnectionUtilityDelegate {
 
 class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, URLSessionDownloadDelegate {
     private var delegate:ConnectionUtilityDelegate? = nil
+#if DEBUG
     private var needCertificate:Bool = false
+#else
+    private var needCertificate:Bool = true
+#endif
     var downloadType:DownloadType = .Json
     var responseData = NSMutableData()
     var isPostMethod = true
@@ -30,7 +34,8 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
         downloadType = type
         isPostMethod = postMethod
     }
-    
+
+#if DEBUG
     func requestData(_ delegate:ConnectionUtilityDelegate?, _ strURL:String, _ strTag:String, _ httpBody:Data? = nil, _ dicHttpHead:[String:String]? = nil, _ needCertificate:Bool = false, _ timeOut:TimeInterval = REQUEST_TIME_OUT) -> Void {
         self.delegate = delegate
         self.needCertificate = needCertificate
@@ -60,6 +65,65 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
             task.resume()
         }
     }
+#else
+    func requestData(_ delegate:ConnectionUtilityDelegate?, _ strURL:String, _ strTag:String, _ httpBody:Data? = nil, _ dicHttpHead:[String:String]? = nil, _ needCertificate:Bool = true, _ timeOut:TimeInterval = REQUEST_TIME_OUT) -> Void {
+        self.delegate = delegate
+        self.needCertificate = needCertificate
+        //        NSLog("========[%@]=======", strURL)
+        
+        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue())
+        session.sessionDescription = strTag
+        
+        switch downloadType {
+        case .Json, .ImageConfirm, .ImageConfirmResult, .Data:
+            var request = URLRequest(url:URL(string:strURL)!, cachePolicy:.reloadIgnoringLocalCacheData, timeoutInterval:timeOut)
+            request.httpMethod = isPostMethod ? Http_Post_Method : Http_Get_Method
+            if httpBody != nil {
+                request.httpBody = httpBody
+            }
+            
+            if dicHttpHead != nil {
+                for (key, value) in dicHttpHead! {
+                    request.addValue(value , forHTTPHeaderField: key)
+                }
+            }
+            let task = session.dataTask(with: request)
+            task.resume()
+            
+        case .Image:
+            let task = session.downloadTask(with: URL(string:strURL)!)
+            task.resume()
+        }
+    }
+#endif
+//        self.delegate = delegate
+//        self.needCertificate = needCertificate
+////        NSLog("========[%@]=======", strURL)
+//
+//        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue())
+//        session.sessionDescription = strTag
+//
+//        switch downloadType {
+//        case .Json, .ImageConfirm, .ImageConfirmResult, .Data:
+//            var request = URLRequest(url:URL(string:strURL)!, cachePolicy:.reloadIgnoringLocalCacheData, timeoutInterval:timeOut)
+//            request.httpMethod = isPostMethod ? Http_Post_Method : Http_Get_Method
+//            if httpBody != nil {
+//                request.httpBody = httpBody
+//            }
+//
+//            if dicHttpHead != nil {
+//                for (key, value) in dicHttpHead! {
+//                    request.addValue(value , forHTTPHeaderField: key)
+//                }
+//            }
+//            let task = session.dataTask(with: request)
+//            task.resume()
+//
+//        case .Image:
+//            let task = session.downloadTask(with: URL(string:strURL)!)
+//            task.resume()
+//        }
+//    }
     
     // MARK: - URLSessionDataDelegate
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
