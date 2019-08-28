@@ -186,7 +186,7 @@ class Platform {
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_CustomerService, name: "個人訊息")
         informationList[.FeatureID_PersonalMessage] = feature
         
-        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_BasicInfoChange, .FeatureID_UserNameChange, .FeatureID_UserPwdChange, .FeatureID_MessageSwitch, .FeatureID_SetAvatar], belong: nil, name: "個人設定")
+        feature = FeatureStruct(type: .Head_Next_Type, contentList: [.FeatureID_BasicInfoChange, .FeatureID_UserNameChange, .FeatureID_UserPwdChange, .FeatureID_MessageSwitch/*, .FeatureID_SetAvatar*/], belong: nil, name: "個人設定")
         informationList[.FeatureID_PersopnalSetting] = feature
         
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "基本資料變更")
@@ -198,11 +198,11 @@ class Platform {
         feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "使用者密碼變更")
         informationList[.FeatureID_UserPwdChange] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "個人訊息開關")
+        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "個人設定開關")
         informationList[.FeatureID_MessageSwitch] = feature
         
-        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "登入頭像設定")
-        informationList[.FeatureID_SetAvatar] = feature
+//        feature = FeatureStruct(type: .Select_Type, contentList: nil, belong: .FeatureID_PersopnalSetting, name: "登入頭像設定")
+//        informationList[.FeatureID_SetAvatar] = feature
         
         feature = FeatureStruct(type: .None_Type, contentList: nil, belong: nil, name: "首次登入基本資料變更")
         informationList[.FeatureID_FirstLoginChange] = feature

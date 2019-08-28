@@ -286,7 +286,7 @@ class AuthorizationManage {
         case "T29": return PlatformFeatureID.FeatureID_UserNameChange
         case "T30": return PlatformFeatureID.FeatureID_UserPwdChange
         case "T31": return PlatformFeatureID.FeatureID_MessageSwitch
-        case "T32": return PlatformFeatureID.FeatureID_SetAvatar
+//        case "T32": return PlatformFeatureID.FeatureID_SetAvatar
         case "T33": return PlatformFeatureID.FeatureID_DeviceBinding
         case "T40": return PlatformFeatureID.FeatureID_ContactCustomerService
     //Guester 20180626
@@ -339,7 +339,7 @@ class AuthorizationManage {
         case PlatformFeatureID.FeatureID_UserNameChange: return "T29"
         case PlatformFeatureID.FeatureID_UserPwdChange: return "T30"
         case PlatformFeatureID.FeatureID_MessageSwitch: return "T31"
-        case PlatformFeatureID.FeatureID_SetAvatar: return "T32"
+//        case PlatformFeatureID.FeatureID_SetAvatar: return "T32"
         case PlatformFeatureID.FeatureID_DeviceBinding: return "T33"
         case PlatformFeatureID.FeatureID_ContactCustomerService: return "T40"
         //Guester 20180626

@@ -147,9 +147,13 @@
 		BE8CDFA421256121004D3632 /* GPTransactionDetailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8CDFA321256121004D3632 /* GPTransactionDetailDetailViewController.swift */; };
 		BE8CDFA6212AC971004D3632 /* GPDiffAmountDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE8CDFA5212AC971004D3632 /* GPDiffAmountDetailView.xib */; };
 		BE8CDFA8212AC9B2004D3632 /* GPDiffAmountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8CDFA7212AC9B2004D3632 /* GPDiffAmountDetailView.swift */; };
+		BE970DD122EFEC2C00F8FB51 /* GetPersonalDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE970DD022EFEC2C00F8FB51 /* GetPersonalDataViewController.swift */; };
+		BE970DD4230CFEA300F8FB51 /* PersonalInfoAgreement.html in Resources */ = {isa = PBXBuildFile; fileRef = BE970DD3230CFEA300F8FB51 /* PersonalInfoAgreement.html */; };
+		BE970DD6230D28CA00F8FB51 /* server.cer in Resources */ = {isa = PBXBuildFile; fileRef = BE970DD5230D28CA00F8FB51 /* server.cer */; };
 		BEB38A6A1F0A27EE006094AC /* BillPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB38A681F0A27EE006094AC /* BillPaymentViewController.swift */; };
 		BEB38A6B1F0A27EE006094AC /* TaxPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB38A691F0A27EE006094AC /* TaxPaymentViewController.swift */; };
 		BEB38A6E1F0A2800006094AC /* Payment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEB38A6C1F0A2800006094AC /* Payment.storyboard */; };
+		BEB8616F23150E390054AB96 /* server2019.cer in Resources */ = {isa = PBXBuildFile; fileRef = BEB8616E23150E390054AB96 /* server2019.cer */; };
 		BED66B90210EC0FF00D0D5D4 /* GoldPassbook.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BED66B8E210EC0FF00D0D5D4 /* GoldPassbook.storyboard */; };
 		BED66B95211010DB00D0D5D4 /* GPAccountInfomationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B94211010DB00D0D5D4 /* GPAccountInfomationViewController.swift */; };
 		BED66B972110112F00D0D5D4 /* GPSingleBuyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B962110112F00D0D5D4 /* GPSingleBuyViewController.swift */; };
@@ -341,9 +345,13 @@
 		BE8CDFA321256121004D3632 /* GPTransactionDetailDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPTransactionDetailDetailViewController.swift; path = Platform/GoldPassbookStoryBoard/GPTransactionDetailDetailViewController.swift; sourceTree = "<group>"; };
 		BE8CDFA5212AC971004D3632 /* GPDiffAmountDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GPDiffAmountDetailView.xib; path = UI/View/GPDiffAmountDetailView.xib; sourceTree = "<group>"; };
 		BE8CDFA7212AC9B2004D3632 /* GPDiffAmountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPDiffAmountDetailView.swift; path = UI/View/GPDiffAmountDetailView.swift; sourceTree = "<group>"; };
+		BE970DD022EFEC2C00F8FB51 /* GetPersonalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GetPersonalDataViewController.swift; path = Platform/MainStoryBoard/GetPersonalDataViewController.swift; sourceTree = "<group>"; };
+		BE970DD3230CFEA300F8FB51 /* PersonalInfoAgreement.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = PersonalInfoAgreement.html; path = Resource/PersonalInfoAgreement.html; sourceTree = "<group>"; };
+		BE970DD5230D28CA00F8FB51 /* server.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = server.cer; path = Resource/server.cer; sourceTree = "<group>"; };
 		BEB38A681F0A27EE006094AC /* BillPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BillPaymentViewController.swift; sourceTree = "<group>"; };
 		BEB38A691F0A27EE006094AC /* TaxPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxPaymentViewController.swift; sourceTree = "<group>"; };
 		BEB38A6D1F0A2800006094AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Payment.storyboard; sourceTree = "<group>"; };
+		BEB8616E23150E390054AB96 /* server2019.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = server2019.cer; path = Resource/server2019.cer; sourceTree = "<group>"; };
 		BED66B8F210EC0FF00D0D5D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/GoldPassbook.storyboard; sourceTree = "<group>"; };
 		BED66B94211010DB00D0D5D4 /* GPAccountInfomationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPAccountInfomationViewController.swift; path = Platform/GoldPassbookStoryBoard/GPAccountInfomationViewController.swift; sourceTree = "<group>"; };
 		BED66B962110112F00D0D5D4 /* GPSingleBuyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPSingleBuyViewController.swift; path = Platform/GoldPassbookStoryBoard/GPSingleBuyViewController.swift; sourceTree = "<group>"; };
@@ -522,6 +530,7 @@
 				6148DA021EDFE6C700C02CA3 /* HomeViewController.swift */,
 				6148DA411EE1428B00C02CA3 /* MenuViewController.swift */,
 				613DA7791F8DC1280005E6CC /* EditViewController.swift */,
+				BE970DD022EFEC2C00F8FB51 /* GetPersonalDataViewController.swift */,
 			);
 			name = MainStoryBoard;
 			sourceTree = "<group>";
@@ -703,6 +712,9 @@
 		6148DA3C1EDFE8A400C02CA3 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				BEB8616E23150E390054AB96 /* server2019.cer */,
+				BE970DD5230D28CA00F8FB51 /* server.cer */,
+				BE970DD3230CFEA300F8FB51 /* PersonalInfoAgreement.html */,
 				615A77F11FB4367B00D0D03C /* Keypasco */,
 			);
 			name = Resource;
@@ -1027,12 +1039,15 @@
 				615B8D771EFCEADE002B4B53 /* Transfer.storyboard in Resources */,
 				61564A8B1F09E7D900CB6C4A /* TwoRowDropDownView.xib in Resources */,
 				6129E6AE1F038DED00C23D67 /* Lose.storyboard in Resources */,
+				BE970DD4230CFEA300F8FB51 /* PersonalInfoAgreement.html in Resources */,
 				614FB42B1EF9039400DDD270 /* ResultCell.xib in Resources */,
 				615A77FD1FB4371000D0D03C /* agribank_pro_app_const.bin in Resources */,
 				BE86EE8F1F135292003C7A36 /* CustomerService.storyboard in Resources */,
 				BEF0D9D220E24D0500BC9833 /* MobilePay.storyboard in Resources */,
 				6148DA281EDFE7A400C02CA3 /* BannerView.xib in Resources */,
+				BEB8616F23150E390054AB96 /* server2019.cer in Resources */,
 				BE4E900820ECDBFF00EDDEEA /* ResultEditCell.xib in Resources */,
+				BE970DD6230D28CA00F8FB51 /* server.cer in Resources */,
 				61564A891F09E7D900CB6C4A /* ThreeRowDropDownView.xib in Resources */,
 				61FE9D1B1F15D24500FA32FE /* Setting.storyboard in Resources */,
 				6148D9D91EDFD10000C02CA3 /* LaunchScreen.storyboard in Resources */,
@@ -1112,6 +1127,7 @@
 				BE4E901220F32BB000EDDEEA /* MakeQRCodeUtility.swift in Sources */,
 				BE86EE921F135570003C7A36 /* PromotionViewController.swift in Sources */,
 				61FE9D131F15D23400FA32FE /* BasicInfoResultViewController.swift in Sources */,
+				BE970DD122EFEC2C00F8FB51 /* GetPersonalDataViewController.swift in Sources */,
 				BEF0D9D720E2519000BC9833 /* QRCodeTransViewController.swift in Sources */,
 				61564A861F09E7D900CB6C4A /* OneRowDropDownView.swift in Sources */,
 				61DB5C381F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift in Sources */,

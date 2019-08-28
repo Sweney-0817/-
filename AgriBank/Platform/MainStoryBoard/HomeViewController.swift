@@ -57,6 +57,8 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         featureWall.setInitial(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!, setVertical: 3, setHorizontal: 2, SetDelegate: self)
         getVersionInfo()
         getAnnounceNewsInfo()
+        setTitleBackground()
+        checkGetPersonalData()
     }
     func setTitleBackground() {
         let gradient = CAGradientLayer()
@@ -129,7 +131,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setTitleBackground()
+//        setTitleBackground()
         updateLoginStatus()
     }
     
@@ -360,6 +362,18 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         clickShowSideMenu()
     }
     
+    func checkGetPersonalData() {
+        let confirmed = SecurityUtility.utility.readFileByKey(SetKey: "confirmGetPersonalData") as! Bool?
+        if (confirmed == nil || confirmed! != true) {
+            showGetPersonalDataView()
+        }
+    }
+    func showGetPersonalDataView() {
+        let vc = getControllerByID(.FeatureID_GetPersonalData) as! GetPersonalDataViewController
+        vc.modalPresentationStyle = .overCurrentContext
+        self.present(vc, animated: true, completion: nil)
+//        performSegue(withIdentifier: "showGetPersonalData", sender: nil)
+    }
     // MARK: - FeatureWallViewDelegate
     func clickFeatureBtn(_ ID: PlatformFeatureID) {
         enterFeatureByID(ID, true)
