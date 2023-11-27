@@ -166,7 +166,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
         m_tvData.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
         m_tvData.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: SystemCell_Identify)
         m_tvData.allowsSelection = false
-        m_tvData.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        m_tvData.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         setShadowView(m_vBottomView)
         addObserverToKeyBoard()
@@ -191,9 +191,10 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
                 if GrpPod == "" {
                     let alert = UIAlertView(title: UIAlert_Default_Title, message: "尚未設定快速登入！", delegate: nil, cancelButtonTitle:Determine_Title)
                     //寫入目前快登項目 0:pod 1:touchid/faceid 2:picture(1 byte)
-                      if let info = AuthorizationManage.manage.GetLoginInfo(){
-                    SecurityUtility.utility.writeFileByKey("0" + info.aot  , SetKey: info.bankCode , setEncryptKey: "\(SEA1)\(SEA2)\(SEA3)")
-                        alert.show()}
+                    if let info = AuthorizationManage.manage.GetLoginInfo(){
+                        SecurityUtility.utility.writeFileByKey("0" + info.aot  , SetKey: info.bankCode , setEncryptKey: "\(SEA1)\(SEA2)\(SEA3)")
+                        alert.show()
+                    }
                 }else{
                     showGestureVerifyView(wkPod: GrpPod)}
             }
@@ -332,7 +333,7 @@ class ConfirmViewController: BaseViewController, UITableViewDelegate, UITableVie
             }
             GestureVerifyView = getUIByID(.UIID_GestureVerify) as? GestureVerify
             GestureVerifyView?.frame = CGRect(origin: .zero, size: view.frame.size)
-            GestureVerifyView?.delegate = self as? GestureVerifyDelegate
+            GestureVerifyView?.delegate = self
             GestureVerifyView?.pod = wkPod
             if let info = AuthorizationManage.manage.GetLoginInfo() {
                 GestureVerifyView?.m_BankCode = info.bankCode

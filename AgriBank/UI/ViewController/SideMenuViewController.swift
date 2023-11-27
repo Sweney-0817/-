@@ -51,8 +51,8 @@ class SideMenuViewController: UIViewController {
         self.init(nibName: nil, bundle: nil)
         centerViewController = UINavigationController(rootViewController:center)
         view.addSubview((centerViewController?.view)!)
-        addChildViewController(centerViewController!)
-        centerViewController?.didMove(toParentViewController:self)
+        addChild(centerViewController!)
+        centerViewController?.didMove(toParent:self)
         leftViewController = left
         leftDelegate = left as? SideMenuViewDelegate
         rightViewController = right
@@ -120,10 +120,10 @@ class SideMenuViewController: UIViewController {
         }, completion: { (complete) -> Void in
             if complete {
                 if IsRight {
-                    self.rightViewController?.didMove(toParentViewController: self)
+                    self.rightViewController?.didMove(toParent: self)
                 }
                 else {
-                    self.leftViewController?.didMove(toParentViewController: self)
+                    self.leftViewController?.didMove(toParent: self)
                 }
                 self.currentMenuState = .Expand
 //                if self.tapGesture == nil {
@@ -147,11 +147,11 @@ class SideMenuViewController: UIViewController {
             if complete {
                 if IsRight {
                     self.rightViewController?.view.removeFromSuperview()
-                    self.rightViewController?.removeFromParentViewController()
+                    self.rightViewController?.removeFromParent()
                 }
                 else {
                     self.leftViewController?.view.removeFromSuperview()
-                    self.leftViewController?.removeFromParentViewController()
+                    self.leftViewController?.removeFromParent()
                 }
                 self.currentMenuState = .Hide
                 self.centerViewController?.view.layer.shadowOpacity = 0
@@ -173,7 +173,7 @@ class SideMenuViewController: UIViewController {
             if rightViewController != nil {
                 rightViewController?.view.frame = CGRect(origin: CGPoint(x: moveEndX, y: 0), size: CGSize(width: view.frame.width-moveEndX, height: view.frame.height))
                 view.insertSubview((rightViewController?.view)!, at:0)
-                addChildViewController(rightViewController!)
+                addChild(rightViewController!)
                 success = true
             }
         }
@@ -181,7 +181,7 @@ class SideMenuViewController: UIViewController {
             if leftViewController != nil {
                 leftViewController?.view.frame = CGRect(origin: .zero, size: CGSize(width: view.frame.width-moveEndX, height: view.frame.height))
                 view.insertSubview((leftViewController?.view)!, at:0)
-                addChildViewController(leftViewController!)
+                addChild(leftViewController!)
                 success = true
             }
         }

@@ -72,7 +72,7 @@ class AuthorizationManage {
                     case "T43":
                         canEnterQRPay = true
                         if let pID = getPlatformIDByAuthID(ID) {
-                            if authList?.index(of: pID) == nil {
+                            if authList?.firstIndex(of: pID) == nil {
                                 authList?.append(pID)
                             }
                         }
@@ -81,13 +81,13 @@ class AuthorizationManage {
                     case "T63":
                         canShowQRCode0 = true
                         if let pID = getPlatformIDByAuthID(ID) {
-                            if authList?.index(of: pID) == nil {
+                            if authList?.firstIndex(of: pID) == nil {
                                 authList?.append(pID)
                             }
                         }
                     default:
                         if let pID = getPlatformIDByAuthID(ID) {
-                            if authList?.index(of: pID) == nil {
+                            if authList?.firstIndex(of: pID) == nil {
                                 authList?.append(pID)
                             }
                         }
@@ -475,7 +475,7 @@ class AuthorizationManage {
              :
             return true
         default:
-            if authList?.index(of: pID) == nil {
+            if authList?.firstIndex(of: pID) == nil {
                 return false
             }
             else {
@@ -538,7 +538,7 @@ class AuthorizationManage {
                             IDStringList.forEach { ID in
                                 let featureID = PlatformFeatureID(rawValue: Int(ID)!)!
                                 let info = Platform.plat.getFeatureInfoByID(featureID)
-                                if editList?.index(of: featureID) != nil || editList?.index(of: (info?.belong ?? featureID)) != nil {
+                                if editList?.firstIndex(of: featureID) != nil || editList?.firstIndex(of: (info?.belong ?? featureID)) != nil {
                                     list?.append( PlatformFeatureID(rawValue: Int(ID)!)! )
                                 }
                             }
@@ -558,7 +558,7 @@ class AuthorizationManage {
                         IDStringList.forEach { ID in
                             let featureID = PlatformFeatureID(rawValue: Int(ID)!)!
                             let info = Platform.plat.getFeatureInfoByID(featureID)
-                            if editList?.index(of: featureID) != nil || editList?.index(of: (info?.belong ?? featureID)) != nil {
+                            if editList?.firstIndex(of: featureID) != nil || editList?.firstIndex(of: (info?.belong ?? featureID)) != nil {
                                 list?.append( PlatformFeatureID(rawValue: Int(ID)!)! )
                             }
                         }
@@ -605,12 +605,12 @@ class AuthorizationManage {
             let sList = list!
             list?.removeAll()
             for ID in sList {
-                if authList?.index(of: ID) != nil {
+                if authList?.firstIndex(of: ID) != nil {
                     list?.append(ID)
                 }
                 else {
                     if type == .User_Type {
-                        needReAddList[ID] = sList.index(of: ID)!
+                        needReAddList[ID] = sList.firstIndex(of: ID)!
                     }
                 }
             }
@@ -624,7 +624,7 @@ class AuthorizationManage {
         if list != nil && IsLoginSuccess() {
             temp = [PlatformFeatureID]()
             for ID in list! {
-                if authList?.index(of: ID) != nil {
+                if authList?.firstIndex(of: ID) != nil {
                     temp?.append(ID)
                 }
             }

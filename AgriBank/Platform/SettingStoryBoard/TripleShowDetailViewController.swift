@@ -75,7 +75,6 @@ class TripleShowDetailViewController: BaseViewController , UITableViewDataSource
     //重新綁定
       if segue.identifier == showGoToTripleView_Segue {
 
-          let controller = segue.destination as! TripleViewController
           isBack = "REBIND"
       }
     }

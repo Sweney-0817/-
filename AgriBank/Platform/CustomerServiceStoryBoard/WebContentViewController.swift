@@ -61,7 +61,7 @@ class WebContentViewController: BaseViewController, WKNavigationDelegate {
     func webView(_ m_wvContent: WKWebView, shouldStartLoadWith request: URLRequest, navigationType: WKNavigationType) -> Bool {
         if navigationType == .linkActivated {
             guard let url = request.url else { return true }
-            UIApplication.shared.openURL(url)
+            UIApplication.shared.open(url)
             return false
         }
         return true

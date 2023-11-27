@@ -58,7 +58,7 @@ class GPSingleSellViewController: BaseViewController {
         m_tvContentView.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
         m_tvContentView.register(UINib(nibName: UIID.UIID_ResultEditCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultEditCell.NibName()!)
         m_tvContentView.allowsSelection = false
-        m_tvContentView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        m_tvContentView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         m_tvContentView.isHidden = true
         m_consContentViewHeight.constant = 0
         m_consSellAllHeight.constant = 0

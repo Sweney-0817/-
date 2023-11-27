@@ -206,7 +206,7 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
             let pdNPd = againPodTextfield.text! + loginDateTIme
             let pdNPoD = E2E.e2Epod(E2EKeyData, pod:pdNPd)
             
-            postRequest("Comm/COMM0112", "COMM0112", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01013","Operate":"commitTxn","OID":idMd5,"NID":SecurityUtility.utility.MD5(string: againIDTextfield.text!),"OPWD":pdMd5,"NPWD":pdNPoD,"ID1":idMd5_1,"PWD1":pdMd5_1, "TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
+                           postRequest("Comm/COMM0112", "COMM0112", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01013","Operate":"commitTxn","OID":idMd5,"NID":SecurityUtility.utility.MD5(string: againIDTextfield.text!),"OPWD":pdMd5 ?? "","NPWD":pdNPoD ?? "","ID1":idMd5_1,"PWD1":pdMd5_1 ?? "", "TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
         }
         }
         //109-10-16 end

@@ -109,7 +109,7 @@ class CardlessSetupViewController: BaseViewController, ThreeRowDropDownViewDeleg
             }
         case "Cardless_BaseCOMM0802":
             
-                self.postRequest("Comm/COMM0115", "COMM0115", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"15002","Operate":"getTerms","TransactionId":transactionId,"uid": AgriBank_DeviceID,"MotpDeviceID": MOTPPushAPI.getDeviceID()], true), AuthorizationManage.manage.getHttpHead(true))
+            self.postRequest("Comm/COMM0115", "COMM0115", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"15002","Operate":"getTerms","TransactionId":transactionId,"uid": AgriBank_DeviceID,"MotpDeviceID": MOTPPushAPI.getDeviceID() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
          
         case "Cardless_Description":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
@@ -148,8 +148,8 @@ class CardlessSetupViewController: BaseViewController, ThreeRowDropDownViewDeleg
     
     override func addObserverToKeyBoard() {
         removeObserverToKeyBoard()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func keyboardWillShow(_ notification:NSNotification) {
@@ -158,7 +158,7 @@ class CardlessSetupViewController: BaseViewController, ThreeRowDropDownViewDeleg
             return
         }
         let userInfo:NSDictionary = notification.userInfo! as NSDictionary
-        let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
         
         // 換算 curTextfield 至 self.view的frame

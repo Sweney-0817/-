@@ -57,7 +57,7 @@ class AnnounceNews: UIView, UITableViewDelegate, UITableViewDataSource {
             cell?.selectionStyle = .none
         }
 //        cell?.textLabel?.attributedText = NSAttributedString(string: list?[indexPath.row] ?? "", attributes: [NSFontAttributeName:Default_Font,NSForegroundColorAttributeName:UIColor.white])
-        cell?.textLabel?.attributedText = NSAttributedString(string: list?[indexPath.row] ?? "", attributes:[NSAttributedStringKey.font:Default_Font,NSAttributedStringKey.foregroundColor:UIColor.init(red: 156.0/255.0, green: 98.0/255.0, blue: 47.0/255.0, alpha: 1.0)])
+        cell?.textLabel?.attributedText = NSAttributedString(string: list?[indexPath.row] ?? "", attributes:[NSAttributedString.Key.font:Default_Font,NSAttributedString.Key.foregroundColor:UIColor.init(red: 156.0/255.0, green: 98.0/255.0, blue: 47.0/255.0, alpha: 1.0)])
         
         return cell!
     }

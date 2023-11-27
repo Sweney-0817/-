@@ -210,12 +210,12 @@ class QRTaipowerDetailViewController: BaseViewController, UITableViewDataSource,
         
       
     // MARK: - StoryBoadr Touch Event
-    @IBAction func clickDateBtn(_ sender: Any) {
+    @IBAction func clickDateBtn(_ sender: UIButton) {
         if (chooseAccountView.subviews.first as! OneRowDropDownView).getContentByType(.First) == Choose_Title {
             showErrorMessage(nil, Choose_Title + QRTPDetailView_ShowAccount_Title)
             return
         }
-        let btn = (sender as! UIButton)
+        let btn = sender
         dateTypeLabel.text = btn.titleLabel?.text
         switch btn {
         case theDayButton:

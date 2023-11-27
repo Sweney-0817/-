@@ -79,7 +79,7 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
     @IBAction func clickBannerBtn(_ sender: Any) {
         if let content = contentList?[pageControl.currentPage].link {
             if let url = URL(string: content), UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.openURL(url)
+                UIApplication.shared.open(url, options: [:])
             }
         }
     }

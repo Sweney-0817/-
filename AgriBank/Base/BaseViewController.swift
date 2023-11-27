@@ -105,7 +105,7 @@ class BaseViewController: UIViewController, LoginDelegate, GesturePwdDelegate, U
                     let barApp = UINavigationBarAppearance()
                     barApp.backgroundImage = image
                     barApp.backgroundColor = .white
-                    barApp.titleTextAttributes = [NSAttributedStringKey.font:Default_Font,NSAttributedStringKey.foregroundColor:UIColor(red:0.51, green:0.35, blue:0.20, alpha:1.00)]
+                    barApp.titleTextAttributes = [NSAttributedString.Key.font:Default_Font,NSAttributedString.Key.foregroundColor:UIColor(red:0.51, green:0.35, blue:0.20, alpha:1.00)]
                     navigationBar.scrollEdgeAppearance = barApp
                     navigationBar.standardAppearance = barApp
                     
@@ -143,7 +143,7 @@ class BaseViewController: UIViewController, LoginDelegate, GesturePwdDelegate, U
         super.viewDidAppear(animated)
         navigationController?.navigationBar.topItem?.title = getFeatureName(getCurrentFeatureID())
        // navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font:Default_Font,NSAttributedStringKey.foregroundColor:UIColor.white]
-navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font:Default_Font,NSAttributedStringKey.foregroundColor:UIColor(red:0.51, green:0.35, blue:0.20, alpha:1.00)]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:Default_Font,NSAttributedString.Key.foregroundColor:UIColor(red:0.51, green:0.35, blue:0.20, alpha:1.00)]
         originalY = view.frame.origin.y
     }
     
@@ -488,7 +488,7 @@ navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey
                 backgroundView.center = loadingView!.center
                 loadingView?.addSubview(backgroundView)
                 
-                let loading = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                let loading = UIActivityIndicatorView(style: .gray)
                 loading.startAnimating()
                 loading.center = loadingView!.center
                 loadingView?.addSubview(loading)
@@ -532,7 +532,7 @@ navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey
                    cancleTitle:String?,
                    completionHandler: @escaping ()->Void,
                    cancelHandelr: @escaping ()->Void) {
-        let alert = UIAlertController(title: title, message: msg, preferredStyle:UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: title, message: msg, preferredStyle:UIAlertController.Style.alert)
         
         alert.addAction(UIAlertAction(title: confirmTitle, style: .default, handler: { (action: UIAlertAction!) in
             completionHandler()
@@ -550,7 +550,7 @@ navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey
         if loginView == nil {
             loginView = getUIByID(.UIID_Login) as? LoginView
             loginView?.frame = CGRect(origin: .zero, size: view.frame.size)
-            loginView?.delegate = self as? LoginDelegate
+            loginView?.delegate = self as LoginDelegate
             getCanLoginBankInfo()
             getImageConfirm()
             view.addSubview(loginView!)
@@ -566,7 +566,7 @@ navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey
             }
             GesturePwdView = getUIByID(.UIID_Gesture) as? GesturePwd
             GesturePwdView?.frame = CGRect(origin: .zero, size: view.frame.size)
-            GesturePwdView?.delegate = self as? GesturePwdDelegate
+            GesturePwdView?.delegate = self as GesturePwdDelegate
             GesturePwdView?.pod = wkPod
             if let info = AuthorizationManage.manage.GetLoginInfo() {
                 GesturePwdView?.m_BankCode = info.bankCode
@@ -765,13 +765,13 @@ navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey
     // MARK: - KeyBoard
     func addObserverToKeyBoard() {
         removeObserverToKeyBoard()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func removeObserverToKeyBoard() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     var originalY: CGFloat = 0
     func keyboardWillShow(_ notification:NSNotification) {
@@ -780,7 +780,7 @@ navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey
             return
         }
         let userInfo:NSDictionary = notification.userInfo! as NSDictionary
-        let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
         let keyboardHeight = keyboardRectangle.height
         view.frame.origin.y = originalY - keyboardHeight
@@ -891,11 +891,10 @@ extension BaseViewController: ConnectionUtilityDelegate {
                     setLoading(true)
                     if (pdMd5 != ""||pdMd5_1 != "") {
                                           setLoading(true)
-                                           postRequest("Comm/COMM0111", "COMM0111",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.aot,"ID":idMd5,"PWD":pdMd5,"ID1":idMd5_1,"PWD1":pdMd5_1, "KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
+                        postRequest("Comm/COMM0111", "COMM0111",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.aot,"ID":idMd5 ,"PWD":pdMd5 ?? "","ID1":idMd5_1 ,"PWD1":pdMd5_1 ?? "", "KINBR":info.bankCode,"LoginMode":AgriBank_LoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                                       }else{
                                            let alert = UIAlertView(title: UIAlert_Default_Title, message: "設備驗證發生錯誤！", delegate: nil, cancelButtonTitle:Determine_Title)
                                            alert.show()
-                                          
                                       }
                     }
                     // //109-10-16 end
@@ -1086,14 +1085,13 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 if GrpPod == "" {
                     let alert = UIAlertView(title: UIAlert_Default_Title, message: "尚未設定快速登入！", delegate: nil, cancelButtonTitle:Determine_Title)
                     //寫入目前快登項目 0:pod 1:touchid/faceid 2:picture(1 byte)
-                      if let info = AuthorizationManage.manage.GetLoginInfo(){
-                    SecurityUtility.utility.writeFileByKey("0" + info.aot  , SetKey: info.bankCode , setEncryptKey: "\(SEA1)\(SEA2)\(SEA3)")
-                        alert.show()}
+                    if let info = AuthorizationManage.manage.GetLoginInfo(){
+                        SecurityUtility.utility.writeFileByKey("0" + info.aot  , SetKey: info.bankCode , setEncryptKey: "\(SEA1)\(SEA2)\(SEA3)")
+                        alert.show()
+                    }
                 }else{
                     showGestureView(wkPod: GrpPod)}
             }
-           
-            
         case "COMM0102": break
             //            AuthorizationManage.manage.setLoginStatus(false)
             //            curFeatureID = nil
@@ -1183,11 +1181,11 @@ extension BaseViewController: ConnectionUtilityDelegate {
                 self.postRequest("QR/QR0101", "QR0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09001","Operate":"getTerms","TransactionId":tempTransactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else if curFeatureID == .FeatureID_MobileTransferSetup {
-                self.postRequest("Comm/COMM0115", "COMM0115", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"15002","Operate":"getTerms","TransactionId":tempTransactionId,"uid": AgriBank_DeviceID,"MotpDeviceID": MOTPPushAPI.getDeviceID()], true), AuthorizationManage.manage.getHttpHead(true))
+                self.postRequest("Comm/COMM0115", "COMM0115", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"15002","Operate":"getTerms","TransactionId":tempTransactionId,"uid": AgriBank_DeviceID,"MotpDeviceID": MOTPPushAPI.getDeviceID() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else if curFeatureID == .FeatureID_CardlessSetup {
                 
-                self.postRequest("Comm/COMM0117", "COMM0117", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"16001","Operate":"getTerms","TransactionId":tempTransactionId,"uid": AgriBank_DeviceID,"MotpDeviceID": MOTPPushAPI.getDeviceID()], true), AuthorizationManage.manage.getHttpHead(true))
+                self.postRequest("Comm/COMM0117", "COMM0117", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"16001","Operate":"getTerms","TransactionId":tempTransactionId,"uid": AgriBank_DeviceID,"MotpDeviceID": MOTPPushAPI.getDeviceID() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                
             }
             else if (curFeatureID == .FeatureID_CardlessQry || curFeatureID == .FeatureID_CardlessDisable){
@@ -1340,7 +1338,7 @@ extension BaseViewController: ConnectionUtilityDelegate {
                                let pdMd5_1 = E2E.e2Epod(E2EKeyData, pod:pdMd51)
                                //E2E
                                 self.setLoading(true)
-                                self.postRequest("Comm/COMM0111", "COMM0111",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.aot,"ID":idMd5,"PWD":pdMd5,"ID1":idMd5_1,"PWD1":pdMd5_1,"KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
+                                self.postRequest("Comm/COMM0111", "COMM0111",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01011","Operate":"commitTxn","appUid": AgriBank_AppUid,"uid": AgriBank_DeviceID,"model": AgriBank_DeviceType,"ICIFKEY":info.aot,"ID":idMd5,"PWD":pdMd5 ?? "","ID1":idMd5_1,"PWD1":pdMd5_1 ?? "","KINBR":info.bankCode,"LoginMode":AgriBank_ForcedLoginMode,"TYPE":AgriBank_Type,"appId": AgriBank_AppID,"Version": AgriBank_Version,"systemVersion": AgriBank_SystemVersion,"codeName": AgriBank_DeviceType,"tradeMark": AgriBank_TradeMark, "UserIp":self.getIP()], true), AuthorizationManage.manage.getHttpHead(true))
                             }
                         }
                     })
@@ -1503,7 +1501,7 @@ extension BaseViewController {
         }
     }
     func goToSetting() {
-        guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
             return
         }
         if UIApplication.shared.canOpenURL(settingsUrl)  {

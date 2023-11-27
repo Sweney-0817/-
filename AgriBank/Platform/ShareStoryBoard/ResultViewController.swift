@@ -39,7 +39,7 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
                 let dateFormatter = DateFormatter()
                 dateFormatter.timeZone = NSTimeZone.init(abbreviation:"UTC")! as TimeZone
                 dateFormatter.dateFormat = "yyyy/MM/dd "
-                var TrxDateTime = dateFormatter.string(from: currnetDate)//交易日期
+        let TrxDateTime = dateFormatter.string(from: currnetDate)//交易日期
         var act5:String = (data?.list?[2][Response_Value] as? String ?? "")!
         act5 = act5.substring(from: 11, length: 5)
         
@@ -67,7 +67,7 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     
         m_tvData.register(UINib(nibName: UIID.UIID_ResultCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_ResultCell.NibName()!)
         m_tvData.allowsSelection = false
-        m_tvData.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        m_tvData.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         m_btnBackToFeature.setTitle(data?.resultBtnName, for: .normal)
         
         setShadowView(m_vBottomView)

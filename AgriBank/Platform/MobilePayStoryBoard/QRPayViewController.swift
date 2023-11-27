@@ -44,8 +44,8 @@ class QRPayViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         NSLog("======== QRPayViewController viewDidAppear ========")
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterBackground(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterBackground(_:)), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
         super.viewDidAppear(animated)
         if (m_bIsLoadFromAlbum == false) {
             startScan()
@@ -53,8 +53,8 @@ class QRPayViewController: BaseViewController {
         m_bIsLoadFromAlbum = false
     }
     override func viewDidDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name:NSNotification.Name.UIApplicationWillResignActive, object:nil)
-        NotificationCenter.default.removeObserver(self, name:NSNotification.Name.UIApplicationDidBecomeActive, object:nil)
+        NotificationCenter.default.removeObserver(self, name:UIApplication.willResignActiveNotification, object:nil)
+        NotificationCenter.default.removeObserver(self, name:UIApplication.didBecomeActiveNotification, object:nil)
         
         stopScan()
         super.viewDidDisappear(animated)
@@ -143,7 +143,7 @@ class QRPayViewController: BaseViewController {
             // 请求授权
             PHPhotoLibrary.requestAuthorization({ (status) -> Void in
                 DispatchQueue.main.async(execute: { () -> Void in
-                    _ = self.clickBtnAlbum()
+                    self.clickBtnAlbum()
                 })
             })
             
@@ -168,7 +168,9 @@ class QRPayViewController: BaseViewController {
     }
     private func encodeSecureCode(_ sc: String) -> String {
         //一銀是 !*'();:@&=+$,/?%#[]
-        let strSC = CFURLCreateStringByAddingPercentEscapes(nil, sc as CFString, nil, "!*'();:@&=$,/?%#[]" as CFString, CFStringBuiltInEncodings.UTF8.rawValue)
+        #warning("need test")
+//        let strSC = CFURLCreateStringByAddingPercentEscapes(nil, sc as CFString, nil, "!*'();:@&=$,/?%#[]" as CFString, CFStringBuiltInEncodings.UTF8.rawValue)
+        let strSC = sc.addingPercentEncoding(withAllowedCharacters: CharacterSet(charactersIn: "!*'();:@&=$,/?%#[]"))
         return strSC! as String
     }
 
@@ -268,7 +270,7 @@ class QRPayViewController: BaseViewController {
         //五倍卷   by sweney
           case "USIF0101":
               if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
-                   var birday = ""
+                  var birday = ""
                   if let birthday = data["BIRTHDAY"] as? String {
                       birday = birthday
                   }
@@ -495,10 +497,10 @@ extension QRPayViewController : ScanCodeViewDelegate {
     func clickBtnAlbum() {
         //m_bIsLoadFromAlbum = true
         if (self.checkPhotoAuthorize()) {
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary) {
                 let controller : UIImagePickerController = UIImagePickerController()
                 controller.delegate = self
-                controller.sourceType = UIImagePickerControllerSourceType.photoLibrary
+                controller.sourceType = UIImagePickerController.SourceType.photoLibrary
                 self.present(controller, animated: true, completion: nil)
             }
         }
@@ -508,7 +510,7 @@ extension QRPayViewController : ScanCodeViewDelegate {
     }
     func noPermission() {
         let confirmHandler : ()->Void = {() in
-            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 return
             }
             if UIApplication.shared.canOpenURL(settingsUrl)  {

@@ -33,7 +33,7 @@ class GPRiskEvaluationViewController: BaseViewController, UITableViewDataSource,
 //        tableView.register(UINib(nibName: UIID.UIID_GPRiskMulitCheckCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_GPRiskMulitCheckCell.NibName()!)
         // navigationController?.delegate = self
         tableView.allowsSelection = false
-        tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
          
         getTransactionID("10015", TransactionID_Description)
         
@@ -55,7 +55,7 @@ class GPRiskEvaluationViewController: BaseViewController, UITableViewDataSource,
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 tempTransactionId = tranId
                 setLoading(true)
-                self.postRequest("Gold/Gold0702", "Gold0702", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10015","Operate":"getTerms","TransactionId":tempTransactionId,"uid": AgriBank_DeviceID,"MotpDeviceID": MOTPPushAPI.getDeviceID()], true), AuthorizationManage.manage.getHttpHead(true))
+                self.postRequest("Gold/Gold0702", "Gold0702", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10015","Operate":"getTerms","TransactionId":tempTransactionId,"uid": AgriBank_DeviceID,"MotpDeviceID": MOTPPushAPI.getDeviceID() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                 
             }
             else {
@@ -67,8 +67,8 @@ class GPRiskEvaluationViewController: BaseViewController, UITableViewDataSource,
                 for Result in array {
                     if let Value = Result[Response_Value] as? String ,let KEY = Result[Response_Key] as? String  {
                         if KEY == "投資風險屬性等級" {
-                        let alert = UIAlertView(title: "投資風險屬性等級", message:Value,  delegate: nil, cancelButtonTitle:Determine_Title)
-                        alert.show()
+                            let alert = UIAlertView(title: "投資風險屬性等級", message:Value,  delegate: nil, cancelButtonTitle:Determine_Title)
+                            alert.show()
                         }
                     }
                 }
@@ -198,7 +198,7 @@ class GPRiskEvaluationViewController: BaseViewController, UITableViewDataSource,
              
              tableView.register(UINib(nibName: UIID.UIID_GPRiskMulitCheckCell.NibName()!  , bundle: nil), forCellReuseIdentifier: UIID.UIID_GPRiskMulitCheckCell.NibName()! + String(indexPath.row))
              
-             var cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_GPRiskMulitCheckCell.NibName()! + String(indexPath.row) , for: indexPath) as! GPRiskMulitChekCell
+             let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_GPRiskMulitCheckCell.NibName()! + String(indexPath.row) , for: indexPath) as! GPRiskMulitChekCell
              
              let title = RiskAry[indexPath.row][2] + RiskAry[indexPath.row][3]
              
@@ -336,30 +336,27 @@ class GPRiskEvaluationViewController: BaseViewController, UITableViewDataSource,
     
    
     @IBAction func SendToServer(_ sender: Any) {
-      
-            
-            var MsgStr = ""
-            var PostAr  =
-           ["WorkCode":"10016","Operate":"commitTxn","TransactionId":self.tempTransactionId ]
-            for RiskAr in self.RiskAry {
-                if RiskAr[1] == "0" {
-                    MsgStr  = MsgStr +  RiskAr[2] + " "
-                }
-                PostAr[RiskAr[0]] = RiskAr[1]
+        var MsgStr = ""
+        var PostAr  =
+        ["WorkCode":"10016","Operate":"commitTxn","TransactionId":self.tempTransactionId ]
+        for RiskAr in self.RiskAry {
+            if RiskAr[1] == "0" {
+                MsgStr  = MsgStr +  RiskAr[2] + " "
             }
-            //print ( PostAr)
-            if MsgStr == "" {
-                showAlert(title: UIAlert_Default_Title, msg: "確定要送出評估？", confirmTitle: Determine_Title, cancleTitle: Cancel_Title, completionHandler: {
-               // print(PostAr)
+            PostAr[RiskAr[0]] = RiskAr[1]
+        }
+        //print ( PostAr)
+        if MsgStr == "" {
+            showAlert(title: UIAlert_Default_Title, msg: "確定要送出評估？", confirmTitle: Determine_Title, cancleTitle: Cancel_Title, completionHandler: {
+                // print(PostAr)
                 self.setLoading(true)
-              self.postRequest("Gold/Gold0701", "Gold0701", AuthorizationManage.manage.converInputToHttpBody( PostAr, true), AuthorizationManage.manage.getHttpHead(true))
-                }, cancelHandelr: {()})
-                
-            }else{
-                let alert = UIAlertView(title: UIAlert_Default_Title, message:MsgStr + "未填寫", delegate: nil, cancelButtonTitle:Determine_Title)
-                alert.show()
-            }
-       
+                self.postRequest("Gold/Gold0701", "Gold0701", AuthorizationManage.manage.converInputToHttpBody( PostAr, true), AuthorizationManage.manage.getHttpHead(true))
+            }, cancelHandelr: {()})
+            
+        }else{
+            let alert = UIAlertView(title: UIAlert_Default_Title, message:MsgStr + "未填寫", delegate: nil, cancelButtonTitle:Determine_Title)
+            alert.show()
+        }
     }
     func  RadioSelect (_ sender: SKRadioButton)  {
         let wkIndex = sender.tag / 100

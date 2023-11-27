@@ -18,7 +18,7 @@ class MessageSwitchViewController: BaseViewController {
         super.viewDidLoad()
 
         getTransactionID("08004", TransactionID_Description)
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground(_:)), name: .UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -77,7 +77,7 @@ class MessageSwitchViewController: BaseViewController {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     // MARK: - StoryBoard Touch Event
@@ -122,7 +122,7 @@ class MessageSwitchViewController: BaseViewController {
         })
         alert.addAction(UIAlertAction(title: Setting_Title, style: .default) { _ in
             DispatchQueue.main.async {
-                UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
             }
         })
         present(alert, animated: false, completion: nil)

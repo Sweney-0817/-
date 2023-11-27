@@ -32,7 +32,8 @@ class KeychainManager: NSObject {
         // 删除旧的存储数据
         SecItemDelete(keyChainSaveMutableDictionary)
         //先把需要儲存的資料序列化
-        keyChainSaveMutableDictionary.setValue(NSKeyedArchiver.archivedData(withRootObject: data), forKey: kSecValueData as String)
+        #warning("need Test")
+        keyChainSaveMutableDictionary.setValue(try? NSKeyedArchiver.archivedData(withRootObject: data, requiringSecureCoding: true), forKey: kSecValueData as String)
         // 进行存储数据
         let saveState = SecItemAdd(keyChainSaveMutableDictionary, nil)
         if saveState == noErr  {
@@ -48,7 +49,8 @@ class KeychainManager: NSObject {
         // 创建数据存储字典
         let updataMutableDictionary = NSMutableDictionary.init(capacity: 0)
         // 设置数据
-        updataMutableDictionary.setValue(NSKeyedArchiver.archivedData(withRootObject: data), forKey: kSecValueData as String)
+        #warning("need Test")
+        updataMutableDictionary.setValue(try? NSKeyedArchiver.archivedData(withRootObject: data, requiringSecureCoding: true), forKey: kSecValueData as String)
         // 更新数据
         let updataStatus = SecItemUpdate(keyChainUpdataMutableDictionary, updataMutableDictionary)
         if updataStatus == noErr {

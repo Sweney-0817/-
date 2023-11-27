@@ -234,7 +234,7 @@ class InitTransToNoQryViewController: BaseViewController,TwoRowDropDownViewDeleg
      // MARK: -TwoRowDropDownViewDelegate
     func clickTwoRowDropDownView(_ sender: TwoRowDropDownView) {
         if accountList != nil {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self as? UIActionSheetDelegate, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
+            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
                    accountList?.forEach{index in actSheet.addButton(withTitle: index.accountNO)}
                    actSheet.tag = ViewTag.View_AccountActionSheet.rawValue
                    actSheet.show(in: view)
@@ -266,7 +266,7 @@ class InitTransToNoQryViewController: BaseViewController,TwoRowDropDownViewDeleg
               case ViewTag.View_AccountActionSheet.rawValue:
                   accountIndex = buttonIndex-1
                  
-                topDropView?.setTwoRow(NTTransTo_OutAccount, accountList?[accountIndex!].accountNO ?? "", NTTransTo_Currency, (accountList?[accountIndex!].currency == Currency_TWD ? Currency_TWD_Title:accountList?[accountIndex!].currency) as! String )
+                  topDropView?.setTwoRow(NTTransTo_OutAccount, accountList?[accountIndex!].accountNO ?? "", NTTransTo_Currency, (accountList?[accountIndex!].currency == Currency_TWD ? Currency_TWD_Title:accountList?[accountIndex!].currency)! )
                 
                 agreedAccountList = nil
                 

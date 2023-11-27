@@ -65,14 +65,14 @@ class QRPayViewController0:BaseViewController {
         LabelTimer.text = ""
         
         ///添加截圖通知
-        NotificationCenter.default.addObserver(self, selector: #selector(self.userDidTakeScreenshot), name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.userDidTakeScreenshot), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
         
        // m_QuintupleImg.isHidden = QuintupleFlag
         
     }
     deinit {
         ///移除通知
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
         timer.invalidate()
         isPlaying = false
     }
@@ -82,7 +82,7 @@ class QRPayViewController0:BaseViewController {
     }
     //截屏通知
     @objc func userDidTakeScreenshot() {
-        var StrMsg =  "親愛的客戶您好：\n為維護您的個人資料及交易安全，使用截圖功能時，請謹慎並妥善保管，以免遭到不當使用。"
+        let StrMsg =  "親愛的客戶您好：\n為維護您的個人資料及交易安全，使用截圖功能時，請謹慎並妥善保管，以免遭到不當使用。"
            showAlert(title: UIAlert_Default_Title, msg: StrMsg, confirmTitle: "確認", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
       
         
@@ -325,7 +325,7 @@ class QRPayViewController0:BaseViewController {
     func SendQR0801() {
 //        postRequest("QR/QR0801", "QR0801", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09004","Operate":"dataConfirm","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
         let act = m_uiActView?.getContentByType(.First)
-        postRequest("QR/QR0801", "QR0801", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09009","Operate":"QRConfirm","cardNumber":act as! String,"TransactionId":transactionId,"appId": AgriBank_AppID,"uid": AgriBank_DeviceID], true), AuthorizationManage.manage.getHttpHead(true))
+        postRequest("QR/QR0801", "QR0801", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09009","Operate":"QRConfirm","cardNumber":act!,"TransactionId":transactionId,"appId": AgriBank_AppID,"uid": AgriBank_DeviceID], true), AuthorizationManage.manage.getHttpHead(true))
     }
   
     @IBAction func m_btnMakeQRCodeClick(_ sender: Any) {
@@ -358,7 +358,7 @@ class QRPayViewController0:BaseViewController {
         let TrxDateTime = StringToHex(string:QRCodeInfo["TransTime"]!)
         FISCCardTransData = FISCCardTransData  + TrxDateTime!
         
-        var act = QRCodeInfo["CardNumber"]//m_uiActView?.getContentByType(.First)
+        let act = QRCodeInfo["CardNumber"]//m_uiActView?.getContentByType(.First)
         let  BankCode  = StringToHex(string: QRCodeInfo["CardBank"]! + "00000")//act?.substring(to: 2)
         //BankCode = BankCode! + "00000" //String(format: "%08x", BankCode!)//發卡單位
         
@@ -391,10 +391,10 @@ class QRPayViewController0:BaseViewController {
         let BarCodeType = "96" //95=金融卡雲支付 96=行動錢包支付
         let BarCodeVr = "1"  //版本代號＝1
         //dateFormatter.dateFormat = "mmss" //交易時間
-        var BarCodeTime =   QRCodeInfo["TransTime"]!.substring(from: 10, length: 4)
-        var BankCode2  = QRCodeInfo["CardBank"]//act?.substring(to: 2) //發卡單位
+        let BarCodeTime =   QRCodeInfo["TransTime"]!.substring(from: 10, length: 4)
+        let BankCode2  = QRCodeInfo["CardBank"]//act?.substring(to: 2) //發卡單位
         // let actNo =  StringToHex(string: String(format: "%016x", act!))//卡號
-        let TSN =  QRCodeInfo["TSN"]!.substring(from: QRCodeInfo["TSN"]!.characters.count - 4) //TSN後4碼
+        let TSN =  QRCodeInfo["TSN"]!.substring(from: QRCodeInfo["TSN"]!.count - 4) //TSN後4碼
         let OTP =  QRCodeInfo["OTP"] //測試ＯＴＰ
         let Temp = "00" //保留
         
@@ -413,9 +413,7 @@ class QRPayViewController0:BaseViewController {
         let BarCodebase64 =  BarCodeString.data(using: .bytesHexLiteral)?.base64EncodedString()
         BarCodeString = BarCodeType + BarCodebase64!
         LabelBarCode.text = BarCodeString
-        if (BarCodeString != nil) {
-            self.m_ivBarCode.image = MakeBarCode128Utility.utility.generateBarCode(from: BarCodeString)
-        }
+        self.m_ivBarCode.image = MakeBarCode128Utility.utility.generateBarCode(from: BarCodeString)
         //發票條碼
         let MBarCode = QRCodeInfo["MBarcode"]
         if MBarCode != "" {
@@ -476,11 +474,13 @@ class QRPayViewController0:BaseViewController {
 extension String {
     
     func leftPadding(toLength: Int, withPad character: Character) -> String {
-        let newLength = self.characters.count
+        #warning("need test")
+        let newLength = self.count
         if newLength < toLength {
             return String(repeatElement(character, count: toLength - newLength)) + self
         } else {
-            return self.substring(from: index(self.startIndex, offsetBy: newLength - toLength))
+            return "\(self[index(self.startIndex, offsetBy: newLength - toLength)])"
+//            return self.substring(from: index(self.startIndex, offsetBy: newLength - toLength))
         }
     }
     /// Expanded encoding
@@ -501,10 +501,10 @@ extension String {
     func data(using encoding: ExpandedEncoding) -> Data? {
         switch encoding {
         case .bytesHexLiteral:
-            guard self.characters.count % 2 == 0 else { return nil }
+            guard self.count % 2 == 0 else { return nil }
             var data = Data()
             var byteLiteral = ""
-            for (index, character) in self.characters.enumerated() {
+            for (index, character) in self.enumerated() {
                 if index % 2 == 0 {
                     byteLiteral = String(character)
                 } else {

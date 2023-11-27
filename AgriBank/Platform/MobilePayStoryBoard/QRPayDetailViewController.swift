@@ -263,7 +263,7 @@ class QRPayDetailViewController: BaseViewController, UITableViewDataSource, UITa
                             categoryType[ActOverview_TypeList[0]] = type
                             categoryList[type] = [AccountStruct]()
                             addType = true
-                            if typeList?.index(of: ActOverviewType.Type1.description()) == nil {
+                            if typeList?.firstIndex(of: ActOverviewType.Type1.description()) == nil {
                                 typeList?.append(ActOverviewType.Type1.description())
                             }
                         default: break
@@ -319,12 +319,12 @@ class QRPayDetailViewController: BaseViewController, UITableViewDataSource, UITa
     
   
     // MARK: - StoryBoadr Touch Event
-    @IBAction func clickDateBtn(_ sender: Any) {
+    @IBAction func clickDateBtn(_ sender: UIButton) {
         if (chooseAccountView.subviews.first as! OneRowDropDownView).getContentByType(.First) == Choose_Title {
             showErrorMessage(nil, Choose_Title+(currentType ?? "")+QRDetailView_ShowAccount_Title)
             return
         }
-        let btn = (sender as! UIButton)
+        let btn = sender
         dateTypeLabel.text = btn.titleLabel?.text
         switch btn {
         case theDayButton:

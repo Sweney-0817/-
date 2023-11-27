@@ -30,14 +30,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
 //        return updateInfoArray
 //    }
     //2021-11-16- add by sweney 禁止第三方鍵盤
-    func application(_ application: UIApplication, shouldAllowExtensionPointIdentifier extensionPointIdentifier: UIApplicationExtensionPointIdentifier) -> Bool {
-        if extensionPointIdentifier == UIApplicationExtensionPointIdentifier.keyboard {
+    func application(_ application: UIApplication, shouldAllowExtensionPointIdentifier extensionPointIdentifier: UIApplication.ExtensionPointIdentifier) -> Bool {
+        if extensionPointIdentifier == UIApplication.ExtensionPointIdentifier.keyboard {
             return false
         }
         return true
     }
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // 連線暫存檔清除
         SecurityUtility.utility.removeConnectCatche()
         // 設定Root View Controller
@@ -50,30 +50,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         statusView.tag = ViewTag.View_Status.rawValue
         window?.addSubview(statusView)
         // APNS註冊
-        if #available(iOS 10.0, *) {
-            let center = UNUserNotificationCenter.current()
-            center.delegate = self
-            center.requestAuthorization(options: [.sound,.alert,.badge]) { granted, error in
-                if granted {
-                    center.getNotificationSettings(completionHandler: { (setting) in
-                    })
-                }
-                else {
-                }
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        center.requestAuthorization(options: [.sound,.alert,.badge]) { granted, error in
+            if granted {
+                center.getNotificationSettings(completionHandler: { (setting) in
+                })
+            }
+            else {
             }
         }
-        else {
-            if application.responds(to: #selector(getter: UIApplication.isRegisteredForRemoteNotifications)) {
-                application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil))
-            }
-        }
+
         UIApplication.shared.registerForRemoteNotifications()
         // 檢查定位權限
         checkLocation()
         // 偵測APP縮至背景
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillResignActive, object: nil, queue: OperationQueue.current, using: appWillEnterBackground)
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.current, using: appWillEnterForeground)
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground, object: nil, queue: OperationQueue.current, using: appWillEnterForeground)
+        NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification, object: nil, queue: OperationQueue.current, using: appWillEnterBackground)
+        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: OperationQueue.current, using: appWillEnterForeground)
+        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: OperationQueue.current, using: appWillEnterForeground)
         return true
     }
 
@@ -119,10 +113,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-    
-    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
-        
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -185,7 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         //chiu 20210611 add start
         if let aps = pushResultList![AnyHashable("aps")] as? NSDictionary{
         if aps["WorkCode"]  as? String == "09004"{
-        pushResultList = aps as! [AnyHashable : Any]
+            pushResultList = aps as? [AnyHashable : Any]
                     }
                 }
                 //chiu 20210611 add end
@@ -245,7 +235,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         //chiu 20210611 add start
         if let aps = pushResultList![AnyHashable("aps")] as? NSDictionary{
         if aps["WorkCode"]  as? String == "09004"{
-        pushResultList = aps as! [AnyHashable : Any]
+        pushResultList = aps as? [AnyHashable : Any]
         }
     }
                 //chiu 20210611 add end
@@ -272,7 +262,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionUtilityDelegate
         //chiu 公告推播顯示訊息 20201231(不是ＹＥＳ 也不是 ＯＴＰ
         if pushReceiveFlag == ""{
             if let aps = pushResultList![AnyHashable("aps")] as? NSDictionary{
-                           if let apsalert = aps["alert"] as? NSString{
+                           if let _ = aps["alert"] as? NSString{
                             pushReceiveFlag = "MSG"
                        }
             }
@@ -352,6 +342,8 @@ extension AppDelegate: CLLocationManagerDelegate {
         case .authorizedWhenInUse, .authorizedAlways:
             m_locationManager.startUpdatingLocation()
             break
+        @unknown default:
+            break
         }
     }
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -362,6 +354,8 @@ extension AppDelegate: CLLocationManagerDelegate {
             m_locationManager.startUpdatingLocation()
             break
         case .notDetermined:
+            break
+        @unknown default:
             break
         }
     }

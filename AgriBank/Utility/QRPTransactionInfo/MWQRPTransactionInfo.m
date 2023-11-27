@@ -411,7 +411,7 @@ return self.m_strMsgTAC;
 
 - (NSString *)note
 {
-    NSString *strN = [_m_strNote stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *strN = [_m_strNote stringByRemovingPercentEncoding];
     return strN;
 }
 
@@ -454,7 +454,7 @@ return self.m_strMsgTAC;
 - (NSString *)feeName {
     if (self.m_strFeeName != nil)
     {
-        return [self.m_strFeeName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        return [self.m_strFeeName stringByRemovingPercentEncoding];
     }
     return self.m_strFeeName;
 }
@@ -481,7 +481,7 @@ return self.m_strMsgTAC;
     self.m_powerNo = powerNo; }
 
 -(void) setsMBarcode:(NSString*)MBarcode{
-    NSString *decodeMBarcode = [MBarcode stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *decodeMBarcode = [MBarcode stringByRemovingPercentEncoding];
     self.m_MBarcode = decodeMBarcode; }
 
 -(void) setspower64No:(NSString*)power64no{
@@ -1103,7 +1103,7 @@ return self.m_strMsgTAC;
  */
 - (BOOL)isValidOtherInfoIsNecessary:(BOOL)isNecessary {
     BOOL bValid = NO;
-    NSString *strO = [_m_strOtherInfo stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *strO = [_m_strOtherInfo stringByRemovingPercentEncoding];
     if (nil != strO) {
         bValid = (strO.length >= 1 && strO.length <= 50);
         if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 其他資訊:%@\n", _m_strOtherInfo);
@@ -1121,7 +1121,7 @@ return self.m_strMsgTAC;
  */
 - (BOOL)isValidNoteIsNecessary:(BOOL)isNecessary {
     BOOL bValid = NO;
-    NSString *strN = [_m_strNote stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *strN = [_m_strNote stringByRemovingPercentEncoding];
     if (nil != strN) {
         bValid = (strN.length >= 1 && strN.length <= 20);
         if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 備註:%@\n", _m_strNote);
@@ -1181,7 +1181,7 @@ return self.m_strMsgTAC;
  */
 - (BOOL)isValidAcqInfoIsNecessary:(BOOL)isNecessary {
     BOOL bValid = NO;
-    NSString *strAcq = [_m_strAcqInfo stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *strAcq = [_m_strAcqInfo stringByRemovingPercentEncoding];
     if (nil != strAcq) {
         bValid = (strAcq.length >= 1 && strAcq.length <= 256);
         if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 收單行資訊:%@\n", _m_strAcqInfo);
@@ -1351,7 +1351,7 @@ return self.m_strMsgTAC;
  */
 - (BOOL)isValidFeeNameIsNecessary:(BOOL)isNecessary {
     BOOL bValid = NO;
-    NSString *FeeName = [_m_strFeeName stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *FeeName = [_m_strFeeName stringByRemovingPercentEncoding];
     if (nil != FeeName) {
         bValid = (FeeName.length >= 1 && FeeName.length <= 30);
         if (!bValid) NSLog(@"\n[QPCode error:格式錯誤] 費用名稱:%@\n", FeeName);
@@ -1619,10 +1619,10 @@ return self.m_strMsgTAC;
         
         [self initParameters];
         
-        NSString *decodeUrl = [strURL stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *decodeUrl = [strURL stringByRemovingPercentEncoding];
         NSLog(@"\n======================\nQRP Decode URL = %@\n======================\n", decodeUrl);
         
-        NSString *encodeUrl = [decodeUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *encodeUrl = [decodeUrl stringByRemovingPercentEncoding];
         NSURL *url = [NSURL URLWithString:encodeUrl];
         if ([[[url scheme] uppercaseString] isEqualToString:kQRPTransactionScheme]) {
             
@@ -1637,7 +1637,7 @@ return self.m_strMsgTAC;
             NSString *strQuery = [url query];
             if (0 < strQuery.length) {
                 //[self parserURLWithQuery:strQuery];
-                [self parserURLWithQuery:[strQuery stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                [self parserURLWithQuery:[strQuery stringByRemovingPercentEncoding]];
             }
         }
     }
@@ -1687,6 +1687,9 @@ return self.m_strMsgTAC;
     [_m_ItemList release];
     [_m_ItemarrayList release];
     [super dealloc];
+}
+
+- (void)setstxamt:(NSString *)txamt {
 }
 
 @end

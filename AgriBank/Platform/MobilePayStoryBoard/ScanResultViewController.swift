@@ -1626,21 +1626,21 @@ extension ScanResultViewController : UITableViewDelegate, UITableViewDataSource 
             //            (m_aryShowData[indexPath.row][Response_Value]?.isEmpty == true)) {
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultEditCell.NibName()!, for: indexPath) as! ResultEditCell
             cell.set(m_strInputAmount)
-            cell.m_tfEditData.delegate = self as? UITextFieldDelegate
+            cell.m_tfEditData.delegate = self
             cell.selectionStyle = .none
             return cell
         }
         else  if (((m_aryShowData[indexPath.row][Response_Key])!.range(of: "轉出帳號備記") != nil) && (m_aryShowData[indexPath.row][Response_Value]?.isEmpty == true)) {
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_TXMEMOCell1.NibName()!, for: indexPath) as! TXMEMOCell1
             cell.set(m_strInputnote)
-            cell.ScanTXMEMO1.delegate = self as? UITextFieldDelegate
+            cell.ScanTXMEMO1.delegate = self
             cell.selectionStyle = .none
             return cell
         }
         else  if (((m_aryShowData[indexPath.row][Response_Key])!.range(of: "轉入帳號備記") != nil) && (m_aryShowData[indexPath.row][Response_Value]?.isEmpty == true)) {
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_TXMEMOCell2.NibName()!, for: indexPath) as! TXMEMOCell2
             cell.set(m_strInputnote2)
-            cell.ScanTXMEMO2.delegate = self as? UITextFieldDelegate
+            cell.ScanTXMEMO2.delegate = self
             cell.selectionStyle = .none
             return cell
         }
@@ -1650,7 +1650,7 @@ extension ScanResultViewController : UITableViewDelegate, UITableViewDataSource 
         else if (((m_aryShowData[indexPath.row][Response_Key])!.range(of: "手機門號") != nil)) && (m_aryShowData[indexPath.row][Response_Value]?.isEmpty == true) {
             let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_TXMobileCell.NibName()!, for: indexPath) as! TXMobileCell
             cell.set(m_strInputMobile)
-            cell.ScanTXMobile.delegate = self as? UITextFieldDelegate
+            cell.ScanTXMobile.delegate = self
             cell.selectionStyle = .none
             return cell
         }

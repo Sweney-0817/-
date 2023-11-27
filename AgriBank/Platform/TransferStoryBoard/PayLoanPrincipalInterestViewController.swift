@@ -187,7 +187,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
     
     // MARK: - Private
     private func fillDetailData()  {
-        if let array = list?["Result"] as? [[String:String]], let dic = array.first {
+        if let array = list?["Result"] as? [[String:String]], let _ = array.first {
             //calculatePeroidLabel.text = "\(dic["SDATE"] ?? "") - \(dic["EDATE"] ?? "")"
              calculatePeroidLabel.text = "\(list?["MSDATE"] ?? "") - \(list?["MEDATE"] ?? "")"
         }

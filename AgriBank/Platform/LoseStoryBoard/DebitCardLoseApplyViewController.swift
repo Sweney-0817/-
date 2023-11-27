@@ -98,7 +98,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
                             setLoading(true)
                 
                // postRequest("LOSE/LOSE0201", "LOSE0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04001","Operate":"setLoseAcnt","TransactionId":transactionId,"ACTNO":accountList?[accountIndex!].accountNO ?? "","PWD":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
-                postRequest("LOSE/LOSE0202", "LOSE0202", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04002","Operate":"setLoseAcnt","TransactionId":transactionId,"ACTNO":accountList?[accountIndex!].accountNO ?? "","DWP":pd], true), AuthorizationManage.manage.getHttpHead(true))
+                    postRequest("LOSE/LOSE0202", "LOSE0202", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04002","Operate":"setLoseAcnt","TransactionId":transactionId,"ACTNO":accountList?[accountIndex!].accountNO ?? "","DWP":pd ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                 }
             }
                 else {

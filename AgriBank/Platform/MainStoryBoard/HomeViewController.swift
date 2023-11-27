@@ -93,7 +93,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
         var list:[[String:Any]]? = nil
         if AuthorizationManage.manage.IsLoginSuccess() {
-            if let info = AuthorizationManage.manage.getResponseLoginInfo() {
+            if let _ = AuthorizationManage.manage.getResponseLoginInfo() {
                 m_vBeforeLogin.isHidden = true
                 m_vAfterLogin.isHidden = false
 //                if homeTouch != ""{
@@ -311,15 +311,15 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                     {
                         if (pushDate + msgUid == oldData)
                         {//local與最新一則相同
-                            m_btnAlert.setImage(UIImage(named: "alert1"), for: UIControlState.normal)
+                            m_btnAlert.setImage(UIImage(named: "alert1"), for: UIControl.State.normal)
                         }
                         else
                         {
-                            m_btnAlert.setImage(UIImage(named: "alert2"), for: UIControlState.normal)
+                            m_btnAlert.setImage(UIImage(named: "alert2"), for: UIControl.State.normal)
                         }
                     }
                     else {
-                        m_btnAlert.setImage(UIImage(named: "alert2"), for: UIControlState.normal)
+                        m_btnAlert.setImage(UIImage(named: "alert2"), for: UIControl.State.normal)
 
                     }
                 }
@@ -506,7 +506,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 postLogout()
                 featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
                 updateLoginStatus(false)
-                m_btnAlert.setImage(UIImage(named: "alert1"), for: UIControlState.normal)
+                m_btnAlert.setImage(UIImage(named: "alert1"), for: UIControl.State.normal)
             }
             
         case ViewTag.View_AlertForceUpdate.rawValue:

@@ -143,7 +143,7 @@ class ContactCustomerServiceViewController: BaseViewController, UITableViewDeleg
         }
     }
     
-    @IBAction func clickCallPhoneButton(_ sender: Any) {
+    @IBAction func clickCallPhoneButton(_ sender: UIButton) {
         if telePhone != nil && !telePhone!.isEmpty {
             if let url = URL(string: "tel://\(telePhone!)"), UIApplication.shared.canOpenURL(url) {
                 if #available(iOS 10, *) {

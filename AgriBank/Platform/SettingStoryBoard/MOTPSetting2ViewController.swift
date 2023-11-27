@@ -82,7 +82,7 @@ class MOTPSetting2ViewController: BaseViewController {
                 }
             }else {
                 setLoading(true)
-                postRequest("Comm/COMM0808", "COMM0808", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"12007","Operate":"queryData","TransactionId":transactionId,"MotpDeviceID": MOTPPushAPI.getDeviceID()], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("Comm/COMM0808", "COMM0808", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"12007","Operate":"queryData","TransactionId":transactionId,"MotpDeviceID": MOTPPushAPI.getDeviceID() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
         case "COMM0808":
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode != ReturnCode_Success {
@@ -108,7 +108,7 @@ class MOTPSetting2ViewController: BaseViewController {
                     
                     // let Remark = 裝置暱稱
                     setLoading(true)
-                    postRequest("Comm/COMM0809", "COMM0809", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"12005","Operate":"commitTxn","TransactionId":transactionId,"Account":Account ,"DeviceID":DeviceID ,"ClientID":ClientID ,"SN":SN ,"PushId":PushId ,"ServerUrl":ServerUrl ,"PsAccountId":PsAccountId ,"MobileType":"2","Remark":txtDeviceRemark.text], true), AuthorizationManage.manage.getHttpHead(true))
+                    postRequest("Comm/COMM0809", "COMM0809", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"12005","Operate":"commitTxn","TransactionId":transactionId,"Account":Account ?? "" ,"DeviceID":DeviceID ?? "" ,"ClientID":ClientID ?? "" ,"SN":SN ?? "" ,"PushId":PushId ?? "" ,"ServerUrl":ServerUrl ?? "" ,"PsAccountId":PsAccountId ,"MobileType":"2","Remark":txtDeviceRemark.text ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                 }
                // showAlert(title: "addProfile", msg:showMsg, confirmTitle: "確定", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
                 }

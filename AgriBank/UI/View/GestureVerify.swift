@@ -82,7 +82,7 @@ class GestureVerify: UIView  {
             path.move(to: currentPoint)
             path.addLine(to: point)
             shapeLayer.path = path.cgPath
-            shapeLayer.lineCap = "round"
+            shapeLayer.lineCap = .round
             ContentView.layer.addSublayer(shapeLayer)
             // 將我們的 layer 加入到 lineLayers
             //之後當我們畫線結束後會刪除裡面所有 layer
@@ -110,10 +110,8 @@ class GestureVerify: UIView  {
     }
     
     func showMessageAlert(message: String) {
-        
         let alert = UIAlertView(title: UIAlert_Default_Title, message: message, delegate: nil, cancelButtonTitle:Determine_Title)
         alert.show()
-        
         self.lineLayers.forEach { (layer) in
             layer.removeFromSuperlayer()
         }
@@ -188,7 +186,7 @@ extension GestureVerify: GestureCollectionViewDelegate {
             path.move(to: currentPoint)
             path.addLine(to: point)
             moveLayer?.path = path.cgPath
-            moveLayer?.lineCap = "round"
+            moveLayer?.lineCap = .round
         }
     }
     // 判斷是否已經滑到 CollectionViewCell 中

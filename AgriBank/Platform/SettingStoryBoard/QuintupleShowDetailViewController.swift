@@ -74,8 +74,6 @@ class QuintupleShowDetailViewController: BaseViewController , UITableViewDataSou
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     //重新綁定
       if segue.identifier == showGoToQuintupleView_Segue {
-
-          let controller = segue.destination as! QuintupleViewController
           isBack = "REBIND"
       }
     }

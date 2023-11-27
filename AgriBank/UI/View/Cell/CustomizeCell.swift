@@ -252,7 +252,7 @@ class ResultCell: UITableViewCell {
         let dataWidth = width-171-(15*3)
 //        let plusHeight:CGFloat = 17+18
         
-        let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedStringKey.font: Default_Font], context: nil)
+        let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedString.Key.font: Default_Font], context: nil)
         return (boundingBox.height < CGFloat(60) ? CGFloat(60) : boundingBox.height)
     }
 }
@@ -293,7 +293,7 @@ class ResultCheckCell: UITableViewCell {
         let dataWidth = width-171-(15*3)
 //        let plusHeight:CGFloat = 17+18
         
-        let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedStringKey.font: Default_Font], context: nil)
+        let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedString.Key.font: Default_Font], context: nil)
         return (boundingBox.height < CGFloat(60) ? CGFloat(60) : boundingBox.height)
     }
 }

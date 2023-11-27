@@ -399,7 +399,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                             categoryType[ActOverview_TypeList[0]] = type
                             categoryList[type] = [AccountStruct]()
                             addType = true
-                            if typeList.index(of: ActOverviewType.Type1.description()) == nil {
+                            if typeList.firstIndex(of: ActOverviewType.Type1.description()) == nil {
                                 typeList.append(ActOverviewType.Type1.description())
                             }
                             
@@ -407,7 +407,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                             categoryType[ActOverview_TypeList[1]] = type
                             categoryList[type] = [AccountStruct]()
                             addType = true
-                            if typeList.index(of: ActOverviewType.Type2.description()) == nil {
+                            if typeList.firstIndex(of: ActOverviewType.Type2.description()) == nil {
                                 typeList.append(ActOverviewType.Type2.description())
                             }
                             
@@ -415,7 +415,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                             categoryType[ActOverview_TypeList[2]] = type
                             categoryList[type] = [AccountStruct]()
                             addType = true
-                            if typeList.index(of: ActOverviewType.Type3.description()) == nil {
+                            if typeList.firstIndex(of: ActOverviewType.Type3.description()) == nil {
                                 typeList.append(ActOverviewType.Type3.description())
                             }
                             
@@ -423,14 +423,14 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                             categoryType[ActOverview_TypeList[3]] = type
                             categoryList[type] = [AccountStruct]()
                             addType = true
-                            if typeList.index(of: ActOverviewType.Type4.description()) == nil {
+                            if typeList.firstIndex(of: ActOverviewType.Type4.description()) == nil {
                                 typeList.append(ActOverviewType.Type4.description())
                             }
                         case "G":
                             categoryType[ActOverview_TypeList[4]] = type
                             categoryList[type] = [AccountStruct]()
                             addType = true
-                            if typeList.index(of: ActOverviewType.Type5.description()) == nil {
+                            if typeList.firstIndex(of: ActOverviewType.Type5.description()) == nil {
                                 typeList.append(ActOverviewType.Type5.description())
                             }
                             
@@ -482,7 +482,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             }
         }
         else {
-            if let index = ActOverview_TypeList.index(of: name), let type = getTypeByInputString(name) {
+            if let index = ActOverview_TypeList.firstIndex(of: name), let type = getTypeByInputString(name) {
                 typeListIndex = index
                 if currentType != type {
                     currentType = type
@@ -506,7 +506,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = 0
-        let index = currentType == .Type0 ? (ActOverview_TypeList.index(of: typeList[section+1]) ??  0): typeListIndex
+        let index = currentType == .Type0 ? (ActOverview_TypeList.firstIndex(of: typeList[section+1]) ??  0): typeListIndex
         if let type = categoryType[ActOverview_TypeList[index]], let array = categoryList[type] {
             count = array.count
         }
@@ -518,7 +518,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         cell.title1Label.text = ActOverview_CellTitleList[0]
         cell.title2Label.text = ActOverview_CellTitleList[1]
         cell.title3Label.text = ActOverview_CellTitleList[2]
-        let index = currentType == .Type0 ? (ActOverview_TypeList.index(of: typeList[indexPath.section+1]) ??  0) : typeListIndex
+        let index = currentType == .Type0 ? (ActOverview_TypeList.firstIndex(of: typeList[indexPath.section+1]) ??  0) : typeListIndex
         if let type = categoryType[ActOverview_TypeList[index]], let array = categoryList[type] {
             cell.detail1Label.text = array[indexPath.row].accountNO
             cell.detail2Label.text = (array[indexPath.row].currency == Currency_TWD) ? Currency_TWD_Title : array[indexPath.row].currency
@@ -570,7 +570,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if currentType == .Type0 {
-            typeListIndex =  ActOverview_TypeList.index(of: typeList[indexPath.section+1]) ?? 0
+            typeListIndex =  ActOverview_TypeList.firstIndex(of: typeList[indexPath.section+1]) ?? 0
         }
         
         if categoryType[ActOverview_TypeList[typeListIndex]] != nil && typeListIndex != 4, let cell = tableView.cellForRow(at: indexPath) as? OverviewCell {
@@ -585,7 +585,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             typeListIndex = btn.tag
         }
         else {
-            typeListIndex = ActOverview_TypeList.index(of: currentType.description()) ?? 0
+            typeListIndex = ActOverview_TypeList.firstIndex(of: currentType.description()) ?? 0
         }
         let type = currentType == .Type0 ? (getTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
         switch type {
@@ -622,7 +622,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             typeListIndex = btn.tag
         }
         else {
-            typeListIndex = ActOverview_TypeList.index(of: currentType.description()) ?? 0
+            typeListIndex = ActOverview_TypeList.firstIndex(of: currentType.description()) ?? 0
         }
         let type = currentType == .Type0 ? (getTypeByInputString(ActOverview_TypeList[typeListIndex]) ??  currentType) : currentType
         switch type {

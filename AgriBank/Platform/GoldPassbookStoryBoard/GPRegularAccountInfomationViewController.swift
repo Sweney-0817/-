@@ -195,22 +195,22 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmountTitle1.text = amountTitle
             m_lbStopTitle1.text = stopTitle
             m_lbAmount1.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
-            m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn1.setTitle(data.m_strBtn, for: UIControl.State.normal)
         case GPRegularType.GPRegularTypeSameQuantity:
             m_lbAmountTitle1.text = quantityTitle
             m_lbStopTitle1.text = stopTitle
             m_lbAmount1.text = data.m_strQTY.separatorThousand() == "0" ? "-" : data.m_strQTY.separatorThousand()
-            m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn1.setTitle(data.m_strBtn, for: UIControl.State.normal)
         case GPRegularType.GPRegularTypeDiffAmount:
             m_lbAmountTitle1.text = basePrice
             m_lbStopTitle1.text = diffAmountCommand
             m_lbAmount1.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
-            m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn1.setTitle(data.m_strBtn, for: UIControl.State.normal)
         default:
             m_lbAmountTitle1.text = "投資金額"
             m_lbStopTitle1.text = "-"
             m_lbAmount1.text = "-"
-            m_btn1.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn1.setTitle(data.m_strBtn, for: UIControl.State.normal)
         }
         //暫停訖日為空，且不為定期不定額，隱藏第四行
         if (data.m_strEDAY == emptyDate && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {
@@ -239,22 +239,22 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmountTitle2.text = amountTitle
             m_lbStopTitle2.text = stopTitle
             m_lbAmount2.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
-            m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn2.setTitle(data.m_strBtn, for: UIControl.State.normal)
         case GPRegularType.GPRegularTypeSameQuantity:
             m_lbAmountTitle2.text = quantityTitle
             m_lbStopTitle2.text = stopTitle
             m_lbAmount2.text = data.m_strQTY.separatorThousand() == "0" ? "-" : data.m_strQTY.separatorThousand()
-            m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn2.setTitle(data.m_strBtn, for: UIControl.State.normal)
         case GPRegularType.GPRegularTypeDiffAmount:
             m_lbAmountTitle2.text = basePrice
             m_lbStopTitle2.text = diffAmountCommand
             m_lbAmount2.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
-            m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn2.setTitle(data.m_strBtn, for: UIControl.State.normal)
         default:
             m_lbAmountTitle2.text = "投資金額"
             m_lbStopTitle2.text = "-"
             m_lbAmount2.text = "-"
-            m_btn2.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn2.setTitle(data.m_strBtn, for: UIControl.State.normal)
         }
         //暫停訖日為空，且不為定期不定額，隱藏第四行
         if (data.m_strEDAY == emptyDate && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {
@@ -283,22 +283,22 @@ class GPRegularAccountInfomationViewController: BaseViewController {
             m_lbAmountTitle3.text = amountTitle
             m_lbStopTitle3.text = stopTitle
             m_lbAmount3.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
-            m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn3.setTitle(data.m_strBtn, for: UIControl.State.normal)
         case GPRegularType.GPRegularTypeSameQuantity:
             m_lbAmountTitle3.text = quantityTitle
             m_lbStopTitle3.text = stopTitle
             m_lbAmount3.text = data.m_strQTY.separatorThousand() == "0" ? "-" : data.m_strQTY.separatorThousand()
-            m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn3.setTitle(data.m_strBtn, for: UIControl.State.normal)
         case GPRegularType.GPRegularTypeDiffAmount:
             m_lbAmountTitle3.text = basePrice
             m_lbStopTitle3.text = diffAmountCommand
             m_lbAmount3.text = data.m_strAMT.separatorThousand() == "0" ? "-" : data.m_strAMT.separatorThousand()
-            m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn3.setTitle(data.m_strBtn, for: UIControl.State.normal)
         default:
             m_lbAmountTitle3.text = "投資金額"
             m_lbStopTitle3.text = "-"
             m_lbAmount3.text = "-"
-            m_btn3.setTitle(data.m_strBtn, for: UIControlState.normal)
+            m_btn3.setTitle(data.m_strBtn, for: UIControl.State.normal)
         }
         //暫停訖日為空，且不為定期不定額，隱藏第四行
         if (data.m_strEDAY == emptyDate && data.m_strTYPE != GPRegularType.GPRegularTypeDiffAmount) {

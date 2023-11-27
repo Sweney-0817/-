@@ -103,7 +103,6 @@ class GetFirstQuintupleViewController: BaseViewController {
         }
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
            if segue.identifier == FirstQuintuple_BackSeq {
-               let controller = segue.destination as! QuintupleViewController
                
            }
         }

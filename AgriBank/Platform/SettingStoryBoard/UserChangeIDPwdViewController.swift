@@ -184,10 +184,10 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
             if !isChangePod {
                  idMd5 = SecurityUtility.utility.MD5(string: sourceTextfield.text!)
                  pdMd5 = SecurityUtility.utility.MD5(string: newTextfield.text!)
-                postRequest("Usif/USIF0201", "USIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08002","Operate":"dataConfirm","TransactionId":transactionId,"ID":idMd5,"NewID":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("Usif/USIF0201", "USIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08002","Operate":"dataConfirm","TransactionId":transactionId,"ID":idMd5 ?? "","NewID":pdMd5 ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
-                postRequest("Usif/USIF0303", "USIF0303", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08003","Operate":"dataConfirm","TransactionId":transactionId,"PWD":idMd5,"NewPWD":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("Usif/USIF0303", "USIF0303", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08003","Operate":"dataConfirm","TransactionId":transactionId,"PWD":idMd5 ?? "","NewPWD":pdMd5 ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
             }
             //109-10-16 end

@@ -527,7 +527,7 @@ class QuintupleViewController: BaseViewController,OneRowDropDownViewDelegate,UIA
            
                 if inputIsCorrect() {
                     setLoading(true)
-                    self.postRequest("QR/QR1003", "QR1003", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"11001","Operate":"CommitTxn","TransactionId":transactionId,"born":Label_BirthDay.text,"phone":triplePhone,"rewardTp":"","donateCode":"","kind":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+                    self.postRequest("QR/QR1003", "QR1003", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"11001","Operate":"CommitTxn","TransactionId":transactionId,"born":Label_BirthDay.text ?? "","phone":triplePhone,"rewardTp":"","donateCode":"","kind":"0"], true), AuthorizationManage.manage.getHttpHead(true))
                     }
         }
         let cancelHandler : ()->Void = {()}

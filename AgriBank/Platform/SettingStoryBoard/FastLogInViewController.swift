@@ -220,9 +220,9 @@ class FastLogInViewController: BaseViewController {
             }else{
                 let alert = UIAlertView(title: UIAlert_Default_Title, message: "裝置不支援指紋/臉部辨識快速登入", delegate: nil, cancelButtonTitle:Determine_Title)
                 alert.show()
-                    TouchFaceIDSwitch.isOn = false}
+                TouchFaceIDSwitch.isOn = false
             }
-              
+        }
         else {
             //TouchFaceIDSwitch.isOn = false
                 if (PanterSwitch.isOn == false){

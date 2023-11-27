@@ -62,14 +62,14 @@ class QRPayRefundViewController:BaseViewController {
         LabelTimer.text = ""
         
         ///添加截圖通知
-        NotificationCenter.default.addObserver(self, selector: #selector(self.userDidTakeScreenshot), name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.userDidTakeScreenshot), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
         
         
         
     }
     deinit {
         ///移除通知
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
         timer.invalidate()
         isPlaying = false
     }
@@ -79,7 +79,7 @@ class QRPayRefundViewController:BaseViewController {
     }
     //截屏通知
     @objc func userDidTakeScreenshot() {
-        var StrMsg =  "親愛的客戶您好：\n為維護您的個人資料及交易安全，使用截圖功能時，請謹慎並妥善保管，以免遭到不當使用。"
+        let StrMsg =  "親愛的客戶您好：\n為維護您的個人資料及交易安全，使用截圖功能時，請謹慎並妥善保管，以免遭到不當使用。"
         showAlert(title: UIAlert_Default_Title, msg: StrMsg, confirmTitle: "確認", cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
         
         
@@ -219,12 +219,8 @@ class QRPayRefundViewController:BaseViewController {
         let BarCodebase64 =  wkStr1.data(using: .bytesHexLiteral)?.base64EncodedString()
         let BarCodeString = BarCodeType + BarCodebase64!
         LabelBarCode.text = BarCodeString
-        if (BarCodeString != nil) {
-            self.m_ivBarCode.image = MakeBarCode128Utility.utility.generateBarCode(from: BarCodeString)
-        }
-        
-        
-       
+        self.m_ivBarCode.image = MakeBarCode128Utility.utility.generateBarCode(from: BarCodeString)
+
         if(isPlaying) {
             timer.invalidate()
             isPlaying = false

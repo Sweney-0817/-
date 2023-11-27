@@ -2031,7 +2031,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = testfight;
 				SWIFT_OBJC_BRIDGING_HEADER = "AgriBank/AgriBank-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = YES;
 				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
@@ -2088,7 +2088,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AgriBank/AgriBank-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = YES;
 				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";

@@ -199,8 +199,8 @@ class TPSQRCodeManager : NSObject {
             // 轉入帳號
             if let strTransfereeAccount = merchantInfo.transfereeAccount {
                 var temp = strTransfereeAccount
-                if temp.characters.count < 16 {
-                    for _ in 0..<(16-temp.characters.count) {
+                if temp.count < 16 {
+                    for _ in 0..<(16-temp.count) {
                         temp = "0" + temp
                     }
                 }

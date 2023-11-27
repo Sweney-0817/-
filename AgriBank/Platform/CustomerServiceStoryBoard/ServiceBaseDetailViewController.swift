@@ -82,7 +82,7 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
         }
     }
     
-    @IBAction func m_btnCallOutClick(_ sender: Any) {
+    @IBAction func m_btnCallOutClick(_ sender: UIButton) {
         if telePhone != nil && !telePhone!.isEmpty {
             if let url = URL(string: "tel://\(telePhone!)"), UIApplication.shared.canOpenURL(url) {
                 if #available(iOS 10, *) {

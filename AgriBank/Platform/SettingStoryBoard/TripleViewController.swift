@@ -143,9 +143,6 @@ class TripleViewController: BaseViewController,OneRowDropDownViewDelegate,UIActi
                                 Label_MobilePhone.text = phone + "(簡訊通知用)"
                                 triplePhone = phone
                              }
-                             if let rewardTp = ArContent?[("rewardTp")]{
-                                
-                             }
                             isBack = ""
                             readStatus = ""
                            // getTransactionID("09008", TransactionID_Description)
@@ -258,7 +255,7 @@ class TripleViewController: BaseViewController,OneRowDropDownViewDelegate,UIActi
                 if m_Action == "BIND"{
                   m_Action = ""
                   setLoading(true)
-                  self.postRequest("QR/QR1003", "QR1003", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"11001","Operate":"CommitTxn","TransactionId":transactionId,"born":Label_BirthDay.text,"phone":triplePhone,"rewardTp":rewardTp,"donateCode":Label_donateCode.text,"kind":readkind], true), AuthorizationManage.manage.getHttpHead(true))
+                    self.postRequest("QR/QR1003", "QR1003", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"11001","Operate":"CommitTxn","TransactionId":transactionId,"born":Label_BirthDay.text ?? "","phone":triplePhone,"rewardTp":rewardTp,"donateCode":Label_donateCode.text ?? "","kind":readkind], true), AuthorizationManage.manage.getHttpHead(true))
                 }// 1090928 chris "kind" > readkind
                 if isBack == "REBIND"{
                                   isBack = ""

@@ -135,7 +135,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
                 if let unit = data["Unit"] as? [[String:String]] {
                     for info in unit {
                         if let city = info["CC_CityName"] {
-                            if unitList.index(of: city) == nil {
+                            if unitList.firstIndex(of: city) == nil {
                                 unitList.append(city)
                             }
                             if let name = info["CUM_FullBankChineseName"], let address = info["CUM_Address"], let tel = info["CUM_Telephone"], let fax = info["CUM_Fax"], let longitude = info["CUM_Longitude"], let latitude = info["CUM_Latitude"] {
@@ -154,7 +154,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
                     ATMInfoList.removeAll()
                     for info in ATM {
                         if let city = info["CC_CityName"] {
-                            if ATMList.index(of: city) == nil {
+                            if ATMList.firstIndex(of: city) == nil {
                                 ATMList.append(city)
                             }
                             if let name = info["CAM_ATMName"], let address = info["CAM_Address"],let longitude = info["CAM_Longitude"], let latitude = info["CAM_Latitude"] {
@@ -204,7 +204,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
         curData.removeAll()
         switch m_strSearchRange {
         case ServiceBase_Default_SearchRange:
-            if let index = ServiceBase_TypeList.index(of: currentType) {
+            if let index = ServiceBase_TypeList.firstIndex(of: currentType) {
                 switch index {
                 case 0:
                     curData.append(contentsOf: aroundMeList)
@@ -227,7 +227,7 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
                 }
             }
         default:
-            if let index = ServiceBase_TypeList.index(of: currentType) {
+            if let index = ServiceBase_TypeList.firstIndex(of: currentType) {
                 switch index {
                 case 0:
                     if unitInfoList[m_strSearchRange] != nil {
@@ -254,12 +254,12 @@ class ServiceBaseViewController: BaseViewController, OneRowDropDownViewDelegate,
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
         var cityList = [ServiceBase_Default_SearchRange]
-        if let index = ServiceBase_TypeList.index(of: currentType) {
+        if let index = ServiceBase_TypeList.firstIndex(of: currentType) {
             switch index {
             case 0:
                 cityList.append(contentsOf: unitList)
                 for city in ATMList {
-                    if cityList.index(of: city) == nil {
+                    if cityList.firstIndex(of: city) == nil {
                         cityList.append(city)
                     }
                 }

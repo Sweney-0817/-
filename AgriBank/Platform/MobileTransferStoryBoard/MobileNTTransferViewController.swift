@@ -94,7 +94,7 @@ class MobileNTTransferViewController: BaseViewController, ThreeRowDropDownViewDe
         m_vShadowView.layer.borderWidth = Layer_BorderWidth
         m_vShadowView.layer.borderColor = Gray_Color.cgColor
     
-        m_segAccountType.setTitleTextAttributes([NSAttributedStringKey.font:Default_Font], for: .normal)
+        m_segAccountType.setTitleTextAttributes([NSAttributedString.Key.font:Default_Font], for: .normal)
         
         setShadowView(bottomView, .Top)
         bottomView.layer.borderWidth = Layer_BorderWidth
@@ -201,8 +201,8 @@ class MobileNTTransferViewController: BaseViewController, ThreeRowDropDownViewDe
     
     override func addObserverToKeyBoard() {
         removeObserverToKeyBoard()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func keyboardWillShow(_ notification:NSNotification) {
@@ -211,7 +211,7 @@ class MobileNTTransferViewController: BaseViewController, ThreeRowDropDownViewDe
             return
         }
         let userInfo:NSDictionary = notification.userInfo! as NSDictionary
-        let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
         
         // 換算 curTextfield 至 self.view的frame

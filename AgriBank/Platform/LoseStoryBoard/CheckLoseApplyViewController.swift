@@ -124,9 +124,10 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
                 if GrpPod == "" {
                     let alert = UIAlertView(title: UIAlert_Default_Title, message: "尚未設定快速登入！", delegate: nil, cancelButtonTitle:Determine_Title)
                     //寫入目前快登項目 0:pod 1:touchid/faceid 2:picture(1 byte)
-                      if let info = AuthorizationManage.manage.GetLoginInfo(){
-                    SecurityUtility.utility.writeFileByKey("0" + info.aot  , SetKey: info.bankCode , setEncryptKey: "\(SEA1)\(SEA2)\(SEA3)")
-                        alert.show()}
+                    if let info = AuthorizationManage.manage.GetLoginInfo(){
+                        SecurityUtility.utility.writeFileByKey("0" + info.aot  , SetKey: info.bankCode , setEncryptKey: "\(SEA1)\(SEA2)\(SEA3)")
+                        alert.show()
+                    }
                 }else{
                     showGestureVerifyView(wkPod: GrpPod)}
             }
@@ -307,7 +308,7 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
             }
             GestureVerifyView = getUIByID(.UIID_GestureVerify) as? GestureVerify
             GestureVerifyView?.frame = CGRect(origin: .zero, size: view.frame.size)
-            GestureVerifyView?.delegate = self as? GestureVerifyDelegate
+            GestureVerifyView?.delegate = self
             GestureVerifyView?.pod = wkPod
             if let info = AuthorizationManage.manage.GetLoginInfo() {
                 GestureVerifyView?.m_BankCode = info.bankCode
@@ -660,7 +661,6 @@ class CheckLoseApplyViewController: BaseViewController, OneRowDropDownViewDelega
         if self.podTextfield?.text == "" || self.podTextfield == nil {
             let alert = UIAlertView(title: UIAlert_Default_Title, message: "請輸入使用者密碼！", delegate: nil, cancelButtonTitle:Determine_Title)
              alert.show()
-            
         }else{
         //E2E
             // let fmt = DateFormatter()

@@ -84,7 +84,7 @@ class NTTransferViewController: BaseViewController, UITextFieldDelegate, ThreeRo
         accountTypeSegCon.layer.borderColor = Green_Color.cgColor
        let SegConFont =  UIFont(name: "PingFangTC-Medium", size: CGFloat(14)) ?? UIFont.systemFont(ofSize: CGFloat(14))
         //accountTypeSegCon.setTitleTextAttributes([NSAttributedStringKey.font:Default_Font], for: .normal)
-        accountTypeSegCon.setTitleTextAttributes([NSAttributedStringKey.font:SegConFont], for: .normal)
+        accountTypeSegCon.setTitleTextAttributes([NSAttributedString.Key.font:SegConFont], for: .normal)
         sShowBankAccountHeight = showBankAccountHeight.constant
         sChooseActTypeHeight = chooseActTypeHeight.constant
         sEnterAccountHeight = enterAccountHeight.constant

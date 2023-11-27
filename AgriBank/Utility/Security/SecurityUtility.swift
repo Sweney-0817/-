@@ -28,13 +28,18 @@ class SecurityUtility {
     func MD5(string: String) -> String {
         let messageData = string.data(using:.utf8)!
         var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
+        #warning("need Test")
+//        _ = digestData.withUnsafeMutableBytes {digestBytes in
+//            messageData.withUnsafeBytes {messageBytes in
+//                CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
+//            }
+//        }
         
-        _ = digestData.withUnsafeMutableBytes {digestBytes in
-            messageData.withUnsafeBytes {messageBytes in
-                CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
+        _ = digestData.withUnsafeMutableBytes { digestPointer in
+            messageData.withUnsafeBytes { messagePointer in
+                CC_MD5(messagePointer.baseAddress, CC_LONG(messageData.count), digestPointer.baseAddress)
             }
         }
-        
         let md5Hex = digestData.map { String(format: "%02hhx", $0) }.joined()
         return md5Hex.uppercased()
     }
@@ -150,7 +155,7 @@ class SecurityUtility {
         wkDateBitMap = SetBitString(iStr: wkDateEdcbic)
         var wkIDBitMap = ""
         wkIDBitMap = SetBitString(iStr: wkUIDEdcbic)
-        var MacKey = ShiftBitString(iDateBit: wkDateBitMap, iIDBit: wkIDBitMap)
+        let MacKey = ShiftBitString(iDateBit: wkDateBitMap, iIDBit: wkIDBitMap)
         return MacKey
     }
     
@@ -199,7 +204,7 @@ class SecurityUtility {
         var bytes = [UInt8]()
         bytes.reserveCapacity(length/2)
         var index = string.startIndex
-        for i in 0..<length/2 {
+        for _ in 0..<length/2 {
             let nextIndex = string.index(index, offsetBy: 2)
             if let b = UInt8(string[index..<nextIndex], radix: 16) {
                 bytes.append(b)

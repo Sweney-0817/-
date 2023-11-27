@@ -104,7 +104,7 @@ class MOTPSettingViewController: BaseViewController {
                 }
                 
                 setLoading(true)
-                self.postRequest("COMM/COMM0113", "COMM0113", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"12002","Operate":"getTerms","TransactionId":tempTransactionId,"uid": AgriBank_DeviceID,"MotpDeviceID": MOTPPushAPI.getDeviceID()], true), AuthorizationManage.manage.getHttpHead(true))
+                self.postRequest("COMM/COMM0113", "COMM0113", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"12002","Operate":"getTerms","TransactionId":tempTransactionId,"uid": AgriBank_DeviceID,"MotpDeviceID": MOTPPushAPI.getDeviceID() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
             
         case "COMM0811":

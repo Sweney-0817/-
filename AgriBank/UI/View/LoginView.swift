@@ -13,12 +13,18 @@ let Login_Mask_Range = NSRange(location: 4, length: 3)
 let Login_Mask = "***"
 
 struct LoginStrcture {
-    var bankCode = ""       // 農漁會代碼
-    var aot = ""        // 身分證
-    var id = ""             // 使用者代碼
-    var pod = ""       // 使用者密碼
-    var imgPod = ""    // 圖形驗證碼
-    var cityCode = ""       // 縣市代碼
+    /// 農漁會代碼
+    var bankCode = ""
+    /// 身分證
+    var aot = ""
+    /// 使用者代碼
+    var id = ""
+    /// 使用者密碼
+    var pod = ""
+    /// 圖形驗證碼
+    var imgPod = ""
+    /// 縣市代碼
+    var cityCode = ""
 }
 
 protocol LoginDelegate {

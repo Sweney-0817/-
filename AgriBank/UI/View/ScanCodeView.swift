@@ -125,7 +125,7 @@ class ScanCodeView: UIView {
         
         let fillLayer : CAShapeLayer = CAShapeLayer()
         fillLayer.path = path.cgPath
-        fillLayer.fillRule = kCAFillRuleEvenOdd
+        fillLayer.fillRule = .evenOdd
 //        fillLayer.fillColor = UIColor.init(red: 73.0/255.0, green: 73.0/255.0, blue: 73.0/255.0, alpha: 0.58).cgColor
      //   fillLayer.opacity = 0.8
            fillLayer.fillColor = UIColor.init(red: 233.0/255.0, green: 76.0/255.0, blue: 150.0/255.0, alpha: 1).cgColor
@@ -183,7 +183,8 @@ extension ScanCodeView {
             let arrInput : Array = strInput.components(separatedBy: CharacterSet.newlines)
             if arrInput.count == 1 {
                 let ranTWQRP : Range = (strInput.range(of: "TWQRP", options: String.CompareOptions.caseInsensitive))!
-                let strNeed : String = strInput.substring(from: (ranTWQRP.lowerBound))
+                #warning("need Test")
+                let strNeed = String(strInput[..<ranTWQRP.lowerBound])
                 return strNeed
             }
             else {
@@ -197,7 +198,8 @@ extension ScanCodeView {
                     {
                         if ((strSubString.range(of: "TWQRP", options: String.CompareOptions.caseInsensitive)) != nil) {
                             let ranTWQRP : Range = (strSubString.range(of: "TWQRP", options: String.CompareOptions.caseInsensitive))!
-                            let strNeed : String = strSubString.substring(from: (ranTWQRP.lowerBound))
+                            #warning("need Test")
+                            let strNeed = String(strSubString[..<ranTWQRP.lowerBound])
                             return strNeed
                         }
                     }
@@ -321,53 +323,47 @@ extension ScanCodeView {
         let verifier = Verifier()
         verifier.txn_msg = strData
         
-        if let cksize = verifier.checkSize() as? Bool{
-           // print("ckeck size=" + String(cksize))
-        }
+        let cksize = verifier.checkSize()
+        // print("ckeck size=" + String(cksize))
        
-        if let ckpayload = verifier.checkPayload() as? Bool{
+        let ckpayload = verifier.checkPayload()
         //print("Payload=" + String(ckpayload))
-        }
-        if let crc = verifier.checkCRC() as? Bool{
-       //print("crc=" + String(crc))
-            if crc == true{
-            if let rcode = verifier.rootParse() as? Int32  {
-                //print("Root Parse=" + String(rcode))
-            }
-            if  let rcode2 = verifier.fullParse()  as? Int32  {
-               // print("Full Parse=" + String(rcode2))
-            }
-            }
-        }
-        if   let QrType = verifier.getQRtype() as? Int32 {
-            if QrType == -1 {
-                strData = strData.replacingOccurrences(of: "+", with: " ")
-            }else{
-                strData = verifier.convertToTaiwanPay()
-            }
-      
-            switch QrType {
-                case -1:
-                print("QrType = 非 EMVCo 或 TWPay")
-                break;
-                case 1:
-                print("QrType=僅 EMVCo")
-                    break;
-                case 2:
-                print("QrType=含 EMVCo 及 TWPay")
-                    break;
-                case 3:
-                print("QrType=僅 TWPay")
-                    break;
-                default:
-                    break;
-            }
+        
+        let crc = verifier.checkCRC()
+        //print("crc=" + String(crc))
+        if crc == true{
+            let rcode = verifier.rootParse()
+            //print("Root Parse=" + String(rcode))
+            
+            let rcode2 = verifier.fullParse()
+            // print("Full Parse=" + String(rcode2))
         }
         
-     
+        let QrType = verifier.getQRtype()
+        if QrType == -1 {
+            strData = strData.replacingOccurrences(of: "+", with: " ")
+        }else{
+            strData = verifier.convertToTaiwanPay()
+        }
         
-      //  let SupScheme = verifier.getSupportScheme()
-      
+        switch QrType {
+        case -1:
+            print("QrType = 非 EMVCo 或 TWPay")
+            break;
+        case 1:
+            print("QrType=僅 EMVCo")
+            break;
+        case 2:
+            print("QrType=含 EMVCo 及 TWPay")
+            break;
+        case 3:
+            print("QrType=僅 TWPay")
+            break;
+        default:
+            break;
+        }
+        
+        //  let SupScheme = verifier.getSupportScheme()
         #endif
         
         //EMVCo

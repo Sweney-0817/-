@@ -36,7 +36,7 @@ class GPAccountInfomationViewController: BaseViewController {
         m_tvAccountInfomation.dataSource = self
         m_tvAccountInfomation.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
         m_tvAccountInfomation.allowsSelection = false
-        m_tvAccountInfomation.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        m_tvAccountInfomation.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     // MARK:- UI Methods
     

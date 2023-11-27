@@ -182,7 +182,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
             }
             GestureVerifyView = getUIByID(.UIID_GestureVerify) as? GestureVerify
             GestureVerifyView?.frame = CGRect(origin: .zero, size: view.frame.size)
-            GestureVerifyView?.delegate = self as? GestureVerifyDelegate
+            GestureVerifyView?.delegate = self
             GestureVerifyView?.pod = wkPod
             if let info = AuthorizationManage.manage.GetLoginInfo() {
                 GestureVerifyView?.m_BankCode = info.bankCode
@@ -413,7 +413,7 @@ class PassbookLoseApplyViewController: BaseViewController, OneRowDropDownViewDel
 
        //E2E
        setLoading(true)
-        self.postRequest("Usif/USIF0304", "USIF0304",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08006","Operate":"dataConfirm","TransactionId":transactionId,"DWP": pdMd5  ], true), AuthorizationManage.manage.getHttpHead(true))
+            self.postRequest("Usif/USIF0304", "USIF0304",  AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08006","Operate":"dataConfirm","TransactionId":transactionId,"DWP": pdMd5 ?? ""  ], true), AuthorizationManage.manage.getHttpHead(true))
         }}
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnSendClick(_ sender: Any) {

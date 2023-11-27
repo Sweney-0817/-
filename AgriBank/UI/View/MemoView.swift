@@ -26,7 +26,7 @@ class MemoView: UIView {
         //        label.sizeToFit()
         //        return label.frame.height+plusHeight
         
-        let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedStringKey.font: Default_Font], context: nil)
+        let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedString.Key.font: Default_Font], context: nil)
         return boundingBox.height+plusHeight
     }
 }

@@ -59,7 +59,7 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         var count = 0
         if let authList = getAuthFeatureIDContentList(ID) {
             for i in authList {
-                if addList.index(of: i) != nil {
+                if addList.firstIndex(of: i) != nil {
                     count += 1
                 }
             }
@@ -97,7 +97,7 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
                 cell.entryImage.layer.masksToBounds = true
                 cell.entryImage.layer.borderColor = Green_Color.cgColor
                 cell.entryImage.layer.borderWidth = 1
-                if let i = addList.index(of: showList[indexPath.row]) {
+                if let i = addList.firstIndex(of: showList[indexPath.row]) {
                     cell.orderLabel.text = String(i+1)
                     cell.entryImage.backgroundColor = Green_Color
                 }
@@ -125,7 +125,7 @@ class EditViewController: BaseViewController, UITableViewDelegate, UITableViewDa
                 }
                 
             case .Select_Type:
-                if let i = addList.index(of: showList[indexPath.row]) {
+                if let i = addList.firstIndex(of: showList[indexPath.row]) {
                     addList.remove(at: i)
                 }
                 else {

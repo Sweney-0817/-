@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol GestureCollectionViewDelegate: class {
+protocol GestureCollectionViewDelegate: AnyObject {
     func move(point: CGPoint)
     func selectedItem(indexPath: IndexPath)
     func cancel()

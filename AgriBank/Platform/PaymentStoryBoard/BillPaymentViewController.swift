@@ -83,7 +83,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
         m_vShadowView.layer.borderWidth = Layer_BorderWidth
         m_vShadowView.layer.borderColor = Gray_Color.cgColor
     
-        m_segAccountType.setTitleTextAttributes([NSAttributedStringKey.font:Default_Font], for: .normal)
+        m_segAccountType.setTitleTextAttributes([NSAttributedString.Key.font:Default_Font], for: .normal)
         
         setShadowView(bottomView, .Top)
         bottomView.layer.borderWidth = Layer_BorderWidth

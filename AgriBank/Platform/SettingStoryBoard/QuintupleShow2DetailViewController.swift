@@ -86,7 +86,6 @@ class QuintupleShow2DetailViewController:BaseViewController ,UITableViewDataSour
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == FirstQuintuple_BackSeq
           {
-              let controller = segue.destination as! QuintupleViewController
               
           }
         //取消綁定

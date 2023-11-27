@@ -73,7 +73,7 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
 //        let imageName = SecurityUtility.utility.AES256Encrypt((account != nil ? account! : identify), key) + BasePhoto_Type
         let imageName = (account != nil ? account! : identify) + BasePhoto_Type
         if image != nil {
-            let imageCompression = UIImageJPEGRepresentation(image!, CompressionValue_Image)
+            let imageCompression = image!.jpegData(compressionQuality: CompressionValue_Image)
             do  {
                 try imageCompression?.write(to: URL(fileURLWithPath: directoryPath).appendingPathComponent(imageName), options: .atomic)
             }
@@ -134,9 +134,9 @@ class BasePhotoViewController: BaseViewController, UIImagePickerControllerDelega
     }
     
     // MARK: - UIImagePickerControllerDelegate
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: {
-            if let portraitImg = info[Original_Image_Key] as? UIImage {
+            if let portraitImg = info[.originalImage] as? UIImage {
                 self.imgVcClip = VPImageCropperViewController(image: portraitImg, cropFrame: CGRect(origin: CGPoint(x: VPImageCropperVC_XStart, y: VPImageCropperVC_YStart), size: CGSize(width: VPImageCropperVC_Width, height:VPImageCropperVC_Height)), limitScaleRatio: VPImageCropperVC_LimitRatio)
                 self.imgVcClip?.delegate = self
                 self.present(self.imgVcClip!, animated: true, completion: nil)

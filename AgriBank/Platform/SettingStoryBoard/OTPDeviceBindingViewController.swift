@@ -307,7 +307,7 @@ class OTPDeviceBindingViewController: BaseViewController, UITextFieldDelegate {
                 if isOTP  //取得OTP密碼
                 {
                     //setLoading(true)
-                    self.postRequest("Comm/COMM0806", "COMM0806", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08011","Operate":"queryData","TransactionId":self.transactionId,"MotpDeviceID": MOTPPushAPI.getDeviceID()], true), AuthorizationManage.manage.getHttpHead(true))
+                    self.postRequest("Comm/COMM0806", "COMM0806", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08011","Operate":"queryData","TransactionId":self.transactionId,"MotpDeviceID": MOTPPushAPI.getDeviceID() ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
                 }else   //取得綁定驗證碼
                 {
                     setLoading(true)

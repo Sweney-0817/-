@@ -211,7 +211,7 @@ class FastLogInGraphicView:  BaseViewController  {
             path.move(to: currentPoint)
             path.addLine(to: point)
             shapeLayer.path = path.cgPath
-            shapeLayer.lineCap = "round"
+            shapeLayer.lineCap = .round
             view.layer.addSublayer(shapeLayer)
             // 將我們的 layer 加入到 lineLayers
             //之後當我們畫線結束後會刪除裡面所有 layer
@@ -318,7 +318,7 @@ extension FastLogInGraphicView: GestureCollectionViewDelegate {
             path.move(to: currentPoint)
             path.addLine(to: point)
             moveLayer?.path = path.cgPath
-            moveLayer?.lineCap = "round"
+            moveLayer?.lineCap = .round
         }
     }
      // 判斷是否已經滑到 CollectionViewCell 中

@@ -43,7 +43,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
             if categoryType[currentType!] != nil {
             //  電文已經reponse SetInitial晚 
                 (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount ?? Choose_Title)
-                chooseTypeView.setTypeList(typeList, setDelegate: self, typeList?.index(of: currentType!))
+                chooseTypeView.setTypeList(typeList, setDelegate: self, typeList?.firstIndex(of: currentType!))
                 clickDateBtn(weekDayButton)
             }
         }
@@ -474,7 +474,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                             categoryType[ActOverview_TypeList[0]] = type
                             categoryList[type] = [AccountStruct]()
                             addType = true
-                            if typeList?.index(of: ActOverviewType.Type1.description()) == nil {
+                            if typeList?.firstIndex(of: ActOverviewType.Type1.description()) == nil {
                                 typeList?.append(ActOverviewType.Type1.description())
                             }
                             
@@ -482,7 +482,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                             categoryType[ActOverview_TypeList[1]] = type
                             categoryList[type] = [AccountStruct]()
                             addType = true
-                            if typeList?.index(of: ActOverviewType.Type2.description()) == nil {
+                            if typeList?.firstIndex(of: ActOverviewType.Type2.description()) == nil {
                                 typeList?.append(ActOverviewType.Type2.description())
                             }
                             
@@ -490,7 +490,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                             categoryType[ActOverview_TypeList[2]] = type
                             categoryList[type] = [AccountStruct]()
                             addType = true
-                            if typeList?.index(of: ActOverviewType.Type3.description()) == nil {
+                            if typeList?.firstIndex(of: ActOverviewType.Type3.description()) == nil {
                                 typeList?.append(ActOverviewType.Type3.description())
                             }
                             
@@ -498,7 +498,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                             categoryType[ActOverview_TypeList[3]] = type
                             categoryList[type] = [AccountStruct]()
                             addType = true
-                            if typeList?.index(of: ActOverviewType.Type4.description()) == nil {
+                            if typeList?.firstIndex(of: ActOverviewType.Type4.description()) == nil {
                                 typeList?.append(ActOverviewType.Type4.description())
                             }
 //                       case "G":
@@ -523,7 +523,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 
                 if typeList?.count != 0 {
                     if currentType != nil {
-                        chooseTypeView.setTypeList(typeList, setDelegate: self, typeList?.index(of: currentType!))
+                        chooseTypeView.setTypeList(typeList, setDelegate: self, typeList?.firstIndex(of: currentType!))
                     }
                     else {
                         currentType = typeList?.first
@@ -588,12 +588,12 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     }
     
     // MARK: - StoryBoadr Touch Event
-    @IBAction func clickDateBtn(_ sender: Any) {
+    @IBAction func clickDateBtn(_ sender: UIButton) {
         if (chooseAccountView.subviews.first as! OneRowDropDownView).getContentByType(.First) == Choose_Title {
             showErrorMessage(nil, Choose_Title+(currentType ?? "")+ActDetailView_ShowAccount_Title)
             return
         }
-        let btn = (sender as! UIButton)
+        let btn = sender
         dateTypeLabel.text = btn.titleLabel?.text
         switch btn {
         case theDayButton:

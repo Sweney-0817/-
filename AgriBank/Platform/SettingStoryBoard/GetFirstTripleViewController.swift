@@ -102,7 +102,6 @@ class GetFirstTripleViewController: BaseViewController {
         }
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
            if segue.identifier == FirstTriple_BackSeq {
-               let controller = segue.destination as! TripleViewController
                
            }
         }
