@@ -266,6 +266,9 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                 case "2":
                     message = "請客戶親洽臨櫃辦理還本作業"
                     
+                case "7":       //chiu 2020/06/10
+                    message = "催收戶請洽櫃台"
+                        
                 default: break
                 }
                 if !message.isEmpty {
@@ -273,8 +276,22 @@ class LoanPrincipalInterestViewController: BaseViewController, UITableViewDataSo
                     alert.show()
                 }
                 else {
-                    setLoading(true)
-                    postRequest("TRAN/TRAN0601", "TRAN0601-1", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"getList","TransactionId":transactionId,"REFNO":topDropView?.getContentByType(.First) ?? "","PRDCNT":"1"], true), AuthorizationManage.manage.getHttpHead(true)) // PRDCNT:繳息期數=>0-為查回全部,1-為可繳交第一期
+                    let edate = array[indexPath.row]["EDATE"]
+                    let currnetDate = Date()
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.calendar = Calendar.init(identifier: Calendar.Identifier.iso8601)
+                    dateFormatter.dateFormat = "yyyy/MM/dd"
+                    let Today = dateFormatter.string(from: currnetDate)
+                    if edate! > Today{
+                        showAlert(title: UIAlert_Default_Title, msg: "如需提前繳交本息，無法於繳息日前部份清償放款", confirmTitle: Determine_Title, cancleTitle: Cancel_Title, completionHandler: {
+                            self.setLoading(true)
+                            self.postRequest("TRAN/TRAN0601", "TRAN0601-1", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"getList","TransactionId":self.transactionId,"REFNO":self.topDropView?.getContentByType(.First) ?? "","PRDCNT":"1"], true), AuthorizationManage.manage.getHttpHead(true)) // PRDCNT:繳息期數=>0-為查回全部,1-為可繳交第一期
+                        }, cancelHandelr: {()})
+                    }else{
+                        self.setLoading(true)
+                        self.postRequest("TRAN/TRAN0601", "TRAN0601-1", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03006","Operate":"getList","TransactionId":self.transactionId,"REFNO":self.topDropView?.getContentByType(.First) ?? "","PRDCNT":"1"], true), AuthorizationManage.manage.getHttpHead(true)) // PRDCNT:繳息期數=>0-為查回全部,1-為可繳交第一期
+                    }
+
                 }
             }
             else {

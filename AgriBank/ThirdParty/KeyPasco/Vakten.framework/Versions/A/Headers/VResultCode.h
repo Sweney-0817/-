@@ -100,7 +100,76 @@ typedef NS_ENUM(NSUInteger, VResultCode) {
     /**
      * Task has already been signed.
      */
-    VResultCodeTaskAlreadySigned = 213
+    VResultCodeTaskAlreadySigned = 213,
+		// Network Error
+    /**
+     * Web connect time out 10s. 
+     */
+    VResultCodeWebConnectTimeout = 220,
+    /**
+     * SSL connect time out 30s. 
+     */
+		VResultCodeSSLConnectTimeout = 221,
+    /**
+     * Handshake / Connect error 
+     */
+		VResultCodeConnectError = 222,
+    /**
+     * DNS error.
+     */
+		VResultCodeDNSError = 223,
+    /**
+     * User login failed.
+     */
+		VResultCodeLoginFailed = 224,
+    /**
+     * Socket write error.
+     */
+		VResultCodeSocketReadError = 225,
+    /**
+     * Socket write error.
+     */
+		VResultCodeSocketWriteError = 226,
+    /**
+     * Proxy Exception
+     */
+		VResultCodeProxyException = 230,
+    /**
+     * Proxy Exception: Response error.
+     */
+		VResultCodeProxyResponseError = 231,
+    /**
+     * Proxy Exception: General SOCKS server failure.
+     */
+		VResultCodeProxySocketServerFailed = 232,
+    /**
+     * Proxy Exception: Connection not allowed by ruleset.
+     */
+		VResultCodeProxyConnectNotAllowed = 233,
+    /**
+     * Proxy Exception: Network unreachable.
+     */
+		VResultCodeProxyNetworkUnreachable = 234,
+    /**
+     * Proxy Exception: Host unreachable.
+     */
+		VResultCodeProxyHostUnreachable = 235,
+    /**
+     * Proxy Exception: Connection refused.
+     */
+		VResultCodeProxyConnectionRefused = 236,
+    /**
+     * Proxy Exception: TTL expired.
+     */
+		VResultCodeProxyTTLExpired = 237,
+    /**
+     * Proxy Exception: Command not supported.
+     */
+		VResultCodeProxyCommandNotSupported = 238,
+    /**
+     * Proxy Exception: Address type not supported
+     */
+		VResultCodeProxyAddressNotSupported = 239,
 };
 
 /*!

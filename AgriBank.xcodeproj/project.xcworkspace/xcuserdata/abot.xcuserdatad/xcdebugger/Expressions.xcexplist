@@ -1,0 +1,1245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[UIView(CALayerDelegate) layoutSublayersOfLayer:]:(null)">
+         <PersistentStrings>
+            <PersistentString
+               value = "accountTextfield.text">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LoginView.layoutSubviews():LoginView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "SEA2">
+            </PersistentString>
+            <PersistentString
+               value = "accountTextfield.text">
+            </PersistentString>
+            <PersistentString
+               value = "sAccount">
+            </PersistentString>
+            <PersistentString
+               value = "SEA1">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ConfirmViewController.clickCheckBtn(_:):ConfirmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "data?.checkRequest?.strSessionDescription">
+            </PersistentString>
+            <PersistentString
+               value = "Date()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MOTPSetting2ViewController.didResponse(_:_:):MOTPSetting2ViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "regInfo!">
+            </PersistentString>
+            <PersistentString
+               value = "regInfo.account">
+            </PersistentString>
+            <PersistentString
+               value = "showMsg">
+            </PersistentString>
+            <PersistentString
+               value = "regInfo.deviceID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "HomeViewController.didResponse(_:_:):HomeViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ScanResultViewController.makeTaipowerConfirmData():ScanResultViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_CheckStr">
+            </PersistentString>
+            <PersistentString
+               value = "m_strCheck">
+            </PersistentString>
+            <PersistentString
+               value = "powerInfo[i][&quot;para3&quot;]">
+            </PersistentString>
+            <PersistentString
+               value = "m_qrpInfo?.sItemList()">
+            </PersistentString>
+            <PersistentString
+               value = "m_strInputMBarcode.addingPercentEncoding(withAllowedCharacters: .urlPasswordAllowed)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "HomeViewController.viewDidLoad():HomeViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "SEA1">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BaseViewController.didRecvdResponse(_:_:):BaseViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "(  response.object(forKey:&quot;WorkCode&quot;) as? String ">
+            </PersistentString>
+            <PersistentString
+               value = "powerinfoar">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ConfirmViewController.tableView(_:cellForRowAt:):ConfirmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "podConfirmView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SecurityUtility.SetBitMap(iByte:):SecurityUtility.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ConfirmViewController.didResponse(_:_:):ConfirmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "TransNo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "InitTransToNoQryViewController.actionSheet(_:clickedButtonAt:):InitTransToNoQryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "accountIndex">
+            </PersistentString>
+            <PersistentString
+               value = "accountList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TodayBillQryViewController.tableView(_:heightForFooterInSection:):TodayBillQryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "MemoLineConter">
+            </PersistentString>
+            <PersistentString
+               value = "section">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AuthorizationManage.converInputToHttpBody(_:_:):AuthorizationManage.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in LoginView.TouchIDLogIn():LoginView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "LAError.touchIDNotAvailable.rawValue">
+            </PersistentString>
+            <PersistentString
+               value = "(error! as NSError).code">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MOTPSettingViewController.prepare(for:sender:):MOTPSettingViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "tempTransactionId">
+            </PersistentString>
+            <PersistentString
+               value = "controller.labelMobile.text">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AuthorizationManage.IsLoginSuccess():AuthorizationManage.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "isLoginSuccess">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CheckLoseApplyViewController.m_btnSendClick(_:):CheckLoseApplyViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "PodConfirmFlag">
+            </PersistentString>
+            <PersistentString
+               value = "wkLogInCode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BaseViewController.showGestureView():BaseViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "GesturePwdView">
+            </PersistentString>
+            <PersistentString
+               value = ".UIID_Gesture">
+            </PersistentString>
+            <PersistentString
+               value = "view.frame.size">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GetMOTPViewController.send_confirm():GetMOTPViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_version">
+            </PersistentString>
+            <PersistentString
+               value = "AgriBank_DeviceID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PayLoanPartialSettIementViewController.fillDetailData():PayLoanPartialSettIementViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "PayAmt">
+            </PersistentString>
+            <PersistentString
+               value = "TotalPayAmt">
+            </PersistentString>
+            <PersistentString
+               value = "EAMT">
+            </PersistentString>
+            <PersistentString
+               value = "DFAMT">
+            </PersistentString>
+            <PersistentString
+               value = "oEAMT">
+            </PersistentString>
+            <PersistentString
+               value = "inAccount">
+            </PersistentString>
+            <PersistentString
+               value = "Pamt">
+            </PersistentString>
+            <PersistentString
+               value = "list">
+            </PersistentString>
+            <PersistentString
+               value = "array">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QRPayDetailViewController.didResponse(_:_:):QRPayDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentType">
+            </PersistentString>
+            <PersistentString
+               value = "typeList?.count">
+            </PersistentString>
+            <PersistentString
+               value = "type">
+            </PersistentString>
+            <PersistentString
+               value = "categoryType">
+            </PersistentString>
+            <PersistentString
+               value = "categoryList[categoryType[&quot;P&quot;]]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MobileTransferSetupViewController.didResponse(_:_:):MobileTransferSetupViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "mobilebank">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "NTTransferViewController.CheckEBKFG(_:):NTTransferViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "accountIndex">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SideMenuViewController.AddSideController(_:):SideMenuViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ActDetailViewController.clickOneRowDropDownView(_:):ActDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentType">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CardlessQryViewController.didResponse(_:_:):CardlessQryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "array">
+            </PersistentString>
+            <PersistentString
+               value = "accountList">
+            </PersistentString>
+            <PersistentString
+               value = "self.accountList?.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PayLoanPrincipalInterestViewController.fillDetailData():PayLoanPrincipalInterestViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "list">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ScanResultViewController.makeShowData():ScanResultViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dicData">
+            </PersistentString>
+            <PersistentString
+               value = "powerinfoar">
+            </PersistentString>
+            <PersistentString
+               value = "_m_TaipowerInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "FastLogInViewController.didResponse(_:_:):FastLogInViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "AuthorizationManage.getPlatformIDByAuthID(_:):AuthorizationManage.swift">
+      </ContextState>
+      <ContextState
+         contextName = "QRCodeTransViewController.analysisQRCode(_:):QRCodeTransViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_qrpInfo?.timestamp() ">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BillPaymentViewController.inputIsCorrect():BillPaymentViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.inAccountIndex">
+            </PersistentString>
+            <PersistentString
+               value = " showBankAccountDropView?.getContentByType(.Second) ?? &quot;&quot;">
+            </PersistentString>
+            <PersistentString
+               value = "OutAct?.substring(from:6, to:2)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "InitTransToNoQryViewController.didResponse(_:_:):InitTransToNoQryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "agreedAccountList">
+            </PersistentString>
+            <PersistentString
+               value = "accountIndex">
+            </PersistentString>
+            <PersistentString
+               value = "tableView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "NewsViewController.viewDidLoad():NewsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "News_TypeList">
+            </PersistentString>
+            <PersistentString
+               value = "m_Data2.count">
+            </PersistentString>
+            <PersistentString
+               value = "m_NewsData2">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ScanResultViewController.tableView(_:cellForRowAt:):ScanResultViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_aryShowData">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "FastLogInViewController.clickTouchSwitch(_:):FastLogInViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Logininfo">
+            </PersistentString>
+            <PersistentString
+               value = "GetLogininfo">
+            </PersistentString>
+            <PersistentString
+               value = "AuthorizationManage.manage.GetLoginInfo()">
+            </PersistentString>
+            <PersistentString
+               value = "logininfo.account">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CardlessSetupViewController.inputIsCorrect():CardlessSetupViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Cardless_Balance">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ScanResultViewController.makeTaipowerData():ScanResultViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_qrpInfo">
+            </PersistentString>
+            <PersistentString
+               value = "powerinfoar.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CardlessSetupViewController.didResponse(_:_:):CardlessSetupViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "transactionId">
+            </PersistentString>
+            <PersistentString
+               value = "description">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LoginView.clickFastLogInBtn(_:):LoginView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "idTextfield.text">
+            </PersistentString>
+            <PersistentString
+               value = "currentTextField.text">
+            </PersistentString>
+            <PersistentString
+               value = "accountTextfield.text">
+            </PersistentString>
+            <PersistentString
+               value = "sAccount">
+            </PersistentString>
+            <PersistentString
+               value = "loginInfo">
+            </PersistentString>
+            <PersistentString
+               value = "wkLogInCode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LoanPartialSettIementViewController.didResponse(_:_:):LoanPartialSettIementViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "wkEAMT">
+            </PersistentString>
+            <PersistentString
+               value = "data[&quot;EAMT&quot;]">
+            </PersistentString>
+            <PersistentString
+               value = "result?[&quot;EAMT&quot;]">
+            </PersistentString>
+            <PersistentString
+               value = "Double(BAL)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QRCodeTransViewController.didResponse(_:_:):QRCodeTransViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "QRMac">
+            </PersistentString>
+            <PersistentString
+               value = "strQR">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GPRegularAccountInfomationViewController.didResponse(_:_:):GPRegularAccountInfomationViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_aryData">
+            </PersistentString>
+            <PersistentString
+               value = "data[&quot;Result&quot;]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MWQRPTransactionInfo setsTaipowerInfo:]:MWQRPTransactionInfo.m">
+      </ContextState>
+      <ContextState
+         contextName = "static ScanCodeView.analysisQRCode(_:):ScanCodeView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_strType">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BaseViewController.didResponse(_:_:):BaseViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "AgriBank_Type">
+            </PersistentString>
+            <PersistentString
+               value = "AgriBank_SystemVersion">
+            </PersistentString>
+            <PersistentString
+               value = "AgriBank_DeviceID">
+            </PersistentString>
+            <PersistentString
+               value = "AgriBank_LoginMode">
+            </PersistentString>
+            <PersistentString
+               value = "tempTransactionId">
+            </PersistentString>
+            <PersistentString
+               value = "AgriBank_DeviceType">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LoginView.saveDataInFile():LoginView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "loginInfo.account">
+            </PersistentString>
+            <PersistentString
+               value = "isCheckon">
+            </PersistentString>
+            <PersistentString
+               value = "SEA1">
+            </PersistentString>
+            <PersistentString
+               value = "loginInfo">
+            </PersistentString>
+            <PersistentString
+               value = "SAE2">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QRPayDetailViewController.postGetAcntInfo():QRPayDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "chooseAccount">
+            </PersistentString>
+            <PersistentString
+               value = "startDate">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "main:AppDelegate.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "ACTKY">
+            </PersistentString>
+            <PersistentString
+               value = "TpData">
+            </PersistentString>
+            <PersistentString
+               value = "sAccount">
+            </PersistentString>
+            <PersistentString
+               value = "powerinfoar">
+            </PersistentString>
+            <PersistentString
+               value = "FindAct">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AuthorizationManage.GetPlatformList(_:):AuthorizationManage.swift">
+      </ContextState>
+      <ContextState
+         contextName = "QRCodeTransViewController.prepare(for:sender:):QRCodeTransViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_qrpInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QRCodeTransViewController.send_checkQRCode():QRCodeTransViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_qrpInfo">
+            </PersistentString>
+            <PersistentString
+               value = "m_oriURL">
+            </PersistentString>
+            <PersistentString
+               value = "m_qrpInfo?.timestamp()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LoginStrcture.init():LoginView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BaseViewController.enterConfirmOTPController(_:_:_:):BaseViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "data">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in SideMenuViewController.AnimateSidemenu(_:):SideMenuViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = " self.centerViewController?.view">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SecurityUtility.ShiftBitString(iDateBit:iIDBit:):SecurityUtility.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "iLogInTIme">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CardlessQryViewController.tableView(_:didSelectRowAt:):CardlessQryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "curCell">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QRCodeTransViewController.getMacCode(_inbank:_cardactno:_strUrl:):QRCodeTransViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "transactionId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QRCodeTransViewController.m_btnMakeQRCodeClick(_:):QRCodeTransViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "strQR">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "EinvoiceShowViewController.didResponse(_:_:):EinvoiceShowViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "brightness">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QRPayViewController0.didResponse(_:_:):QRPayViewController0.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "QRCodeInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BaseViewController.enterFeatureByID(_:_:):BaseViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_bCanEnterQRP">
+            </PersistentString>
+            <PersistentString
+               value = "tempTransactionId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ScanResultViewController.initTableView():ScanResultViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UIImage(named: &quot;qrcode&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ConfirmViewController.clickRefreshBtn():ConfirmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "transactionId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ActDetailViewController.didResponse(_:_:):ActDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentType">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MOTPSettingViewController.didResponse(_:_:):MOTPSettingViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "tempTransactionId">
+            </PersistentString>
+            <PersistentString
+               value = "tranId">
+            </PersistentString>
+            <PersistentString
+               value = "transactionId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LoanPartialSettIementViewController.inputIsCorrect():LoanPartialSettIementViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "AmountLabel.text">
+            </PersistentString>
+            <PersistentString
+               value = "wkBAL">
+            </PersistentString>
+            <PersistentString
+               value = "Int(wkBAL!)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CheckLoseApplyViewController.setPodConfirmView():CheckLoseApplyViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "PodConfirmFlag">
+            </PersistentString>
+            <PersistentString
+               value = "wkLogInCode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in ActDetailViewController.clickDateBtn(_:):ActDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Date()">
+            </PersistentString>
+            <PersistentString
+               value = "Calendar.current.date(from: componenets6)!">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LoanPartialSettIementViewController.prepare(for:sender:):LoanPartialSettIementViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "wkEAMT">
+            </PersistentString>
+            <PersistentString
+               value = "oneResult">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CardlessSetupViewController.cardlesstask(_:_:):CardlessSetupViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "tempTransactionId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ScanResultViewController.makeBillData():ScanResultViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dicData">
+            </PersistentString>
+            <PersistentString
+               value = "strpowerNo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ScanResultViewController.enterConfirmView(_:_:):ScanResultViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_strInputMBarcode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in AuthorizationManage.GetPlatformList(_:):AuthorizationManage.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "ID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LoanPrincipalInterestViewController.tableView(_:didSelectRowAt:):LoanPrincipalInterestViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "USAccountEditViewController.setView():USAccountEditViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "input">
+            </PersistentString>
+            <PersistentString
+               value = "USActStruck">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MWQRPTransactionInfo spowerNo]:MWQRPTransactionInfo.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_powerNo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SideMenuViewController.HandlePanGesture(_:):SideMenuViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "centerViewController?.view!.frame">
+            </PersistentString>
+            <PersistentString
+               value = "centerViewController?.topViewController">
+            </PersistentString>
+            <PersistentString
+               value = "centerViewController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GPRegularAccountInfomationViewController.setDate1(_:):GPRegularAccountInfomationViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "data">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AuthorizationManage.setResponseLoginInfo(_:_:):AuthorizationManage.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "InitTransToNoQryViewController.btnDelAction(_:):InitTransToNoQryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "agreedAccountList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QRPayViewController0.GetInfor():QRPayViewController0.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "QRCodeInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SideMenuViewController.viewDidLoad():SideMenuViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "view">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ActDetailViewController.tableView(_:cellForRowAt:):ActDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentType">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TodayBillQryViewController.tableView(_:viewForFooterInSection:):TodayBillQryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "view.frame.height">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "NewsViewController.didResponse(_:_:):NewsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "curDateType">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TodayBillQryViewController.TodayBill0(_:):TodayBillQryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "accountList!.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CardlessSetupViewController.requestAcnt():CardlessSetupViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "tempTransactionId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GetFastLogInViewController.m_btnConfirmClick(_:):GetFastLogInViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_nextFeatureID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ConfirmViewController.SendPodVerify():ConfirmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "curTextfield.text">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BillPaymentViewController.didResponse(_:_:):BillPaymentViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "accountList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SecurityUtility.getMacData(iLogInTime:iUID:):SecurityUtility.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "iUID[iUID.index(after: iUID.startIndex)]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QRPayViewController.viewDidAppear(_:):QRPayViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_bIsLoadFromAlbum">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "NTTransferViewController.showInAccountList(_:):NTTransferViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "commonAccountList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QRPayViewController0.UpdateTimer():QRPayViewController0.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "countertime">
+            </PersistentString>
+            <PersistentString
+               value = "now">
+            </PersistentString>
+            <PersistentString
+               value = "SecInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ScanResultViewController.makeP2PTransferData():ScanResultViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_qrpInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "String.dateFormatter(form:to:):extendString.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in SideMenuViewController.AnimateSidemenu(_:):SideMenuViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "frame: (self.centerViewController?.view.bounds)!">
+            </PersistentString>
+            <PersistentString
+               value = "self.closeBtn">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in ConfirmViewController.didResponse(_:_:):ConfirmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.dataOTP?.checkRequest?.httpBody">
+            </PersistentString>
+            <PersistentString
+               value = "description">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ConfirmViewController.viewDidLoad():ConfirmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "data">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "FastLogInGraphicView.viewDidLoad():FastLogInGraphicView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "gestureCollectionView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LoanPrincipalInterestViewController.didResponse(_:_:):LoanPrincipalInterestViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CardlessSetupViewController.viewDidLoad():CardlessSetupViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "transactionId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TodayBillQryViewController.actionSheet(_:clickedButtonAt:):TodayBillQryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "topDropVIew?.m_lbFirstRowTitle.text">
+            </PersistentString>
+            <PersistentString
+               value = "actionSheet.buttonTitle(at: buttonIndex) ?? &quot;&quot;">
+            </PersistentString>
+            <PersistentString
+               value = "wkSTATUS">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "USAccountShowViewController.didResponse(_:_:):USAccountShowViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "transactionId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "FeatureWallView.setFeatureWall(_:_:):FeatureWallView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "featureIDList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GPRegularAccountInfomationViewController.setDate3(_:):GPRegularAccountInfomationViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_lbType3.text">
+            </PersistentString>
+            <PersistentString
+               value = "m_lbDate3.text">
+            </PersistentString>
+            <PersistentString
+               value = "data.m_strTYPE">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ScanResultViewController.btnCheckAction(_:):ScanResultViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_strCheck">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "USAccountShowViewController.btnEditAction(_:):USAccountShowViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "-[MWQRPTransactionInfo setspower64no:]:MWQRPTransactionInfo.m">
+      </ContextState>
+      <ContextState
+         contextName = "pthread_kill:(null)">
+         <PersistentStrings>
+            <PersistentString
+               value = "TpData">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Platform.init():Platform.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = " informationList[.FeatureID_CardlessSetup]">
+            </PersistentString>
+            <PersistentString
+               value = "informationList[.FeatureID_QRPay0]">
+            </PersistentString>
+            <PersistentString
+               value = "informationList[.FeatureID_USAccount]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "InitTransToNoQryViewController.viewDidLoad():InitTransToNoQryViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UIID.UIID_InitTransToCell.NibName()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LoginView.InitFastLogIn(_:):LoginView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "sAot">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SideMenuViewController.__allocating_init(SetCenter:SetLeft:SetRight:SetWidthRate:):SideMenuViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "QRPayViewController.didResponse(_:_:):QRPayViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dicData[&quot;powerInfo&quot;]">
+            </PersistentString>
+            <PersistentString
+               value = "strpowerInfo">
+            </PersistentString>
+            <PersistentString
+               value = "strpowerNo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Platform.getControllerByID(_:):Platform.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "FeatureID.StoryBoardName">
+            </PersistentString>
+            <PersistentString
+               value = "(controller as! BaseViewController).needShowBackBarItem">
+            </PersistentString>
+            <PersistentString
+               value = "controller as! BaseViewController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "DatePickerView.showTwoDatePickerView(_:_:_:getTwoDate:):DatePickerView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "startDatePicker.frame.width">
+            </PersistentString>
+            <PersistentString
+               value = "frame.size.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TouchIDLogInViewController.didResponse(_:_:):TouchIDLogInViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ConfirmViewController.InitFastLogIncheck():ConfirmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "wkLogInCode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AuthorizationManage.SaveIDListInFile(_:):AuthorizationManage.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "IDList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CardlessSetupViewController.actionSheet(_:clickedButtonAt:):CardlessSetupViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Float(info.balance)">
+            </PersistentString>
+            <PersistentString
+               value = "infobalance">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ScanResultViewController.viewDidAppear(_:):ScanResultViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "ResultCell">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ConnectionUtility.requestData(_:_:_:_:_:_:_:):ConnectionUtility.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "downloadType">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CheckLoseApplyViewController.SendPodVerify():CheckLoseApplyViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "curTextfield?.text">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QRPayDetailViewController.tableView(_:cellForRowAt:):QRPayDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentType">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

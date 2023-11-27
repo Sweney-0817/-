@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "GetFirstQuintupleViewController.didResponse(_:_:):GetFirstQuintupleViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "returnCode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GetFirstQuintupleViewController.viewDidLoad():GetFirstQuintupleViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "m_dicAcceptData">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QuintupleShow2DetailViewController.tableView(_:cellForRowAt:):QuintupleShow2DetailViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "QuintupleViewController.didResponse(_:_:):QuintupleViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "QuintupleCodeInfo">
+            </PersistentString>
+            <PersistentString
+               value = "payvalue">
+            </PersistentString>
+            <PersistentString
+               value = "ArContent">
+            </PersistentString>
+            <PersistentString
+               value = "item">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GetFirstQuintupleViewController.send_confirm():GetFirstQuintupleViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "AgriBank_DeviceID">
+            </PersistentString>
+            <PersistentString
+               value = "transactionId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QuintupleViewController.prepare(for:sender:):QuintupleViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "transactionId">
+            </PersistentString>
+            <PersistentString
+               value = "ArContent">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BaseViewController.didResponse(_:_:):BaseViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "tempTransactionId">
+            </PersistentString>
+            <PersistentString
+               value = "transactionId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

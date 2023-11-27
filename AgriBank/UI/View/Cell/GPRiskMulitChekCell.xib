@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="GPRiskMulitChekCell" id="CFa-ld-Z2g" customClass="GPRiskMulitChekCell" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="428"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="1tW-ki-evl">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="427"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text=" Q1_1.請問您的年您？                                  " lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="none" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kt6-gs-w8i">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="27"/>
+                            <accessibility key="accessibilityConfiguration">
+                                <accessibilityTraits key="traits" none="YES"/>
+                            </accessibility>
+                            <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="19"/>
+                            <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                            <size key="shadowOffset" width="0.0" height="0.0"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B1d-05-Mqw" userLabel="checkbox1" customClass="SKcheckButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="43" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser1"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondActionC:" destination="CFa-ld-Z2g" eventType="touchUpInside" id="elQ-Uf-WJK"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fc0-vu-aO3" userLabel="checkbox2" customClass="SKcheckButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="93" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser2"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondActionC:" destination="CFa-ld-Z2g" eventType="touchUpInside" id="gvi-e3-gmn"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oeM-3W-7xF" userLabel="checkbox3" customClass="SKcheckButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="143" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser3"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondActionC:" destination="CFa-ld-Z2g" eventType="touchUpInside" id="JxW-X9-JXY"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="15w-Hd-nbA" userLabel="checkbox4" customClass="SKcheckButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="193" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser4"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondActionC:" destination="CFa-ld-Z2g" eventType="touchUpInside" id="WPy-Qr-L6t"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iSZ-LY-Llj" userLabel="checkbox5" customClass="SKcheckButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="243" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser5"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondActionC:" destination="CFa-ld-Z2g" eventType="touchUpInside" id="3qF-to-4xB"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1tv-Pp-O7e" userLabel="checkbox6" customClass="SKcheckButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="293" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser5"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondActionC:" destination="CFa-ld-Z2g" eventType="touchUpInside" id="Nrf-ai-hIF"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ISB-Hm-6Dv" userLabel="checkbox7" customClass="SKcheckButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="343" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser5"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondActionC:" destination="CFa-ld-Z2g" eventType="touchUpInside" id="1dh-pN-Nds"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yUN-BE-qY8" userLabel="checkbox8" customClass="SKcheckButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="393" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser5"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondActionC:" destination="CFa-ld-Z2g" eventType="touchUpInside" id="pwZ-SJ-ZI1"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="kt6-gs-w8i" firstAttribute="leading" secondItem="1tW-ki-evl" secondAttribute="leading" id="gry-he-Wxd"/>
+                        <constraint firstAttribute="trailing" secondItem="kt6-gs-w8i" secondAttribute="trailing" id="umt-lz-udS"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="1tW-ki-evl" firstAttribute="leading" secondItem="CFa-ld-Z2g" secondAttribute="leading" id="4Zo-xC-z3P"/>
+                <constraint firstItem="1tW-ki-evl" firstAttribute="leading" secondItem="CFa-ld-Z2g" secondAttribute="leading" id="NM8-td-EyH"/>
+                <constraint firstItem="1tW-ki-evl" firstAttribute="top" secondItem="CFa-ld-Z2g" secondAttribute="top" id="ctp-DE-vLm"/>
+                <constraint firstAttribute="trailing" secondItem="1tW-ki-evl" secondAttribute="trailing" id="jPK-b6-qjS"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="Titlelable" destination="kt6-gs-w8i" id="0gC-Hb-cNP"/>
+                <outlet property="checkbox1" destination="B1d-05-Mqw" id="Inq-qf-lj2"/>
+                <outlet property="checkbox2" destination="fc0-vu-aO3" id="NPZ-Ay-gj5"/>
+                <outlet property="checkbox3" destination="oeM-3W-7xF" id="YHZ-Yn-0PK"/>
+                <outlet property="checkbox4" destination="15w-Hd-nbA" id="w8A-nr-Ozc"/>
+                <outlet property="checkbox5" destination="iSZ-LY-Llj" id="IxO-g9-lwI"/>
+                <outlet property="checkbox6" destination="1tv-Pp-O7e" id="hiA-Qo-ec3"/>
+                <outlet property="checkbox7" destination="ISB-Hm-6Dv" id="jN6-Bv-5ep"/>
+                <outlet property="checkbox8" destination="yUN-BE-qY8" id="MHc-ls-IQn"/>
+                <outletCollection property="genderRadioButtonsC" destination="B1d-05-Mqw" collectionClass="NSMutableArray" id="KOl-xx-Ws3"/>
+                <outletCollection property="genderRadioButtonsC" destination="fc0-vu-aO3" collectionClass="NSMutableArray" id="NNb-ID-Q7j"/>
+                <outletCollection property="genderRadioButtonsC" destination="oeM-3W-7xF" collectionClass="NSMutableArray" id="Etf-s3-Vkq"/>
+                <outletCollection property="genderRadioButtonsC" destination="15w-Hd-nbA" collectionClass="NSMutableArray" id="j4q-L1-Pal"/>
+                <outletCollection property="genderRadioButtonsC" destination="iSZ-LY-Llj" collectionClass="NSMutableArray" id="qne-el-aGn"/>
+                <outletCollection property="genderRadioButtonsC" destination="1tv-Pp-O7e" collectionClass="NSMutableArray" id="Mh3-hf-Nui"/>
+                <outletCollection property="genderRadioButtonsC" destination="ISB-Hm-6Dv" collectionClass="NSMutableArray" id="hHY-1l-1MZ"/>
+                <outletCollection property="genderRadioButtonsC" destination="yUN-BE-qY8" collectionClass="NSMutableArray" id="smq-xp-OcW"/>
+            </connections>
+            <point key="canvasLocation" x="74.637681159420296" y="151.33928571428569"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="15w-Hd-nbA">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="1tv-Pp-O7e">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="B1d-05-Mqw">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="ISB-Hm-6Dv">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="fc0-vu-aO3">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="iSZ-LY-Llj">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="oeM-3W-7xF">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="yUN-BE-qY8">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+    </designables>
+</document>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="OtpDeviceToCell" rowHeight="152" id="KGk-i7-Jjw" customClass="OtpDeviceToCell" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="392" height="152"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="392" height="152"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="XR" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="gDd-H2-Wea">
+                        <rect key="frame" x="20" y="52" width="188" height="35"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iPhone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iQY-nA-tRI">
+                        <rect key="frame" x="20" y="9" width="188" height="35"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="35" id="Jp6-wu-VgC"/>
+                            <constraint firstAttribute="width" constant="188" id="zPe-jy-xZ3"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Db4-YX-sWb">
+                        <rect key="frame" x="283" y="18" width="89" height="46"/>
+                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                        <state key="normal" title="變更" backgroundImage="ButtonSmall">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="2020/11/18" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eHR-5d-hcz">
+                        <rect key="frame" x="20" y="95" width="188" height="35"/>
+                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3N-30-qHN">
+                        <rect key="frame" x="283" y="72" width="89" height="46"/>
+                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                        <state key="normal" title="註銷" backgroundImage="ButtonSmall">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="gDd-H2-Wea" firstAttribute="top" secondItem="iQY-nA-tRI" secondAttribute="bottom" constant="8" id="0F1-9W-51g"/>
+                    <constraint firstItem="iQY-nA-tRI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="1t0-Ml-csZ"/>
+                    <constraint firstItem="eHR-5d-hcz" firstAttribute="height" secondItem="gDd-H2-Wea" secondAttribute="height" id="3O5-Hp-4fH"/>
+                    <constraint firstItem="gDd-H2-Wea" firstAttribute="top" secondItem="iQY-nA-tRI" secondAttribute="bottom" constant="8" id="6wT-Rl-LY7"/>
+                    <constraint firstItem="Db4-YX-sWb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="18" id="EzE-3k-Cc8"/>
+                    <constraint firstItem="iQY-nA-tRI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="Huu-8I-MIO"/>
+                    <constraint firstItem="gDd-H2-Wea" firstAttribute="height" secondItem="iQY-nA-tRI" secondAttribute="height" id="VQs-XY-Gbv"/>
+                    <constraint firstItem="b3N-30-qHN" firstAttribute="top" secondItem="Db4-YX-sWb" secondAttribute="bottom" constant="8" id="XB1-3Q-pLE"/>
+                    <constraint firstItem="gDd-H2-Wea" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="XoL-8U-sYZ"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="eHR-5d-hcz" secondAttribute="bottom" constant="11" id="aNY-CS-X9I"/>
+                    <constraint firstItem="b3N-30-qHN" firstAttribute="leading" secondItem="Db4-YX-sWb" secondAttribute="leading" id="apu-nU-edA"/>
+                    <constraint firstItem="eHR-5d-hcz" firstAttribute="top" secondItem="gDd-H2-Wea" secondAttribute="bottom" constant="8" id="bJY-1f-njk"/>
+                    <constraint firstItem="eHR-5d-hcz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="cxw-6g-Aqk"/>
+                    <constraint firstItem="eHR-5d-hcz" firstAttribute="width" secondItem="gDd-H2-Wea" secondAttribute="width" id="kJ4-0b-EOP"/>
+                    <constraint firstItem="gDd-H2-Wea" firstAttribute="width" secondItem="iQY-nA-tRI" secondAttribute="width" id="oCD-bn-2gO"/>
+                    <constraint firstAttribute="trailing" secondItem="Db4-YX-sWb" secondAttribute="trailing" constant="20" id="uca-vQ-Ayl"/>
+                    <constraint firstItem="gDd-H2-Wea" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="uuN-cA-lyU"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="btnDel" destination="b3N-30-qHN" id="iuY-da-u3t"/>
+                <outlet property="btnEdit" destination="Db4-YX-sWb" id="B8P-rP-9nZ"/>
+                <outlet property="labelCreateDate" destination="eHR-5d-hcz" id="gLy-8F-wai"/>
+                <outlet property="labelDeviceRemark" destination="gDd-H2-Wea" id="ejf-8S-GgN"/>
+                <outlet property="labelMobileType" destination="iQY-nA-tRI" id="Nwd-MZ-Oca"/>
+            </connections>
+            <point key="canvasLocation" x="179.71014492753625" y="166.74107142857142"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ButtonSmall" width="89" height="46"/>
+    </resources>
+</document>

@@ -20,6 +20,7 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     private var m_Data2:[PromotionStruct] = [PromotionStruct]()
     private var webContent:Data? = nil
     private var curDateType:String? = nil
+    
 
     // MARK: - Public
 //    func SetNewsList(_ center:[PromotionStruct]?, _ bank:[PromotionStruct]?) {
@@ -34,13 +35,15 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+         
 
-        m_vChooseTypeView.setTypeList(News_TypeList, setDelegate: self, AuthorizationManage.manage.IsLoginSuccess() ? 1 : 0, view.frame.width/2)
+        m_vChooseTypeView.setTypeList(News_TypeList, setDelegate: self, AuthorizationManage.manage.IsLoginSuccess() && m_NewsData2 != nil && m_NewsData2!.count > 0 ? 1 : 0, view.frame.width/2)
         
         setShadowView(m_vChooseTypeView)
         
         m_tvData.register(UINib(nibName: UIID.UIID_NewsCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_NewsCell.NibName()!)
-        initDataForType(AuthorizationManage.manage.IsLoginSuccess() ? News_TypeList[1]:News_TypeList[0])
+        initDataForType(AuthorizationManage.manage.IsLoginSuccess() && m_NewsData2 != nil && m_NewsData2!.count > 0 ? News_TypeList[1]:News_TypeList[0])
         getAnnounceNewsInfo()
     }
     
@@ -57,7 +60,8 @@ class NewsViewController: BaseViewController, ChooseTypeDelegate, UITableViewDel
     
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
-        case "COMM0101":
+               //2019-11-1 add by sweney for 快速登入 0105
+        case "COMM0111","COMM0105":
             /* 「中心公告」切換至「農漁會公告」，需要登入成功 */
             super.didResponse(description, response)
             getAnnounceNewsInfo()

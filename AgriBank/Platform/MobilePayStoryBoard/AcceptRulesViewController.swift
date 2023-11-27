@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import WebKit
 
 class AcceptRulesViewController: BaseViewController {
     var m_nextFeatureID : PlatformFeatureID? = nil
     var m_dicData : [String:String]? = nil
     private var gesture:UIPanGestureRecognizer? = nil
-    @IBOutlet var m_wvContent: UIWebView!
+    @IBOutlet var m_wvContent: WKWebView!
     @IBOutlet var m_btnCheck: UIButton!
     @IBAction func m_btnCheckClick(_ sender: Any) {
         m_btnCheck.isSelected = !m_btnCheck.isSelected

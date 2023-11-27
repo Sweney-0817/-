@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GesturePwd" customModule="AgriBank" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="BIN-aB-X1S" customClass="GesturePwd" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view alpha="0.40000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2cx-qD-wHl">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="2cx-qD-wHl" secondAttribute="height" multiplier="375:812" id="YnQ-BW-DJi"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" restorationIdentifier="view" translatesAutoresizingMaskIntoConstraints="NO" id="l89-Mm-sQ5" userLabel="Content View">
+                    <rect key="frame" x="12.666666666666657" y="107" width="350" height="588"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Close" translatesAutoresizingMaskIntoConstraints="NO" id="ie4-d6-P9m">
+                            <rect key="frame" x="15" y="15" width="28" height="28"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="ie4-d6-P9m" secondAttribute="height" multiplier="1:1" id="HQD-Mm-W8J"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Nu-nj-0kS">
+                            <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                            <accessibility key="accessibilityConfiguration" label="關閉快速登入"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="4Nu-nj-0kS" secondAttribute="height" multiplier="1:1" id="QK5-7v-sLu"/>
+                            </constraints>
+                            <connections>
+                                <action selector="clickCloseBtn:" destination="BIN-aB-X1S" eventType="touchUpInside" id="Cu8-p9-IBg"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qu9-K9-GBd">
+                            <rect key="frame" x="25" y="495" width="300" height="58"/>
+                            <accessibility key="accessibilityConfiguration" label="取消快速登入"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="58" id="6n1-ja-eH8"/>
+                                <constraint firstAttribute="width" constant="300" id="Nbo-Fw-wnN"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                            <state key="normal" title="取消" backgroundImage="ButtonLarge"/>
+                            <connections>
+                                <action selector="clickClosePBtn:" destination="BIN-aB-X1S" eventType="touchUpInside" id="Qax-3W-P50"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="請先登入" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mXP-q3-PtL">
+                            <rect key="frame" x="118" y="15" width="115" height="28"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="115" id="Q0k-3d-jiL"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="20"/>
+                            <color key="textColor" red="0.87843137250000003" green="0.41176470590000003" blue="0.30196078430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="圖形密碼可代替登入密碼" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTB-ec-cz0">
+                            <rect key="frame" x="15" y="51" width="320" height="41"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="19"/>
+                            <color key="textColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="oAp-rF-d4p" customClass="GestureCollectionView" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="25" y="144" width="300" height="300"/>
+                            <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="300" id="2xI-j4-FgZ"/>
+                            </constraints>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="LY1-lJ-pkY">
+                                <size key="itemSize" width="133" height="132"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                            <cells/>
+                        </collectionView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Qu9-K9-GBd" firstAttribute="leading" secondItem="ie4-d6-P9m" secondAttribute="leading" constant="10" id="7rd-EA-9MO"/>
+                        <constraint firstItem="mXP-q3-PtL" firstAttribute="height" secondItem="ie4-d6-P9m" secondAttribute="height" id="7xF-Ch-Lwe"/>
+                        <constraint firstItem="ie4-d6-P9m" firstAttribute="width" secondItem="l89-Mm-sQ5" secondAttribute="width" multiplier="24:341" constant="3.3665689149560087" id="99T-Rr-7gW"/>
+                        <constraint firstAttribute="height" constant="588" id="LIK-60-HX9"/>
+                        <constraint firstItem="Qu9-K9-GBd" firstAttribute="centerX" secondItem="mXP-q3-PtL" secondAttribute="centerX" constant="-0.5" id="M8i-Dg-Lza"/>
+                        <constraint firstItem="4Nu-nj-0kS" firstAttribute="leading" secondItem="l89-Mm-sQ5" secondAttribute="leading" id="ORG-IH-X1f"/>
+                        <constraint firstAttribute="bottom" secondItem="Qu9-K9-GBd" secondAttribute="bottom" constant="35" id="Pab-el-Kp7"/>
+                        <constraint firstItem="4Nu-nj-0kS" firstAttribute="width" secondItem="l89-Mm-sQ5" secondAttribute="width" multiplier="55:341" constant="7.5483870967741922" id="RCA-t2-wFM"/>
+                        <constraint firstItem="oAp-rF-d4p" firstAttribute="leading" secondItem="l89-Mm-sQ5" secondAttribute="leading" constant="25" id="Yge-fb-D1S"/>
+                        <constraint firstItem="mXP-q3-PtL" firstAttribute="centerX" secondItem="l89-Mm-sQ5" secondAttribute="centerX" constant="0.5" id="bcB-mg-rGx"/>
+                        <constraint firstItem="mXP-q3-PtL" firstAttribute="centerY" secondItem="ie4-d6-P9m" secondAttribute="centerY" id="c0A-qj-Dxb"/>
+                        <constraint firstItem="4Nu-nj-0kS" firstAttribute="top" secondItem="l89-Mm-sQ5" secondAttribute="top" id="clg-6l-I3D"/>
+                        <constraint firstItem="oAp-rF-d4p" firstAttribute="centerX" secondItem="Qu9-K9-GBd" secondAttribute="centerX" id="j99-aa-q5K"/>
+                        <constraint firstItem="Qu9-K9-GBd" firstAttribute="leading" secondItem="l89-Mm-sQ5" secondAttribute="leading" constant="25" id="k95-Ab-oVI"/>
+                        <constraint firstAttribute="width" secondItem="l89-Mm-sQ5" secondAttribute="height" multiplier="25:42" id="kIe-fx-DeT"/>
+                        <constraint firstItem="oAp-rF-d4p" firstAttribute="centerY" secondItem="l89-Mm-sQ5" secondAttribute="centerY" id="qE7-ws-Yxk"/>
+                        <constraint firstItem="ie4-d6-P9m" firstAttribute="top" secondItem="l89-Mm-sQ5" secondAttribute="top" constant="15" id="yhB-0L-EMd"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="2cx-qD-wHl" secondAttribute="trailing" id="0rh-P5-J3U"/>
+                <constraint firstItem="l89-Mm-sQ5" firstAttribute="centerY" secondItem="2cx-qD-wHl" secondAttribute="centerY" constant="-5" id="9Rw-Se-3Bf"/>
+                <constraint firstItem="l89-Mm-sQ5" firstAttribute="centerX" secondItem="2cx-qD-wHl" secondAttribute="centerX" id="Kcj-OR-PAZ"/>
+                <constraint firstAttribute="bottom" secondItem="2cx-qD-wHl" secondAttribute="bottom" id="Yjq-oS-OVw"/>
+                <constraint firstItem="2cx-qD-wHl" firstAttribute="top" secondItem="BIN-aB-X1S" secondAttribute="top" id="eaB-pb-Ak6"/>
+                <constraint firstItem="2cx-qD-wHl" firstAttribute="leading" secondItem="BIN-aB-X1S" secondAttribute="leading" id="rli-om-J19"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <connections>
+                <outlet property="ContentView" destination="l89-Mm-sQ5" id="Jhz-b6-v2T"/>
+                <outlet property="gestureCollectionView" destination="oAp-rF-d4p" id="XCr-5y-DOV"/>
+            </connections>
+            <point key="canvasLocation" x="31.199999999999999" y="51.724137931034484"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ButtonLarge" width="346" height="44"/>
+        <image name="Close" width="24" height="24"/>
+    </resources>
+</document>

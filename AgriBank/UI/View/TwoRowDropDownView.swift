@@ -17,6 +17,7 @@ class TwoRowDropDownView: UIView {
     @IBOutlet weak var m_lbFirstRowContent: UILabel!
     @IBOutlet weak var m_lbSecondRowTitle: UILabel!
     @IBOutlet weak var m_lbSecondRowContent: UILabel!
+    @IBOutlet weak var m_btn: UIButton!
     var delegate:TwoRowDropDownViewDelegate? = nil
     
     @IBAction func m_btnClick(_ sender: Any) {
@@ -32,6 +33,9 @@ class TwoRowDropDownView: UIView {
         m_lbFirstRowContent.text = firstContent
         m_lbSecondRowTitle.text = secondTitle
         m_lbSecondRowContent.text = secondContent
+        //無障礙＋
+        let acclb:String  = firstTitle +  firstContent  + secondTitle + secondContent
+        m_btn.accessibilityLabel = acclb
 //        self.setNeedsLayout()
     }
     

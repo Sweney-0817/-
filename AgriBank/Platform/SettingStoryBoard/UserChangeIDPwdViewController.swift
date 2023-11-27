@@ -15,19 +15,20 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var sourceTextfield: TextField!
     @IBOutlet weak var newTextfield: TextField!
     @IBOutlet weak var againTextfield: TextField!
+    @IBOutlet weak var labelNote: UILabel!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var leadingCons: NSLayoutConstraint!  //「變更」Button的leading
     @IBOutlet weak var trailingCons: NSLayoutConstraint! //「變更」Button的trailing
     @IBOutlet weak var cancelBtn: UIButton!
     @IBOutlet weak var changeBtn: UIButton!
-    private var isChangePassword = false
+    private var isChangePod = false
     private var errorMessage = ""
     private var isClickChangeBtn = false
     private var gesture:UIPanGestureRecognizer? = nil
     
     // MARK: - Public
-    func SetIsChangePassword() {
-        isChangePassword = true
+    func SetIsChangePod() {
+        isChangePod = true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -50,7 +51,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
             return false
         }
         if sourceTextfield.text == newTextfield.text {
-            showErrorMessage(nil, isChangePassword ? ErrorMsg_PDNotSame : ErrorMsg_IDNotSame)
+            showErrorMessage(nil, isChangePod ? ErrorMsg_PDNotSame : ErrorMsg_IDNotSame)
             return false
         }
         if (newTextfield.text?.count)! < NewInput_MinLength || (newTextfield.text?.count)! > NewInput_MaxLength {
@@ -58,12 +59,12 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
             return false
         }
         if let info = AuthorizationManage.manage.GetLoginInfo() {
-            if info.account == newTextfield.text! {
+            if info.aot == newTextfield.text! {
                 showErrorMessage(nil, "\(newTextfield.placeholder ?? "")\(ErrorMsg_IDPD_SameIdentify)")
                 return false
             }
         }
-        if DetermineUtility.utility.isAllEnglishOrNumber(newTextfield.text!) {
+        if !DetermineUtility.utility.isAllEnglishOrNumber(newTextfield.text!) {
             showErrorMessage(nil, "\(newTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Combine)")
             return false
         }
@@ -71,8 +72,14 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
             showErrorMessage(nil, "\(newTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Continous)")
             return false
         }
+        
+//        if !DetermineUtility.utility.checkInputEnglihandNumber(newTextfield.text!){
+//            showErrorMessage(nil, "\(newTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Combine2)")
+//            return false
+//        }
+        
         if newTextfield.text != againTextfield.text {
-            showErrorMessage(nil, isChangePassword ? ErrorMsg_PDAgainPDNeedSame : ErrorMsg_IDAgainIDNeedSame)
+            showErrorMessage(nil, isChangePod ? ErrorMsg_PDAgainPDNeedSame : ErrorMsg_IDAgainIDNeedSame)
             return false
         }
         
@@ -84,12 +91,12 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        if !isChangePassword {
+        if !isChangePod {
             getTransactionID("08002", TransactionID_Description)
         }
         else {
             /* 帳戶狀態在「已過期，需要強制變更」下，只能回首頁並登出 or 變更密碼  */
-            if let info = AuthorizationManage.manage.getResponseLoginInfo(), let STATUS = info.STATUS, STATUS == Account_Status_ForcedChange_Password {
+            if let info = AuthorizationManage.manage.getResponseLoginInfo(), let STATUS = info.STATUS, STATUS == Account_Status_ForcedChange_Pod {
                 navigationItem.leftBarButtonItem = nil
                 navigationItem.hidesBackButton = true
                 navigationItem.rightBarButtonItem = nil
@@ -110,6 +117,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
             newTextfield.isSecureTextEntry = true
             againTextfield.placeholder = "再次輸入新使用者密碼"
             againTextfield.isSecureTextEntry = true
+            labelNote.text = "使用者密碼組成之規則：\n1. 使用者密碼組成必須為8至16個文、數字，請注意大小寫，不包含空白。\n2. 使用者密碼應採英文數字混合，不得有三個以上相同的英數字、連續英文字或連號數字，例如aaa、abc、cba、111、123、321等。\n3. 使用者密碼組成不得為使用者代號及符號，例如&、> 、<等。\n4. 使用者密碼連續錯誤五次之後，該用戶將會被鎖定。 "
         }
         addGestureForKeyBoard()
         setShadowView(bottomView, .Top)
@@ -129,7 +137,7 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     
     override func didResponse(_ description:String, _ response: NSDictionary) {
         switch description {
-        case "USIF0201", "USIF0301":
+        case "USIF0201", "USIF0303":
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode != ReturnCode_Success {
                 if let message = response.object(forKey: ReturnMessage_Key) as? String {
                     errorMessage = message
@@ -150,18 +158,39 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
     }
     
     // MARK: - StoryBoard Touch Event
-    @IBAction func clickChangeBtn(_ sender: Any) {
+       @IBAction func clickChangeBtn(_ sender: Any) {
         if inputIsCorrect() {
             isClickChangeBtn = true
-            let idMd5 = SecurityUtility.utility.MD5(string: sourceTextfield.text!)
-            let pdMd5 = SecurityUtility.utility.MD5(string: newTextfield.text!)
+            //let idMd5 = SecurityUtility.utility.MD5(string: sourceTextfield.text!)
+            //let pdMd5 = SecurityUtility.utility.MD5(string: newTextfield.text!)
+            //109-10-16 add by sweney for check e2e key
+                       if E2EKeyData == "" {
+                                        showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_NoKeyAdConnection, confirmTitle: "確認", cancleTitle: nil, completionHandler: {exit(0)}, cancelHandelr: {()})
+                                  }else{
+            //E2E
+                                      // let fmt = DateFormatter()
+                                       //let timeZone = TimeZone.ReferenceType.init(abbreviation:"UTC") as TimeZone?
+                                       //fmt.timeZone = timeZone
+                                       //fmt.dateFormat = "yyyy/MM/dd HH:mm:ss"
+                                       //let loginDateTIme: String = fmt.string(from: Date())
+            let loginDateTIme: String = Date().date2String(dateFormat: "yyyy/MM/dd HH:mm:ss")
+            let pdMd50 = newTextfield.text! + loginDateTIme
+            let pdMd51 = sourceTextfield.text! + loginDateTIme
+            var pdMd5 = E2E.e2Epod(E2EKeyData, pod:pdMd50)
+            var idMd5 = E2E.e2Epod(E2EKeyData, pod:pdMd51)
+            
+            
             setLoading(true)
-            if !isChangePassword {
+            if !isChangePod {
+                 idMd5 = SecurityUtility.utility.MD5(string: sourceTextfield.text!)
+                 pdMd5 = SecurityUtility.utility.MD5(string: newTextfield.text!)
                 postRequest("Usif/USIF0201", "USIF0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08002","Operate":"dataConfirm","TransactionId":transactionId,"ID":idMd5,"NewID":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
             }
             else {
-                postRequest("Usif/USIF0301", "USIF0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08003","Operate":"dataConfirm","TransactionId":transactionId,"PWD":idMd5,"NewPWD":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("Usif/USIF0303", "USIF0303", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08003","Operate":"dataConfirm","TransactionId":transactionId,"PWD":idMd5,"NewPWD":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
             }
+            }
+            //109-10-16 end
         }
     }
     
@@ -191,8 +220,8 @@ class UserChangeIDPwdViewController: BaseViewController, UITextFieldDelegate {
         
         let newLength = (textField.text?.count)! - range.length + string.count
         switch textField {
-        case newTextfield, againTextfield:
-            if newLength > Max_ID_Password_Length {
+        case newTextfield, againTextfield,sourceTextfield:
+            if newLength > Max_ID_Pod_Length {
                 return false
             }
             

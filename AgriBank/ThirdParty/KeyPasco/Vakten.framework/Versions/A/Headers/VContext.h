@@ -119,63 +119,34 @@
 - (BOOL)setClientAPIKey:(void const *)key withSize:(NSUInteger)keySize label:(NSString *)label;
 
 /*!
- @brief Sets the device token for push.
+ @brief Adds APNS Production Push Token.
 
- @discussion
-    Sets the device token for receiving remote notification. This string is passed to the server so it can send remote
- notifications to this iOS device.
- This method must be used in order to get push notifications to work in Client API 3.
+ @discussion Use this method to add the APNS Production push token to the Vakten context. 
+ 
+ To ensure that the token is sent to Borgen the following steps should be performed in order:
+    1.  Create the VaktenContext
+    2.  Call all set methods on the VaktenContext, including setApnsProductionPushToken
+    3.  Perform any operation in the Vakten SDK.
+For push notifications to be sent to the application the correct production push credentials needs to be configured in the Borgen server. 
 
- @param deviceToken The device token data recieved in the AppDelegate.
- @param production A BOOL indicating whether the app is in production environment or not.
-
- @see addPushProvider:withOptions: addPushProvider:withOptions: for the Client API 5 alternative. If you need to be
- compatible with Both Client API 3 and 5 you must use both methods.
+ @param apnsProductionPushToken The APNS Production push token.
  */
-- (void)setDeviceToken:(/*nullable*/ NSData *)deviceToken production:(BOOL)production;
+- (void)setApnsProductionPushToken:(NSString *)apnsProductionPushToken;
 
 /*!
- @brief Configures a push provider.
+ @brief Adds APNS Sandbox Push Token.
 
- @discussion Depending on the name argument the server will interpret the options as described in the sections below. If
- this method is called multiple times with the same value
- for name the last call will replace the previous value for that provider.
+ @discussion Use this method to add the APNS Sandbox push token to the Vakten context. 
+ 
+ To ensure that the token is sent to Borgen the following steps should be performed in order:
+    1.  Create the VaktenContext
+    2.  Call all set methods on the VaktenContext, including setApnsSandboxPushToken
+    3.  Perform any operation in the Vakten SDK.
+For push notifications to be sent to the application the correct sandbox push credentials needs to be configured in the Borgen server. 
 
-    - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData
- *)deviceToken {
-        NSString *deviceTokenHex = DataToHex(deviceToken);
-        #if SANDBOX
-            NSString *environment = @"sandbox";
-        #else
-            NSString *environment = @"production";
-        #endif
-        [context addPushProvider:@"apns"
-        withOptions:@{@"device_token": deviceTokenHex, @"environment": environment];
-    }
-
- @see setDeviceToken:production: method must be used instead of to register for push against Client API 5. If you need
- to support Client API 3 you must invoke both methods.
-
- @param name Used by the server to identify the push service. "apns" and "baidu" are accepted input.
- @param options An NSDictionary containing only NSStrings that configures the push service. For Apple push Notification
- Service the key "device_token" with the device token encoded as hexadecimal as value and
- key "environment" with value set to "production" or "sandbox". For Baidu Push Service the key "user_id" with the user
- id as value, key "channel_id" with the channel id as value and key
- "environment" with value set to "production" or "sandbox".
+ @param setApnsSandboxPushToken The APNS Sandbox push token.
  */
-- (void)addPushProvider:(NSString *)name withOptions:(NSDictionary *)options;
-
-/*!
- @brief Checks if this device has been associated
-
- @discussion
-    This method can be invoked in order to verify whether Vakten has been associated. Returns YES if a
- VAssociateOperation has ever executed successfully. This method can be used to determine
- if your app should show a user guide for enabling Vakten.
-
- @return A BOOL indicating whether VAssociateOperation has executed successfully or not.
- */
-- (BOOL)isAssociated;
+- (void)setApnsSandboxPushToken:(NSString *)apnsSandboxPushToken;
 
 /*!
  @brief Generates an OTP based on the devices location, time and identity.

@@ -11,19 +11,24 @@ import UIKit
 let ReservationTransferSearchCancel_Segue = "GoReservationDetail"
 let ReservationTransferSearchCancel_OutAccount = "轉出帳號"
 let ReservationTransferSearchCancel_LoginInterval = "預約交易日"
-let ReservationTransferSearchCancel_CellTitle = ["登錄日期","轉入帳號","金額"]
+let ReservationTransferSearchCancel_Status = "選項"
+let ReservationTransferSearchCancel_TypeList = ["含已解除預約轉帳","不含已解除預約轉帳"]
+let ReservationTransferSearchCancel_CellTitle = ["登錄日期","轉入帳號","金額","解除日期"]
 
 class ReservationTransferSearchCancelViewController: BaseViewController, OneRowDropDownViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate {
     @IBOutlet weak var specificDateBtn: UIButton!
     @IBOutlet weak var fixedDateBtn: UIButton!
     @IBOutlet weak var chooseAccountView: UIView!
     @IBOutlet weak var loginIntervalView: UIView!
+    @IBOutlet weak var chooseStatusView: UIView!
     @IBOutlet weak var tableView: UITableView!
     private var chooseAccountDorpView:OneRowDropDownView? = nil
     private var loginIntervalDropView:OneRowDropDownView? = nil
+    private var chooseStatusDorpView:OneRowDropDownView? = nil
     private var accountList:[AccountStruct]? = nil      // 帳號列表
     private var startDate = ""
     private var endDate = ""
+    private var typeMode = "" //chiu 1090818
     private var isSpecific = true
     private var resultList = [[String:Any]]()
     private var curResultIndex:Int? = nil
@@ -97,6 +102,13 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             else {
                 list.append([Response_Key:"處理結果", Response_Value:""])
             }
+            //CHRIS-0810  chiu 1090818 modify
+            if let CANCELDATE = dic["CLSDAY"] as? String {
+                list.append([Response_Key:"解除日期", Response_Value:CANCELDATE ])
+            }
+            else {
+                list.append([Response_Key:"解除日期", Response_Value:""])
+            }
             //Guester 20181120 新增轉帳生效、終止日
             input.bIsSpecific = isSpecific
             if (isSpecific == false) {
@@ -123,17 +135,17 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             if let TRMSEQ = dic["TRMSEQ"] as? String {
                 input.trmseq = TRMSEQ
             }
-            
-            if isSpecific {
+            // 2020-3-5 預約轉帳改判斷ＥＮＡＢＬＥ開啟按鈕
+          //  if isSpecific {
                 var canTrans = false
                 if let flag = dic["ENABLE"] as? String, flag == "Y" {
                     canTrans = true
                 }
                 controller.setList(list, input, canTrans)
-            }
-            else {
-                controller.setList(list, input, true)
-            }
+          //  }
+           // else {
+           //     controller.setList(list, input, true)
+          //  }
         }
     }
     
@@ -154,6 +166,16 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         loginIntervalDropView?.delegate = self
         loginIntervalView.addSubview(loginIntervalDropView!)
         setShadowView(loginIntervalView)
+        
+        //Chris start 0810
+        chooseStatusDorpView = getUIByID(.UIID_OneRowDropDownView) as? OneRowDropDownView
+        chooseStatusDorpView?.setOneRow(ReservationTransferSearchCancel_Status, Choose_Title)
+        chooseStatusDorpView?.frame = chooseStatusView.frame
+        chooseStatusDorpView?.frame.origin = .zero
+        chooseStatusDorpView?.delegate = self
+        chooseStatusView.addSubview(chooseStatusDorpView!)
+        setShadowView(chooseStatusView)
+        //Chris end 0810
         
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
         
@@ -228,6 +250,25 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
     
     // MARK: - OneRowDropDownViewDelegate
     func clickOneRowDropDownView(_ sender: OneRowDropDownView) {
+        //chiu 1090818 start
+        if sender == chooseStatusDorpView {
+            var list = [String]()
+            let errorMessage = ""
+            list = ReservationTransferSearchCancel_TypeList
+           
+            if errorMessage.isEmpty {
+                let action = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
+                list.forEach{title in action.addButton(withTitle: title)}
+                action.tag = ViewTag.View_ReservationCancel_TypeList.rawValue
+                action.show(in: view)
+            }
+            else {
+                showErrorMessage(nil, errorMessage)
+            }
+        }
+        else
+        {
+        //chiu 1090818 end
         if sender == chooseAccountDorpView {
             if accountList != nil {
                 let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
@@ -265,7 +306,10 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
             else {
                 showErrorMessage(nil, "\(Choose_Title)\(chooseAccountDorpView?.m_lbFirstRowTitle.text ?? "")")
             }
+            
+            
         }
+      }//chiu 1090818
     }
     
     // MARK: - UITableViewDataSource
@@ -278,6 +322,8 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         cell.title1Label.text = ReservationTransferSearchCancel_CellTitle[0]
         cell.title2Label.text = ReservationTransferSearchCancel_CellTitle[1]
         cell.title3Label.text = ReservationTransferSearchCancel_CellTitle[2]
+        //chiu 1090818 mark
+//        cell.title4Label.text = ReservationTransferSearchCancel_CellTitle[3]
         if let RGDAY = resultList[indexPath.row]["RGDAY"] as? String {
             cell.detail1Label.text = RGDAY
         }
@@ -286,6 +332,14 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         }
         if let AMOUNT = resultList[indexPath.row]["AMOUNT"] as? String {
             cell.detail3Label.text = AMOUNT.separatorThousand()
+        }
+        //chiu 1090818 modify
+        if (resultList[indexPath.row]["CLSDAY"] as? String) != nil {
+            //cell.detail4Label.text = CANCELDATE
+            if (resultList[indexPath.row]["CLSDAY"] as? String) != ""{
+                cell.detail1Label.text = cell.detail1Label.text! + " (已解除)"
+            }
+            
         }
         return cell
     }
@@ -309,7 +363,10 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
                     chooseAccountDorpView?.setOneRow(ReservationTransferSearchCancel_OutAccount, info.accountNO)
                     getReservationTransferDetail()
                 }
-                
+            //chiu 1090818
+            case ViewTag.View_ReservationCancel_TypeList.rawValue:
+             chooseStatusDorpView?.setOneRow(chooseStatusDorpView?.m_lbFirstRowTitle.text ?? "", actionSheet.buttonTitle(at: buttonIndex) ?? "")
+                getReservationTransferDetail()
             default: break
             }
         }
@@ -321,16 +378,28 @@ class ReservationTransferSearchCancelViewController: BaseViewController, OneRowD
         startDate = ""
         endDate = ""
         loginIntervalDropView?.setOneRow(ReservationTransferSearchCancel_LoginInterval, Choose_Title)
+        chooseStatusDorpView?.setOneRow(ReservationTransferSearchCancel_Status, Choose_Title) //0810
         resultList.removeAll()
         tableView.reloadData()
     }
     
     private func getReservationTransferDetail() {
-        if chooseAccountDorpView?.getContentByType(.First) != Choose_Title && !startDate.isEmpty && !endDate.isEmpty {
+        //chiu 1090818
+        let chooseStatus = chooseStatusDorpView?.getContentByType(.First)
+        
+        switch chooseStatus {
+               case ReservationTransferSearchCancel_TypeList[0]:
+                   typeMode = "1"
+               case ReservationTransferSearchCancel_TypeList[1]:
+                   typeMode = "0"
+               default:
+                   typeMode = ""
+               }
+        if chooseAccountDorpView?.getContentByType(.First) != Choose_Title && !startDate.isEmpty && !endDate.isEmpty && !typeMode.isEmpty {
             resultList = [[String:Any]]()
             tableView.reloadData()
             setLoading(true)
-            postRequest("TRAN/TRAN0301", "TRAN0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"getList","TransactionId":transactionId,"ACTNO":chooseAccountDorpView?.getContentByType(.First) ?? "","KIND":isSpecific ? "2":"1","RVDAY":isSpecific ? startDate:"00000000","RVDAY2":isSpecific ? endDate:"00000000","IDD1":isSpecific ? "00":startDate,"IDD2":isSpecific ? "00":endDate], true), AuthorizationManage.manage.getHttpHead(true))
+            postRequest("TRAN/TRAN0301", "TRAN0301", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03003","Operate":"getList","TransactionId":transactionId,"ACTNO":chooseAccountDorpView?.getContentByType(.First) ?? "","KIND":isSpecific ? "2":"1","RVDAY":isSpecific ? startDate:"00000000","RVDAY2":isSpecific ? endDate:"00000000","IDD1":isSpecific ? "00":startDate,"IDD2":isSpecific ? "00":endDate,"STATUS":typeMode], true),   AuthorizationManage.manage.getHttpHead(true))
         }
     }
 }

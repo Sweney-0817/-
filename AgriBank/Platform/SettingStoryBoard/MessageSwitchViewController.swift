@@ -92,7 +92,9 @@ class MessageSwitchViewController: BaseViewController {
                 let center = UNUserNotificationCenter.current()
                 center.getNotificationSettings() { setting in
                     if setting.alertStyle == .none {
+                        DispatchQueue.main.async {
                         self.showAlertViewController()
+                        }
                     }
                 }
             }

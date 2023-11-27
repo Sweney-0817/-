@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import WebKit
 
 class GetPersonalDataViewController: BaseViewController {
     @IBOutlet weak var m_vContent: UIView!
-    @IBOutlet weak var m_wvContent: UIWebView!
+    @IBOutlet weak var m_wvContent: WKWebView!
     @IBOutlet weak var m_btnCheck: UIButton!
     // MARK:- Init Methods
     override func viewDidLoad() {
@@ -21,8 +22,12 @@ class GetPersonalDataViewController: BaseViewController {
         m_vContent.layer.borderColor = Cell_Title_Color.cgColor
 
 //        m_wvContent.loadRequest(URLRequest(url: URL(string: "https://www.google.com")!))
-        let url = Bundle.main.url(forResource: "PersonalInfoAgreement", withExtension: "html")!
-        m_wvContent.loadRequest(URLRequest(url: url))
+  let url = Bundle.main.url(forResource: "PersonalInfoAgreement", withExtension: "html")!
+      //  let Request = "http://www.afisc.com.tw/index.html"
+      //  let url:URL = URL(string: (Request))!
+        m_wvContent.load(URLRequest(url: url))
+       
+       
     }
     // MARK:- UI Methods
     

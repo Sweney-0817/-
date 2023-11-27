@@ -175,7 +175,7 @@ class GPSingleBuyViewController: BaseViewController {
                     self.enterConfirmView()
                 }
                 else {
-                    showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
+                   showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
                 }
             }
         default: super.didResponse(description, response)

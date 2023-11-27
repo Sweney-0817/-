@@ -48,7 +48,7 @@ class GPGoldPriceViewController: BaseViewController {
     private func showDatePeriod(_ strTitle: String, start: Date, end: Date) {
         m_lbTitle.text = strTitle
         let fmt = DateFormatter()
-        fmt.dateFormat = "YYYY/MM/dd"
+        fmt.dateFormat = "yyyy/MM/dd"
         let startDate: String = fmt.string(from: start)
         let endDate: String = fmt.string(from: end)
         m_lbDate.text = "\(startDate) - \(endDate)"
@@ -86,7 +86,7 @@ class GPGoldPriceViewController: BaseViewController {
     func send_queryData(_ start: Date, _ end: Date) {
         self.setLoading(true)
         let fmt = DateFormatter()
-        fmt.dateFormat = "YYYYMMdd"
+        fmt.dateFormat = "yyyyMMdd"
         let startDate: String = fmt.string(from: start)
         let endDate: String = fmt.string(from: end)
 

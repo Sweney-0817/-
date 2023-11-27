@@ -12,7 +12,9 @@ protocol ScanCodeViewDelegate {
     func clickBtnAlbum()
     func getQRCodeString(_ strQRCode : String)
     func noPermission()
+    func GoPayCodeView()
 }
+
 class ScanCodeView: UIView {
     @IBOutlet var m_vCameraArea: UIView!
     @IBOutlet var m_vScanArea: UIView!
@@ -23,13 +25,35 @@ class ScanCodeView: UIView {
     private var captureSession: AVCaptureSession? = nil
     private var videoPreviewLayer: AVCaptureVideoPreviewLayer? = nil
     private var output: AVCaptureMetadataOutput? = nil
+    //台電
+     var sPower64No = ""
+    
     var scanning : Bool = false
     var m_delegate : ScanCodeViewDelegate!
-
+    
+    @IBOutlet weak var btn_PayCode: UIButton!
+    @IBOutlet weak var PayCodeLabel: UILabel!
+    @IBOutlet weak var img_Quintuple: UIImageView!
+    @IBAction func btn_PayCode(_ sender: Any) {
+        if pushReceiveFlag == "PAY"{
+            pushReceiveFlag = ""
+        }
+        pushResultList = nil;
+        self.m_delegate.GoPayCodeView()
+    }
     func set(_ frame : CGRect, _ delegate : ScanCodeViewDelegate) {
         self.frame = frame
         self.layoutIfNeeded()
         self.m_delegate = delegate
+        img_Quintuple.isHidden = QuintupleFlag
+        if AuthorizationManage.manage.getCanShowQRCode0() == true {
+            btn_PayCode.isHidden = false
+            PayCodeLabel.isHidden = false
+        }else
+        {
+            btn_PayCode.isHidden = true
+            PayCodeLabel.isHidden = true
+        }
     }
     
     func startScan() {
@@ -37,6 +61,7 @@ class ScanCodeView: UIView {
             return
         }
         NSLog("======== ScanCodeView startScan ========")
+        m_oriURL = ""   //chiu
         let captureDevice = AVCaptureDevice.default(for: .video)
         var input: AVCaptureDeviceInput? = nil
         do {
@@ -101,8 +126,10 @@ class ScanCodeView: UIView {
         let fillLayer : CAShapeLayer = CAShapeLayer()
         fillLayer.path = path.cgPath
         fillLayer.fillRule = kCAFillRuleEvenOdd
-        fillLayer.fillColor = UIColor.init(red: 73.0/255.0, green: 73.0/255.0, blue: 73.0/255.0, alpha: 0.58).cgColor
-        fillLayer.opacity = 0.8
+//        fillLayer.fillColor = UIColor.init(red: 73.0/255.0, green: 73.0/255.0, blue: 73.0/255.0, alpha: 0.58).cgColor
+     //   fillLayer.opacity = 0.8
+           fillLayer.fillColor = UIColor.init(red: 233.0/255.0, green: 76.0/255.0, blue: 150.0/255.0, alpha: 1).cgColor
+        fillLayer.opacity = 1
         m_vCameraArea.layer.addSublayer(fillLayer)
         
 //        m_vScanArea.layer.borderColor = Green_Color.cgColor
@@ -123,7 +150,8 @@ class ScanCodeView: UIView {
 //    }
 }
 extension ScanCodeView : AVCaptureMetadataOutputObjectsDelegate {
-    func captureOutput(_ output: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+//    func captureOutput(_ output: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         guard scanning else {
             return
         }
@@ -139,8 +167,11 @@ extension ScanCodeView : AVCaptureMetadataOutputObjectsDelegate {
         }
 //        AudioServicesPlayAlertSound(1016)//震動
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {() in
+            #if DEBUG
             NSLog("掃到[%@]", StringCodeValue)
+            #endif
             self.stopScan()
+            m_oriURL = StringCodeValue  //chiu 109/04/20 未decode ==> 請Android改回
             self.m_delegate.getQRCodeString(StringCodeValue)
         })
     }
@@ -182,6 +213,7 @@ extension ScanCodeView {
         }
         return setPayTaxData(nsData!)
     }
+ 
     static private func getPayTaxData(_ nsURL : String) -> String? {
         let url : NSURL? = NSURL(string: nsURL)
         if (url != nil) {
@@ -198,6 +230,22 @@ extension ScanCodeView {
         }
         return nil
     }
+    
+    //台電check add by sweney -2012/12/17
+    static private func isTaipowerFormat(_ nsURL : String) -> (Bool)? {
+        let url : NSURL? = NSURL(string: nsURL)
+        if (url != nil) {
+        if (url!.scheme == Taipower_URL_scheme && url!.host == Taipower_URL_host) {
+           // let sURL = nsURL
+           // let power64no = (String(sURL.suffix(from: sURL.index(sURL.endIndex, offsetBy: -64))) as  String )
+           return true
+        }
+          return false
+        }
+        return false
+    }
+   
+    
     static private func setPayTaxData(_ nsData : String) -> (type:String, tax:PayTax?)? {
         var type : String = ""
         var tax : PayTax? = nil
@@ -259,12 +307,70 @@ extension ScanCodeView {
         }
         return name ?? ""
     }
-    static func analysisQRCode(_ strOriData : String) -> (type : String, tax : PayTax?, qrp : MWQRPTransactionInfo?, error : String?) {
-        let strData = strOriData.replacingOccurrences(of: "+", with: " ")
+    static func analysisQRCode(_ strOriData : String) -> (type : String, tax : PayTax?, qrp : MWQRPTransactionInfo?, error : String?,power64NO : String?) {
+        var strData = strOriData//.replacingOccurrences(of: "+", with: " ")
         var type : String = ""
         var tax : PayTax? = nil
         var qrp : MWQRPTransactionInfo? = nil
         var error : String? = nil
+        var power64No : String? = ""
+        
+        //add for EMVCo   by sweney  ->實機才可以測so check targetEnvironment
+        #if targetEnvironment(simulator)
+        #else 
+        let verifier = Verifier()
+        verifier.txn_msg = strData
+        
+        if let cksize = verifier.checkSize() as? Bool{
+           // print("ckeck size=" + String(cksize))
+        }
+       
+        if let ckpayload = verifier.checkPayload() as? Bool{
+        //print("Payload=" + String(ckpayload))
+        }
+        if let crc = verifier.checkCRC() as? Bool{
+       //print("crc=" + String(crc))
+            if crc == true{
+            if let rcode = verifier.rootParse() as? Int32  {
+                //print("Root Parse=" + String(rcode))
+            }
+            if  let rcode2 = verifier.fullParse()  as? Int32  {
+               // print("Full Parse=" + String(rcode2))
+            }
+            }
+        }
+        if   let QrType = verifier.getQRtype() as? Int32 {
+            if QrType == -1 {
+                strData = strData.replacingOccurrences(of: "+", with: " ")
+            }else{
+                strData = verifier.convertToTaiwanPay()
+            }
+      
+            switch QrType {
+                case -1:
+                print("QrType = 非 EMVCo 或 TWPay")
+                break;
+                case 1:
+                print("QrType=僅 EMVCo")
+                    break;
+                case 2:
+                print("QrType=含 EMVCo 及 TWPay")
+                    break;
+                case 3:
+                print("QrType=僅 TWPay")
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+     
+        
+      //  let SupScheme = verifier.getSupportScheme()
+      
+        #endif
+        
+        //EMVCo
         
         let strInput : String = self.getFirstTWQRP(strData)
         qrp = MWQRPTransactionInfo(qrCodeURL: strInput)
@@ -303,13 +409,34 @@ extension ScanCodeView {
             error = "尚未提供繳稅服務"
 //            showAlert(title: UIAlert_Default_Title, msg: "尚未提供繳稅服務(QRS-004)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
         }
+        //台電check add by sweney 2012/12/17
+        else if  self.isTaipowerFormat(strData) == true {
+           type = "F0"
+            let sURL = strData
+            power64No = (String(sURL.suffix(from: sURL.index(sURL.endIndex, offsetBy: -64))) as  String )
+        }
         else {
             type = ""
             error = "QRCODE格式有誤"
 //            showAlert(title: UIAlert_Default_Title, msg: "QRCODE格式有誤(QRS-001)", confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
         }
+        //檢核QRCode逾期
+        if type == "02" {
+        if let strtimestamp = qrp?.timestamp(){
+            let now = Date()
+            let befordate = now.addingTimeInterval(-60*60*24)
+            let dateFormatter = DateFormatter()
+             dateFormatter.dateFormat = "yyyyMMddHHmmss"
+            let newdate = dateFormatter.string(from: befordate)
+            
+            if (strtimestamp < newdate ){
+                type = ""
+                error = "QRCode已經逾期"
+            }
+        }
+        }
         
-        return (type, tax, qrp, error)
+        return (type, tax, qrp, error,power64No)
     }
     static func detectQRCode(_ image : UIImage) -> String {
         let context : CIContext = CIContext()

@@ -17,7 +17,7 @@ class PersonalMessageDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        m_lbTitle.text = m_Data?.title
+         m_lbTitle.text = m_Data?.title
         m_lbDate.text = m_Data?.date
         m_tfContent.text = m_Data?.url
     }

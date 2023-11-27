@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 let GPRegularChangeTitle = "定期投資變更"
 let changeAmount = "修改金額"
@@ -43,7 +44,7 @@ class GPRegularChangeViewController: BaseViewController {
     @IBOutlet var m_vPauseEndView: UIView!
     @IBOutlet var m_vPauseEndBottomLine: UIView!
     @IBOutlet var m_consPauseEndViewHeight: NSLayoutConstraint!
-    @IBOutlet var m_wvMemo: UIWebView!
+    @IBOutlet var m_wvMemo: WKWebView!
     @IBOutlet var m_consMemoHeight: NSLayoutConstraint!
     
     override func viewDidLoad() {
@@ -727,8 +728,8 @@ extension GPRegularChangeViewController : UITextFieldDelegate {
         }
     }
 }
-extension GPRegularChangeViewController : UIWebViewDelegate {
-    func webViewDidFinishLoad(_ webView: UIWebView) {
+extension GPRegularChangeViewController : WKNavigationDelegate {
+    func webView(_ m_wvMemo: WKWebView, didFinish navigation: WKNavigation!){
         var frame: CGRect = self.m_wvMemo.frame
         frame.size.height = 1
         self.m_wvMemo.frame = frame

@@ -5,7 +5,7 @@
 //  Created by SYSTEX on 2017/7/3.
 //  Copyright © 2017年 Systex. All rights reserved.
 //
-
+// 2019-9-2 Change by sweney + 取預設轉出帳號
 import UIKit
 
 let TaxPayment_Type_Title = "稅費種類"
@@ -108,6 +108,12 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
                         }
                     }
                 }
+
+                //2019-9-2 add by sweney -取index=0轉出帳號
+                if(accountList?.count)! > 0 {
+                    if let info = accountList?[0]{  m_DDAccount?.setOneRow(TaxPayment_OutAccount_Title , info.accountNO) 
+                        break
+                    }}
             }
             else {
                 super.didResponse(description, response)
@@ -262,6 +268,8 @@ class TaxPaymentViewController: BaseViewController, OneRowDropDownViewDelegate, 
                 }
             }
             m_curDropDownView?.setOneRow((m_curDropDownView?.m_lbFirstRowTitle.text)!, actionSheet.buttonTitle(at: buttonIndex)!)
+          //  NSLog((m_curDropDownView?.m_lbFirstRowTitle.text)!)
+          //  NSLog(actionSheet.buttonTitle(at: buttonIndex)!)
         }
         m_curDropDownView = nil
     }

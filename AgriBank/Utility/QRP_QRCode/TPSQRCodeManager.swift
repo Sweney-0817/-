@@ -36,6 +36,9 @@ enum TPSQRCodeFieldName : String {
     case feeInfo            = "D14" // 費用資訊
     case charge             = "D15" // 使用者支付手續費
     case feeName            = "D16" // 費用名稱
+    case timestamp          = "D97" // 時戳 chiu
+    case walletcode         = "D98" // 錢包服務提供者 sweney
+    case msgTAC             = "D99" // 訊息押碼 chiu
 }
 
 
@@ -157,12 +160,14 @@ class TPSQRCodeManager : NSObject {
             if let strAcqInfo = merchantInfo.acqInfo {
                 arQuery += ["\(TPSQRCodeFieldName.acqInfo.rawValue)=\(strAcqInfo)"]
             }
+            
 
             let strQuery = arQuery.joined(separator: "&")
             return strQuery
         }
         return nil
     }
+ 
 
     /// 取得轉帳交易Query字串
     ///
@@ -207,7 +212,19 @@ class TPSQRCodeManager : NSObject {
             if let strTxnCurrnecyCode = merchantInfo.txnCurrencyCode {
                 arQuery += ["\(TPSQRCodeFieldName.txnCurrencyCode.rawValue)=\(strTxnCurrnecyCode)"]
             }
-
+            // D97 時戳
+             let currnetDate = Date()
+             let dateFormatter = DateFormatter()
+             dateFormatter.calendar = Calendar.init(identifier: Calendar.Identifier.iso8601) 
+             dateFormatter.dateFormat = "yyyyMMddHHmmss"
+             let strDateTime:String = dateFormatter.string(from: currnetDate)
+            arQuery +=  ["\(TPSQRCodeFieldName.timestamp.rawValue)=\(strDateTime)"]
+             
+             //D98
+            if let info = AuthorizationManage.manage.getResponseLoginInfo() ,let walletcode:String = info.WalletBasecode {
+                arQuery += ["\(TPSQRCodeFieldName.walletcode.rawValue)=\(walletcode)"]
+            }
+ 
             let strQuery = arQuery.joined(separator: "&")
             return strQuery
         }
@@ -285,6 +302,7 @@ class TPSQRCodeManager : NSObject {
                     strQrCode += strQuery
                 }
             case .transfer:
+
                 if let strQuery = self.qrCodeQueryForTransfer(qrCodeType: qrCodeType, txnAmt: txnAmt) {
                     strQrCode += strQuery
                 }
@@ -297,8 +315,9 @@ class TPSQRCodeManager : NSObject {
                 }
             }
         }
-
+       #if DEBUG
         print("\n==============================\nQRCode:\n\(strQrCode)\n==============================\n")
+        #endif
         return strQrCode.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
     }
 

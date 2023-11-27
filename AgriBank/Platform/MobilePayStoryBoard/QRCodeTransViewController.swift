@@ -1,11 +1,11 @@
 //
 //  QRCodeTransViewController.swift
-//  AgriBank
+//  AgriBankf
 //
 //  Created by SYSTEX on 2018/6/26.
 //  Copyright © 2018年 Systex. All rights reserved.
 //
-
+// 2019-9-2 Change by sweney + 取預設轉出帳號
 import UIKit
 import Photos
 
@@ -22,26 +22,38 @@ class QRCodeTransViewController: BaseViewController {
     @IBOutlet var m_vQRCodeArea: UIView!
     @IBOutlet var m_ivQRCode: UIImageView!
     
+   // @IBOutlet weak var btn_ShowPayCode: UIButton!
     @IBOutlet var m_vPaymentView: UIView!
     
     var m_uiActView : OneRowDropDownView? = nil
     var m_uiScanView : ScanCodeView? = nil
+    
+    var strQR: String? = nil //sweney
 
     private var m_strType : String = ""
     private var m_qrpInfo : MWQRPTransactionInfo? = nil
     private var m_taxInfo : PayTax? = nil
     var m_dicSecureData : [String:String]? = nil
     var m_bIsLoadFromAlbum : Bool = false
-
+    var QRMac:String = ""
+    var m_MobileNo: String = ""
+    
+    //台電手機綁定
+    var sMobilePhone: String? = ""
+    
     var m_arrActList : [AccountStruct] = [AccountStruct]()
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initActView()
         self.initQRCodeArea()
-        self.initScanView()
+       self.initScanView()
 //        self.addObserverToKeyBoard()
         self.addGestureForKeyBoard()
+//        if AuthorizationManage.manage.getCanShowQRCode0(){
+//            btn_ShowPayCode.isHidden = false
+//        }
         getTransactionID("09002", TransactionID_Description)
+       
 //        self.send_getActList()
     }
     func appWillEnterBackground(_ notification:NSNotification) {
@@ -59,9 +71,11 @@ class QRCodeTransViewController: BaseViewController {
         m_vPaymentView.addSubview(m_uiScanView!)
     }
     func initQRCodeArea() {
-        m_vQRCodeArea.layer.borderColor = UIColor.init(red: 74.0/255.0, green: 74.0/255.0, blue: 74.0/255.0, alpha: 1.0).cgColor
+        
+       m_vQRCodeArea.layer.borderColor = UIColor.init(red: 74.0/255.0, green: 74.0/255.0, blue: 74.0/255.0, alpha: 1.0).cgColor
         m_vQRCodeArea.layer.borderWidth = 2.0
     }
+
     func startScan() {
         if (m_uiScanView == nil) {
             self.initScanView()
@@ -152,12 +166,17 @@ class QRCodeTransViewController: BaseViewController {
         m_strType = result.type
         m_qrpInfo = result.qrp
         m_taxInfo = result.tax
+        m_qrpInfo?.setspower64No(result.power64NO)
         switch m_strType {
         case "01", "51":
             self.send_checkQRCode()
         case "02":
             if (AuthorizationManage.manage.getCanEnterP2PTrans() == true) {
+                if (m_qrpInfo?.timestamp() != nil && m_qrpInfo?.timestamp().isEmpty == false) {
+                self.send_checkQRCode()
+                }else{
                 performSegue(withIdentifier: "GoScanResult", sender: nil)
+                }
             }
             else {
                 showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_NoAuth, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
@@ -168,12 +187,17 @@ class QRCodeTransViewController: BaseViewController {
             self.send_checkQRCode()
         case PayTax_Type11_Type, PayTax_Type15_Type:
             self.send_checkPayTaxCode()
+        case "F0":
+            let sPower64No = m_qrpInfo?.sPower64No()
+            self.send_checkTaipower(power64no: sPower64No!)
         default:
             self.stopScan()
             showAlert(title: "不明type", msg: m_strType, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "GoPayCode" { return }
+        
         super.prepare(for: segue, sender: sender)
         let controller = segue.destination as! ScanResultViewController
         controller.setData(type: m_strType, qrp: m_qrpInfo, tax: m_taxInfo, transactionId: transactionId, secure: m_dicSecureData)
@@ -252,6 +276,19 @@ class QRCodeTransViewController: BaseViewController {
 //        self.makeFakeData()
         postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
     }
+    //台電
+    private func send_checkTaipower(power64no : String ) {
+        self.setLoading(true)
+        var body: [String:String] = [String:String]()
+        body["WorkCode"] = "09012"
+        body["Operate"] = "getTaipowerData"
+        body["TransactionId"] = transactionId
+        body["appId"] = AgriBank_AppID
+        body["power64No"] = power64no
+         
+        postRequest("QR/QR0203", "QR0203", AuthorizationManage.manage.converInputToHttpBody2(body, true), AuthorizationManage.manage.getHttpHead(true))
+    }
+    
     private func send_checkQRCode() {
         //self.didResponse("checkQRCode", [String:String]() as NSDictionary)
         self.setLoading(true)
@@ -276,7 +313,7 @@ class QRCodeTransViewController: BaseViewController {
         if (m_qrpInfo?.merchantName() != nil && m_qrpInfo?.merchantName().isEmpty == false) {
             body["merchantName"] = m_qrpInfo?.merchantName()//.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         }
-        body["paymentType"] = m_qrpInfo?.paymentType()
+       
         if (m_qrpInfo?.secureCode() != nil && m_qrpInfo?.secureCode().isEmpty == false) {
             body["secureCode"] = m_qrpInfo?.secureCode()
         }
@@ -292,7 +329,36 @@ class QRCodeTransViewController: BaseViewController {
         if (m_qrpInfo?.deadlinefinal() != nil && m_qrpInfo?.deadlinefinal().isEmpty == false) {
             body["deadlinefinal"] = m_qrpInfo?.deadlinefinal()
         }
-        postRequest("QR/QR0201", "QR0201", AuthorizationManage.manage.converInputToHttpBody2(body, true), AuthorizationManage.manage.getHttpHead(true))
+        //北市水及驗證繳費 chiu
+        if (m_qrpInfo?.timestamp() != nil && m_qrpInfo?.timestamp().isEmpty == false) {
+            body["timestamp"] = m_oriURL
+        }
+        if (m_qrpInfo?.msgTAC() != nil && m_qrpInfo?.msgTAC().isEmpty == false) {
+            body["msgTAC"] = m_qrpInfo?.msgTAC()
+        }
+       
+        if(m_qrpInfo?.walletBaseCode() != nil && m_qrpInfo?.walletBaseCode()?.isEmpty == false)
+        {
+            body["walletBasecode"] = m_qrpInfo?.walletBaseCode()
+        }
+        if(m_qrpInfo?.transfereeBank()  != nil && m_qrpInfo?.transfereeBank()?.isEmpty == false)
+        {
+            body["transfereeBank"] = m_qrpInfo?.transfereeBank()
+        }
+        if(m_qrpInfo?.transfereeAccount() != nil && m_qrpInfo?.transfereeAccount()?.isEmpty == false)
+        {
+            body["transfereeAccount"] = m_qrpInfo?.transfereeAccount()
+        }
+        body["paymentType"] = "51" //m_qrpInfo?.paymentType()
+         
+        
+        if (m_qrpInfo?.noticeNbr() != nil && m_qrpInfo?.noticeNbr().isEmpty == false) {
+            body["noticeNbr"] = m_qrpInfo?.noticeNbr()
+        }
+        if (m_qrpInfo?.feeInfo() != nil && m_qrpInfo?.feeInfo().isEmpty == false) {
+            body["feeInfo"] = m_qrpInfo?.feeInfo()
+        }
+        postRequest("QR/QR0202", "QR0202", AuthorizationManage.manage.converInputToHttpBody2(body, true), AuthorizationManage.manage.getHttpHead(true)) //QR0201改為QR0202 chiu
     }
     private func send_checkPayTaxCode() {
         m_taxInfo?.m_strPayTaxYear = "公元5000年"
@@ -304,12 +370,40 @@ class QRCodeTransViewController: BaseViewController {
         case TransactionID_Description:
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let tranId = data[TransactionID_Key] as? String {
                 transactionId = tranId
+                //五倍卷  by sweney
+                postRequest("Usif/USIF0101", "USIF0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08001","Operate":"queryData","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
                 setLoading(true)
                 self.send_getActList()
             }
             else {
                 super.didResponse(description, response)
             }
+        //五倍卷   by sweney
+          case "USIF0101":
+              if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
+                   var birday = ""
+                  if let birthday = data["BIRTHDAY"] as? String {
+                      birday = birthday
+                  }
+                  if let mobilePhone = data["MPHONE"] as? String, !mobilePhone.isEmpty {
+                      //手機號碼不為空，更新畫面打註冊手機門號資料api
+                      sMobilePhone = mobilePhone
+                  }
+                        
+               //postRequest("QR/QR1001", "QR1001", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"11002","Operate":"getTerms","TransactionId":transactionId,"uid": AgriBank_DeviceID,"rebind":"0","born": birday
+      //], true), AuthorizationManage.manage.getHttpHead(true))
+               
+              }
+          case "QR1001":
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode != ReturnCode_Success {}else{
+               if let data = response.object(forKey: ReturnData_Key) as? [String:AnyObject]{
+                   
+                   if (data["Read"] as? String == "3") {
+                  
+                      QuintupleFlag = false
+                    
+                    self.initScanView()
+                   }}}
         case "ACCT0101":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]]{
                 for category in array {
@@ -322,13 +416,23 @@ class QRCodeTransViewController: BaseViewController {
                         }
                     }
                 }
+                
+              
+                //2019-9-2 add by sweney -取index=0轉出帳號
+                if(m_arrActList.count) > 0 {
+                        let info : AccountStruct = m_arrActList[0]
+                         m_uiActView?.setOneRow("轉入帳號", info.accountNO)
+                        break
+                    }
+              
             }
             else {
                 super.didResponse(description, response)
             }
 //        case "checkQRCode":
 //            performSegue(withIdentifier: "GoScanResult", sender: nil)
-        case "QR0201"://checkQRCode
+        case "QR0202"://checkQRCode
+                        //QR0201改為QR0202 北市水及驗證繳費
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String {
                 if returnCode == ReturnCode_Success {
                     let dicData = response.object(forKey: ReturnData_Key) as? [String:Any]
@@ -338,6 +442,7 @@ class QRCodeTransViewController: BaseViewController {
                             do {
                                 let jsonDic = try JSONSerialization.jsonObject(with: strSecureData!.data(using: .utf8)!, options: .mutableContainers) as? [String:Any]
                                 m_dicSecureData = jsonDic as? [String : String]
+                               
                             }
                             catch {
                                 showAlert(title: UIAlert_Default_Title, msg: error.localizedDescription, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
@@ -359,6 +464,95 @@ class QRCodeTransViewController: BaseViewController {
                     }
                 }
             }
+            //台電
+        case "QR0203":
+            if let returnCode = response.object(forKey: ReturnCode_Key) as? String {
+                if returnCode == ReturnCode_Success {
+                    if let dicData = response.object(forKey: ReturnData_Key) as? [String:Any]  {
+                        m_qrpInfo?.setsMobileNo(m_MobileNo)
+                        if let strpowerNo = dicData["powerNo"] as? String {
+                            m_qrpInfo?.setspowerNo(strpowerNo)
+                        }
+                        if let strMBarcode = dicData["MBarcode"] as? String {
+                            m_qrpInfo?.setsMBarcode(strMBarcode)
+                        }
+                        if  var  strpowerInfo = dicData["powerInfo"] as? [[String:Any]]{
+                          
+                            m_qrpInfo?.setsTaipowerInfo(strpowerInfo)
+                            
+                            m_qrpInfo?.setsTotalCount(String(strpowerInfo.count))
+                            //金額
+                            var temptotalamout = 0
+                            for i in 0..<strpowerInfo.count  {
+                                temptotalamout =  strpowerInfo[i]["para3"] as! Int  + temptotalamout
+                                strpowerInfo[i]["para3"] =  String(describing:strpowerInfo[i]["para3"] as? Int ?? 0) + "00"
+                            }
+                            m_qrpInfo?.setsTotalAmount(temptotalamout as NSNumber)
+                            
+                            let ItemJson = try? JSONSerialization.data(withJSONObject: strpowerInfo, options: [.sortedKeys])
+                            let ItemList = String(data: ItemJson!, encoding: .utf8)
+                            m_qrpInfo?.setsItemList(ItemList)
+                            m_qrpInfo?.setsItemarrayList(strpowerInfo)
+                            
+                        }
+                       
+                        if let strOtherInfo = dicData["otherInfo"] as? String {
+                            do {
+                                let jsonDic = try JSONSerialization.jsonObject(with: strOtherInfo.data(using: .utf8)!, options: .mutableContainers) as? [String:Any]
+                                let dicOtherInfo : [String : String] = (jsonDic as? [String : String])!
+                                //paytype
+                                if let sPayType = dicOtherInfo["tag25"] {
+                                    m_qrpInfo?.setsPayType(sPayType)
+                                }
+                                //billsid
+                                if let sBillSID = dicOtherInfo["tag26"] {
+                                    m_qrpInfo?.setsBillSID(sBillSID)
+                                }
+                               
+                            }
+                            catch {
+                                showAlert(title: UIAlert_Default_Title, msg: error.localizedDescription, confirmTitle: "確認", cancleTitle: nil, completionHandler: startScan, cancelHandelr: {()})
+                            }
+                        }
+                        
+ 
+                    }
+                    performSegue(withIdentifier: "GoScanResult", sender: nil)
+                }
+                else {
+                    if let type = response.object(forKey: "ActionType") as? String {
+                        switch type {
+                        case "showMsg":
+                            if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
+                                showAlert(title: UIAlert_Default_Title, msg: returnMsg, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {
+                                    self.startScan() }, cancelHandelr: {()})
+                            }
+                        default:
+                            break
+                        }
+                    }
+                }
+            }
+            
+        case "QR0703":
+        if let returnCode = response.object(forKey: ReturnCode_Key) as? String {
+            if returnCode == ReturnCode_Success {
+                let dicData = response.object(forKey: ReturnData_Key) as? [String:Any]
+                if (dicData != nil) {
+                    let strMACData = dicData!["MAC"] as? String
+                    if (strMACData != nil) {
+                        QRMac = strMACData!
+                        let strD99 = "&D99=" + QRMac
+                        strQR! += strD99.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+                        showQRCode(_strQRcode: strQR!)
+                    }
+                }
+            }else{
+                if let returnMsg = response.object(forKey: ReturnMessage_Key) as? String {
+                        showErrorMessage(nil, returnMsg)
+                    }
+            }
+        }
         case "checkPayTaxCode":
             performSegue(withIdentifier: "GoScanResult", sender: nil)
         default: super.didResponse(description, response)
@@ -388,7 +582,7 @@ class QRCodeTransViewController: BaseViewController {
         dicData["transfereeBank"] = act?.substring(to: 2)//AuthorizationManage.manage.GetLoginInfo()?.bankCode.substring(to: (AuthorizationManage.manage.GetLoginInfo()?.bankCode.count)! - 3)
         dicData["transfereeAccount"] = act
 
-        var strQR: String? = nil
+        //var strQR: String? = nil
         let QRInfo: TPSMerchantInfo = TPSMerchantInfo(dictionary: dicData)
         let QRMag: TPSQRCodeManager = TPSQRCodeManager.sharedManager
         QRMag.merchantInfo = QRInfo
@@ -399,18 +593,42 @@ class QRCodeTransViewController: BaseViewController {
         else {
             strQR = QRMag.dynamicQRCodeString(txnAmt: m_tfAmount.text!)
         }
-        if (strQR != nil) {
-            self.m_ivQRCode.image = MakeQRCodeUtility.utility.generateQRCode(from: strQR!)
+        if (strQR != nil){
+            if let strTransfereeAccount = dicData["transfereeAccount"] {
+            var temp = strTransfereeAccount
+            if temp.characters.count < 16 {
+                for _ in 0..<(16-temp.characters.count) {
+                    temp = "0" + temp
+                }  }
+                getMacCode(_inbank: dicData["transfereeBank"]! , _cardactno: temp , _strUrl: strQR! )
+            }
         }
+//        if (strQR != nil) {
+//            self.m_ivQRCode.image = MakeQRCodeUtility.utility.generateQRCode(from: strQR!)
+//        }
         //=====
 //        let strAct : String = (m_uiActView?.getContentByType(.First))!
 //        let strAmount : String = m_tfAmount.text!
 //        let strQRCode : String = "[\(strAct)][\(strAmount)]"
 //        self.m_ivQRCode.image = MakeQRCodeUtility.utility.generateQRCode(from: strQRCode)
     }
+    private func getMacCode (_inbank :String,_cardactno :String,_strUrl:String)
+    {
+        postRequest("QR/QR0703", "QR0703", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"09010","Operate":"getP2PMac","TransactionId":transactionId,"INBANK":_inbank,"CARDACTNO": _cardactno,"UrlData": _strUrl], true), AuthorizationManage.manage.getHttpHead(true))
+    }
+    private func showQRCode(_strQRcode:String){
+        if (_strQRcode != "") {
+            self.m_ivQRCode.image = MakeQRCodeUtility.utility.generateQRCode(from: _strQRcode)
+        }
+    }
 }
+
 // MARK:- extension
 extension QRCodeTransViewController : ScanCodeViewDelegate {
+    func GoPayCodeView() {
+      performSegue(withIdentifier: "GoPayCode", sender: nil)
+    }
+    
     func clickBtnAlbum() {
         m_bIsLoadFromAlbum = true
         if (self.checkPhotoAuthorize()) {
@@ -513,6 +731,7 @@ extension QRCodeTransViewController : UIImagePickerControllerDelegate, UINavigat
                 }
             }
             self.setLoading(false)
+            m_oriURL = strQRCode //add by sweney for 市水
             NSLog("偵測圖片[%@][%.1f]", strQRCode, scale)
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {() in
                 self.analysisQRCode(strQRCode)

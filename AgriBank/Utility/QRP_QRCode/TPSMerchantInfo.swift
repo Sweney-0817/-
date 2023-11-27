@@ -23,7 +23,7 @@ enum TPSMerchantInfoRespTag : String {
     case appRoleName        = "appRoleName"
     case appFunction        = "appFunction"
     case pushStatus         = "pushStatus"
-    case forceChangePwd     = "forceChangePwd"
+    case forceChangePod     = "forceChangePod"
 }
 
 enum TPSMerchantInfoShopType: String {
@@ -115,7 +115,7 @@ class TPSMerchantInfo: NSObject, NSCoding {
     /**
      * 強制密碼變更（Y/N）
      */
-    var forceChangePwd: Bool = false
+    var forceChangePod: Bool = false
     
     init(dictionary: Dictionary<String, Any>) {
         self.merchantName = dictionary[TPSMerchantInfoRespTag.merchantName.rawValue] as? String
@@ -137,9 +137,9 @@ class TPSMerchantInfo: NSObject, NSCoding {
         } else {
             self.pushStatus = "N"
         }
-        if let forceChangePwd = dictionary[TPSMerchantInfoRespTag.forceChangePwd.rawValue] as? String
+        if let forceChangePod = dictionary[TPSMerchantInfoRespTag.forceChangePod.rawValue] as? String
         {
-            self.forceChangePwd = (forceChangePwd == "Y")
+            self.forceChangePod = (forceChangePod == "Y")
         }
     }
 
@@ -161,7 +161,7 @@ class TPSMerchantInfo: NSObject, NSCoding {
         self.appRoleName = decoder.decodeObject(forKey: TPSMerchantInfoRespTag.appRoleName.rawValue) as? String
         self.appFunction = decoder.decodeObject(forKey: TPSMerchantInfoRespTag.appFunction.rawValue) as? String
         self.pushStatus = decoder.decodeObject(forKey: TPSMerchantInfoRespTag.pushStatus.rawValue) as? String
-        self.forceChangePwd = (decoder.decodeObject(forKey: TPSMerchantInfoRespTag.appFunction.rawValue) != nil)
+        self.forceChangePod = (decoder.decodeObject(forKey: TPSMerchantInfoRespTag.appFunction.rawValue) != nil)
     }
 
     func encode(with coder: NSCoder) {
@@ -179,7 +179,7 @@ class TPSMerchantInfo: NSObject, NSCoding {
         coder.encode(appRoleName, forKey: TPSMerchantInfoRespTag.appRoleName.rawValue)
         coder.encode(appFunction, forKey: TPSMerchantInfoRespTag.appFunction.rawValue)
         coder.encode(pushStatus, forKey: TPSMerchantInfoRespTag.pushStatus.rawValue)
-        coder.encode(forceChangePwd, forKey: TPSMerchantInfoRespTag.forceChangePwd.rawValue)
+        coder.encode(forceChangePod, forKey: TPSMerchantInfoRespTag.forceChangePod.rawValue)
     }
     /// 判斷是否可執行動作
     ///

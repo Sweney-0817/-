@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="d6I-wW-cKt" customClass="PodConfirmView" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="459" height="60"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I2R-bZ-ubB">
+                    <rect key="frame" x="0.0" y="56" width="459" height="1"/>
+                    <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="Yg9-bD-iYr"/>
+                    </constraints>
+                </view>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="使用者密碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="Zyk-hu-jch" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                    <rect key="frame" x="20" y="5" width="419" height="46"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="419" id="HCz-Ib-fNW"/>
+                        <constraint firstAttribute="height" constant="46" id="eDM-Sp-6SM"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="d6I-wW-cKt" id="1Bs-FB-RCa"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Zyk-hu-jch" firstAttribute="top" secondItem="d6I-wW-cKt" secondAttribute="top" constant="5" id="AyM-WB-KL2"/>
+                <constraint firstAttribute="trailing" secondItem="I2R-bZ-ubB" secondAttribute="trailing" id="Do7-AU-dl9"/>
+                <constraint firstAttribute="trailing" secondItem="Zyk-hu-jch" secondAttribute="trailing" constant="20" id="dFG-vS-lxq"/>
+                <constraint firstAttribute="bottom" secondItem="I2R-bZ-ubB" secondAttribute="bottom" constant="3" id="jxJ-FO-1vi"/>
+                <constraint firstItem="I2R-bZ-ubB" firstAttribute="top" secondItem="Zyk-hu-jch" secondAttribute="bottom" constant="5" id="lZl-AA-Luo"/>
+                <constraint firstItem="I2R-bZ-ubB" firstAttribute="leading" secondItem="d6I-wW-cKt" secondAttribute="leading" id="p0e-3N-dnU"/>
+                <constraint firstItem="I2R-bZ-ubB" firstAttribute="top" secondItem="d6I-wW-cKt" secondAttribute="top" constant="56" id="uhU-3t-Rpk"/>
+                <constraint firstItem="Zyk-hu-jch" firstAttribute="leading" secondItem="d6I-wW-cKt" secondAttribute="leading" constant="20" id="wOl-IH-wlJ"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="m_podInput" destination="Zyk-hu-jch" id="SgE-Ib-w3K"/>
+            </connections>
+            <point key="canvasLocation" x="105.07246376811595" y="53.571428571428569"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Textfield" width="311" height="44"/>
+    </resources>
+</document>

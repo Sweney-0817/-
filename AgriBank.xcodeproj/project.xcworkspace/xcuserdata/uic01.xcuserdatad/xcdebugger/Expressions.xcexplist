@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "BillPaymentViewController.clickThreeRowDropDownView(_:):BillPaymentViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "transactionId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TaxPaymentViewController.clickOneRowDropDownView(_:):TaxPaymentViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "accountList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TaxPaymentViewController.didResponse(_:_:):TaxPaymentViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "accountList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BaseViewController.didResponse(_:_:):BaseViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "AgriBank_AppUid">
+            </PersistentString>
+            <PersistentString
+               value = "AgriBank_DeviceID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TaxPaymentViewController.viewDidLoad():TaxPaymentViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "TaxPaymentViewController.actionSheet(_:clickedButtonAt:):TaxPaymentViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "actionSheet.buttoTitle(at:1)">
+            </PersistentString>
+            <PersistentString
+               value = "m_DDKind">
+            </PersistentString>
+            <PersistentString
+               value = "buttonIndex">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

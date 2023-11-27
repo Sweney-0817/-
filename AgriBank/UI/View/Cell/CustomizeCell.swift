@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class MenuCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
@@ -61,9 +62,11 @@ class OverviewCell: UITableViewCell {
     @IBOutlet weak var title1Label: UILabel!
     @IBOutlet weak var title2Label: UILabel!
     @IBOutlet weak var title3Label: UILabel!
+    //@IBOutlet weak var title4Label: UILabel! //0810
     @IBOutlet weak var detail1Label: UILabel!
     @IBOutlet weak var detail2Label: UILabel!
     @IBOutlet weak var detail3Label: UILabel!
+    //@IBOutlet weak var detail4Label: UILabel! //0810
     @IBOutlet weak var trailingCons: NSLayoutConstraint!
     @IBOutlet weak var leadingCons: NSLayoutConstraint!
     
@@ -253,6 +256,47 @@ class ResultCell: UITableViewCell {
         return (boundingBox.height < CGFloat(60) ? CGFloat(60) : boundingBox.height)
     }
 }
+class ResultCheckCell: UITableViewCell {
+    private var isCheckon = true
+    @IBOutlet weak var checkoff: UIImageView!
+    @IBOutlet weak var m_lbTitle: UILabel!
+    @IBOutlet weak var m_lbData: UIButton!
+    @IBOutlet weak var titleWeight: NSLayoutConstraint! //
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
+    func set(_ sindex:String ,_ labtxt:String ) {
+        m_lbData.tag =  Int(sindex)! + 1
+        m_lbTitle.text = labtxt
+    }
+    @IBAction func clickCheckBtn(_ sender: Any) {
+        isCheckon = !isCheckon
+        let stag = m_lbData.tag
+        if isCheckon {
+            checkoff.image = UIImage(named: ImageName.Checkon.rawValue)
+            m_lbData.tag = stag + 1
+        }
+        else {
+            checkoff.image = UIImage(named: ImageName.Checkoff.rawValue)
+            m_lbData.tag = stag - 1
+        }
+    }
+    
+    static func GetStringHeightByWidthAndFontSize(_ content:String, _ width:CGFloat) -> CGFloat {
+        //.xib拉的 60:Cell高 171:m_lbTitle的固定寬 剩下數字參考Xib
+        let dataWidth = width-171-(15*3)
+//        let plusHeight:CGFloat = 17+18
+        
+        let boundingBox = content.boundingRect(with: CGSize(width: dataWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedStringKey.font: Default_Font], context: nil)
+        return (boundingBox.height < CGFloat(60) ? CGFloat(60) : boundingBox.height)
+    }
+}
 
 class ResultEditCell: UITableViewCell {
     @IBOutlet var m_tfEditData: UITextField!
@@ -315,7 +359,86 @@ class LoanPrincipalInterestCell: UITableViewCell {
         // Configure the view for the selected state
     }
 }
+//2019-10-4 add by sweney 常用轉入帳號
+protocol USAccountCellDelegate {
+    func clickDelBtn(_ sender:USAccountViewCell)
+    
+}
+class USAccountViewCell: UITableViewCell {
+    //    let patBtn_Color = UIColor(red: 130/255, green: 179/255, blue: 66/255, alpha: 1)
+    let patBtn_Color = Green_Color
+    @IBOutlet weak var bankcodeLabel: UILabel!
+    @IBOutlet weak var bankNameLabel: UILabel!
+    @IBOutlet weak var AccountLabel: UILabel!
+    @IBOutlet weak var RemarkLabel: UILabel!
+    @IBOutlet weak var btnDel: UIButton!
+    @IBOutlet weak var btnEdit: UIButton!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        btnEdit.layer.cornerRadius = Layer_BorderRadius
+        btnEdit.layer.borderWidth = Layer_BorderWidth
+        btnEdit.layer.borderColor = patBtn_Color.cgColor
+     
+        btnDel.layer.cornerRadius = Layer_BorderRadius
+        btnDel.layer.borderWidth = Layer_BorderWidth
+        btnDel.layer.borderColor = patBtn_Color.cgColor
+        
+        
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        // Configure the view for the selected state
+    }
+  
+    
+}
+//2019-10-4 end
+class TodayBillQryCell:UITableViewCell {
+    
+    @IBOutlet weak var CKNOLabel: UILabel!
+    @IBOutlet weak var ERRCODECLabel: UILabel!
+    @IBOutlet weak var TXAMTLabel: UILabel!
+    @IBOutlet weak var STATUSTLabel: UILabel!
+}
 
+protocol CardlessDisableCellDelegate {
+    func clickDelBtn(_ sender:CardlessDisableCell)
+    
+}
+class CardlessDisableCell:UITableViewCell{
+    let patBtn_Color = Orange_Color
+   
+    
+    @IBOutlet weak var CardlessAct: UILabel!
+    @IBOutlet weak var CardlessDisableBtn: UIButton!
+    @IBOutlet weak var CardlessStatus: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        CardlessDisableBtn.setBackgroundImage(UIImage(named: "ButtonSmall"), for: .normal)
+        CardlessDisableBtn.setTitleColor(UIColor.white, for: .normal)
+        CardlessDisableBtn.layer.borderWidth = 0
+        CardlessDisableBtn.layer.borderColor = patBtn_Color.cgColor
+         
+        
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        // Configure the view for the selected state
+    }
+}
+
+class CardlessQryCell:UITableViewCell {
+    
+    @IBOutlet weak var CDATELabel: UILabel!
+    @IBOutlet weak var CLTXAMTLabel: UILabel!
+    @IBOutlet weak var CLSTATUSTLabel: UILabel!
+    
+    @IBOutlet weak var EntryRight: UIImageView!
+}
 class PromotionCell: UITableViewCell {
     @IBOutlet weak var m_lbTitle: UILabel!
     @IBOutlet weak var m_lbDate: UILabel!
@@ -450,4 +573,242 @@ class GPGoldPriceCell: UITableViewCell {
         m_lbSell.text = sell
     }
     
+}
+class GesturePwdCell: UICollectionViewCell {
+    
+} 
+class InitTransToCell: UITableViewCell {
+
+    @IBOutlet weak var LabelBank: UILabel!
+    @IBOutlet weak var LabelActNo: UILabel!
+    @IBOutlet weak var LabelRemark: UILabel!
+    @IBOutlet weak var LabelSort: UILabel!
+    @IBOutlet weak var btnDel: UIButton!
+    @IBOutlet weak var btnEdit: UIButton!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+ 
+    }
+    
+
+}
+class OtpDeviceToCell: UITableViewCell {
+    
+    let patBtn_Color = Green_Color
+    @IBOutlet weak var labelMobileType: UILabel!
+    @IBOutlet weak var labelDeviceRemark: UILabel!
+    @IBOutlet weak var labelCreateDate: UILabel!
+    @IBOutlet weak var btnDel: UIButton!
+    @IBOutlet weak var btnEdit: UIButton!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        btnEdit.layer.cornerRadius = Layer_BorderRadius
+               btnEdit.layer.borderWidth = Layer_BorderWidth
+               btnEdit.layer.borderColor = patBtn_Color.cgColor
+            
+               btnDel.layer.cornerRadius = Layer_BorderRadius
+               btnDel.layer.borderWidth = Layer_BorderWidth
+               btnDel.layer.borderColor = patBtn_Color.cgColor
+               
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    
+}
+//chris
+class TXMEMOCell: UITableViewCell {
+    @IBOutlet weak var ScanTXMEMO: UITextField!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+  
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    func set(_ data:String, placeholder:String = "請輸入備註") {
+        let newdata =  data.replacingOccurrences(of: "\n", with: " ")
+        ScanTXMEMO.text = newdata
+        ScanTXMEMO.placeholder = placeholder
+    }
+}
+//sweney
+class TXMEMOCell2: UITableViewCell {
+    @IBOutlet weak var ScanTXMEMO2: UITextField!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+  
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    func set(_ data:String, placeholder:String = "請輸入轉入備註") {
+        let newdata =  data.replacingOccurrences(of: "\n", with: " ")
+        ScanTXMEMO2.text = newdata
+        ScanTXMEMO2.placeholder = placeholder
+    }
+}
+class TXMEMOCell1: UITableViewCell {
+    @IBOutlet weak var ScanTXMEMO1: UITextField!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+  
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    func set(_ data:String, placeholder:String = "請輸入轉出備註") {
+        let newdata =  data.replacingOccurrences(of: "\n", with: " ")
+        ScanTXMEMO1.text = newdata
+        ScanTXMEMO1.placeholder = placeholder
+    }
+}
+class TXMobileCell: UITableViewCell {
+    @IBOutlet weak var ScanTXMobile: UITextField!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    func set(_ data:String, placeholder:String = "請輸入手機門號") {
+        ScanTXMobile.text = data
+        ScanTXMobile.placeholder = placeholder
+    }
+}
+class TXMBarcodeCell: UITableViewCell {
+    
+    @IBOutlet weak var ScanTXMBarcode: TextField!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    func set(_ data:String, placeholder:String = "請輸入發票載具條碼") {
+        ScanTXMBarcode.text = data
+        ScanTXMBarcode.placeholder = placeholder
+    }
+}
+
+class GPRiskChekCell:UITableViewCell  {
+    @IBOutlet var genderRadioButtons: [SKRadioButton]!
+    @IBOutlet weak var TitleLabel: UILabel!
+    @IBOutlet weak var Radio1: SKRadioButton!
+    @IBOutlet weak var Radio2: SKRadioButton!
+    @IBOutlet weak var Radio3: SKRadioButton!
+    @IBOutlet weak var Radio4: SKRadioButton!
+    @IBOutlet weak var Radio5: SKRadioButton!
+    
+    @IBAction func genderRadioButtondAction(_ sender: SKRadioButton) {
+        genderRadioButtons.forEach { (button) in
+            button.isSelected = false
+        }
+        sender.isSelected = true
+      
+    }
+    @IBAction  func textchange (_ sender: SKRadioButton, text:String){
+        sender.titleText = text
+    }
+//    override func setSelected(_ selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//        // Configure the view for the selected state
+//    }
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        Radio1.isHidden = true
+        Radio2.isHidden = true
+        Radio3.isHidden = true
+        Radio4.isHidden = true
+        Radio5.isHidden = true
+       
+    }
+    
+}
+
+
+class GPRiskMulitChekCell:UITableViewCell  {
+    
+    @IBOutlet var genderRadioButtonsC:[SKcheckButton]!
+    @IBOutlet weak var Titlelable: UILabel!
+    @IBOutlet weak var checkbox1: SKcheckButton!
+
+    @IBOutlet weak var checkbox2: SKcheckButton!
+    @IBOutlet weak var checkbox3: SKcheckButton!
+    @IBOutlet weak var checkbox4: SKcheckButton!
+    @IBOutlet weak var checkbox5: SKcheckButton!
+    @IBOutlet weak var checkbox6: SKcheckButton!
+    @IBOutlet weak var checkbox7: SKcheckButton!
+    @IBOutlet weak var checkbox8: SKcheckButton!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+            checkbox1.isHidden = true
+            checkbox2.isHidden = true
+            checkbox3.isHidden = true
+            checkbox4.isHidden = true
+            checkbox5.isHidden = true
+            checkbox6.isHidden = true
+            checkbox7.isHidden = true
+            checkbox8.isHidden = true
+}
+//    override func setSelected(_ selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//        // Configure the view for the selected state
+//    }
+ 
+    
+    @IBAction func genderRadioButtondActionC(_ sender: SKcheckButton) {
+        if sender.isSelected == false{
+        sender.isSelected = true
+        }else{
+            sender.isSelected = false
+        }
+        genderRadioButtonsC.forEach { (button) in
+            
+            if (button.isSelected == true)
+            {
+               
+            }
+
+        }
+     
+      
+}
+ 
 }

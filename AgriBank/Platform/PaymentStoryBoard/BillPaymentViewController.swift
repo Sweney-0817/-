@@ -5,7 +5,7 @@
 //  Created by SYSTEX on 2017/7/3.
 //  Copyright © 2017年 Systex. All rights reserved.
 //
-
+// 2019-9-2 Change by sweney + 取預設轉出帳號
 import UIKit
 
 let BillPayment_Type1 = "自訂帳號"
@@ -40,6 +40,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     
     private var m_DDTransOutAccount: ThreeRowDropDownView? = nil
     private var m_DDTransInBank: OneRowDropDownView? = nil
+    private var showBankAccountDropView:TwoRowDropDownView? = nil
     private var m_DDTransInBA: TwoRowDropDownView? = nil
     private var curType = BillPayment_Type1
     private var accountList:[AccountStruct]? = nil      // 帳號列表
@@ -47,6 +48,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     private var commonAccountIndex:Int? = nil           // 目前選擇轉入常用帳戶
     private var bankNameList:[[String:String]]? = nil   // 銀行代碼列表
     private var curTextfield:UITextField? = nil
+    private var inAccountIndex:Int? = nil               // 目前選擇轉入帳號
 
     // MARK: - Override
     override func viewDidLoad() {
@@ -87,8 +89,24 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
         bottomView.layer.borderWidth = Layer_BorderWidth
         bottomView.layer.borderColor = Gray_Color.cgColor
         
+        showBankAccountDropView = getUIByID(.UIID_TwoRowDropDownView) as? TwoRowDropDownView
+               showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, "", NTTransfer_InAccount, Choose_Title)
+               showBankAccountDropView?.frame = m_vTransInBA.frame
+               showBankAccountDropView?.frame.origin = .zero
+               showBankAccountDropView?.delegate = self
+               m_vTransInBA.addSubview(showBankAccountDropView!)
+        
         addObserverToKeyBoard()
         addGestureForKeyBoard()
+        
+        m_tfTransInAccount.setCanUseDefaultAction(bCanUse: true)
+        m_tfTransMemo.setCanUseDefaultAction(bCanUse: true)
+        m_tfEmail.setCanUseDefaultAction(bCanUse: true)
+        
+        //2019-9-24 add by sweney for GetTransActNo
+        setLoading(true)
+          postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
+        //2019-9-24 end
     }
 
     override func didReceiveMemoryWarning() {
@@ -110,11 +128,31 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
                         }
                     }
                 }
+                //增加支存30科目
+//                for category in array {
+//                    if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Check_Type {
+//                        for actInfo in result {
+//                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String{
+//                                accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
+//                            }
+//                        }
+//                    }
+//                }
+                
+                //2019-9-2 add by sweney -取index=0轉出帳號
+                if(accountList?.count)! > 0 {
+                    if let info = accountList?[0] {
+                        m_DDTransOutAccount?.setThreeRow(BillPayment_OutAccout_Title, info.accountNO, BillPayment_Currency_Ttile, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), BillPayment_Balance_Ttile, String(info.balance).separatorThousandDecimal())
+               
+                    }}
             }
             else {
                 super.didResponse(description, response)
             }
-            showOutAccountList()
+            
+            //2019-9-24 delete by sweney
+            // show by on touch TOutButton
+            //showOutAccountList()
             
         case "ACCT0104":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
@@ -170,6 +208,8 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             m_tfTransInAccount.text = ""
         }
         else {
+            //常用
+             inAccountIndex = nil
             m_consTransInBankHeight.constant = 0
             m_consTransInAccountHeight.constant = 0
             m_consTransInBAHeight.constant = 80
@@ -212,11 +252,17 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             for index in bankNameList! {
                 if let name = index["bankName"], let code = index["bankCode"] {
                     let temp = "\(code) \(name)".trimmingCharacters(in: .whitespaces)
+                    if (code == "600"){
+                        //600放在第一個
+                        array.insert(temp, at: 0)
+                    }else{
                     array.append(temp)
+                    }
                 }
             }
-            SGActionView.showSheet(withTitle: Choose_Title, itemTitles: array, selectedIndex: 0) { index in
-                let title = array[index]
+            SGActionView.showSheetQr(withTitle: Choose_Title, itemTitles: array, selectedIndex: 0) { index in
+                self.inAccountIndex = index
+                let title = array[ self.inAccountIndex!]
                 let array = title.components(separatedBy: .whitespaces)
                 self.m_DDTransInBank?.setOneRow(BillPayment_BankCode_Title, array.first ?? "")
             }
@@ -225,14 +271,30 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
     
     private func showCommonAccountList() {
         if commonAccountList != nil && (commonAccountList?.count)! > 0 {
-            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
-            for info in commonAccountList! {
-                if let account = info["ACTNO"] as? String, let bankCode = info["IN_BR_CODE"] as? String {
-                    actSheet.addButton(withTitle: "(\(bankCode)) \(account)")
-                }
-            }
-            actSheet.tag = ViewTag.View_InAccountActionSheet.rawValue
-            actSheet.show(in: view)
+//            let actSheet = UIActionSheet(title: Choose_Title, delegate: self, cancelButtonTitle: Cancel_Title, destructiveButtonTitle: nil)
+//            for info in commonAccountList! {
+//                if let account = info["ACTNO"] as? String, let bankCode = info["IN_BR_CODE"] as? String {
+//                    actSheet.addButton(withTitle: "(\(bankCode)) \(account)")
+//                }
+//            }
+//            actSheet.tag = ViewTag.View_InAccountActionSheet.rawValue
+//            actSheet.show(in: view)
+            //sweney 20200221 常用帳號加備註
+                           var aryBank = [String]()
+                           var aryNote = [String]()
+                           for info in commonAccountList! {
+                               if let account = info["ACTNO"] as? String, let bankCode = info["IN_BR_CODE"] as? String, let note = info["EXPLANATION"] as? String {
+                                   aryBank.append("(\(bankCode)) \(account)")
+                                   aryNote.append(note)
+                               }
+                           }
+                           SGActionView.showSheet(withTitle: Choose_Title, itemTitles: aryBank, itemSubTitles: aryNote, selectedIndex: 0) { index in
+                            self.inAccountIndex = index
+                               if let info = self.commonAccountList?[index], let account = info["ACTNO"] as? String, let bankCode = info["IN_BR_CODE"] as? String {
+                                   self.showBankAccountDropView?.setTwoRow(NTTransfer_BankCode, bankCode, NTTransfer_InAccount, account)
+                               }
+                           }
+                           //sweney 20200221 常用帳號加備註 End
         }
         else {
             showErrorMessage(nil, ErrorMsg_GetList_InCommonAccount)
@@ -250,15 +312,35 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
                 return false
             }
             if (m_tfTransInAccount.text?.isEmpty)! {
+           
                 showErrorMessage(nil, "\(Enter_Title)\(m_tfTransInAccount.placeholder ?? "")")
                 return false
             }
+            //支存03 只能繳虛擬帳號
+//            else{
+//                let InAct = m_tfTransInAccount.text
+//                let OutAct = m_DDTransOutAccount?.getContentByType(.First)
+//                if InAct?.substring(from:3,length: 3) != "500" && OutAct?.substring(from:6, length:2) == "30" {
+//                    showErrorMessage(nil,  ErrorMsg_Pay03_for500)
+//                    return false
+//                }
+//            }
         }
         else {
-            if commonAccountIndex == nil {
+            //if commonAccountIndex == nil {
+            if self.inAccountIndex == nil {
                 showErrorMessage(nil, "\(Choose_Title)\(BillPayment_Type2)")
                 return false
             }
+            //支存03 只能繳虛擬帳號
+//            else{
+//                let InAct = showBankAccountDropView?.getContentByType(.Second) ?? ""
+//                let OutAct = m_DDTransOutAccount?.getContentByType(.First)
+//                if InAct.substring(from:3,length: 3) != "500" && OutAct?.substring(from:6, length:2) == "30" {
+//                    showErrorMessage(nil,  ErrorMsg_Pay03_for500)
+//                    return false
+//                }
+//            }
         }
         if (m_tfTransAmount.text?.isEmpty)! {
             showErrorMessage(nil, "\(Enter_Title)\(m_tfTransAmount.placeholder ?? "")")
@@ -282,6 +364,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             showErrorMessage(nil, ErrorMsg_Invalid_Email)
             return false
         }
+       
         return true
     }
     
@@ -330,9 +413,12 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
             setLoading(true)
             postRequest("ACCT/ACCT0101", "ACCT0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02001","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0"], true), AuthorizationManage.manage.getHttpHead(true))
         }
-        else {
-            showOutAccountList()
-        }
+        //2019-9-24 delete my sweney
+        // else {
+        //    showOutAccountList()
+        // }
+        //2019-9-24 add by sweney
+        showOutAccountList()
     }
 
     // MARK: - OneRowDropDownViewDelegate
@@ -360,9 +446,11 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
                 setLoading(true)
                 postRequest("ACCT/ACCT0104", "ACCT0104", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02004","Operate":"getAcnt","TransactionId":transactionId,"LogType":"0","ACTNO":m_DDTransOutAccount?.getContentByType(.First) ?? ""], true), AuthorizationManage.manage.getHttpHead(true))
             }
+            
             else {
-                showCommonAccountList()
+               showCommonAccountList()
             }
+            
         }
         else {
             showErrorMessage(nil, "\(Choose_Title)\(m_DDTransOutAccount?.m_lbFirstRowTitle.text ?? "")")
@@ -386,7 +474,7 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
                 
             case ViewTag.View_AccountActionSheet.rawValue:
                 if let info = accountList?[buttonIndex-1] {
-                    m_DDTransOutAccount?.setThreeRow(BillPayment_OutAccout_Title, info.accountNO, BillPayment_Currency_Ttile, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), BillPayment_Balance_Ttile, String(info.balance).separatorThousand())
+                    m_DDTransOutAccount?.setThreeRow(BillPayment_OutAccout_Title, info.accountNO, BillPayment_Currency_Ttile, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), BillPayment_Balance_Ttile, String(info.balance).separatorThousandDecimal())
                     commonAccountIndex = nil
                     m_DDTransInBA?.setTwoRow(BillPayment_BankCode_Title, Choose_Title, BillPayment_InAccout_Title, "")
                     m_tfTransAmount.text = ""
@@ -446,8 +534,8 @@ class BillPaymentViewController: BaseViewController, ThreeRowDropDownViewDelegat
                 inAccount = m_tfTransInAccount.text ?? ""
             }
             else {
-                bankCode = m_DDTransInBA?.getContentByType(.First) ?? ""
-                inAccount = m_DDTransInBA?.getContentByType(.Second) ?? ""
+                bankCode = showBankAccountDropView?.getContentByType(.First) ?? ""
+                inAccount = showBankAccountDropView?.getContentByType(.Second) ?? ""
             }
             setLoading(true)
             postRequest("PAY/PAY0106", "PAY0106", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"05002","Operate":"dataConfirm","TransactionId":transactionId,"OUTACT":m_DDTransOutAccount?.getContentByType(.First) ?? "","INACT":inAccount,"INBANK":bankCode,"TXAMT":m_tfTransAmount.text!,"MEMO":m_tfTransMemo.text!,"EMAIL":m_tfEmail.text!], true), AuthorizationManage.manage.getHttpHead(true))

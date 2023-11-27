@@ -33,8 +33,10 @@ class OneRowDropDownView: UIView {
         m_lbFirstRowContent.text = firstContent
         clickBtn.isEnabled = isEnable
         m_lbFirstRowContent.textColor = isEnable ? .black : m_lbFirstRowTitle.textColor
+        let acclb:String = firstTitle + firstContent
+        clickBtn.accessibilityLabel = acclb
     }
-    
+ 
     func getContentByType(_ index:DropDownType) -> String {
         var value = ""
         switch index {

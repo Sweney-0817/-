@@ -39,6 +39,10 @@ class SideMenuViewController: UIViewController {
     private let SideMenu_shadowOpacity = Float(0.5)
     private let SideMenu_shadowRadius = CGFloat(20)
     private var closeBtn:UIButton? = nil
+
+    //2019-11-18 add by sweney for disable PanGestureRecognizer
+    private var closeMenuGestureRec = true
+    var gesture = UIPanGestureRecognizer(target: self, action: #selector(HandlePanGesture))
 //    private var tapGesture:UITapGestureRecognizer? = nil
     
     
@@ -59,7 +63,7 @@ class SideMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        let gesture = UIPanGestureRecognizer(target: self, action: #selector(HandlePanGesture))
+       gesture = UIPanGestureRecognizer(target: self, action: #selector(HandlePanGesture))
         view.addGestureRecognizer(gesture)
     }
     
@@ -138,7 +142,7 @@ class SideMenuViewController: UIViewController {
     
     private func HideSideMenu(_ IsRight:Bool)  {
         UIView.animate(withDuration: animateTime, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { () -> Void in
-            self.centerViewController?.view.frame.origin = .zero
+           self.centerViewController?.view.frame.origin = .zero
         }, completion: { (complete) -> Void in
             if complete {
                 if IsRight {
@@ -191,7 +195,7 @@ class SideMenuViewController: UIViewController {
     }
     
     // MARK: - GestureRecognizer Selector
-    @objc func HandlePanGesture(_ sender: UIPanGestureRecognizer) {
+    @objc func HandlePanGesture(_ sender: UIPanGestureRecognizer) {    
         switch sender.state {
         case .began:
             if currentMenuState == .Expand {
@@ -227,9 +231,9 @@ class SideMenuViewController: UIViewController {
                     else if positionX < 0 {
                         positionX = 0
                     }
-                }
+                }      
                 centerViewController?.view!.frame.origin.x = positionX
-                sender.setTranslation(.zero, in: centerViewController?.view)
+                    sender.setTranslation(.zero, in: centerViewController?.view)
             }
             
         default:
@@ -255,9 +259,9 @@ class SideMenuViewController: UIViewController {
                 }
             }
             break
-        }
-    }
-    
+        } 
+}
+
 //    func HandleTapGseture(_ sender: UITapGestureRecognizer) {
 //        if currentMenuState == .Expand && sender.state == .ended {
 //            HideSideMenu(isRightMenuShow)
@@ -268,6 +272,17 @@ class SideMenuViewController: UIViewController {
         if currentMenuState == .Expand {
             HideSideMenu(isRightMenuShow)
         }
+    }
+     @objc func SetGestureStatus (_ Status:Bool){
+        closeMenuGestureRec = Status 
+        if Status == false {
+            if gesture != nil {
+                view.removeGestureRecognizer(gesture)
+            }
+        }else{
+              view.addGestureRecognizer(gesture)
+        }
+        
     }
 }
 

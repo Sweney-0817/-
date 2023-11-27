@@ -15,13 +15,15 @@ static NSString *const kCustomerID = @"agribank.com.tw";
 static NSString *const kAppLable = @"AGRIBANK-APPLICATION";
 
 #if DEBUG
-//static NSString *const kDefaultKAPI = @"http://172.16.132.52/OTP";
+//static NSString *const kDefaultKAPI = @"http://192.168.65.2/";
 static NSString *const kDefaultKAPI = @"http://mbapiqa.naffic.org.tw/OTP";
 static NSString *const kCredentialFile =  @"agribank_dev_credential";
 static NSString *const kAppConstFile = @"agribank_dev_app_const";
-static NSString *const kApiKeyFile = @"1-proto5-pub";
+//static NSString *const kApiKeyFile = @"1-proto5-pub";
+static NSString *const kApiKeyFile = @"1-proto5-pub_pro";
 #else
-static NSString *const kDefaultKAPI = @"https://mbapi.afisc.com.tw/OTP";
+static NSString *const kDefaultKAPI = @"https://mbapi.naffic.org.tw/OTP";
+//static NSString *const kDefaultKAPI = @"https://mbapi.afisc.com.tw/OTP";
 static NSString *const kCredentialFile =  @"agribank_pro_credential";
 static NSString *const kAppConstFile = @"agribank_pro_app_const";
 static NSString *const kApiKeyFile = @"1-proto5-pub_pro";
@@ -88,19 +90,20 @@ static NSString *const kApiKeyLabel = @"1-proto5";
     [p_context setClientAPIKey:apiKeyData.bytes withSize:apiKeyData.length label:kApiKeyLabel];
 }
 
-- (void)setDeviceToken:(NSData *)deviceToken
-{
-    NSLog(@"IsProductionMode:%d", [self p_IsProductionMode]);
-    if (deviceToken == nil) {
-        NSLog(@"Push service DeviceToken is nil");
-        return;
-    }else{
-        NSLog(@"Push service DeviceToken:%@\n HexDeviceToken:%@", deviceToken, [self p_HexStringWithData:deviceToken]);
-    }
-    [p_context setDeviceToken:deviceToken production:[self p_IsProductionMode]];
-    [p_context addPushProvider:@"apns" withOptions:@{@"device_token": [self p_HexStringWithData:deviceToken],
-                                                     @"environment": [self p_IsProductionMode] ? @"production" : @"sandbox"}];
-}
+//- (void)setDeviceToken:(NSData *)deviceToken
+//{
+//    NSLog(@"IsProductionMode:%d", [self p_IsProductionMode]);
+//    if (deviceToken == nil) {
+//        NSLog(@"Push service DeviceToken is nil");
+//        return;
+//    }else{
+//        NSLog(@"Push service DeviceToken:%@\n HexDeviceToken:%@", deviceToken, [self p_HexStringWithData:deviceToken]);
+//    }
+//    [p_context setApnsProductionPushToken:deviceToken];
+//    [p_context setDeviceToken:deviceToken production:[self p_IsProductionMode]];
+//    [p_context addPushProvider:@"apns" withOptions:@{@"device_token": [self p_HexStringWithData:deviceToken],
+//                                                     @"environment": [self p_IsProductionMode] ? @"production" : @"sandbox"}];
+//}
 
 - (void)associationOperationWithAssociationCode:(NSString *)associationCode complete:(CompleteHandle)handle
 {
@@ -174,17 +177,22 @@ static NSString *const kApiKeyLabel = @"1-proto5";
     return otp;
 }
 
-//- (NSString *)getOneTimePassword
+//- (NSString *)getOneTimePod
 //{
 //    NSURL *url = [self p_GetClientAPI];
-//    return [p_context getOneTimePassword:url];
+//    return [p_context getOneTimePod:url];
 //}
 
-//- (void)nextOneTimePassword
+//- (void)nextOneTimePod
 //{
 //    NSURL *url = [self p_GetClientAPI];
-//    [p_context nextOneTimePassword:url];
+//    [p_context nextOneTimePod:url];
 //}
+
+- (BOOL)isJailbroken
+{
+    return [p_context isJailbroken];
+}
 
 - (NSString *)p_AppSupportDirectory
 {

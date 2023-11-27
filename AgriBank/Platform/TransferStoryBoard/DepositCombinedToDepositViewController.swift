@@ -5,7 +5,7 @@
 //  Created by TongYoungRu on 2017/7/4.
 //  Copyright © 2017年 Systex. All rights reserved.
 //
-
+// 2019-9-2 Change by sweney + 取預設轉出帳號
 import UIKit
 
 let DepositCombinedToDeposit_Account_Title = "綜存帳號"
@@ -128,7 +128,14 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
                         }
                     }
                 }
-                
+                //2019-9-2 add by sweney -取index=0轉出帳號
+                if(accountList?.count)! > 0 {
+                    
+                    if let info = accountList?[0]{
+                        topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance).separatorThousandDecimal())
+                        //break
+                    }
+                }
                 if let info = AuthorizationManage.manage.GetLoginInfo() {
                     setLoading(true)
                     postRequest("TRAN/TRAN0402", "TRAN0402", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData","TransactionId":transactionId,"BR_CODE":info.bankCode], true), AuthorizationManage.manage.getHttpHead(true))
@@ -164,61 +171,136 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             }
             
         case "COMM0701":
-            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let status = array.first?["CanTrans"] as? String, status == Can_Transaction_Status, let date = array.first?["CurrentDate"] as? String {
-                let TACTNO = topDropView?.getContentByType(.First) ?? ""
-                let TYPE = responseDepositList[curDepositTypeIndex!]["Type"] ?? ""
-                //Guester 20180605 取得 REFNOType 至 TRAN0401 發出
-                let REFNOType = responseDepositList[curDepositTypeIndex!]["REFNOType"] ?? ""
-                let PRDCD = periodDropView?.getContentByType(.First) ?? ""
-                var IRTID = ""
-                if let Detail = responseDepositList[curDepositTypeIndex!]["Detail"] as? [[String:Any]], let irtid = Detail[curRateTypeIndex!]["IRTID"] as? [String:String], let Value = irtid["Value"] {
-                    IRTID = Value
+            //chiu 1090728 三點半後可以交易 status == Can_Transaction_Status  ==> !=
+            //一般: == Can_Transaction_Status  三點半後: != Can_Transaction_Status
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let status = array.first?["CanTrans"] as? String, status != Can_Transaction_Status, let date = array.first?["CurrentDate"] as? String {
+                //chiu 1090728 start 三點半後可以交易
+                let confirmHandler : ()->Void = {  //chiu 1090728 三點半後可以交易
+                    let TACTNO = self.topDropView?.getContentByType(.First) ?? ""
+                    let TYPE = self.responseDepositList[self.curDepositTypeIndex!]["Type"] ?? ""
+                                //Guester 20180605 取得 REFNOType 至 TRAN0401 發出
+                    let REFNOType = self.responseDepositList[self.curDepositTypeIndex!]["REFNOType"] ?? ""
+                    let PRDCD = self.periodDropView?.getContentByType(.First) ?? ""
+                                var IRTID = ""
+                    if let Detail = self.responseDepositList[self.curDepositTypeIndex!]["Detail"] as? [[String:Any]], let irtid = Detail[self.curRateTypeIndex!]["IRTID"] as? [String:String], let Value = irtid["Value"] {
+                                    IRTID = Value
+                                }
+                                var AUTTRN = ""
+                                var AIRTID = ""
+                                var autoTransRateContent = ""
+                    if self.isExpireSaveType1 {
+                        if self.responseExpireSaveList.count > 0 {
+                            if let Value = self.responseExpireSaveList[0]["Value"] as? String {
+                                            AUTTRN = Value
+                                        }
+                            if let array = self.responseExpireSaveList[0]["AIRTID"] as? [[String:Any]], let Value = array[self.autoTransRateTypeIndex!]["Value"] as? String {
+                                            AIRTID = Value
+                                        }
+                                    }
+                        autoTransRateContent = self.autoTransRateTypeDropView?.getContentByType(.First) ?? ""
+                                }
+                                else {
+                        if self.responseExpireSaveList.count > 1 {
+                            if let Value = self.responseExpireSaveList[1]["Value"] as? String {
+                                            AUTTRN = Value
+                                        }
+                            if let array = self.responseExpireSaveList[1]["AIRTID"] as? [[String:Any]], array.count > 0, let Value = array.first!["Value"] as? String {
+                                            AIRTID = Value
+                                        }
+                                    }
+                                }
+                    let TXAMT = self.transAmountTextfield.text ?? ""
+                //                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+                                //Guester 20180605 取得 REFNOType 至 TRAN0401 發出
+                                //chiu 1090728 "BTXDAY":date... 改為"BTXDAY":idate...
+                    let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401",strSessionDescription: "TRAN0401", httpBody:AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":self.transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"RENFO":REFNOType, "PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+                                
+                                var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+                                dataConfirm.list?.append([Response_Key: "綜合存款帳號", Response_Value:TACTNO])
+                    dataConfirm.list?.append([Response_Key: "餘額", Response_Value:self.topDropView?.getContentByType(.Third).separatorThousand() ?? ""])
+                    dataConfirm.list?.append([Response_Key: "存款種類", Response_Value:self.depositTypeDropView?.getContentByType(.First) ?? ""])
+                    dataConfirm.list?.append([Response_Key: "轉存期別", Response_Value:self.periodDropView?.getContentByType(.First) ?? ""])
+                    dataConfirm.list?.append([Response_Key: "利率方式", Response_Value:self.rateTypeDropView?.getContentByType(.First) ?? ""])
+                    dataConfirm.list?.append([Response_Key: "目前利率", Response_Value:self.currentRateLabel.text ?? ""])
+                    dataConfirm.list?.append([Response_Key: "轉存金額", Response_Value:self.transAmountTextfield.text?.separatorThousand() ?? ""])
+                    dataConfirm.list?.append([Response_Key: "到期續存", Response_Value:self.isExpireSaveType1 ? DepositCombinedToDeposit_ExpireSaveType1 : DepositCombinedToDeposit_ExpireSaveType2])
+                                dataConfirm.list?.append([Response_Key: "自動轉期利率", Response_Value:autoTransRateContent])
+                    self.enterConfirmResultController(true, dataConfirm, true)
+                                //chiu 1090728 三點半後可以交易
+                //            }
+                //            else {
+                //
+                //                showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
+                //            }
+                                
+                        }
+                let cancelHandler : ()->Void = {
+                    
                 }
-                var AUTTRN = ""
-                var AIRTID = ""
-                var autoTransRateContent = ""
-                if isExpireSaveType1 {
-                    if responseExpireSaveList.count > 0 {
-                        if let Value = responseExpireSaveList[0]["Value"] as? String {
-                            AUTTRN = Value
-                        }
-                        if let array = responseExpireSaveList[0]["AIRTID"] as? [[String:Any]], let Value = array[autoTransRateTypeIndex!]["Value"] as? String {
-                            AIRTID = Value
-                        }
-                    }
-                    autoTransRateContent = autoTransRateTypeDropView?.getContentByType(.First) ?? ""
-                }
-                else {
-                    if responseExpireSaveList.count > 1 {
-                        if let Value = responseExpireSaveList[1]["Value"] as? String {
-                            AUTTRN = Value
-                        }
-                        if let array = responseExpireSaveList[1]["AIRTID"] as? [[String:Any]], array.count > 0, let Value = array.first!["Value"] as? String {
-                            AIRTID = Value
-                        }
-                    }
-                }
-                let TXAMT = transAmountTextfield.text ?? ""
-//                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
-                //Guester 20180605 取得 REFNOType 至 TRAN0401 發出
-                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401",strSessionDescription: "TRAN0401", httpBody:AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"RENFO":REFNOType, "PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+                showAlert(title: "注意", msg: ErrorMsg_TransTime_check , confirmTitle: "確認送出", cancleTitle: "取消", completionHandler: confirmHandler, cancelHandelr: cancelHandler)
                 
-                var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
-                dataConfirm.list?.append([Response_Key: "綜合存款帳號", Response_Value:TACTNO])
-                dataConfirm.list?.append([Response_Key: "餘額", Response_Value:topDropView?.getContentByType(.Third).separatorThousand() ?? ""])
-                dataConfirm.list?.append([Response_Key: "存款種類", Response_Value:depositTypeDropView?.getContentByType(.First) ?? ""])
-                dataConfirm.list?.append([Response_Key: "轉存期別", Response_Value:periodDropView?.getContentByType(.First) ?? ""])
-                dataConfirm.list?.append([Response_Key: "利率方式", Response_Value:rateTypeDropView?.getContentByType(.First) ?? ""])
-                dataConfirm.list?.append([Response_Key: "目前利率", Response_Value:currentRateLabel.text ?? ""])
-                dataConfirm.list?.append([Response_Key: "轉存金額", Response_Value:transAmountTextfield.text?.separatorThousand() ?? ""])
-                dataConfirm.list?.append([Response_Key: "到期續存", Response_Value:isExpireSaveType1 ? DepositCombinedToDeposit_ExpireSaveType1 : DepositCombinedToDeposit_ExpireSaveType2])
-                dataConfirm.list?.append([Response_Key: "自動轉期利率", Response_Value:autoTransRateContent])
-                enterConfirmResultController(true, dataConfirm, true)
+            }else if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let status = array.first?["CanTrans"] as? String, status == Can_Transaction_Status, let date = array.first?["CurrentDate"] as? String{
+                //chiu 1090728 三點半後可以交易
+                    let TACTNO = self.topDropView?.getContentByType(.First) ?? ""
+                    let TYPE = self.responseDepositList[self.curDepositTypeIndex!]["Type"] ?? ""
+                                //Guester 20180605 取得 REFNOType 至 TRAN0401 發出
+                    let REFNOType = self.responseDepositList[self.curDepositTypeIndex!]["REFNOType"] ?? ""
+                    let PRDCD = self.periodDropView?.getContentByType(.First) ?? ""
+                                var IRTID = ""
+                    if let Detail = self.responseDepositList[self.curDepositTypeIndex!]["Detail"] as? [[String:Any]], let irtid = Detail[self.curRateTypeIndex!]["IRTID"] as? [String:String], let Value = irtid["Value"] {
+                                    IRTID = Value
+                                }
+                                var AUTTRN = ""
+                                var AIRTID = ""
+                                var autoTransRateContent = ""
+                    if self.isExpireSaveType1 {
+                        if self.responseExpireSaveList.count > 0 {
+                            if let Value = self.responseExpireSaveList[0]["Value"] as? String {
+                                            AUTTRN = Value
+                                        }
+                            if let array = self.responseExpireSaveList[0]["AIRTID"] as? [[String:Any]], let Value = array[self.autoTransRateTypeIndex!]["Value"] as? String {
+                                            AIRTID = Value
+                                        }
+                                    }
+                        autoTransRateContent = self.autoTransRateTypeDropView?.getContentByType(.First) ?? ""
+                                }
+                                else {
+                        if self.responseExpireSaveList.count > 1 {
+                            if let Value = self.responseExpireSaveList[1]["Value"] as? String {
+                                            AUTTRN = Value
+                                        }
+                            if let array = self.responseExpireSaveList[1]["AIRTID"] as? [[String:Any]], array.count > 0, let Value = array.first!["Value"] as? String {
+                                            AIRTID = Value
+                                        }
+                                    }
+                                }
+                    let TXAMT = self.transAmountTextfield.text ?? ""
+                //                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401", strSessionDescription: "TRAN0401", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+                                //Guester 20180605 取得 REFNOType 至 TRAN0401 發出
+                                //chiu 1090728 "BTXDAY":date... 改為"BTXDAY":idate...
+                    let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0401",strSessionDescription: "TRAN0401", httpBody:AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"commitTxn","TransactionId":self.transactionId,"TACTNO":TACTNO,"TYPE":TYPE,"RENFO":REFNOType, "PRDCD":PRDCD,"IRTID":IRTID,"AUTTRN":AUTTRN,"AIRTID":AIRTID,"TXAMT":TXAMT,"BTXDAY":date.replacingOccurrences(of: "/", with: "")], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+                                
+                                var dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: [[String:String]](), memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
+                                dataConfirm.list?.append([Response_Key: "綜合存款帳號", Response_Value:TACTNO])
+                    dataConfirm.list?.append([Response_Key: "餘額", Response_Value:self.topDropView?.getContentByType(.Third).separatorThousand() ?? ""])
+                    dataConfirm.list?.append([Response_Key: "存款種類", Response_Value:self.depositTypeDropView?.getContentByType(.First) ?? ""])
+                    dataConfirm.list?.append([Response_Key: "轉存期別", Response_Value:self.periodDropView?.getContentByType(.First) ?? ""])
+                    dataConfirm.list?.append([Response_Key: "利率方式", Response_Value:self.rateTypeDropView?.getContentByType(.First) ?? ""])
+                    dataConfirm.list?.append([Response_Key: "目前利率", Response_Value:self.currentRateLabel.text ?? ""])
+                    dataConfirm.list?.append([Response_Key: "轉存金額", Response_Value:self.transAmountTextfield.text?.separatorThousand() ?? ""])
+                    dataConfirm.list?.append([Response_Key: "到期續存", Response_Value:self.isExpireSaveType1 ? DepositCombinedToDeposit_ExpireSaveType1 : DepositCombinedToDeposit_ExpireSaveType2])
+                                dataConfirm.list?.append([Response_Key: "自動轉期利率", Response_Value:autoTransRateContent])
+                    self.enterConfirmResultController(true, dataConfirm, true)
+                                //chiu 1090728 三點半後可以交易
+                //            }
+                //            else {
+                //
+                //                showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
+                //            }
+                                
+                        
             }
-            else {
-                showErrorMessage(nil, ErrorMsg_IsNot_TransTime)
-            }
-        
+
         default: super.didResponse(description, response)
         }
     }
@@ -246,6 +328,8 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             setLoading(true)
             postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
         }
+        
+        
     }
     
     // MARK: - UITextFieldDelegate
@@ -360,7 +444,7 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             switch actionSheet.tag {
             case ViewTag.View_AccountActionSheet.rawValue:
                 if let info = accountList?[buttonIndex-1] {
-                    topDropView?.setThreeRow(DepositCombinedToDeposit_Account_Title, info.accountNO, DepositCombinedToDeposit_Currency_Title, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), DepositCombinedToDeposit_Balance_Title, String(info.balance).separatorThousand())
+                    topDropView?.setThreeRow(DepositCombinedToDeposit_Account_Title, info.accountNO, DepositCombinedToDeposit_Currency_Title, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), DepositCombinedToDeposit_Balance_Title, String(info.balance).separatorThousandDecimal())
                 }
                 
             case ViewTag.View_ExpireSaveActionSheet.rawValue:
@@ -432,7 +516,8 @@ class DepositCombinedToDepositViewController: BaseViewController, UITextFieldDel
             }
         }
         else {
-            showErrorMessage(nil, ErrorMsg_Illegal_Character)
+           showErrorMessage(nil, ErrorMsg_Illegal_Character)
+          
             return false
         }
         

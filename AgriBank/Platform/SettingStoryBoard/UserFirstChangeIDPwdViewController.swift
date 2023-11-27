@@ -15,10 +15,12 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     @IBOutlet weak var sourceIDTextfield: TextField!
     @IBOutlet weak var newIDTextfield: TextField!
     @IBOutlet weak var againIDTextfield: TextField!
-    @IBOutlet weak var sourcePasswordTextfield: TextField!
-    @IBOutlet weak var newPasswordTextfield: TextField!
-    @IBOutlet weak var againPasswordTextfield: TextField!
+    @IBOutlet weak var sourcePodTextfield: TextField!
+    @IBOutlet weak var newPodTextfield: TextField!
+    @IBOutlet weak var labelNote: UILabel!
+    @IBOutlet weak var againPodTextfield: TextField!
     @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var scrollview: UIScrollView!
     private var errorMessage = ""
     private var gesture:UIPanGestureRecognizer? = nil
     
@@ -33,6 +35,10 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
         navigationController?.view.addGestureRecognizer(gesture!)
 
         // Do any additional setup after loading the view.
+       // labelNote.numberOfLines = 0
+       // labelNote.sizeToFit()
+        scrollview.contentSize = CGSize(width: scrollview.frame.size.width , height: scrollview.frame.size.height)
+        
         setShadowView(bottomView, .Top)
         addGestureForKeyBoard()
         
@@ -59,7 +65,7 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
                 super.didResponse(description, response)
             }
             
-        case "COMM0103":
+        case "COMM0112":
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode != ReturnCode_Success {
                 if let message = response.object(forKey: ReturnMessage_Key) as? String {
                     errorMessage = message
@@ -92,17 +98,17 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
             showErrorMessage(nil, "\(Enter_Title)\(againIDTextfield.placeholder!)")
             return false
         }
-        if (sourcePasswordTextfield.text?.isEmpty)! {
-            showErrorMessage(nil, "\(Enter_Title)\(sourcePasswordTextfield.placeholder!)")
+        if (sourcePodTextfield.text?.isEmpty)! {
+            showErrorMessage(nil, "\(Enter_Title)\(sourcePodTextfield.placeholder!)")
             return false
         }
-        if (newPasswordTextfield.text?.isEmpty)! {
-            showErrorMessage(nil, "\(Enter_Title)\(newPasswordTextfield.placeholder!)")
+        if (newPodTextfield.text?.isEmpty)! {
+            showErrorMessage(nil, "\(Enter_Title)\(newPodTextfield.placeholder!)")
             return false
         }
         
-        if (againPasswordTextfield.text?.isEmpty)! {
-            showErrorMessage(nil, "\(Enter_Title)\(againPasswordTextfield.placeholder!)")
+        if (againPodTextfield.text?.isEmpty)! {
+            showErrorMessage(nil, "\(Enter_Title)\(againPodTextfield.placeholder!)")
             return false
         }
         if newIDTextfield.text! == sourceIDTextfield.text! {
@@ -114,15 +120,20 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
             return false
         }
         if let info = AuthorizationManage.manage.GetLoginInfo() {
-            if info.account == newIDTextfield.text! {
+            if info.aot == newIDTextfield.text! {
                 showErrorMessage(nil, "\(newIDTextfield.placeholder ?? "")\(ErrorMsg_IDPD_SameIdentify)")
                 return false
             }
         }
-        if DetermineUtility.utility.isAllEnglishOrNumber(newIDTextfield.text!) {
+        if !DetermineUtility.utility.isAllEnglishOrNumber(newIDTextfield.text!) {
             showErrorMessage(nil, "\(newIDTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Combine)")
             return false
         }
+//        if !DetermineUtility.utility.checkInputEnglihandNumber(newIDTextfield.text!){
+//            showErrorMessage(nil, "\(newIDTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Combine2)")
+//            return false
+//        }
+        
         if !DetermineUtility.utility.checkInputNotContinuous(newIDTextfield.text!) {
             showErrorMessage(nil, "\(newIDTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Continous)")
             return false
@@ -131,29 +142,37 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
             showErrorMessage(nil, ErrorMsg_IDAgainIDNeedSame)
             return false
         }
-        if sourcePasswordTextfield.text! == newPasswordTextfield.text! {
+        if sourcePodTextfield.text! == newPodTextfield.text! {
             showErrorMessage(nil, ErrorMsg_PDNotSame)
             return false
         }
-        if (newPasswordTextfield.text?.count)! < NewInput_MinLength || (newIDTextfield.text?.count)! > NewInput_MaxLength {
-            showErrorMessage(nil, "\(newPasswordTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Length)")
+        if newPodTextfield.text! == newIDTextfield.text!{
+            showErrorMessage(nil, ErrorMsg_IDPD_SameIDPow)
+            return false
+        }
+        if (newPodTextfield.text?.count)! < NewInput_MinLength || (newIDTextfield.text?.count)! > NewInput_MaxLength {
+            showErrorMessage(nil, "\(newPodTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Length)")
             return false
         }
         if let info = AuthorizationManage.manage.GetLoginInfo() {
-            if info.account == newIDTextfield.text! {
-                showErrorMessage(nil, "\(newPasswordTextfield.placeholder ?? "")\(ErrorMsg_IDPD_SameIdentify)")
+            if info.aot == newIDTextfield.text! {
+                showErrorMessage(nil, "\(newPodTextfield.placeholder ?? "")\(ErrorMsg_IDPD_SameIdentify)")
                 return false
             }
         }
-        if DetermineUtility.utility.isAllEnglishOrNumber(newPasswordTextfield.text!) {
-            showErrorMessage(nil, "\(newPasswordTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Combine)")
+        if !DetermineUtility.utility.isAllEnglishOrNumber(newPodTextfield.text!) {
+            showErrorMessage(nil, "\(newPodTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Combine)")
             return false
         }
-        if !DetermineUtility.utility.checkInputNotContinuous(newPasswordTextfield.text!) {
-            showErrorMessage(nil, "\(newPasswordTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Continous)")
+//        if !DetermineUtility.utility.checkInputEnglihandNumber(newPodTextfield.text!){
+//            showErrorMessage(nil, "\(newPodTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Combine2)")
+//            return false
+//        }
+        if !DetermineUtility.utility.checkInputNotContinuous(newPodTextfield.text!) {
+            showErrorMessage(nil, "\(newPodTextfield.placeholder ?? "")\(ErrorMsg_IDPD_Continous)")
             return false
         }
-        if againPasswordTextfield.text! != newPasswordTextfield.text! {
+        if againPodTextfield.text! != newPodTextfield.text! {
             showErrorMessage(nil, ErrorMsg_PDAgainPDNeedSame)
             return false
         }
@@ -161,16 +180,36 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
     }
     
     // MARK: - StoryBoard Touch Event
-    @IBAction func clickCheckBtn(_ sender: Any) {
+      @IBAction func clickCheckBtn(_ sender: Any) {
         if inputIsCorrect() {
+            //109-10-16 add by sweney for check e2e key
+            if E2EKeyData == "" {
+                             showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_NoKeyAdConnection, confirmTitle: "確認", cancleTitle: nil, completionHandler: {exit(0)}, cancelHandelr: {()})
+                       }else{
             setLoading(true)
             let idMd5 = SecurityUtility.utility.MD5(string: sourceIDTextfield.text!)
-            let pdMd5 = SecurityUtility.utility.MD5(string: sourcePasswordTextfield.text!)
+           // let pdMd5 = SecurityUtility.utility.MD5(string: sourcePodTextfield.text!)
             let idMd5_1 = SecurityUtility.utility.MD5(string: sourceIDTextfield.text!.uppercased())
-            let pdMd5_1 = SecurityUtility.utility.MD5(string: sourcePasswordTextfield.text!.uppercased())
-
-            postRequest("Comm/COMM0103", "COMM0103", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01013","Operate":"commitTxn","OID":idMd5,"NID":SecurityUtility.utility.MD5(string: againIDTextfield.text!),"OPWD":pdMd5,"NPWD":SecurityUtility.utility.MD5(string: againPasswordTextfield.text!),"ID1":idMd5_1,"PWD1":pdMd5_1, "TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
+           // let pdMd5_1 = SecurityUtility.utility.MD5(string: sourcePodTextfield.text!.uppercased())
+            //E2E
+                           // let fmt = DateFormatter()
+                            //let timeZone = TimeZone.ReferenceType.init(abbreviation:"UTC") as TimeZone?
+                            //fmt.timeZone = timeZone
+                            //fmt.dateFormat = "yyyy/MM/dd HH:mm:ss"
+                            //let loginDateTIme: String = fmt.string(from: Date())
+                            let loginDateTIme: String = Date().date2String(dateFormat: "yyyy/MM/dd HH:mm:ss")
+            let pdMd50 = sourcePodTextfield.text! + loginDateTIme
+            let pdMd51 = sourcePodTextfield.text!.uppercased() + loginDateTIme
+           
+            let pdMd5 = E2E.e2Epod(E2EKeyData, pod:pdMd50)
+            let pdMd5_1 = E2E.e2Epod(E2EKeyData, pod:pdMd51)
+            let pdNPd = againPodTextfield.text! + loginDateTIme
+            let pdNPoD = E2E.e2Epod(E2EKeyData, pod:pdNPd)
+            
+            postRequest("Comm/COMM0112", "COMM0112", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"01013","Operate":"commitTxn","OID":idMd5,"NID":SecurityUtility.utility.MD5(string: againIDTextfield.text!),"OPWD":pdMd5,"NPWD":pdNPoD,"ID1":idMd5_1,"PWD1":pdMd5_1, "TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
         }
+        }
+        //109-10-16 end
     }
     
     @IBAction func clickCloseBtn(_ sender: Any) {
@@ -198,7 +237,7 @@ class UserFirstChangeIDPwdViewController: BaseViewController, UITextFieldDelegat
         }
 
         let newLength = (textField.text?.count)! - range.length + string.count
-        if newLength > Max_ID_Password_Length {
+        if newLength > Max_ID_Pod_Length {
             return false
         }
         

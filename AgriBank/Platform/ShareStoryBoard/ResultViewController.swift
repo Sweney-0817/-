@@ -15,11 +15,14 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var m_btnBackToHome: UIButton!
     private var data:ConfirmResultStruct? = nil
     private var barTitle:String? = nil
+    private var bIsMobileTransfer: Bool = false
+  
     
     // MARK: - Public
-    func setData(_ data:ConfirmResultStruct, _ barTitle:String? = nil) {
+    func setData(_ data:ConfirmResultStruct, _ barTitle:String? = nil, isMobileTransfer: Bool = false) {
         self.data = data
         self.barTitle = barTitle
+        self.bIsMobileTransfer = isMobileTransfer
     }
     
     // MARK: - StoryBoard Touch Event
@@ -30,6 +33,31 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     @IBAction func m_btnBackToHomeClick(_ sender: Any) {
         enterFeatureByID(.FeatureID_Home, true)
     }
+    
+    @IBAction func m_btnShareMsg(_ sender: Any) {
+                let currnetDate = Date()
+                let dateFormatter = DateFormatter()
+                dateFormatter.timeZone = NSTimeZone.init(abbreviation:"UTC")! as TimeZone
+                dateFormatter.dateFormat = "yyyy/MM/dd "
+                var TrxDateTime = dateFormatter.string(from: currnetDate)//交易日期
+        var act5:String = (data?.list?[2][Response_Value] as? String ?? "")!
+        act5 = act5.substring(from: 11, length: 5)
+        
+        var strAmount = (data?.list?[5][Response_Value] as? String ?? "")
+        if bIsMobileTransfer {
+            /**「手機門號即時轉帳」結果頁特殊處理*/
+            strAmount = (data?.list?[7][Response_Value] as? String ?? "")
+        }
+        var txtMSg = "我已用農漁行動達人轉新台幣＄" + strAmount
+        txtMSg = txtMSg + "元給您！\n時間：" + TrxDateTime
+        txtMSg = txtMSg + (data?.list?[0][Response_Value] as? String ?? "")!
+        txtMSg = txtMSg + "\n銀行代號：" + (data?.list?[1][Response_Value] as? String ?? "")!
+        txtMSg = txtMSg + "\n帳號末五碼：" + act5
+        
+        let activityViewController = UIActivityViewController(activityItems: [txtMSg], applicationActivities: nil)
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
     
     // MARK: - Override
     override func viewDidLoad() {
@@ -137,6 +165,7 @@ class ResultViewController: BaseViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UIID.UIID_ResultCell.NibName()!, for: indexPath) as! ResultCell
         cell.set((data?.list?[indexPath.row][Response_Key] as? String ?? "")!, (data?.list?[indexPath.row][Response_Value] as? String ?? "")!)
+       
         return cell
     }
 }

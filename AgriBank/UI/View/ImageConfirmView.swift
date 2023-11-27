@@ -30,6 +30,7 @@ class ImageConfirmView: UIView, UITextFieldDelegate {
     // MARK: - UITextFieldDelegate
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         delegate?.ImageConfirmTextfieldBeginEditing(textField)
+        textField.autocorrectionType=UITextAutocorrectionType.no
         return true
     }
     

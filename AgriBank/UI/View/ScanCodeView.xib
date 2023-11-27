@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
             <string>PingFangTC-Regular</string>
         </array>
     </customFonts>
@@ -20,9 +20,8 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dml-KP-X6a">
+                <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dml-KP-X6a">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="請掃描QR Code進行付款" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hbT-o0-24U">
@@ -38,8 +37,24 @@
                         <constraint firstAttribute="width" secondItem="mMV-gz-Phi" secondAttribute="height" multiplier="1:1" id="aK7-0H-pSA"/>
                     </constraints>
                 </view>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="twpay-logo-4" translatesAutoresizingMaskIntoConstraints="NO" id="Dw0-0m-Wtr">
+                    <rect key="frame" x="78" y="519" width="219" height="56"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="56" id="SFE-aH-Ws6"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="UDu-mD-e5d"/>
+                        <constraint firstAttribute="width" secondItem="Dw0-0m-Wtr" secondAttribute="height" multiplier="219:56" id="Vxa-nT-7Wr"/>
+                        <constraint firstAttribute="width" secondItem="Dw0-0m-Wtr" secondAttribute="height" multiplier="219:56" id="b0x-IY-Hau"/>
+                    </constraints>
+                </imageView>
+                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="220007" translatesAutoresizingMaskIntoConstraints="NO" id="0QV-18-6xz" userLabel="QuintupleImg">
+                    <rect key="frame" x="103" y="589" width="169" height="70"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="hdK-lt-tDX"/>
+                    </constraints>
+                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a1n-Au-qQG">
                     <rect key="frame" x="292" y="597" width="78" height="65"/>
+                    <accessibility key="accessibilityConfiguration" label="選擇圖片"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="a1n-Au-qQG" secondAttribute="height" multiplier="6:5" id="Bxy-Yl-gQc"/>
                         <constraint firstAttribute="width" constant="78" id="EhD-HL-Hhr"/>
@@ -49,25 +64,81 @@
                         <action selector="m_btnAlbumClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="kvn-xY-C0L"/>
                     </connections>
                 </button>
+                <button hidden="YES" opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QqU-E0-Vyr">
+                    <rect key="frame" x="8" y="589" width="70" height="70"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="70" id="9vq-12-T4x"/>
+                        <constraint firstAttribute="width" secondItem="QqU-E0-Vyr" secondAttribute="height" multiplier="89:46" constant="-65.434782608695656" id="Bcy-f2-twi"/>
+                        <constraint firstAttribute="width" secondItem="QqU-E0-Vyr" secondAttribute="height" multiplier="1:1" id="uJw-b5-73C"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="wHd-Vq-9Yp"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                    <size key="titleShadowOffset" width="2" height="2"/>
+                    <state key="normal" backgroundImage="qrCode">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="btn_PayCode:" destination="iN0-l3-epB" eventType="touchUpInside" id="AXE-xa-DkM"/>
+                    </connections>
+                </button>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="付款碼" textAlignment="center" lineBreakMode="wordWrap" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D3g-A5-GjG">
+                    <rect key="frame" x="8" y="589" width="70" height="70"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="70" id="ZYK-5Q-oKj"/>
+                        <constraint firstAttribute="width" secondItem="D3g-A5-GjG" secondAttribute="height" multiplier="1:1" id="d1t-es-CUW"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="highlightedColor" systemColor="linkColor"/>
+                    <size key="shadowOffset" width="0.0" height="0.0"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" hint="台灣Pay掃描QRCode">
+                <bool key="isElement" value="NO"/>
+            </accessibility>
             <constraints>
                 <constraint firstItem="mMV-gz-Phi" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="09h-xS-dGO"/>
+                <constraint firstAttribute="bottom" secondItem="QqU-E0-Vyr" secondAttribute="bottom" constant="8" id="0kA-dV-ZMx"/>
                 <constraint firstItem="mMV-gz-Phi" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="2S4-fN-IRS"/>
+                <constraint firstItem="0QV-18-6xz" firstAttribute="top" secondItem="Dw0-0m-Wtr" secondAttribute="bottom" constant="14" id="AWt-3s-ajk"/>
                 <constraint firstAttribute="bottom" secondItem="a1n-Au-qQG" secondAttribute="bottom" constant="5" id="AZW-PH-Rl1"/>
+                <constraint firstItem="Dml-KP-X6a" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="H5f-zd-7eP"/>
                 <constraint firstItem="mMV-gz-Phi" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" constant="-34" id="I6d-ud-bPM"/>
                 <constraint firstItem="hbT-o0-24U" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Jg8-A3-2WR"/>
+                <constraint firstItem="Dw0-0m-Wtr" firstAttribute="top" secondItem="mMV-gz-Phi" secondAttribute="bottom" constant="15" id="Kdu-NW-bMr"/>
                 <constraint firstAttribute="trailing" secondItem="a1n-Au-qQG" secondAttribute="trailing" constant="5" id="Sjm-Z4-RUU"/>
                 <constraint firstItem="mMV-gz-Phi" firstAttribute="top" secondItem="hbT-o0-24U" secondAttribute="bottom" constant="30" id="TFw-HE-WZz"/>
+                <constraint firstItem="Dml-KP-X6a" firstAttribute="centerY" secondItem="mMV-gz-Phi" secondAttribute="centerY" id="bYa-oL-UU8"/>
+                <constraint firstAttribute="trailing" secondItem="Dw0-0m-Wtr" secondAttribute="trailing" constant="78" id="d6g-6n-z0V"/>
+                <constraint firstItem="Dml-KP-X6a" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="dXb-qC-v8G"/>
+                <constraint firstItem="Dml-KP-X6a" firstAttribute="centerX" secondItem="hbT-o0-24U" secondAttribute="centerX" id="hAr-q5-BB1"/>
+                <constraint firstItem="QqU-E0-Vyr" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="nR9-iu-mT6"/>
+                <constraint firstItem="Dw0-0m-Wtr" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="78" id="nzS-Cm-cmt"/>
+                <constraint firstItem="D3g-A5-GjG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="oUG-0H-kZw"/>
+                <constraint firstItem="0QV-18-6xz" firstAttribute="centerX" secondItem="Dw0-0m-Wtr" secondAttribute="centerX" id="pXg-t2-7AJ"/>
+                <constraint firstItem="a1n-Au-qQG" firstAttribute="leading" secondItem="0QV-18-6xz" secondAttribute="trailing" constant="20" id="qbM-rl-FIR"/>
+                <constraint firstAttribute="bottom" secondItem="D3g-A5-GjG" secondAttribute="bottom" constant="8" id="r3D-A3-BAg"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="PayCodeLabel" destination="D3g-A5-GjG" id="dKZ-mW-pUY"/>
+                <outlet property="btn_PayCode" destination="QqU-E0-Vyr" id="yl3-Yq-ofe"/>
+                <outlet property="img_Quintuple" destination="0QV-18-6xz" id="lYL-Ba-oYw"/>
                 <outlet property="m_vCameraArea" destination="Dml-KP-X6a" id="it6-Ny-6Xj"/>
                 <outlet property="m_vScanArea" destination="mMV-gz-Phi" id="cVK-mo-Y4c"/>
             </connections>
+            <point key="canvasLocation" x="130.40000000000001" y="118.29085457271366"/>
         </view>
     </objects>
     <resources>
+        <image name="220007" width="38" height="38"/>
         <image name="icImage" width="30" height="25"/>
+        <image name="qrCode" width="38" height="38"/>
+        <image name="twpay-logo-4" width="512" height="150"/>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

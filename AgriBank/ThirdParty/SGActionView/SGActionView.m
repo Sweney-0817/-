@@ -9,6 +9,7 @@
 #import "SGActionView.h"
 #import "SGAlertMenu.h"
 #import "SGSheetMenu.h"
+#import "SGSheetQrMenu.h"
 #import "SGGridMenu.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -269,6 +270,21 @@
              selectedIndex:(NSInteger)selectedIndex
             selectedHandle:(SGMenuActionHandler)handler{
     SGSheetMenu *menu = [[SGSheetMenu alloc] initWithTitle:title
+                                                itemTitles:itemTitles];
+    menu.selectedItemIndex = selectedIndex;
+    [menu triggerSelectedAction:^(NSInteger index){
+        [[SGActionView sharedActionView] dismissMenu:menu Animated:YES];
+        if (handler) {
+            handler(index);
+        }
+    }]; 
+    [[SGActionView sharedActionView] setMenu:menu animation:YES];   
+}
++ (void)showSheetQrWithTitle:(NSString *)title
+                itemTitles:(NSArray *)itemTitles
+             selectedIndex:(NSInteger)selectedIndex
+            selectedHandle:(SGMenuActionHandler)handler{
+    SGSheetQrMenu *menu = [[SGSheetQrMenu alloc] initWithTitle:title
                                                 itemTitles:itemTitles];
     menu.selectedItemIndex = selectedIndex;
     [menu triggerSelectedAction:^(NSInteger index){

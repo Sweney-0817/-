@@ -8,18 +8,19 @@
 
 import UIKit
 import CoreLocation
+import WebKit
 
 let ServiceBaseDetail_Cell_Title_Weight:CGFloat = 50
 let ServiceBaseDetail_Map_URL = "https://maps.google.com/?q=@"
 
-class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UIWebViewDelegate {
+class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource ,WKNavigationDelegate, WKUIDelegate {
     @IBOutlet weak var m_tvData: UITableView!
     @IBOutlet weak var callPhoneButton: UIButton!
     @IBOutlet weak var bottomView: UIView!
     private var data:[[String:String]]? = nil
     private var telePhone:String? = nil
     private var curLocation:CLLocationCoordinate2D? = nil
-    private var mapWebView:UIWebView? = nil
+    private var mapWebView:WKWebView? = nil
     
     // MARK: - Public
     func setData(_ data:[[String:String]]?, _ telePhone:String?, _ curLocation:CLLocationCoordinate2D?) {
@@ -69,12 +70,12 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
     @IBAction func m_btnShowMapClick(_ sender: Any) {
         if curLocation != nil {
             if mapWebView == nil {
-                mapWebView = UIWebView(frame: view.frame)
-                mapWebView?.delegate = self
+                mapWebView = WKWebView(frame: view.frame)
+                mapWebView?.navigationDelegate = self
                 view.addSubview(mapWebView!)
             }
             setLoading(true)
-            mapWebView?.loadRequest(URLRequest(url: URL(string: "\(ServiceBaseDetail_Map_URL)\(curLocation!.latitude),\(curLocation!.longitude)")!))
+            mapWebView?.load(URLRequest(url: URL(string: "\(ServiceBaseDetail_Map_URL)\(curLocation!.latitude),\(curLocation!.longitude)")!))
         }
         else {
             showErrorMessage(nil, ErrorMsg_NoMapAddress)
@@ -108,8 +109,12 @@ class ServiceBaseDetailViewController: BaseViewController, UITableViewDelegate, 
         }
     }
     
-    // MARK: - UIWebViewDelegate
-    func webViewDidFinishLoad(_ webView: UIWebView) {
+//    // MARK: - WKWebViewDelegate
+//    func webViewDidFinishLoad(_ webView: WKWebView ) {
+//        setLoading(false)
+//    }
+    // 加载完成的代理方法
+    func webView(_ mapWebView: WKWebView, didFinish navigation: WKNavigation!)  {
         setLoading(false)
     }
 }

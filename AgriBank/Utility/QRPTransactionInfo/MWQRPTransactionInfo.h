@@ -179,4 +179,54 @@ static NSString * const kQRPTransactionSupportPaymentType = @"10000000"; // 僅�
  */
 - (void)parserSecureData:(NSString *)strSecureData;
 
+//北市水及驗證繳費 chiu start
+/**
+ * 時戳
+ */
+- (NSString *)timestamp;
+
+/**
+ * 訊息ＴＡＣ
+ */
+- (NSString *)msgTAC;
+
+/**
+ * 錢包服務提供者
+ */
+- (NSString *)WalletBaseCode;
+
+/**
+ * 繳費支付工具類型及手續費
+ */
+- (NSString *)sPayType;
+
+- (NSString *)sBillSID;
+/**
+* 設定繳費支付工具類型及手續費
+*/
+- (void)setsPayType:(NSString *)sPayType;
+
+- (void)setsBillSID:(NSString *)sBillSID;
+
+//台電 sweney
+
+- (void)setspower64No:(NSString *)power64no;
+- (void)setstxamt:(NSString *)txamt;
+- (void)setspowerNo:(NSString *)powerNo ;
+- (void)setsTotalAmount:(NSNumber *)TotalAmount;
+- (void)setsTotalCount:(NSString *)TotalCount;
+- (void)setsItemList:(NSString *)ItemList;
+- (void)setsItemarrayList:(NSArray *)ItemarrayList;
+- (void)setsTaipowerInfo:(NSArray *)TaipowerInfo;
+- (void)setsMobileNo:(NSString *)MobileNo;
+- (void)setsMBarcode:(NSString *)MBarcode;
+- (NSString *)sPower64No;
+- (NSString *)sItemList;
+- (NSArray *)sItemarrayList;
+- (NSString *)sTotalCount;
+- (NSNumber *)sTotalAmount;
+- (NSString *)spowerNo;
+- (NSArray *)sTaipowerInfo;
+- (NSString *)sMobileNo;
+- (NSString *)sMBarcode;
 @end

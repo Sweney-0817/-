@@ -34,10 +34,20 @@ extension UIColor {
     }
     
     convenience init(netHex:Int, fAlpha: CGFloat, overlayWithNetHex overlay: Int) {
-        self.init(red: Int(CGFloat(netHex >> 16 & 0xff) * fAlpha + (CGFloat(overlay >> 16 & 0xff) * (1 - fAlpha))),
-                  green: Int(CGFloat(netHex >> 8 & 0xff) * fAlpha + (CGFloat(overlay >> 8 & 0xff) * (1 - fAlpha))),
-                  blue: Int(CGFloat(netHex & 0xff) * fAlpha + (CGFloat(overlay & 0xff) * (1 - fAlpha))),
-                  fAlpha: 1)
+        let red1 = CGFloat(netHex >> 16 & 0xff) * fAlpha
+        let red2 = CGFloat(overlay >> 16 & 0xff) * (1 - fAlpha)
+                
+        let green1 = CGFloat(netHex >> 8 & 0xff) * fAlpha
+        let green2 = CGFloat(overlay >> 8 & 0xff) * (1 - fAlpha)
+                
+        let blue1 = CGFloat(netHex & 0xff) * fAlpha
+        let blue2 = CGFloat(overlay & 0xff) * (1 - fAlpha)
+                
+                
+        self.init(red: Int(red1 + red2),
+                    green: Int(green1 + green2),
+                    blue: Int(blue1 + blue2),
+                    fAlpha: 1)
     }
     
     convenience init(hex8: UInt32) {

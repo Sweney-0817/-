@@ -5,7 +5,7 @@
 //  Created by TongYoungRu on 2017/6/30.
 //  Copyright © 2017年 Systex. All rights reserved.
 //
-
+// 2019-9-2 Change by sweney + 取預設轉出帳號
 import UIKit
 
 let ReservationTransfer_Choose_Type = "請選擇預約轉帳類型"
@@ -77,6 +77,9 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
         
         addObserverToKeyBoard()
         addGestureForKeyBoard()
+        
+        memoTextfield.setCanUseDefaultAction(bCanUse: true)
+        
         self.initTransDate()
         getTransactionID("03002", TransactionID_Description)
     }
@@ -113,7 +116,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
                     if let type = category["ACTTYPE"] as? String, let result = category["AccountInfo"] as? [[String:Any]], type == Account_Saving_Type {
                         accountList = [AccountStruct]()
                         for actInfo in result {
-                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, ebkfg == Account_EnableTrans {
+                            if let actNO = actInfo["ACTNO"] as? String, let curcd = actInfo["CURCD"] as? String, let bal = actInfo["BAL"] as? String, let ebkfg = actInfo["EBKFG"] as? String, (ebkfg == Account_EnableTrans || ebkfg == Account_TransOnly){
                                 accountList?.append(AccountStruct(accountNO: actNO, currency: curcd, balance: bal, status: ebkfg))
                             }
                         }
@@ -122,6 +125,16 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
                 //Guester 20180605 多發 COMM0701 以取得 CurrentDate
                 setLoading(true)
                 postRequest("COMM/COMM0701", "COMM0701", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03004","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
+                
+                //2019-9-2 add by sweney -取index=0轉出帳號
+                if(accountList?.count)! > 0 {
+                    accountIndex = 0
+                    if let info = accountList?[accountIndex!]{
+                        topDropView?.setThreeRow(NTTransfer_OutAccount, info.accountNO, NTTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), NTTransfer_Balance, String(info.balance).separatorThousandDecimal())
+                        break
+                    }
+                }
+            
             }
             else {
                 super.didResponse(description, response)
@@ -384,10 +397,10 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
                 showErrorMessage(nil, ErrorMsg_Input_Amount)
                 return false
             }
-            if amount > ReservationTransfer_Max_Amount {
-                showErrorMessage(nil, ErrorMsg_Reservation_Amount)
-                return false
-            }
+//            if amount > ReservationTransfer_Max_Amount {
+//                showErrorMessage(nil, ErrorMsg_Reservation_Amount)
+//                return false
+//            }
         }
         else {
             showErrorMessage(nil, ErrorMsg_Illegal_Character)
@@ -431,7 +444,7 @@ class ReservationTransferViewController: BaseViewController, UITextFieldDelegate
             case ViewTag.View_AccountActionSheet.rawValue:
                 accountIndex = buttonIndex-1
                 if let info = accountList?[accountIndex!] {
-                    topDropView?.setThreeRow(ReservationTransfer_OutAccount, info.accountNO, ReservationTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), ReservationTransfer_Balance, String(info.balance).separatorThousand())
+                    topDropView?.setThreeRow(ReservationTransfer_OutAccount, info.accountNO, ReservationTransfer_Currency, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), ReservationTransfer_Balance, String(info.balance).separatorThousandDecimal())
                     inAccountIndex = nil
                     showBankAccountDropView?.setTwoRow(ReservationTransfer_BankCode, "", NTTransfer_InAccount, Choose_Title)
                     transAmountTextfield.text = ""

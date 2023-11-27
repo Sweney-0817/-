@@ -22,6 +22,10 @@ struct GPTransactionDetailData {
     var TXQTY: String = ""
     ///餘額(公克)
     var AVBAL: String = ""
+    ///損益率
+    var PFRATIO: String = ""
+    ///平均牌告單價
+    var DAVGCOST: String = ""
     ///交易序號
     var SEQ: String = ""
     ///單價
@@ -101,7 +105,7 @@ class GPTransactionDetailViewController: BaseViewController {
         else {
             m_lbTitle.text = strTitle
             let fmt = DateFormatter()
-            fmt.dateFormat = "YYYY/MM/dd"
+            fmt.dateFormat = "yyyy/MM/dd"
             let startDate: String = fmt.string(from: start)
             let endDate: String = fmt.string(from: end)
             m_lbDate.text = "\(startDate) - \(endDate)"
@@ -143,7 +147,7 @@ class GPTransactionDetailViewController: BaseViewController {
     func send_getGoldInfo(_ start: Date, _ end: Date) {
         self.setLoading(true)
         let fmt = DateFormatter()
-        fmt.dateFormat = "YYYYMMdd"
+        fmt.dateFormat = "yyyyMMdd"
         let startDate: String = fmt.string(from: start)
         let endDate: String = fmt.string(from: end)
 
@@ -178,9 +182,9 @@ class GPTransactionDetailViewController: BaseViewController {
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let result = data["Result"] as? [[String:String]] {
                 m_aryData.removeAll()
                 for data in result {
-                    if let TXDAY = data["TXDAY"], let TXTIME = data["TIME"], let HCODE = data["HCODE"], let CRDB = data["CRDB"], let TXQTY = data["TXQTY"], let AVBAL = data["AVBAL"], let SEQ = data["SEQ"], let VALUE = data["VALUE"] {
+                    if let TXDAY = data["TXDAY"], let TXTIME = data["TIME"], let HCODE = data["HCODE"], let CRDB = data["CRDB"], let TXQTY = data["TXQTY"], let AVBAL = data["AVBAL"], let PFRATIO = data["PFRATIO"], let DAVGCOST = data["DAVGCOST"], let SEQ = data["SEQ"], let VALUE = data["VALUE"] {
                         
-                        m_aryData.append(GPTransactionDetailData(TXDAY: TXDAY.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd"), TXTIME: TXTIME, HCODE: HCODE, CRDB: CRDB, TXQTY: TXQTY, AVBAL: AVBAL, SEQ: SEQ, VALUE: VALUE))
+                        m_aryData.append(GPTransactionDetailData(TXDAY: TXDAY.dateFormatter(form: "yyyyMMdd", to: "yyyy/MM/dd"), TXTIME: TXTIME, HCODE: HCODE, CRDB: CRDB, TXQTY: TXQTY, AVBAL: AVBAL,PFRATIO:PFRATIO ,DAVGCOST:DAVGCOST , SEQ: SEQ, VALUE: VALUE))
                     }
                 }
                 m_tvContentView.reloadData()

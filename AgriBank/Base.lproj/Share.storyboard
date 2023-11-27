@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -23,11 +21,11 @@
                         <viewControllerLayoutGuide type="bottom" id="OWg-T0-57j"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kga-5M-aV0">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="205" translatesAutoresizingMaskIntoConstraints="NO" id="QYj-az-PhD">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="607"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="656"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="VvC-iv-Zbr" id="oWZ-5I-nos"/>
@@ -35,10 +33,10 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vDX-zq-ZOy">
-                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
+                                <rect key="frame" x="0.0" y="656" width="414" height="60"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TIO-wu-Qpu">
-                                        <rect key="frame" x="15" y="8" width="160.5" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TIO-wu-Qpu">
+                                        <rect key="frame" x="15" y="8" width="179.66666666666666" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="QYu-ow-CqD"/>
                                         </constraints>
@@ -50,8 +48,8 @@
                                             <action selector="m_btnBackToFeatureClick:" destination="VvC-iv-Zbr" eventType="touchUpInside" id="bbc-sm-MUj"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q42-EJ-b8s">
-                                        <rect key="frame" x="200" y="8" width="160" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q42-EJ-b8s">
+                                        <rect key="frame" x="219.66666666666663" y="8" width="179.33333333333337" height="44"/>
                                         <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
                                         <state key="normal" title="返回首頁" backgroundImage="ButtonMedium">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -94,7 +92,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KUL-rg-oMZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2182" y="-9"/>
+            <point key="canvasLocation" x="2209" y="602"/>
         </scene>
         <!--Confirm View Controller-->
         <scene sceneID="Ri7-8n-ea5">
@@ -105,14 +103,14 @@
                         <viewControllerLayoutGuide type="bottom" id="MOX-LB-Ffj"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="7bf-M2-E75">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tkN-tz-wSv">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="205" translatesAutoresizingMaskIntoConstraints="NO" id="exf-93-Vrz">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="607"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="676"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="dataSource" destination="0So-la-CKD" id="GD8-aF-VmU"/>
@@ -120,10 +118,10 @@
                                         </connections>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0lK-ZB-QsI">
-                                        <rect key="frame" x="0.0" y="607" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="676" width="414" height="60"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pd4-ek-a5B">
-                                                <rect key="frame" x="15" y="8" width="345" height="44"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pd4-ek-a5B">
+                                                <rect key="frame" x="15" y="8" width="384" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="qWV-Uy-2Wr"/>
                                                 </constraints>
@@ -170,15 +168,111 @@
                         <outlet property="m_tvData" destination="exf-93-Vrz" id="eLR-0o-ktx"/>
                         <outlet property="m_vBottomView" destination="0lK-ZB-QsI" id="inV-UU-Gdg"/>
                         <segue destination="VvC-iv-Zbr" kind="show" identifier="GoResult" id="MC5-lR-rEi"/>
+                        <segue destination="uHm-hn-MMH" kind="show" identifier="GoResult2" id="lek-hS-zEa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aTy-QV-ZIA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1385" y="-9"/>
         </scene>
+        <!--Result View Controller-->
+        <scene sceneID="dFH-Zf-Kml">
+            <objects>
+                <viewController storyboardIdentifier="FeatureID_Result2" id="uHm-hn-MMH" customClass="ResultViewController" customModule="AgriBank" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mmZ-wc-tWq"/>
+                        <viewControllerLayoutGuide type="bottom" id="Qnb-bQ-MFz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LmA-pO-s8M">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="205" translatesAutoresizingMaskIntoConstraints="NO" id="iS3-9B-zvP">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="656"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="uHm-hn-MMH" id="3dQ-lg-ToC"/>
+                                    <outlet property="delegate" destination="uHm-hn-MMH" id="XYt-gD-Z1E"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8I8-W4-eF1">
+                                <rect key="frame" x="0.0" y="656" width="414" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="611-dN-Uaq">
+                                        <rect key="frame" x="7.9999999999999929" y="7" width="121.33333333333331" height="46"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                                        <state key="normal" backgroundImage="ButtonMedium">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="m_btnBackToFeatureClick:" destination="uHm-hn-MMH" eventType="touchUpInside" id="dE8-lF-vHY"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eUd-pq-Pnm">
+                                        <rect key="frame" x="284.66666666666669" y="7" width="121.33333333333331" height="46"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                                        <state key="normal" title="通知收款人" backgroundImage="ButtonMedium">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="m_btnShareMsg:" destination="uHm-hn-MMH" eventType="touchUpInside" id="DxF-n7-4kI"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqy-04-DUk">
+                                        <rect key="frame" x="146.33333333333334" y="7" width="121.33333333333334" height="46"/>
+                                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                                        <state key="normal" title="返回首頁" backgroundImage="ButtonMedium">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="m_btnBackToHomeClick:" destination="uHm-hn-MMH" eventType="touchUpInside" id="Dgj-iR-ehB"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="eUd-pq-Pnm" firstAttribute="leading" secondItem="uqy-04-DUk" secondAttribute="trailing" constant="17" id="1p0-UO-n5E"/>
+                                    <constraint firstItem="eUd-pq-Pnm" firstAttribute="width" secondItem="uqy-04-DUk" secondAttribute="width" id="76i-AW-WlE"/>
+                                    <constraint firstAttribute="height" constant="60" id="7V7-x9-vNw"/>
+                                    <constraint firstItem="eUd-pq-Pnm" firstAttribute="centerY" secondItem="8I8-W4-eF1" secondAttribute="centerY" id="H8R-Ai-YrK"/>
+                                    <constraint firstItem="eUd-pq-Pnm" firstAttribute="trailing" secondItem="8I8-W4-eF1" secondAttribute="trailingMargin" id="HL2-tf-zrs"/>
+                                    <constraint firstItem="eUd-pq-Pnm" firstAttribute="height" secondItem="611-dN-Uaq" secondAttribute="height" id="Jsx-T8-K0A"/>
+                                    <constraint firstItem="uqy-04-DUk" firstAttribute="leading" secondItem="611-dN-Uaq" secondAttribute="trailing" constant="17" id="SxE-9O-OxD"/>
+                                    <constraint firstItem="uqy-04-DUk" firstAttribute="centerX" secondItem="8I8-W4-eF1" secondAttribute="centerX" id="Z4v-Ev-pYL"/>
+                                    <constraint firstItem="611-dN-Uaq" firstAttribute="leading" secondItem="8I8-W4-eF1" secondAttribute="leadingMargin" id="ZaT-Pi-ztb"/>
+                                    <constraint firstItem="uqy-04-DUk" firstAttribute="centerY" secondItem="8I8-W4-eF1" secondAttribute="centerY" id="cGl-1t-aFs"/>
+                                    <constraint firstItem="uqy-04-DUk" firstAttribute="width" secondItem="611-dN-Uaq" secondAttribute="width" id="mey-gf-F5T"/>
+                                    <constraint firstItem="uqy-04-DUk" firstAttribute="height" secondItem="611-dN-Uaq" secondAttribute="height" id="psx-Y1-dfV"/>
+                                    <constraint firstItem="611-dN-Uaq" firstAttribute="centerY" secondItem="8I8-W4-eF1" secondAttribute="centerY" id="uLZ-1J-5cZ"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="iS3-9B-zvP" firstAttribute="top" secondItem="LmA-pO-s8M" secondAttribute="top" id="5Eu-er-WSG"/>
+                            <constraint firstItem="Qnb-bQ-MFz" firstAttribute="top" secondItem="8I8-W4-eF1" secondAttribute="bottom" id="Aek-pc-OeL"/>
+                            <constraint firstItem="8I8-W4-eF1" firstAttribute="top" secondItem="iS3-9B-zvP" secondAttribute="bottom" id="Lhp-E5-hB9"/>
+                            <constraint firstAttribute="trailing" secondItem="8I8-W4-eF1" secondAttribute="trailing" id="PAO-WV-dqd"/>
+                            <constraint firstAttribute="trailing" secondItem="iS3-9B-zvP" secondAttribute="trailing" id="SPG-k9-r4d"/>
+                            <constraint firstItem="iS3-9B-zvP" firstAttribute="leading" secondItem="LmA-pO-s8M" secondAttribute="leading" id="o5f-Ei-3PQ"/>
+                            <constraint firstItem="8I8-W4-eF1" firstAttribute="leading" secondItem="LmA-pO-s8M" secondAttribute="leading" id="q2e-eF-1lU"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="o5O-y4-mcr"/>
+                    <connections>
+                        <outlet property="m_btnBackToFeature" destination="611-dN-Uaq" id="1Jy-kG-pgc"/>
+                        <outlet property="m_btnBackToHome" destination="uqy-04-DUk" id="p6w-69-bDp"/>
+                        <outlet property="m_tvData" destination="iS3-9B-zvP" id="YFh-ne-Snv"/>
+                        <outlet property="m_vBottomView" destination="8I8-W4-eF1" id="1XU-MT-9At"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5gv-dC-Avd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2874.375" y="-10"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ButtonLarge" width="346" height="44"/>
-        <image name="ButtonMedium" width="160" height="44"/>
+        <image name="ButtonMedium" width="162" height="46"/>
     </resources>
 </document>

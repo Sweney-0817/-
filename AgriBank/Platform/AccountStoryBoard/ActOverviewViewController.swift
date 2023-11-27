@@ -12,13 +12,14 @@ let ActOverview_SectionAll_Height = CGFloat(48)
 let ActOverview_Section_Height = CGFloat(20)
 let ActOverview_ShowDetail_Segue = "ShowDetail"
 let ActOverview_GoActDetail_Segue = "GoAccountDetail"
-let ActOverview_CellTitleList = ["帳號","幣別","帳面餘額"]
+let ActOverview_CellTitleList = ["帳號","幣別","帳戶餘額"]
 
 enum ActOverviewType:Int {
     case Type1
     case Type2
     case Type3
     case Type4
+    case Type5
     case Type0
    
     func description() -> String {
@@ -27,12 +28,13 @@ enum ActOverviewType:Int {
         case .Type2: return "支票存款"
         case .Type3: return "定期存款"
         case .Type4: return "放款"
+        case .Type5: return "黃金存摺"
         case .Type0: return "全部"
         }
     }
 }
 
-let ActOverview_TypeList = [ActOverviewType.Type1.description(),ActOverviewType.Type2.description(),ActOverviewType.Type3.description(),ActOverviewType.Type4.description()]
+let ActOverview_TypeList = [ActOverviewType.Type1.description(),ActOverviewType.Type2.description(),ActOverviewType.Type3.description(),ActOverviewType.Type4.description(),ActOverviewType.Type5.description()]
 
 class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITableViewDataSource, UITableViewDelegate, OverviewCellDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var chooseTypeView: ChooseTypeView!
@@ -49,7 +51,8 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
     private var canNTAgreedTransfer = false             // 「約轉」畫面是否有授權
     private var canAccountDetail = false                // 「帳戶往來明細」畫面是否有授權
     private var canLoanPrincipalInterest = false        // 「繳交放款本息」畫面是否有授權
-    
+    //2019-10-14 add by sweney 放款部份清償
+    private var canLoanPartialSettIement = false              // 「放款部份清償」畫面是否有授權
     // MARK: - Private
     private func getTypeByInputString(_ input:String) -> ActOverviewType? {
         var type:ActOverviewType? = nil
@@ -58,6 +61,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         case ActOverviewType.Type2.description(): type = .Type2
         case ActOverviewType.Type3.description(): type = .Type3
         case ActOverviewType.Type4.description(): type = .Type4
+        case ActOverviewType.Type5.description(): type = .Type5
         default: break
         }
         return type
@@ -79,6 +83,9 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             }
             if let list = AuthorizationManage.manage.getAuthList([.FeatureID_LoanPrincipalInterest]), list.count > 0 {
                 canLoanPrincipalInterest = true
+            }
+            if let list = AuthorizationManage.manage.getAuthList([.FeatureID_LoanPartialSettIement]), list.count > 0 {
+                canLoanPartialSettIement = true
             }
         }
     }
@@ -102,7 +109,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "帳號", Response_Value:""])
             }
             if let AVBAL = resultList["AVBAL"] as? String {
-                list.append([Response_Key: "可用餘額", Response_Value:AVBAL.separatorThousand()])
+                list.append([Response_Key: "可用餘額", Response_Value:AVBAL.separatorThousandDecimal()])
             }
             else {
                 list.append([Response_Key: "可用餘額", Response_Value:""])
@@ -114,7 +121,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "本交金額", Response_Value:""])
             }
             if let ACTBAL = resultList["ACTBAL"] as? String {
-                list.append([Response_Key: "帳戶餘額", Response_Value:ACTBAL.separatorThousand()])
+                list.append([Response_Key: "帳戶餘額", Response_Value:ACTBAL.separatorThousandDecimal()])
             }
             else {
                 list.append([Response_Key: "帳戶餘額", Response_Value:""])
@@ -128,13 +135,13 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "帳號", Response_Value:""])
             }
             if let PRIBAL = resultList["PRIBAL"] as? String {
-                list.append([Response_Key: "帳戶餘額", Response_Value:PRIBAL.separatorThousand()])
+                list.append([Response_Key: "帳戶餘額", Response_Value:PRIBAL.separatorThousandDecimal()])
             }
             else {
                 list.append([Response_Key: "帳戶餘額", Response_Value:""])
             }
             if let AVBAL = resultList["AVBAL"] as? String {
-                list.append([Response_Key: "可用餘額", Response_Value:AVBAL.separatorThousand()])
+                list.append([Response_Key: "可用餘額", Response_Value:AVBAL.separatorThousandDecimal()])
             }
             else {
                 list.append([Response_Key: "可用餘額", Response_Value:""])
@@ -177,7 +184,9 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             else {
                 list.append([Response_Key: "存單號碼", Response_Value:""])
             }
-            if let CIDAY = resultList["CIDAY"] as? String {
+            //if let CIDAY = resultList["CIDAY"] as? String {
+            //2020-2-5 mod by sweney
+            if let CIDAY = resultList["ISDAY"] as? String {
                 list.append([Response_Key: "起存日", Response_Value:CIDAY])
             }
             else {
@@ -221,6 +230,24 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             }
             if let ATERM = resultList["ATERM"] as? String {
                 list.append([Response_Key: "自動轉期記號", Response_Value:(ATERM == "00" ? "不轉期":"轉期")])
+                //2023-01-31 ATERM ='01' add 3 list item --by sweney
+                if (ATERM == "01"){
+                    if let AXCNT = resultList["AXCNT"] as? String {
+                        list.append([Response_Key: "自動轉期次數", Response_Value:AXCNT])
+                        
+                        if let XCNT = resultList["XCNT"] as? String {
+                            list.append([Response_Key: "已轉次數", Response_Value:XCNT])
+                        }
+                        
+                        if (AXCNT == "099" ){}else{
+                        if let AXEDAY = resultList["AXEDAY"] as? String {
+                            list.append([Response_Key: "轉期到期日", Response_Value:AXEDAY])
+                        }}
+                    }
+                   
+                    
+                    
+                }
             }
             else {
                 list.append([Response_Key: "自動轉期記號", Response_Value:""])
@@ -240,13 +267,19 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                 list.append([Response_Key: "支號", Response_Value:""])
             }
             if let APAMT = resultList["APAMT"] as? String {
-                list.append([Response_Key: "初貸金額", Response_Value:APAMT.separatorThousand()])
+                list.append([Response_Key: "累貸金額", Response_Value:APAMT.separatorThousand()])
             }
             else {
-                list.append([Response_Key: "初貸金額", Response_Value:""])
+                list.append([Response_Key: "累貸金額", Response_Value:""])
             }
             if let ACTBAL = resultList["ACTBAL"] as? String {
-                list.append([Response_Key: "貸款餘額", Response_Value:ACTBAL.separatorThousand()])
+                let DMACTNO = resultList["DMACTNO"] as? String    //chiu 20200609
+                if (DMACTNO == "") || (DMACTNO  == "0"){
+                     list.append([Response_Key: "貸款餘額", Response_Value:ACTBAL.separatorThousand()])
+                }else{
+                    list.append([Response_Key: "貸款餘額", Response_Value:"催收戶請洽櫃檯"])
+                }
+               
             }
             else {
                 list.append([Response_Key: "貸款餘額", Response_Value:""])
@@ -321,6 +354,21 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             else {
                 list.append([Response_Key: "自動扣繳帳號", Response_Value:""])
             }
+        case .Type5:
+            if let ACTNO = resultList["ACTNO"] as? String {
+                           list.append([Response_Key: "帳號", Response_Value:ACTNO])
+                       }
+                       else {
+                           list.append([Response_Key: "帳號", Response_Value:""])
+                       }
+                       if let AVBAL = resultList["BAL"] as? String {
+                           list.append([Response_Key: "總公克數", Response_Value:AVBAL.separatorThousandDecimal()])
+                       }
+                       else {
+                           list.append([Response_Key: "總公克數", Response_Value:""])
+                       }
+                      
+            
             
         default: break
         }
@@ -378,6 +426,13 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                             if typeList.index(of: ActOverviewType.Type4.description()) == nil {
                                 typeList.append(ActOverviewType.Type4.description())
                             }
+                        case "G":
+                            categoryType[ActOverview_TypeList[4]] = type
+                            categoryList[type] = [AccountStruct]()
+                            addType = true
+                            if typeList.index(of: ActOverviewType.Type5.description()) == nil {
+                                typeList.append(ActOverviewType.Type5.description())
+                            }
                             
                         default: break
                         }
@@ -397,6 +452,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                     chooseTypeView.setTypeList(typeList, setDelegate: self)
                     tableView.reloadData()
                 }
+                
             }
             else {
                 super.didResponse(description, response)
@@ -466,7 +522,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         if let type = categoryType[ActOverview_TypeList[index]], let array = categoryList[type] {
             cell.detail1Label.text = array[indexPath.row].accountNO
             cell.detail2Label.text = (array[indexPath.row].currency == Currency_TWD) ? Currency_TWD_Title : array[indexPath.row].currency
-            cell.detail3Label.text = String(array[indexPath.row].balance).separatorThousand()
+            cell.detail3Label.text = String(array[indexPath.row].balance).separatorThousandDecimal()
             if let cellType = getTypeByInputString(ActOverview_TypeList[index]) {
                 switch cellType {
                 case .Type1:
@@ -479,9 +535,18 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
                     
                 case .Type2, .Type3:
                     cell.AddExpnadBtn(self, cellType, (canAccountDetail, canAccountDetail), indexPath)
-                
+                    if cellType == .Type3 {
+                          cell.title3Label.text = "存單面額"
+                    }
+                    if cellType == .Type5 {
+                          cell.title3Label.text = "總公克數"
+                    }
                 case .Type4:
                     cell.AddExpnadBtn(self, cellType, (canLoanPrincipalInterest, canAccountDetail), indexPath)
+                  cell.title3Label.text = "貸款餘額"
+                case .Type5:
+                    cell.AddExpnadBtn(self, indexPath)
+                          cell.title3Label.text = "總公克數"
                     
                 default: break
                 }
@@ -508,7 +573,7 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             typeListIndex =  ActOverview_TypeList.index(of: typeList[indexPath.section+1]) ?? 0
         }
         
-        if categoryType[ActOverview_TypeList[typeListIndex]] != nil, let cell = tableView.cellForRow(at: indexPath) as? OverviewCell {
+        if categoryType[ActOverview_TypeList[typeListIndex]] != nil && typeListIndex != 4, let cell = tableView.cellForRow(at: indexPath) as? OverviewCell {
             setLoading(true)
             postRequest("ACIF/ACIF0101", "ACIF0101", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"02031","Operate":"getAcntInfo","TransactionId":transactionId,"ACTTYPE":categoryType[ActOverview_TypeList[typeListIndex]]!,"ACTNO":cell.detail1Label.text!], true), AuthorizationManage.manage.getHttpHead(true))
         }
@@ -543,6 +608,10 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             chooseAccount = value[ActOverview_CellTitleList.first!]
             enterFeatureByID(.FeatureID_LoanPrincipalInterest, false)
             pushByclickExpandBtn = true
+        case .Type5:
+                     chooseAccount = value[ActOverview_CellTitleList.first!]
+                     enterFeatureByID(.FeatureID_GPRegularAccountInfomation, false)
+                     pushByclickExpandBtn = true
             
         default: break
         }
@@ -565,6 +634,10 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
         case .Type4:
             chooseAccount = value[ActOverview_CellTitleList.first!]
             enterFeatureByID(.FeatureID_AccountDetailView, false)
+            pushByclickExpandBtn = true
+        case .Type5:
+            chooseAccount = value[ActOverview_CellTitleList.first!]
+            enterFeatureByID(.FeatureID_GPTransactionDetail, false)
             pushByclickExpandBtn = true
             
         default: break
@@ -597,6 +670,12 @@ class ActOverviewViewController: BaseViewController, ChooseTypeDelegate, UITable
             }
             else if viewController is LoanPrincipalInterestViewController {
                 (viewController as! LoanPrincipalInterestViewController).setInitial(chooseAccount)
+            }
+            else if (viewController is GPRegularAccountInfomationViewController) {
+                (viewController as! GPRegularAccountInfomationViewController).m_strActFromAccountInfomation = chooseAccount
+            }
+            else if (viewController is GPTransactionDetailViewController) {
+                (viewController as! GPTransactionDetailViewController).m_strActFromAccountInfomation = chooseAccount
             }
             navigationController.delegate = nil
         }

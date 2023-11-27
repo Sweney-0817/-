@@ -9,7 +9,7 @@
 import UIKit
 
 let ActDetailView_ShowDetail_Segue = "ShowDetail"
-let ActDetailView_CellTitleList = [ActOverview_TypeList[0]:["交易日期","借款記號","交易金額"],
+let ActDetailView_CellTitleList = [ActOverview_TypeList[0]:["交易日期","借貸記號","交易金額"],
                                    ActOverview_TypeList[1]:["交易日期","票號","交易金額"],
                                    ActOverview_TypeList[2]:["記帳日","交易金額","結存本金"],
                                    ActOverview_TypeList[3]:["交易日期","攤還本金","本金餘額"]]
@@ -115,10 +115,10 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     else if CRDB == "2" {
                         temp = "存入"
                     }
-                    list.append([Response_Key: "借貸紀號", Response_Value:temp])
+                    list.append([Response_Key: "借貸記號", Response_Value:temp])
                 }
                 else {
-                    list.append([Response_Key: "借貸紀號", Response_Value:""])
+                    list.append([Response_Key: "借貸記號", Response_Value:""])
                 }
                 if let KINBR = dic["KINBR"] as? String {
                     list.append([Response_Key: "輸入行", Response_Value:KINBR])
@@ -152,7 +152,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "交易金額", Response_Value:""])
                 }
                 if let OAVBAL = dic["OAVBAL"] as? String {
-                    list.append([Response_Key: "餘額", Response_Value:OAVBAL.separatorThousand()])
+                    list.append([Response_Key: "餘額", Response_Value:OAVBAL.separatorThousandDecimal()])
                 }
                 else {
                     list.append([Response_Key: "餘額", Response_Value:""])
@@ -223,10 +223,10 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     else if CRDB == "2" {
                         temp = "存入"
                     }
-                    list.append([Response_Key: "借貸紀號", Response_Value:temp])
+                    list.append([Response_Key: "借貸記號", Response_Value:temp])
                 }
                 else {
-                    list.append([Response_Key: "借貸紀號", Response_Value:""])
+                    list.append([Response_Key: "借貸記號", Response_Value:""])
                 }
                 if let TXAMT = dic["TXAMT"] as? String {
                     list.append([Response_Key: "交易金額", Response_Value:TXAMT.separatorThousand()])
@@ -235,7 +235,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "交易金額", Response_Value:""])
                 }
                 if let AVBAL = dic["AVBAL"] as? String {
-                    list.append([Response_Key: "餘額", Response_Value:AVBAL.separatorThousand()])
+                    list.append([Response_Key: "餘額", Response_Value:AVBAL.separatorThousandDecimal()])
                 }
                 else {
                     list.append([Response_Key: "餘額", Response_Value:""])
@@ -329,6 +329,12 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                 else {
                     list.append([Response_Key: "交易代號", Response_Value:""])
                 }
+                // add 利率 by sweney 112/6
+                if let FITIRT = dic["FITIRT"] as? String {
+                    list.append([Response_Key: "利率", Response_Value:FITIRT + "%" ])
+                }else{
+                    list.append([Response_Key: "利率", Response_Value:""])
+                }
                 if let PRIAMT = dic["PRIAMT"] as? String {
                     list.append([Response_Key: "攤還本金/本金", Response_Value:PRIAMT.separatorThousand()])
                 }
@@ -342,7 +348,7 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                     list.append([Response_Key: "利息", Response_Value:""])
                 }
                 if let BAL = dic["BAL"] as? String {
-                    list.append([Response_Key: "本金餘額", Response_Value:BAL.separatorThousand()])
+                    list.append([Response_Key: "本金餘額", Response_Value:BAL.separatorThousandDecimal()])
                 }
                 else {
                     list.append([Response_Key: "本金餘額", Response_Value:""])
@@ -495,7 +501,13 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                             if typeList?.index(of: ActOverviewType.Type4.description()) == nil {
                                 typeList?.append(ActOverviewType.Type4.description())
                             }
-                            
+//                       case "G":
+//                                                       categoryType[ActOverview_TypeList[4]] = type
+//                                                       categoryList[type] = [AccountStruct]()
+//                                                       addType = true
+//                                                       if typeList?.index(of: ActOverviewType.Type5.description()) == nil {
+//                                                           typeList?.append(ActOverviewType.Type5.description())
+//                                                       }
                         default: break
                         }
                         
@@ -517,11 +529,16 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
                         currentType = typeList?.first
                         chooseTypeView.setTypeList(typeList, setDelegate: self)
                     }
-                    
+                    //2019-12-6 add by sweney 預設查詢帳號
+                        if let type = categoryType[currentType!], let list = categoryList[type] {
+                            if list.count > 0 {
+                                chooseAccount = list[0].accountNO
+                            }
+                        }
                     if chooseAccount != nil {
                         (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount!)
                         clickDateBtn(weekDayButton)
-                        postGetAcntInfo()
+                       // postGetAcntInfo()
                     }
                     else {
                         setLoading(false)
@@ -550,7 +567,22 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
     func clickChooseTypeBtn(_ name:String) {
         currentType = name
         chooseAccount = nil
-        (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, Choose_Title)
+        //2019-12-6 add by sweney 預設查詢帳號
+        if let type = categoryType[currentType!], let list = categoryList[type] {
+            if list.count > 0 {
+                chooseAccount = list[0].accountNO
+            }
+        }
+        if chooseAccount != nil {
+            (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, chooseAccount!)
+            clickDateBtn(weekDayButton)
+            postGetAcntInfo()
+        }
+        else {
+            setLoading(false)
+              (chooseAccountView.subviews.first as! OneRowDropDownView).setOneRow(ActDetailView_ShowAccount_Title, Choose_Title)
+        } 
+      
         resultList = nil
         tableView.reloadData()
     }
@@ -591,15 +623,29 @@ class ActDetailViewController: BaseViewController, ChooseTypeDelegate, UITableVi
         case customizeDayButton:
             if let dateView = getUIByID(.UIID_DatePickerView) as? DatePickerView {
                 dateView.frame = CGRect(origin: .zero, size: view.frame.size)
+                
+                
                 dateView.showTwoDatePickerView(true, nil, nil) { start, end, sDate, eDate in
                     var componenets = Calendar.current.dateComponents([.year, .month, .day], from: sDate!)
                     componenets.month = componenets.month!+2
-                    if Calendar.current.compare(Calendar.current.date(from: componenets)!, to: eDate!, toGranularity: .day) == .orderedAscending {
-                        self.showErrorMessage(nil, ErrorMsg_DateMonthOnlyTwo)
+                    self.startDate = "\(start.year)/\(start.month)/\(start.day)"
+                    self.endDate = "\(end.year)/\(end.month)/\(end.day)"
+                    //2020-1-6- add by sweney 6month check
+                    var componenets6 = Calendar.current.dateComponents([.year, .month, .day], from:  Date())
+                    componenets6.month = componenets6.month!-6
+                    //2020-1-6- add by sweney 6month check
+                   if Calendar.current.compare(Calendar.current.date(from: componenets6)!, to: sDate!, toGranularity: .day) == .orderedDescending {
+                        let wkDateInfo = "自訂區間：" + self.startDate + (self.endDate != "" ? " - \(self.endDate)" : "")
+                        self.showErrorMessage(nil, wkDateInfo + "\n" + ErrorMsg_DateMonthLesSix)
                     }
+                    else  if Calendar.current.compare(Calendar.current.date(from: componenets)!, to: eDate!, toGranularity: .day) == .orderedAscending {
+                        let wkDateInfo = "自訂區間：" + self.startDate + (self.endDate != "" ? " - \(self.endDate)" : "")
+                        self.showErrorMessage(nil, wkDateInfo + "\n" + ErrorMsg_DateMonthOnlyTwo)
+                    }
+                       
                     else {
-                        self.startDate = "\(start.year)/\(start.month)/\(start.day)"
-                        self.endDate = "\(end.year)/\(end.month)/\(end.day)"
+//                        self.startDate = "\(start.year)/\(start.month)/\(start.day)"
+//                        self.endDate = "\(end.year)/\(end.month)/\(end.day)"
                         self.dateLabel.text = self.startDate + (self.endDate != "" ? " - \(self.endDate)" : "")
                         self.postGetAcntInfo()
                     }

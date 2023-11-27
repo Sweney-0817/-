@@ -8,7 +8,7 @@
 
 import UIKit
 
-let TransactionDetailDetail_CellTitle = ["交易時間", "交易序號", "更正記號", "借貸", "交易量", "單價", "餘額(克)"]
+let TransactionDetailDetail_CellTitle = ["交易時間", "交易序號", "更正記號", "借貸", "交易量", "單價", "餘額(克)","損益率","平均牌告單價"]
 
 class GPTransactionDetailDetailViewController: BaseViewController {
     @IBOutlet var m_tvContentView: UITableView!
@@ -65,6 +65,10 @@ extension GPTransactionDetailDetailViewController : UITableViewDelegate, UITable
             strValue = (m_objDetailData?.VALUE)!.separatorThousand()
         case 6:
             strValue = (m_objDetailData?.AVBAL)!.separatorThousandDecimal()
+        case 7:
+            strValue = (m_objDetailData?.PFRATIO)! + "%"
+        case 8:
+            strValue = (m_objDetailData?.DAVGCOST)!.separatorThousandDecimal()
         default:
             strValue = ""
         }

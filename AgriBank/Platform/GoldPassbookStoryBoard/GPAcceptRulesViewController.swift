@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import WebKit
 
 class GPAcceptRulesViewController: BaseViewController {
     var m_nextFeatureID : PlatformFeatureID? = nil
     var m_dicData: [String:Any]? = nil
     var m_dicAcceptData : [String:String]? = nil
-    @IBOutlet var m_wvContent: UIWebView!
+    @IBOutlet var m_wvContent: WKWebView!
     @IBOutlet var m_btnCheck: UIButton!
     @IBAction func m_btnCheckClick(_ sender: Any) {
         m_btnCheck.isSelected = !m_btnCheck.isSelected

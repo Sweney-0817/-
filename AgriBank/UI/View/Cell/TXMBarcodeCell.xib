@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="TXMBarcodeCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="TXMBarcodeCell" rowHeight="60" id="HjS-rF-TVO" userLabel="TXMBarcodeCell" customClass="TXMBarcodeCell" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="371" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HjS-rF-TVO" id="zhl-MZ-djC">
+                <rect key="frame" x="0.0" y="0.0" width="371" height="60"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField opaque="NO" contentMode="scaleToFill" restorationIdentifier="ScanTXMBarcode" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="發票載具條碼" textAlignment="natural" minimumFontSize="17" background="Textfield" translatesAutoresizingMaskIntoConstraints="NO" id="yCc-TT-qz5" userLabel="ScanTXMBarcode" customClass="TextField" customModule="AgriBank" customModuleProvider="target">
+                        <rect key="frame" x="16" y="8" width="342" height="45"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="45" id="0r1-5M-QwQ"/>
+                            <constraint firstAttribute="width" constant="342" id="38T-0G-C3A"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="yCc-TT-qz5" secondAttribute="bottom" constant="7" id="9CF-td-GJN"/>
+                    <constraint firstItem="yCc-TT-qz5" firstAttribute="top" secondItem="zhl-MZ-djC" secondAttribute="top" constant="8" id="DIl-D8-hRE"/>
+                    <constraint firstAttribute="trailing" secondItem="yCc-TT-qz5" secondAttribute="trailing" constant="13" id="Vky-W8-BAc"/>
+                    <constraint firstItem="yCc-TT-qz5" firstAttribute="leading" secondItem="zhl-MZ-djC" secondAttribute="leading" constant="16" id="xlq-vJ-DB8"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="oFE-QD-4bm"/>
+            <accessibility key="accessibilityConfiguration">
+                <bool key="isElement" value="YES"/>
+            </accessibility>
+            <connections>
+                <outlet property="ScanTXMBarcode" destination="yCc-TT-qz5" id="EKY-gL-2Np"/>
+            </connections>
+            <point key="canvasLocation" x="168.84057971014494" y="115.17857142857142"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Textfield" width="311" height="44"/>
+    </resources>
+</document>

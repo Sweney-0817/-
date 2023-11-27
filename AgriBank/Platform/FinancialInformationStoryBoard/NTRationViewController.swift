@@ -136,8 +136,8 @@ class NTRationViewController: BaseViewController, OneRowDropDownViewDelegate, Ch
         case "COMM0402":
             m_PickerData.removeAll()
             if let data = response.object(forKey: ReturnData_Key) as? [String : Any], let array = data["Result"] as? [[String:Any]] {
-                let cCode = (SecurityUtility.utility.readFileByKey(SetKey: File_CityCode_Key, setDecryptKey: AES_Key) as? String) ?? ""
-                let bCode = (SecurityUtility.utility.readFileByKey(SetKey: File_BankCode_Key, setDecryptKey: AES_Key) as? String) ?? ""
+                let cCode = (SecurityUtility.utility.readFileByKey(SetKey: File_CityCode_Key, setDecryptKey: "\(SEA1)\(SEA2)\(SEA3)") as? String) ?? ""
+                let bCode = (SecurityUtility.utility.readFileByKey(SetKey: File_BankCode_Key, setDecryptKey: "\(SEA1)\(SEA2)\(SEA3)") as? String) ?? ""
                 var cCity:String? = nil
                 var cBank:String? = nil
                 for dic in array {

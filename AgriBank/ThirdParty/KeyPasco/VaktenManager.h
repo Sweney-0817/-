@@ -17,7 +17,7 @@ typedef void(^CompleteTasksHandle)(VResultCode resultCode, NSArray *tasks);
 
 + (instancetype)sharedInstance;
 
-- (void)setDeviceToken:(NSData *)deviceToken;
+//- (void)setDeviceToken:(NSData *)deviceToken;
 
 - (void)associationOperationWithAssociationCode:(NSString *)associationCode complete:(CompleteHandle)handle;
 
@@ -31,8 +31,9 @@ typedef void(^CompleteTasksHandle)(VResultCode resultCode, NSArray *tasks);
 
 - (VGeoOTP*)generateGeoOTPCode;
 
-//- (NSString *)getOneTimePassword;
+//- (NSString *)getOneTimePod;
 
-//- (void)nextOneTimePassword;
+//- (void)nextOneTimePod;
 
+- (BOOL)isJailbroken;
 @end

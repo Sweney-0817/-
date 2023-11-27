@@ -9,14 +9,15 @@
 import Foundation
 
 let REQUEST_TIME_OUT:TimeInterval = 65  // Time out Default
-let CERTIFICATE_NAME = "server2019"               // 憑證名稱
+let CERTIFICATE_NAME = "server2022"               // 憑證名稱
+let CERTIFICATE_NAME2 = "server2023"               // 憑證名稱
 let CERTIFICATE_TYPE = "cer"            // 憑證副檔名
 let TIME_OUT_125:TimeInterval = 305     // TRAN0101、TRAN0102、PAY0103、PAY0105、PAY0107 這幾支呼叫API於時時間請大於120秒，因為是跨行，EAI那邊可以等待120
                                         // 20180320 要求修改為300
 
 protocol ConnectionUtilityDelegate {
     func didRecvdResponse(_ description:String, _ response: NSDictionary) -> Void
-    func didFailedWithError(_ error: Error) -> Void
+    func didFailedWithError(_ error: Error, _ sessionDescription: String?) -> Void
 }
 
 class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, URLSessionDownloadDelegate {
@@ -137,7 +138,7 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         DispatchQueue.main.async {
             if error != nil {
-                self.delegate?.didFailedWithError(error!)
+               self.delegate?.didFailedWithError(error!, session.sessionDescription)
             }
             else {
                 if self.downloadType == .Json {
@@ -155,10 +156,13 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
                     do {
                         let jsonDic = try JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as! NSDictionary
                         self.delegate?.didRecvdResponse(session.sessionDescription!, jsonDic)
+                        #if DEBUG
                         print( String(data: jsonData, encoding: .utf8) ?? session.sessionDescription!)
+                        #endif
+                        
                     }
                     catch {
-                        self.delegate?.didFailedWithError(error)
+                        self.delegate?.didFailedWithError(error, session.sessionDescription)
                     }
                 }
                 else if self.downloadType == .ImageConfirm {
@@ -211,10 +215,16 @@ class ConnectionUtility: NSObject, URLSessionDelegate, URLSessionDataDelegate, U
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
             if needCertificate {
                 if let serverTrust = challenge.protectionSpace.serverTrust {
+                    //憑證1
                     let cerPath = Bundle.main.path(forResource: CERTIFICATE_NAME, ofType: CERTIFICATE_TYPE)!
                     let localCertificateData = try! Data(contentsOf: URL(fileURLWithPath:cerPath)) as CFData
                     let localCertificate = SecCertificateCreateWithData(nil, localCertificateData)
-                    let trustedCertList = [localCertificate] as CFArray
+                    //憑證2
+                    let cerPath2 = Bundle.main.path(forResource: CERTIFICATE_NAME2, ofType: CERTIFICATE_TYPE)!
+                    let localCertificateData2 = try! Data(contentsOf: URL(fileURLWithPath:cerPath2)) as CFData
+                    let localCertificate2 = SecCertificateCreateWithData(nil, localCertificateData2)
+                    
+                    let trustedCertList = [localCertificate, localCertificate2] as CFArray
                     var status = SecTrustSetAnchorCertificates(serverTrust, trustedCertList)
                     if status == noErr {
                         var trustResult: SecTrustResultType = .invalid

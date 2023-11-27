@@ -95,7 +95,7 @@ class BannerView: UIView, ConnectionUtilityDelegate, UIScrollViewDelegate {
         }
     }
     
-    func didFailedWithError(_ error: Error) {
+func didFailedWithError(_ error: Error, _ sessionDescription: String?) {
         
     }
     

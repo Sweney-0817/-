@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="CardlessDisableCell" rowHeight="85" id="YF3-tL-W2D" customClass="CardlessDisableCell" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="85"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YF3-tL-W2D" id="Ser-s3-NqG">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="85"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="0123456789022222" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qbR-l2-Npt">
+                        <rect key="frame" x="10" y="15" width="233" height="25.5"/>
+                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="abY-DW-1hH">
+                        <rect key="frame" x="0.0" y="84" width="375" height="1"/>
+                        <color key="backgroundColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="XEv-co-gNj"/>
+                            <constraint firstAttribute="width" constant="375" id="pMb-mi-gnm"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="關閉" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KcR-Sy-kVd">
+                        <rect key="frame" x="10" y="44" width="233" height="25.5"/>
+                        <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GSe-ej-yPB">
+                        <rect key="frame" x="275" y="22" width="80" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="r6M-nw-Os5"/>
+                            <constraint firstAttribute="width" constant="80" id="y2Z-Q0-CqW"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <state key="normal" title="關閉">
+                            <color key="titleColor" red="0.87843137250000003" green="0.41176470590000003" blue="0.30196078430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </state>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="qbR-l2-Npt" firstAttribute="leading" secondItem="Ser-s3-NqG" secondAttribute="leading" constant="10" id="4ZR-UY-LnX"/>
+                    <constraint firstItem="abY-DW-1hH" firstAttribute="top" secondItem="GSe-ej-yPB" secondAttribute="bottom" constant="22" id="6Qr-dW-G4H"/>
+                    <constraint firstAttribute="bottom" secondItem="abY-DW-1hH" secondAttribute="bottom" id="EAu-de-35c"/>
+                    <constraint firstItem="GSe-ej-yPB" firstAttribute="leading" secondItem="KcR-Sy-kVd" secondAttribute="trailing" constant="32" id="GTB-ny-Oed"/>
+                    <constraint firstItem="abY-DW-1hH" firstAttribute="leading" secondItem="Ser-s3-NqG" secondAttribute="leading" id="I1j-zO-eB4"/>
+                    <constraint firstItem="qbR-l2-Npt" firstAttribute="top" secondItem="Ser-s3-NqG" secondAttribute="top" constant="15" id="Owh-Eg-WMP"/>
+                    <constraint firstAttribute="trailing" secondItem="GSe-ej-yPB" secondAttribute="trailing" constant="20" symbolic="YES" id="XV0-N7-uNM"/>
+                    <constraint firstItem="GSe-ej-yPB" firstAttribute="top" secondItem="Ser-s3-NqG" secondAttribute="top" constant="22" id="Z9g-8j-n1V"/>
+                    <constraint firstItem="KcR-Sy-kVd" firstAttribute="leading" secondItem="Ser-s3-NqG" secondAttribute="leading" constant="10" id="esv-ry-MQm"/>
+                    <constraint firstItem="KcR-Sy-kVd" firstAttribute="top" secondItem="qbR-l2-Npt" secondAttribute="bottom" constant="3.5" id="nGC-YY-QZP"/>
+                    <constraint firstItem="GSe-ej-yPB" firstAttribute="leading" secondItem="qbR-l2-Npt" secondAttribute="trailing" constant="32" id="taX-zq-gXP"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="CardlessAct" destination="qbR-l2-Npt" id="fgT-z3-wjR"/>
+                <outlet property="CardlessDisableBtn" destination="GSe-ej-yPB" id="Cv8-pn-Adt"/>
+                <outlet property="CardlessStatus" destination="KcR-Sy-kVd" id="1v5-w6-Su9"/>
+            </connections>
+            <point key="canvasLocation" x="125.36231884057972" y="61.272321428571423"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -19,7 +19,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
     private var accountList:[AccountStruct]? = nil                  // 帳號列表
     private var result:[[String:String]]? = nil                     // 電文Response
     private var curIndex:Int? = nil
- 
+    
     // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +35,7 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
         tableView.register(UINib(nibName: UIID.UIID_OverviewCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_OverviewCell.NibName()!)
         getTransactionID("03005", TransactionID_Description)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -49,7 +49,9 @@ class DepositCombinedToDepositSearchViewController: BaseViewController, OneRowDr
             list.append([Response_Key: "定存帳號", Response_Value:dic["Deposit"] ?? ""])
             list.append([Response_Key: "定存金額", Response_Value:dic["CTBAL"]?.separatorThousand() ?? ""])
             list.append([Response_Key: "到期日", Response_Value:dic["EDAY"] ?? ""])
-            list.append([Response_Key: "起存日", Response_Value:dic["CIDAY"] ?? ""])
+            //list.append([Response_Key: "起存日", Response_Value:dic["CIDAY"] ?? ""])
+            //2020-2-5 mod by sweney 
+            list.append([Response_Key: "起存日", Response_Value:dic["ISDAY"] ?? ""])
             list.append([Response_Key: "存單期別(月)", Response_Value:dic["PRDMM"] ?? ""])
             if let YRATE = dic["YRATE"] {
                 list.append([Response_Key: "開戶利率", Response_Value:"\(YRATE)%"])

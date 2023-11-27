@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="PingFang.ttc">
+            <string>PingFangTC-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="GPRiskChekCell" insetsLayoutMarginsFromSafeArea="NO" id="qpV-fZ-Y1L" customClass="GPRiskChekCell" customModule="AgriBank" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="Z52-u1-gfi">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="267"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" insetsLayoutMarginsFromSafeArea="NO" text=" Q1_1.請問您的年您？                                  " lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="none" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fn4-os-gC0">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="27"/>
+                            <accessibility key="accessibilityConfiguration">
+                                <accessibilityTraits key="traits" none="YES"/>
+                            </accessibility>
+                            <fontDescription key="fontDescription" name="PingFangTC-Medium" family="PingFang TC" pointSize="19"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                            <size key="shadowOffset" width="0.0" height="0.0"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HnR-8d-A3u" customClass="SKRadioButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="41" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser1"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondAction:" destination="qpV-fZ-Y1L" eventType="touchUpInside" id="m0B-oR-hPr"/>
+                                <action selector="textchange:text:" destination="qpV-fZ-Y1L" eventType="valueChanged" id="EtN-z0-DHA"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hKI-ee-Dtb" userLabel="Radio2" customClass="SKRadioButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="89" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser2"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondAction:" destination="qpV-fZ-Y1L" eventType="touchUpInside" id="S6l-bL-If2"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="di0-7J-kPR" userLabel="Radio3" customClass="SKRadioButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="137" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser3"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondAction:" destination="qpV-fZ-Y1L" eventType="touchUpInside" id="fa3-Qm-DkB"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YsJ-eS-sDF" userLabel="Radio4" customClass="SKRadioButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="185" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser4"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondAction:" destination="qpV-fZ-Y1L" eventType="touchUpInside" id="5iR-QY-7WC"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5wo-qY-QOh" userLabel="Radio5" customClass="SKRadioButton" customModule="AgriBank" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="233" width="375" height="34"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                    <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="titleText" value="Anser5"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="titleTextBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="genderRadioButtondAction:" destination="qpV-fZ-Y1L" eventType="touchUpInside" id="OST-cK-16w"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="fn4-os-gC0" firstAttribute="leading" secondItem="Z52-u1-gfi" secondAttribute="leading" id="XPk-Sk-D8B"/>
+                        <constraint firstAttribute="trailing" secondItem="fn4-os-gC0" secondAttribute="trailing" id="auW-MS-LZE"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Z52-u1-gfi" firstAttribute="leading" secondItem="qpV-fZ-Y1L" secondAttribute="leading" id="0vD-px-DW3"/>
+                <constraint firstAttribute="trailing" secondItem="Z52-u1-gfi" secondAttribute="trailing" id="BAH-t8-s6r"/>
+                <constraint firstItem="Z52-u1-gfi" firstAttribute="top" secondItem="qpV-fZ-Y1L" secondAttribute="top" id="XU1-nm-bwH"/>
+                <constraint firstItem="Z52-u1-gfi" firstAttribute="top" secondItem="qpV-fZ-Y1L" secondAttribute="topMargin" id="dml-tz-f2t"/>
+                <constraint firstItem="Z52-u1-gfi" firstAttribute="leading" secondItem="qpV-fZ-Y1L" secondAttribute="leading" id="k6B-fv-taz"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="Radio1" destination="HnR-8d-A3u" id="EVr-Av-YtJ"/>
+                <outlet property="Radio2" destination="hKI-ee-Dtb" id="5xP-xN-MS6"/>
+                <outlet property="Radio3" destination="di0-7J-kPR" id="m5X-po-5Nz"/>
+                <outlet property="Radio4" destination="YsJ-eS-sDF" id="j5Q-cm-0lx"/>
+                <outlet property="Radio5" destination="5wo-qY-QOh" id="hGw-N2-0IM"/>
+                <outlet property="TitleLabel" destination="fn4-os-gC0" id="j0P-J2-fMf"/>
+                <outletCollection property="genderRadioButtons" destination="di0-7J-kPR" collectionClass="NSMutableArray" id="o2U-V7-PmI"/>
+                <outletCollection property="genderRadioButtons" destination="5wo-qY-QOh" collectionClass="NSMutableArray" id="o4Q-hx-o3p"/>
+                <outletCollection property="genderRadioButtons" destination="hKI-ee-Dtb" collectionClass="NSMutableArray" id="vqm-YO-WNj"/>
+                <outletCollection property="genderRadioButtons" destination="HnR-8d-A3u" collectionClass="NSMutableArray" id="XxN-s5-xc4"/>
+                <outletCollection property="genderRadioButtons" destination="YsJ-eS-sDF" collectionClass="NSMutableArray" id="aP8-c8-QsT"/>
+            </connections>
+            <point key="canvasLocation" x="74.637681159420296" y="99.776785714285708"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="5wo-qY-QOh">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="HnR-8d-A3u">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="YsJ-eS-sDF">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="di0-7J-kPR">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="hKI-ee-Dtb">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+    </designables>
+</document>

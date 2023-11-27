@@ -20,7 +20,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var identifyTextfield: TextField!
     @IBOutlet weak var userCodeTextfield: TextField!
-    @IBOutlet weak var passwordTextfield: TextField!
+    @IBOutlet weak var podTextfield: TextField!
     @IBOutlet weak var checkCodeTextfield: TextField!
     @IBOutlet weak var bottomVIew: UIView!
     @IBOutlet weak var topTextfield: UITextField!
@@ -86,7 +86,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
                 }
             }
             
-            if let cCode = SecurityUtility.utility.readFileByKey(SetKey: File_CityCode_Key, setDecryptKey: AES_Key) as? String, let bCode = SecurityUtility.utility.readFileByKey(SetKey: File_BankCode_Key, setDecryptKey: AES_Key) as? String {
+            if let cCode = SecurityUtility.utility.readFileByKey(SetKey: File_CityCode_Key, setDecryptKey: "\(SEA1)\(SEA2)\(SEA3)") as? String, let bCode = SecurityUtility.utility.readFileByKey(SetKey: File_BankCode_Key, setDecryptKey: "\(SEA1)\(SEA2)\(SEA3)") as? String {
                 var city = ""
                 for key in cityCode.keys {
                     if cityCode[key] == cCode {
@@ -118,7 +118,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
                 }
             }
             
-        case "COMM0801":
+        case "COMM0803":
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
                 setLoading(true)
                 VaktenManager.sharedInstance().associationOperation(withAssociationCode: checkCodeTextfield.text ?? "") { resultCode in
@@ -200,8 +200,8 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
             showErrorMessage(nil, "\(Enter_Title)\(userCodeTextfield.placeholder ?? "")")
             return false
         }
-        if (passwordTextfield.text?.isEmpty)! {
-            showErrorMessage(nil, "\(Enter_Title)\(passwordTextfield.placeholder ?? "")")
+        if (podTextfield.text?.isEmpty)! {
+            showErrorMessage(nil, "\(Enter_Title)\(podTextfield.placeholder ?? "")")
             return false
         }
         if (checkCodeTextfield.text?.isEmpty)! {
@@ -223,7 +223,7 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == identifyTextfield || textField == userCodeTextfield || textField == passwordTextfield {
+        if textField == identifyTextfield || textField == userCodeTextfield || textField == podTextfield {
             let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
             if !DetermineUtility.utility.isEnglishAndNumber(newString) {
                 return false
@@ -235,8 +235,8 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
         case identifyTextfield:
             maxLength = Max_Identify_Length
             
-        case userCodeTextfield, passwordTextfield:
-            maxLength = Max_ID_Password_Length
+        case userCodeTextfield, podTextfield:
+            maxLength = Max_ID_Pod_Length
             
         case checkCodeTextfield:
             maxLength = DeviceBinding_CheckCode_Length
@@ -265,19 +265,33 @@ class DeviceBindingViewController: BaseViewController, UITextFieldDelegate, UIPi
 //            return
 //        }
         if inputIsCorrect() {
+            //109-10-16 add by sweney for check e2e key
+                       if E2EKeyData == "" {
+                                        showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_NoKeyAdConnection, confirmTitle: "確認", cancleTitle: nil, completionHandler: {exit(0)}, cancelHandelr: {()})
+                                  }else{
             setLoading(true)
             let uuid = UUID().uuidString
             VaktenManager.sharedInstance().authenticateOperation(withSessionID: uuid) { resultCode in
                 if VIsSuccessful(resultCode) {
                     let bankCode = self.bankCode[self.topDropView?.getContentByType(.First).replacingOccurrences(of: " ", with: "") ?? ""] ?? ""
-                    let id = SecurityUtility.utility.MD5(string: self.userCodeTextfield.text!)
-                    let pd = SecurityUtility.utility.MD5(string: self.passwordTextfield.text!)
-                    self.postRequest("COMM/COMM0801", "COMM0801", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08011","Operate":"queryData","BR_CODE":bankCode,"ID_DATA":self.identifyTextfield.text!,"USER_ID":id,"PWD":pd,"ASSOCIATIONCODE":self.checkCodeTextfield.text!,"SessionId":uuid], true), AuthorizationManage.manage.getHttpHead(true))
+                   let id = SecurityUtility.utility.MD5(string: self.userCodeTextfield.text!)
+                    //let pd = SecurityUtility.utility.MD5(string: self.podTextfield.text!)
+                    //E2E
+                    // let fmt = DateFormatter()
+                     //let timeZone = TimeZone.ReferenceType.init(abbreviation:"UTC") as TimeZone?
+                     //fmt.timeZone = timeZone
+                     //fmt.dateFormat = "yyyy/MM/dd HH:mm:ss"
+                     //let loginDateTIme: String = fmt.string(from: Date())
+                     let loginDateTIme: String = Date().date2String(dateFormat: "yyyy/MM/dd HH:mm:ss")
+                    let pd = E2E.e2Epod(E2EKeyData, pod:self.podTextfield.text! + loginDateTIme)
+                   
+                    self.postRequest("COMM/COMM0803", "COMM0803", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"08011","Operate":"queryData","BR_CODE":bankCode,"ID_DATA":self.identifyTextfield.text!,"USER_ID":id,"PWD":pd as Any,"ASSOCIATIONCODE":self.checkCodeTextfield.text!,"SessionId":uuid], true), AuthorizationManage.manage.getHttpHead(true))
                 }
                 else {
                     self.showErrorMessage(nil, "\(ErrorMsg_Verification_Faild) \(resultCode.rawValue)")
                     self.setLoading(false)
                 }
+            }
             }
         }
     }

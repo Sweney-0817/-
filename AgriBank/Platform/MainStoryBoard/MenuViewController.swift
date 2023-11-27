@@ -30,7 +30,11 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
         tableView.register(UINib(nibName: UIID.UIID_MenuCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuCell.NibName()!)
         tableView.register(UINib(nibName: UIID.UIID_MenuExpandCell.NibName()!, bundle: nil), forCellReuseIdentifier: UIID.UIID_MenuExpandCell.NibName()!)
         setShadowView(topView, .Bottom)
+ #if DEBUG
+        versionLabel.text = "版本"+AgriBank_Version_Debug
+#else
         versionLabel.text = "版本"+AgriBank_Version
+#endif
         curLoginStatus = AuthorizationManage.manage.IsLoginSuccess()
     }
     
@@ -50,6 +54,17 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
         }
         if let list = AuthorizationManage.manage.GetPlatformList(.Menu_Type) {
             featureList = list
+        }
+        //chiu 公告推播顯示訊息 20201231
+        if pushReceiveFlag == "MSG"{
+            pushReceiveFlag = ""
+            if let aps = pushResultList![AnyHashable("aps")] as? NSDictionary{
+                if let apsalert = aps["alert"] as? NSString{
+                    let alert = UIAlertView(title: UIAlert_Default_Title, message: apsalert as String, delegate: self, cancelButtonTitle: Determine_Title)
+                    alert.show()
+                }
+            }
+            
         }
         tableView.reloadData()
     }
@@ -145,7 +160,7 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
                 if currentID == .FeatureID_Home && center is HomeViewController {
                     (center as! HomeViewController).updateLoginStatus()
                 }
-                currentID = nil
+                currentID = nil               
             }
             if showLoginView {
                 (center as! BaseViewController).showLoginView()
@@ -179,6 +194,13 @@ class MenuViewController: BaseViewController, UITableViewDataSource, UITableView
         }
         else {
             showLoginView = true
+            (parent as! SideMenuViewController).ShowSideMenu(true)
+        }
+    }
+    
+    @IBAction func clickVersionBtn(_ sender: Any) {
+        currentID = .FeatureID_ThirdPartyAnnounce
+        if parent is SideMenuViewController {
             (parent as! SideMenuViewController).ShowSideMenu(true)
         }
     }

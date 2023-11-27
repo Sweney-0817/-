@@ -14,15 +14,15 @@ let DebitCardLoseApply_Memo = "請您本人攜帶身分證及原留印鑑來行�
 class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDelegate, UITextFieldDelegate, UIActionSheetDelegate, ImageConfirmViewDelegate {
     @IBOutlet weak var m_vShadowView: UIView!
     @IBOutlet weak var m_vDropDownView: UIView!
-    @IBOutlet weak var m_tfWebBankPassword: TextField!
-    @IBOutlet weak var m_vWebBankPasswordView: UIView!
+    @IBOutlet weak var m_tfWebBankPod: TextField!
+    @IBOutlet weak var m_vWebBankPodView: UIView!
     @IBOutlet weak var m_vImageConfirmView: UIView!
     @IBOutlet weak var bottomView: UIView!
     private var m_OneRow: OneRowDropDownView? = nil
     private var m_ImageConfirmView: ImageConfirmView? = nil
     private var accountList:[AccountStruct]? = nil      // 帳號列表
     private var accountIndex:Int? = nil                 // 目前選擇轉出帳號
-    private var password = ""
+    private var pod = ""
 
     // MARK: - Override
     override func viewDidLoad() {
@@ -78,17 +78,36 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
             
         case "COMM0502":
             if let flag = response[RESPONSE_IMAGE_CONFIRM_RESULT_KEY] as? String, flag == ImageConfirm_Success {
-                let pdMd5 = SecurityUtility.utility.MD5(string: m_tfWebBankPassword.text!)
-                setLoading(true)
-                postRequest("LOSE/LOSE0201", "LOSE0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04001","Operate":"setLoseAcnt","TransactionId":transactionId,"ACTNO":accountList?[accountIndex!].accountNO ?? "","PWD":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
+                
+                
+               // let pdMd5 = SecurityUtility.utility.MD5(string: m_tfWebBankPod.text!)
+                
+                if E2EKeyData == "" {
+                                 showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_NoKeyAdConnection, confirmTitle: "確認", cancleTitle: nil, completionHandler: {exit(0)}, cancelHandelr: {()})
+                           }
+                else{
+                //E2E
+                //add by sweney for check e2e key
+                    // let fmt = DateFormatter()
+                     //let timeZone = TimeZone.ReferenceType.init(abbreviation:"UTC") as TimeZone?
+                     //fmt.timeZone = timeZone
+                     //fmt.dateFormat = "yyyy/MM/dd HH:mm:ss"
+                     //let loginDateTIme: String = fmt.string(from: Date())
+                     let loginDateTIme: String = Date().date2String(dateFormat: "yyyy/MM/dd HH:mm:ss")
+                        let pd = E2E.e2Epod(E2EKeyData, pod:self.m_tfWebBankPod.text! + loginDateTIme)
+                            setLoading(true)
+                
+               // postRequest("LOSE/LOSE0201", "LOSE0201", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04001","Operate":"setLoseAcnt","TransactionId":transactionId,"ACTNO":accountList?[accountIndex!].accountNO ?? "","PWD":pdMd5], true), AuthorizationManage.manage.getHttpHead(true))
+                postRequest("LOSE/LOSE0202", "LOSE0202", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"04002","Operate":"setLoseAcnt","TransactionId":transactionId,"ACTNO":accountList?[accountIndex!].accountNO ?? "","DWP":pd], true), AuthorizationManage.manage.getHttpHead(true))
+                }
             }
-            else {
+                else {
                 m_ImageConfirmView?.m_tfInput.text = ""
-                getImageConfirm(transactionId)
+               // getImageConfirm(transactionId)
                 showErrorMessage(nil, ErrorMsg_Image_ConfirmFaild)
             }
             
-        case "LOSE0201":
+        case "LOSE0202":
             var result = ConfirmResultStruct()
             result.resultBtnName = "繼續交易"
             if let returnCode = response.object(forKey: ReturnCode_Key) as? String, returnCode == ReturnCode_Success {
@@ -118,7 +137,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     // MARK: - Private
      private func setAllSubView() {
         setDropDownView()
-        setWebBankPasswordView()
+        setWebBankPodView()
         setImageConfirmView()
     }
 
@@ -134,9 +153,9 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
         m_vDropDownView.layer.borderWidth = 1
     }
     
-    private func setWebBankPasswordView() {
-        m_vWebBankPasswordView.layer.borderColor = Gray_Color.cgColor
-        m_vWebBankPasswordView.layer.borderWidth = 1
+    private func setWebBankPodView() {
+        m_vWebBankPodView.layer.borderColor = Gray_Color.cgColor
+        m_vWebBankPodView.layer.borderWidth = 1
     }
 
     private func setImageConfirmView() {
@@ -155,8 +174,8 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
             showErrorMessage(nil, "\(Choose_Title)\(m_OneRow?.m_lbFirstRowTitle.text ?? "")")
             return false
         }
-        if (m_tfWebBankPassword.text?.isEmpty)! {
-            showErrorMessage(nil, "\(Enter_Title)\(m_tfWebBankPassword.placeholder ?? "")")
+        if (m_tfWebBankPod.text?.isEmpty)! {
+            showErrorMessage(nil, "\(Enter_Title)\(m_tfWebBankPod.placeholder ?? "")")
             return false
         }
         return true
@@ -197,9 +216,14 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == m_tfWebBankPassword {
+        if textField == m_tfWebBankPod {
             let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
             if !DetermineUtility.utility.isEnglishAndNumber(newString) {
+                return false
+            }
+            //限定網銀密碼長度１６
+            let newLength = (textField.text?.count)! - range.length + string.count
+            if newLength > Max_ID_Pod_Length {
                 return false
             }
         }
@@ -212,7 +236,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     }
     
     func changeInputTextfield(_ input: String) {
-        password = input
+        pod = input
     }
     
     func ImageConfirmTextfieldBeginEditing(_ textfield:UITextField) {}
@@ -220,7 +244,7 @@ class DebitCardLoseApplyViewController: BaseViewController, OneRowDropDownViewDe
     // MARK: - StoryBoard Touch Event
     @IBAction func m_btnSendClick(_ sender: Any) {
         if inputIsCorrect() {
-            checkImageConfirm(password, transactionId)
+            checkImageConfirm(pod, transactionId)
         }
     }
 }

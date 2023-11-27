@@ -14,11 +14,7 @@ let AuthorizationManage_HttpHead_Token = "Token"
 let AuthorizationManage_HttpHead_CID = "CID"
 let AuthorizationManage_HttpHead_VarifyId = "varifyId"
 let AuthorizationManage_HttpHead_Default = ["Content-Type":"application/json", "DeviceID":AgriBank_DeviceID]
-let AuthorizationManage_CIDListKey = ["a25dq":"hs3rwPsoYknnCCWjqIX57RgRflYGhKO1tmQxqWps21k=",
-                                      "b4wp0":"Az9jU/D/6d6+MANr/y/V78FimjSMHNj9A4i7TGS3JyU=",
-                                      "cni24":"gvpZZ70O8Tks20vMcGUEi2IiKDPk74gUhz9cndSIBTA=",
-                                      "dw67m":"KkfD6l0TqI50ix7uBPjKC52XrZhuJFVoAHWR4B1TFUo=",
-                                      "ez98f":"hIb8YaYT2ooLiU2q39k/O5s8W0VO0BdGesGbDZISGiY="]
+var AuthorizationManage_CIDListKey: [String: String] = [:]
 let AuthorizationManage_Random = Int(arc4random_uniform(UInt32(AuthorizationManage_CIDListKey.count)))
 
 struct ResponseLoginInfo {
@@ -27,7 +23,8 @@ struct ResponseLoginInfo {
     var USUDID:String? = nil        // 使用者ID
     var Balance:String? = nil       // 餘額
     var TBalance:String? = nil      // 定期總額
-    var STATUS:String? = nil        // 帳戶狀態 
+    var STATUS:String? = nil        // 帳戶狀態
+    var WalletBasecode:String? = nil  //WalletBasecode add by sweney for P2P 110/4/7
 }
 
 class AuthorizationManage {
@@ -44,8 +41,11 @@ class AuthorizationManage {
     private var canDepositTermination = false            // 是否可以「綜存戶轉存明細解約」
     private var canPayLoan = false                       // 是否可以「繳交放款本息」
     private var canChangeBaseInfo = false                // 是否可以「基本資料變更」
+   
     private var canEnterQRPay = false                   // 是否可以進入QRPay
     private var canEnterP2PTrans = false                // 是否可進入p2p轉帳
+    //2020-1-3 add by sweney
+    private var canShowQRCode0 = false                  // 是否可出示付款碼
     
     func setResponseLoginInfo(_ info:ResponseLoginInfo?, _ list:[[String:String]]?) {
         userInfo = info
@@ -78,7 +78,13 @@ class AuthorizationManage {
                         }
                     case "T56":
                         canEnterP2PTrans = true
-
+                    case "T63":
+                        canShowQRCode0 = true
+                        if let pID = getPlatformIDByAuthID(ID) {
+                            if authList?.index(of: pID) == nil {
+                                authList?.append(pID)
+                            }
+                        }
                     default:
                         if let pID = getPlatformIDByAuthID(ID) {
                             if authList?.index(of: pID) == nil {
@@ -121,7 +127,11 @@ class AuthorizationManage {
         /* 登出後，狀態要更新 */
         if status == false {
             AuthorizationManage.manage.setResponseLoginInfo(nil, nil)
-            (UIApplication.shared.delegate as! AppDelegate).removeNotificationAllEvent()
+            if #available(iOS 10.0, *) {
+                (UIApplication.shared.delegate as! AppDelegate).removeNotificationAllEvent()
+            } else {
+                // Fallback on earlier versions
+            }
             canNTNonAgreedTransfer = false
             canReservationTransferCancel = false
             canDepositTermination = false
@@ -159,7 +169,10 @@ class AuthorizationManage {
     func getCanEnterP2PTrans() -> Bool {
         return canEnterP2PTrans
     }
-
+//2020-1-3 add by sweney
+    func getCanShowQRCode0() -> Bool {
+        return canShowQRCode0
+    }
     func getHttpHead(_ isNeedCID:Bool) -> [String:String] {
         var head = AuthorizationManage_HttpHead_Default
 	//for test
@@ -245,7 +258,11 @@ class AuthorizationManage {
 //        .FeatureID_GPRegularAccountInfomation,
 //        .FeatureID_GPTransactionDetail,
 //        .FeatureID_GPGoldPrice,
-             .FeatureID_ContactCustomerService:
+//             // for mobileTransfer test
+//        .FeatureID_MobileNTTransfer,
+//        .FeatureID_MobileTransferSetup,
+             .FeatureID_ContactCustomerService,
+             .FeatureID_ThirdPartyAnnounce:
             canEnter = true
             
         default:
@@ -253,7 +270,7 @@ class AuthorizationManage {
         }
         return canEnter
     }
-    
+    // $NewWork - 1
     func getPlatformIDByAuthID(_ ID:String) -> PlatformFeatureID? {
         switch ID {
         case "T01": return PlatformFeatureID.FeatureID_AccountOverView
@@ -287,11 +304,14 @@ class AuthorizationManage {
         case "T30": return PlatformFeatureID.FeatureID_UserPwdChange
         case "T31": return PlatformFeatureID.FeatureID_MessageSwitch
 //        case "T32": return PlatformFeatureID.FeatureID_SetAvatar
-        case "T33": return PlatformFeatureID.FeatureID_DeviceBinding
+        //case "T33": return PlatformFeatureID.FeatureID_DeviceBinding //1090729 by chris
+        //case "T33": return PlatformFeatureID.FeatureID_Device2Binding  //1090729 by chris
+        case "T33": return PlatformFeatureID.FeatureID_OTPDeviceBinding  //1091116 by chiu
         case "T40": return PlatformFeatureID.FeatureID_ContactCustomerService
     //Guester 20180626
         case "T41": return PlatformFeatureID.FeatureID_MobilePay    // 行動支付
-        case "T42": return PlatformFeatureID.FeatureID_QRCodeTrans  // 掃描轉帳
+        case "T42":
+            return PlatformFeatureID.FeatureID_QRCodeTrans  // 掃描轉帳
         case "T43": return PlatformFeatureID.FeatureID_QRPay        // 台灣Pay
     //Guester 20180626 End
 
@@ -304,9 +324,54 @@ class AuthorizationManage {
         case "T49": return PlatformFeatureID.FeatureID_GPTransactionDetail  // 往來明細
         case "T50": return PlatformFeatureID.FeatureID_GPGoldPrice          // 牌告價格
     //Guester 20180731 End
+    //2019-10-2 add by sweney
+        case "T57": return PlatformFeatureID.FeatureID_UserPwdChangeByPass   //密碼沿用
+        case "T58": return PlatformFeatureID.FeatureID_USAccount             //常用轉入帳號
+        case "T59": return PlatformFeatureID.FeatureID_LoanPartialSettIement //部分清償
+       // case "T60": return PlatformFeatureID.//全部清償
+        case "T61": return PlatformFeatureID.FeatureID_FastLogIn             //快速登入
+        //2019-10-2 end
+        case "T62": return PlatformFeatureID.FeatureID_TodayBillQry           //當日待補票據查詢
+        case "T63":
+            return PlatformFeatureID.FeatureID_QRPay0       //出示付款碼
+        case "T64":
+            return PlatformFeatureID.FeatureID_QRPayDetailView //交易紀錄/退貨
+        case "T65":
+            return PlatformFeatureID.FeatureID_InitTransToNoQry //約定轉帳帳號查詢
+        case "T66":
+            return PlatformFeatureID.FeatureID_Quintuple //振興五倍券綁定
+           // return PlatformFeatureID.FeatureID_Triple //振興三倍券綁定
+            
+        case "T67":
+            return PlatformFeatureID.FeatureID_MOTPSetting      //申請OTP服務
+        case "T68" :
+            return PlatformFeatureID.FeatureID_MOTPEdit            //OTP服務裝置編輯
+        case "T69":
+            return PlatformFeatureID.FeatureID_GPRiskEvaluation       //投資風險屬性評估
+        case "T70" :
+            return PlatformFeatureID.FeatureID_EinvoiceShow            //發票載具條碼
+        case "T71" :
+            return PlatformFeatureID.FeatureID_MobileTransfer         //手機門號轉帳
+        case "T72" :
+            return PlatformFeatureID.FeatureID_MobileTransferSetup    //註冊帳號
+        case "T73" :
+            return PlatformFeatureID.FeatureID_MobileNTTransfer       //手機門號即時轉帳
+        case "T74" :
+            return PlatformFeatureID.FeatureID_QRTaipowerDetail       //台電
+        case "T75" :
+            return PlatformFeatureID.FeatureID_Cardless     //無卡提款
+        case "T76" :
+            return PlatformFeatureID.FeatureID_CardlessSetup      //無卡預約
+        case "T77" :
+            return PlatformFeatureID.FeatureID_CardlessQry     //無卡預約查詢
+        case "T78" :
+            return PlatformFeatureID.FeatureID_CardlessDisable      //無卡關閉
+       
+       
         default: return nil
         }
     }
+    // $NewWork - 2
     func getAuthIDByPlatformID(_ ID:PlatformFeatureID) -> String? {
         switch ID {
         case PlatformFeatureID.FeatureID_AccountOverView: return "T01"
@@ -340,12 +405,16 @@ class AuthorizationManage {
         case PlatformFeatureID.FeatureID_UserPwdChange: return "T30"
         case PlatformFeatureID.FeatureID_MessageSwitch: return "T31"
 //        case PlatformFeatureID.FeatureID_SetAvatar: return "T32"
-        case PlatformFeatureID.FeatureID_DeviceBinding: return "T33"
+        //case PlatformFeatureID.FeatureID_DeviceBinding: return "T33"
+        //case PlatformFeatureID.FeatureID_Device2Binding: return "T33"  //1090729 by chris
+        case PlatformFeatureID.FeatureID_OTPDeviceBinding: return "T33"  //1091116 by chiu
         case PlatformFeatureID.FeatureID_ContactCustomerService: return "T40"
         //Guester 20180626
         case PlatformFeatureID.FeatureID_MobilePay: return "T41"    // 行動支付
-        case PlatformFeatureID.FeatureID_QRCodeTrans: return "T42"  // 掃描轉帳
-        case PlatformFeatureID.FeatureID_QRPay: return "T43"        // 台灣Pay
+        case PlatformFeatureID.FeatureID_QRCodeTrans:
+            return "T42"  // 掃描轉帳
+        case PlatformFeatureID.FeatureID_QRPay:
+            return "T43"        // 台灣Pay碼
             //Guester 20180626 End
             
         //Guester 20180731
@@ -357,6 +426,31 @@ class AuthorizationManage {
         case PlatformFeatureID.FeatureID_GPTransactionDetail: return "T49"  // 往來明細
         case PlatformFeatureID.FeatureID_GPGoldPrice: return "T50"          // 牌告價格
         //Guester 20180731 End
+        //2019-10-2 add by sweney
+        case PlatformFeatureID.FeatureID_UserPwdChangeByPass: return "T57"  //密碼沿用
+        case PlatformFeatureID.FeatureID_USAccount: return "T58"            //常用轉入帳號
+        case PlatformFeatureID.FeatureID_LoanPartialSettIement: return "T59"            //部分清償
+      // case PlatformFeatureID. : return "T60"            //全部清償
+        case PlatformFeatureID.FeatureID_FastLogIn:return "T61"             //快速登入
+        //2019-10-2 end
+        case PlatformFeatureID.FeatureID_TodayBillQry:return "T62"    //當日待補票據查詢
+        case  PlatformFeatureID.FeatureID_QRPay0: return "T63"    // 出示付款碼
+        case PlatformFeatureID.FeatureID_QRPayDetailView: return "T64" //交易紀錄/退貨
+        case   PlatformFeatureID.FeatureID_InitTransToNoQry: return "T65" //約定轉帳帳號查詢
+       // case   PlatformFeatureID.FeatureID_Triple: return "T66" //振興三倍券綁定
+        case   PlatformFeatureID.FeatureID_Quintuple: return "T66" //振興五倍券綁定
+        case   PlatformFeatureID.FeatureID_MOTPSetting: return "T67" //申請OTP服務
+        case   PlatformFeatureID.FeatureID_MOTPEdit: return "T68" //OTP服務裝置編輯
+        case   PlatformFeatureID.FeatureID_GPRiskEvaluation: return "T69" //風險評估
+        case   PlatformFeatureID.FeatureID_EinvoiceShow:return "T70" //發票載具條碼
+        case   PlatformFeatureID.FeatureID_MobileTransfer: return "T71" //手機門號轉帳
+        case   PlatformFeatureID.FeatureID_MobileTransferSetup: return "T72" //註冊帳號
+        case   PlatformFeatureID.FeatureID_MobileNTTransfer: return "T73" //手機門號即時轉帳
+        case   PlatformFeatureID.FeatureID_QRTaipowerDetail: return "T74"       //台電
+        case   PlatformFeatureID.FeatureID_Cardless: return "T75"       //無卡預約
+        case   PlatformFeatureID.FeatureID_CardlessSetup: return "T76"       //無卡預約
+        case   PlatformFeatureID.FeatureID_CardlessQry: return "T77"       //無卡預約
+        case   PlatformFeatureID.FeatureID_CardlessDisable: return "T78"       //無卡預約
         default: return nil
         }
     }
@@ -371,7 +465,14 @@ class AuthorizationManage {
              .FeatureID_Home,
              .FeatureID_Edit,
              .FeatureID_DeviceBinding,
-             .FeatureID_ContactCustomerService:
+             .FeatureID_Device2Binding, //1090729 by chris
+             .FeatureID_OTPDeviceBinding, // 1091116 by chiu
+             .FeatureID_ContactCustomerService,
+             .FeatureID_ThirdPartyAnnounce
+//             // for mobileTransfer test
+//             ,.FeatureID_MobileTransferSetup,
+//             .FeatureID_MobileNTTransfer
+             :
             return true
         default:
             if authList?.index(of: pID) == nil {
@@ -399,7 +500,7 @@ class AuthorizationManage {
         if IsLoginSuccess() {
             if loginInfo != nil {
                 /* 因大小寫身分證都是同一人，統一轉成大寫當key值 */
-                let key = SecurityUtility.utility.AES256Encrypt("\(loginInfo!.bankCode)\(loginInfo!.account.uppercased())", AES_Key)
+                let key = SecurityUtility.utility.AES256Encrypt("\(loginInfo!.bankCode)\(loginInfo!.aot.uppercased())", "\(SEA1)\(SEA2)\(SEA3)")
                 SecurityUtility.utility.writeFileByKey(ID, SetKey: key)
             }
         }
@@ -418,17 +519,17 @@ class AuthorizationManage {
             
         case .Default_Type:
             if IsLoginSuccess() {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView,.FeatureID_ExchangeRate, .FeatureID_NTTransfer, .FeatureID_MobileTransferSetup,.FeatureID_CardlessSetup]
             }
             else {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_ExchangeRate, .FeatureID_Promotion, .FeatureID_ServiceBase, .FeatureID_News]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView,.FeatureID_ExchangeRate, .FeatureID_NTTransfer, .FeatureID_MobileTransferSetup, .FeatureID_News]
             }
             
         case .User_Type:
             needReAddList.removeAll()
             if IsLoginSuccess() {
                 if loginInfo != nil {
-                    let key = SecurityUtility.utility.AES256Encrypt("\(loginInfo!.bankCode)\(loginInfo!.account.uppercased())", AES_Key)
+                    let key = SecurityUtility.utility.AES256Encrypt("\(loginInfo!.bankCode)\(loginInfo!.aot.uppercased())", "\(SEA1)\(SEA2)\(SEA3)")
                     if let IDString = SecurityUtility.utility.readFileByKey(SetKey: key) {
                         if !(IDString as! String).isEmpty {
                             let IDStringList = (IDString as! String).components(separatedBy: AuthorizationManage_IDList_Separator)
@@ -476,14 +577,27 @@ class AuthorizationManage {
             }
             
 //        case .Edit_Type:
-//            list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding]
+//            list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding, .FeatureID_Device2Binding, .FeatureID_OTPDeviceBinding]
             
         case .Menu_Type, .Edit_Type:
             if !IsLoginSuccess() {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_MobilePay, /* .FeatureID_GoldPassbook,*/ .FeatureID_CustomerService, .FeatureID_DeviceBinding,.FeatureID_ContactCustomerService]
+                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_MobilePay,/* .FeatureID_Triple, *//* .FeatureID_GoldPassbook,*/ .FeatureID_CustomerService, /*.FeatureID_DeviceBinding,*/.FeatureID_ContactCustomerService]
+//                // for mobileTransfer test
+//                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_FinancialInformation, .FeatureID_MobilePay,/* .FeatureID_Triple, *//* .FeatureID_GoldPassbook,*/ .FeatureID_CustomerService, /*.FeatureID_DeviceBinding,*/.FeatureID_ContactCustomerService, .FeatureID_MobileTransfer]
             }
             else {
-                list = [.FeatureID_AccountOverView, .FeatureID_AccountDetailView, .FeatureID_NTAccountTransfer, .FeatureID_LoseApply, .FeatureID_Payment, .FeatureID_FinancialInformation, .FeatureID_MobilePay, .FeatureID_GoldPassbook, .FeatureID_CustomerService, .FeatureID_PersopnalSetting, .FeatureID_DeviceBinding, .FeatureID_ContactCustomerService]
+                list = [.FeatureID_AccountOverView,
+                        .FeatureID_AccountDetailView,
+                        .FeatureID_NTAccountTransfer,
+                        .FeatureID_MobileTransfer,
+                        .FeatureID_Cardless,
+                        .FeatureID_LoseApply, .FeatureID_Payment,
+                        .FeatureID_FinancialInformation,
+                        .FeatureID_MobilePay,.FeatureID_Quintuple,
+                        .FeatureID_GoldPassbook,
+                        .FeatureID_CustomerService,
+                        .FeatureID_PersopnalSetting, /*.FeatureID_DeviceBinding , .FeatureID_Device2Binding,*/
+                        .FeatureID_OTPDeviceBinding,.FeatureID_ContactCustomerService]   //1090729 by chris add FeatureID_Device2Binding 1091116 add .FeatureID_OTPDeviceBinding
             }
         }
         

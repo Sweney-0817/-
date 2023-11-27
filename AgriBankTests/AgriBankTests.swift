@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import AgriBank
+//@testable import AgriBank
 
 class AgriBankTests: XCTestCase {
     

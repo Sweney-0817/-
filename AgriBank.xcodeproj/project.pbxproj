@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09873DA426B78FB500ED1B8B /* MobileTransferSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09873DA326B78FB500ED1B8B /* MobileTransferSetupViewController.swift */; };
+		09873DA926B78FE200ED1B8B /* MobileNTTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09873DA826B78FE200ED1B8B /* MobileNTTransferViewController.swift */; };
+		2031DEB426C3A2C0009B8850 /* ThirdPartyAnnounce.html in Resources */ = {isa = PBXBuildFile; fileRef = 2031DEB326C3A2C0009B8850 /* ThirdPartyAnnounce.html */; };
+		2031DEB926C3A303009B8850 /* ThirdPartyAnnounceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2031DEB826C3A303009B8850 /* ThirdPartyAnnounceViewController.swift */; };
 		6109C02F1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6109C02E1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift */; };
 		6117CF3D1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6117CF3C1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift */; };
 		611B8EC91EE966BE003FCFDF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 611B8EC71EE966BE003FCFDF /* Main.storyboard */; };
@@ -26,7 +30,7 @@
 		61352B4E1FC3DA1E00730082 /* SGActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61352B461FC3DA1E00730082 /* SGActionView.m */; };
 		61352B4F1FC3DA1E00730082 /* SGAlertMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 61352B491FC3DA1E00730082 /* SGAlertMenu.m */; };
 		61352B501FC3DA1E00730082 /* SGBaseMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 61352B4B1FC3DA1E00730082 /* SGBaseMenu.m */; };
-		61352B511FC3DA1E00730082 /* SGSheetMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 61352B4C1FC3DA1E00730082 /* SGSheetMenu.m */; };
+		61352B511FC3DA1E00730082 /* SGSheetQrMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 61352B4C1FC3DA1E00730082 /* SGSheetQrMenu.m */; };
 		61352B521FC3DA1E00730082 /* SGGridMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 61352B4D1FC3DA1E00730082 /* SGGridMenu.m */; };
 		613DA77A1F8DC12A0005E6CC /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613DA7791F8DC1280005E6CC /* EditViewController.swift */; };
 		6148D9CF1EDFD10000C02CA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6148D9CE1EDFD10000C02CA3 /* AppDelegate.swift */; };
@@ -72,7 +76,6 @@
 		61564A8B1F09E7D900CB6C4A /* TwoRowDropDownView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61564A851F09E7D900CB6C4A /* TwoRowDropDownView.xib */; };
 		61564A8D1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61564A8C1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift */; };
 		615A77F71FB436A900D0D03C /* agribank_dev_credential.bin in Resources */ = {isa = PBXBuildFile; fileRef = 615A77F41FB436A900D0D03C /* agribank_dev_credential.bin */; };
-		615A77F81FB436A900D0D03C /* 1-proto5-pub.der in Resources */ = {isa = PBXBuildFile; fileRef = 615A77F51FB436A900D0D03C /* 1-proto5-pub.der */; };
 		615A77F91FB436A900D0D03C /* agribank_dev_app_const.bin in Resources */ = {isa = PBXBuildFile; fileRef = 615A77F61FB436A900D0D03C /* agribank_dev_app_const.bin */; };
 		615A77FD1FB4371000D0D03C /* agribank_pro_app_const.bin in Resources */ = {isa = PBXBuildFile; fileRef = 615A77FA1FB4370F00D0D03C /* agribank_pro_app_const.bin */; };
 		615A77FE1FB4371000D0D03C /* agribank_pro_credential.bin in Resources */ = {isa = PBXBuildFile; fileRef = 615A77FB1FB4371000D0D03C /* agribank_pro_credential.bin */; };
@@ -90,7 +93,6 @@
 		61B7CD0B1F458B5200145517 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B7CD0A1F458B5200145517 /* DatePickerView.swift */; };
 		61B855EE2003193900B9F46D /* ContactCustomerServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B855ED2003193900B9F46D /* ContactCustomerServiceViewController.swift */; };
 		61DAE3481F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DAE3471F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift */; };
-		61DB5C381F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DB5C371F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift */; };
 		61DB5C3A1F0E0D85006622EC /* DepositCombinedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DB5C391F0E0D85006622EC /* DepositCombinedDetailViewController.swift */; };
 		61E374A01F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E3749F1F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift */; };
 		61E374A21F0F597E0044EE3A /* LoanPrincipalInterestCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61E374A11F0F597E0044EE3A /* LoanPrincipalInterestCell.xib */; };
@@ -113,6 +115,86 @@
 		61FE9D171F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */; };
 		61FE9D181F15D23400FA32FE /* UserChangeIDPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */; };
 		61FE9D1B1F15D24500FA32FE /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61FE9D191F15D24500FA32FE /* Setting.storyboard */; };
+		910862CE2499C6F7006F0233 /* TripleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910862CD2499C6F7006F0233 /* TripleViewController.swift */; };
+		9112CF402978DC97004321AA /* TXMEMOCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9112CF3F2978DC97004321AA /* TXMEMOCell1.xib */; };
+		9112CF422978DCD8004321AA /* TXMEMOCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9112CF412978DCD8004321AA /* TXMEMOCell2.xib */; };
+		911401392536C9F600D80343 /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911401382536C9F600D80343 /* KeyChain.swift */; };
+		9120F6D3237A98840087B4A0 /* FastLogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120F6CE237A98840087B4A0 /* FastLogInViewController.swift */; };
+		9120F6D5237A98840087B4A0 /* GestureCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120F6D0237A98840087B4A0 /* GestureCollectionView.swift */; };
+		9120F6D6237A98840087B4A0 /* GetFastLogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120F6D1237A98840087B4A0 /* GetFastLogInViewController.swift */; };
+		9120F6D7237A98840087B4A0 /* FastLogInResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120F6D2237A98840087B4A0 /* FastLogInResultViewController.swift */; };
+		9120F6E1237AA1DE0087B4A0 /* FastLogInGraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120F6E0237AA1DE0087B4A0 /* FastLogInGraphicView.swift */; };
+		912D7864253D1BF0009FDD22 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 912D7863253D1BF0009FDD22 /* UserNotifications.framework */; };
+		912D7873253D7F8E009FDD22 /* GetMOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912D7872253D7F8E009FDD22 /* GetMOTPViewController.swift */; };
+		912D7875253D8A2D009FDD22 /* MOTPSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912D7874253D8A2D009FDD22 /* MOTPSettingViewController.swift */; };
+		912D7877253D8A46009FDD22 /* MOTPSettingResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912D7876253D8A46009FDD22 /* MOTPSettingResultViewController.swift */; };
+		912D7879253FE3AC009FDD22 /* MOTPSetting2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912D7878253FE3AC009FDD22 /* MOTPSetting2ViewController.swift */; };
+		914363002A9D854B009908A2 /* server2023.cer in Resources */ = {isa = PBXBuildFile; fileRef = 914362FF2A9D854B009908A2 /* server2023.cer */; };
+		9149535D2A396243001FF706 /* SGSheetMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9149535C2A396243001FF706 /* SGSheetMenu.m */; };
+		914953602A399116001FF706 /* GPRiskCheckCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9149535F2A399116001FF706 /* GPRiskCheckCell.xib */; };
+		914953632A399209001FF706 /* SKRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914953622A399209001FF706 /* SKRadioButton.swift */; };
+		914953652A3997D6001FF706 /* GPRiskEvaluationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914953642A3997D6001FF706 /* GPRiskEvaluationViewController.swift */; };
+		914953672A3997E4001FF706 /* GPRiskRulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914953662A3997E4001FF706 /* GPRiskRulesViewController.swift */; };
+		9149536B2A3AE5CD001FF706 /* GPRiskMulitChekCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9149536A2A3AE5CD001FF706 /* GPRiskMulitChekCell.xib */; };
+		9149536D2A3AEB6B001FF706 /* SKCheckButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9149536C2A3AEB6B001FF706 /* SKCheckButton.swift */; };
+		9151ECAF24285A250006EB72 /* InitTransToNoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9151ECAE24285A250006EB72 /* InitTransToNoEditViewController.swift */; };
+		9151ECB124285DDF0006EB72 /* InitTransToEditResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9151ECB024285DDF0006EB72 /* InitTransToEditResultViewController.swift */; };
+		9151ECB8242881670006EB72 /* E2E.m in Sources */ = {isa = PBXBuildFile; fileRef = 9151ECB7242881670006EB72 /* E2E.m */; };
+		91539FD32420752A00932770 /* libTWPayLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 911D4218241B79910012BDC8 /* libTWPayLib.a */; };
+		91539FD52420CDAD00932770 /* InitTransToCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91539FD42420CDAD00932770 /* InitTransToCell.xib */; };
+		91539FD72420CDD000932770 /* InitTransToNoQryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91539FD62420CDD000932770 /* InitTransToNoQryViewController.swift */; };
+		9154732723C310C0002D9807 /* QRPayDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9154732623C310C0002D9807 /* QRPayDetailViewController.swift */; };
+		9154732923C310E6002D9807 /* ShowQRDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9154732823C310E6002D9807 /* ShowQRDetailViewController.swift */; };
+		91569435237130E9000BD969 /* TouchIDLogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91569434237130E9000BD969 /* TouchIDLogInViewController.swift */; };
+		9158DFB723F7CD7B001D0F5C /* QRPayRefundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9158DFB623F7CD7B001D0F5C /* QRPayRefundViewController.swift */; };
+		915F50B428D31E3C006BF306 /* CardlessSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915F50B328D31E3C006BF306 /* CardlessSetupViewController.swift */; };
+		915F50B628D81931006BF306 /* CardlessQryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915F50B528D81931006BF306 /* CardlessQryViewController.swift */; };
+		915F50B828D84B83006BF306 /* CardlessQryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 915F50B728D84B83006BF306 /* CardlessQryCell.xib */; };
+		915F50BA28DAF0F9006BF306 /* CardlessDisableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915F50B928DAF0F9006BF306 /* CardlessDisableViewController.swift */; };
+		915F50BC28DAF178006BF306 /* CardlessDisableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 915F50BB28DAF178006BF306 /* CardlessDisableCell.xib */; };
+		916872C3262EC500002E97ED /* EinvoiceShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916872C2262EC500002E97ED /* EinvoiceShowViewController.swift */; };
+		916872C9263104A6002E97ED /* EinvoiceAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916872C8263104A6002E97ED /* EinvoiceAddViewController.swift */; };
+		916872D426312706002E97ED /* Code39.m in Sources */ = {isa = PBXBuildFile; fileRef = 916872D326312706002E97ED /* Code39.m */; };
+		916DC48E23877CA100DAC7EC /* private_key.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 916DC48D23877CA100DAC7EC /* private_key.p12 */; };
+		916DC49223877D5600DAC7EC /* RSAObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 916DC49023877D5600DAC7EC /* RSAObjC.m */; };
+		916E4D5F277C5BAB001E90C2 /* QRTaipowerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916E4D5E277C5BAB001E90C2 /* QRTaipowerDetailViewController.swift */; };
+		916E4D61277C5BCF001E90C2 /* ShowQRTaipowerDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916E4D60277C5BCF001E90C2 /* ShowQRTaipowerDetailController.swift */; };
+		91703181277AF7B500131125 /* TXMBarcodeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91703180277AF7B500131125 /* TXMBarcodeCell.xib */; };
+		91746FEA26F08ADA00BC2901 /* QuintupleShow2DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91746FE926F08ADA00BC2901 /* QuintupleShow2DetailViewController.swift */; };
+		91746FF226F08B0200BC2901 /* QuintupleShowDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91746FF126F08B0200BC2901 /* QuintupleShowDetailViewController.swift */; };
+		9179E330238F936A00CB9D28 /* QRPayViewController0.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9179E32F238F936A00CB9D28 /* QRPayViewController0.swift */; };
+		917F2BF7278EBD07000DE8BE /* ResultCheckCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 917F2BF6278EBD07000DE8BE /* ResultCheckCell.xib */; };
+		918C3A3F27E3227400C18161 /* PodConfirmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 918C3A3E27E3227400C18161 /* PodConfirmView.xib */; };
+		918C3A4127E3229700C18161 /* PodConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918C3A4027E3229700C18161 /* PodConfirmView.swift */; };
+		918C3A4327E8224D00C18161 /* GestureVerify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918C3A4227E8224D00C18161 /* GestureVerify.swift */; };
+		918C3A4727E8228400C18161 /* GestureVerify.xib in Resources */ = {isa = PBXBuildFile; fileRef = 918C3A4627E8228400C18161 /* GestureVerify.xib */; };
+		918C9B792774575F0091BA29 /* TXMobileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 918C9B782774575F0091BA29 /* TXMobileCell.xib */; };
+		91A015AF23AB58050096121D /* DepositCombinedToDepositSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A015AE23AB58050096121D /* DepositCombinedToDepositSearchViewController.swift */; };
+		91A015B123AB58300096121D /* TodayBillQryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A015B023AB58300096121D /* TodayBillQryViewController.swift */; };
+		91A015B923AB64AB0096121D /* TodayBillQryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91A015B723AB64AB0096121D /* TodayBillQryCell.xib */; };
+		91A0A5CB28CF22000012C32E /* Cardless.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91A0A5C928CF22000012C32E /* Cardless.storyboard */; };
+		91A0A5CE28D07D1F0012C32E /* CardlessSetupAcceptRulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A0A5CD28D07D1F0012C32E /* CardlessSetupAcceptRulesViewController.swift */; };
+		91A236F8234873DA0061B5A3 /* USAccountShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A236F7234873DA0061B5A3 /* USAccountShowViewController.swift */; };
+		91A236FA234873F90061B5A3 /* USAccountAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A236F9234873F90061B5A3 /* USAccountAddViewController.swift */; };
+		91A236FC2348740E0061B5A3 /* USAccountEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A236FB2348740E0061B5A3 /* USAccountEditViewController.swift */; };
+		91A236FE2348741F0061B5A3 /* USAccountResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A236FD2348741F0061B5A3 /* USAccountResultViewController.swift */; };
+		91A23712234ADFFE0061B5A3 /* USAccountViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91A23710234ADFFE0061B5A3 /* USAccountViewCell.xib */; };
+		91A2371423557A730061B5A3 /* PayLoanPartialSettIementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2371323557A730061B5A3 /* PayLoanPartialSettIementViewController.swift */; };
+		91A2371623557C050061B5A3 /* LoanPartialSettIementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2371523557C050061B5A3 /* LoanPartialSettIementViewController.swift */; };
+		91A85E0C28B6054C009BDFE8 /* server2022.cer in Resources */ = {isa = PBXBuildFile; fileRef = 91A85E0B28B6054C009BDFE8 /* server2022.cer */; };
+		91AC1F1F26F077FC00D7FB72 /* QuintupleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AC1F1E26F077FC00D7FB72 /* QuintupleViewController.swift */; };
+		91AC1F2426F07AFB00D7FB72 /* GetFirstQuintupleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AC1F2326F07AFB00D7FB72 /* GetFirstQuintupleViewController.swift */; };
+		91AC1F2926F07C4100D7FB72 /* QuintupleResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AC1F2826F07C4100D7FB72 /* QuintupleResultViewController.swift */; };
+		91AEA2C229430348009894CE /* libMOTPPushAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9166D5D825DF822C000C2844 /* libMOTPPushAPI.a */; };
+		91C69F62276C2A8A00105CE1 /* TaipowerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C69F61276C2A8A00105CE1 /* TaipowerInfo.swift */; };
+		91CEDB7D2AB2A06B00400760 /* View in Resources */ = {isa = PBXBuildFile; fileRef = 91CEDB7C2AB2A06B00400760 /* View */; };
+		91F45EEC237BEBAE00363CCD /* GesturePwd.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91F45EEA237BEBAE00363CCD /* GesturePwd.xib */; };
+		91F45EEE237CEA1200363CCD /* GesturePwd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F45EED237CEA1200363CCD /* GesturePwd.swift */; };
+		A183A026233497C300E43BD8 /* UserChangeIDPwdByPassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A024233497C300E43BD8 /* UserChangeIDPwdByPassViewController.swift */; };
+		A183A027233497C300E43BD8 /* UserChangeIDPwdByPassResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A025233497C300E43BD8 /* UserChangeIDPwdByPassResultViewController.swift */; };
+		BABA7FA726B7A5A3003151BD /* MobileTransferSetupAcceptRulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABA7FA626B7A5A3003151BD /* MobileTransferSetupAcceptRulesViewController.swift */; };
+		BABA7FA826B7A8EB003151BD /* MobileTransfer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BABA7FAA26B7A8EB003151BD /* MobileTransfer.storyboard */; };
+		BABA7FAC26B7F3C4003151BD /* MobileTransferSetupResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABA7FAB26B7F3C4003151BD /* MobileTransferSetupResultViewController.swift */; };
 		BE00496121DC8FF9002122AE /* TPSMerchantInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00495F21DC8FF9002122AE /* TPSMerchantInfo.swift */; };
 		BE00496221DC8FF9002122AE /* TPSQRCodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00496021DC8FF9002122AE /* TPSQRCodeManager.swift */; };
 		BE49D0DF20FEEDF0004E6BD6 /* PolygonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE49D0DE20FEEDF0004E6BD6 /* PolygonView.swift */; };
@@ -149,11 +231,9 @@
 		BE8CDFA8212AC9B2004D3632 /* GPDiffAmountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8CDFA7212AC9B2004D3632 /* GPDiffAmountDetailView.swift */; };
 		BE970DD122EFEC2C00F8FB51 /* GetPersonalDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE970DD022EFEC2C00F8FB51 /* GetPersonalDataViewController.swift */; };
 		BE970DD4230CFEA300F8FB51 /* PersonalInfoAgreement.html in Resources */ = {isa = PBXBuildFile; fileRef = BE970DD3230CFEA300F8FB51 /* PersonalInfoAgreement.html */; };
-		BE970DD6230D28CA00F8FB51 /* server.cer in Resources */ = {isa = PBXBuildFile; fileRef = BE970DD5230D28CA00F8FB51 /* server.cer */; };
 		BEB38A6A1F0A27EE006094AC /* BillPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB38A681F0A27EE006094AC /* BillPaymentViewController.swift */; };
 		BEB38A6B1F0A27EE006094AC /* TaxPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB38A691F0A27EE006094AC /* TaxPaymentViewController.swift */; };
 		BEB38A6E1F0A2800006094AC /* Payment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEB38A6C1F0A2800006094AC /* Payment.storyboard */; };
-		BEB8616F23150E390054AB96 /* server2019.cer in Resources */ = {isa = PBXBuildFile; fileRef = BEB8616E23150E390054AB96 /* server2019.cer */; };
 		BED66B90210EC0FF00D0D5D4 /* GoldPassbook.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BED66B8E210EC0FF00D0D5D4 /* GoldPassbook.storyboard */; };
 		BED66B95211010DB00D0D5D4 /* GPAccountInfomationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B94211010DB00D0D5D4 /* GPAccountInfomationViewController.swift */; };
 		BED66B972110112F00D0D5D4 /* GPSingleBuyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED66B962110112F00D0D5D4 /* GPSingleBuyViewController.swift */; };
@@ -166,6 +246,19 @@
 		BEF0D9D520E2512D00BC9833 /* AcceptRulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF0D9D420E2512D00BC9833 /* AcceptRulesViewController.swift */; };
 		BEF0D9D720E2519000BC9833 /* QRCodeTransViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF0D9D620E2519000BC9833 /* QRCodeTransViewController.swift */; };
 		BEF0D9D920E251DD00BC9833 /* QRPayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF0D9D820E251DD00BC9833 /* QRPayViewController.swift */; };
+		ED5C95F424AC4079009A6685 /* 220000.imageset in Resources */ = {isa = PBXBuildFile; fileRef = ED5C95F324AC4079009A6685 /* 220000.imageset */; };
+		ED6039AC249B621700775A92 /* GetFirstTripleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6039AB249B621700775A92 /* GetFirstTripleViewController.swift */; };
+		ED61F10D256606D7000E0107 /* OTPDeviceEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED61F10C256606D7000E0107 /* OTPDeviceEditViewController.swift */; };
+		ED61F10F25664150000E0107 /* OTPDeviceInfoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED61F10E25664150000E0107 /* OTPDeviceInfoEditViewController.swift */; };
+		ED61F111256646BE000E0107 /* OTPDeviceInfoToEditResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED61F110256646BE000E0107 /* OTPDeviceInfoToEditResultViewController.swift */; };
+		ED628BD324D1577500721060 /* DeviceBinding2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED628BD224D1577500721060 /* DeviceBinding2ViewController.swift */; };
+		ED63C5C424A2FD8A006E7DF5 /* TripleShowDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED63C5C324A2FD8A006E7DF5 /* TripleShowDetailViewController.swift */; };
+		ED63C5C624A32147006E7DF5 /* TripleShow2DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED63C5C524A32147006E7DF5 /* TripleShow2DetailViewController.swift */; };
+		ED66562025625CD50061C48C /* OTPDeviceBindingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED66561F25625CD50061C48C /* OTPDeviceBindingViewController.swift */; };
+		ED6723A624CA815800F9847C /* TXMEMOCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED6723A424CA815800F9847C /* TXMEMOCell.xib */; };
+		ED73B1D8249CA242002756C7 /* TripleResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED73B1D7249CA242002756C7 /* TripleResultViewController.swift */; };
+		EDB9D123248766F100185D35 /* PushDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB9D122248766F100185D35 /* PushDetailViewController.swift */; };
+		EDFF08B52565041700C7F3CD /* OtpDeviceToCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EDFF08B32565041700C7F3CD /* OtpDeviceToCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -186,6 +279,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		09873DA326B78FB500ED1B8B /* MobileTransferSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MobileTransferSetupViewController.swift; path = Platform/MobileTransferStoryBoard/MobileTransferSetupViewController.swift; sourceTree = "<group>"; };
+		09873DA826B78FE200ED1B8B /* MobileNTTransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MobileNTTransferViewController.swift; path = Platform/MobileTransferStoryBoard/MobileNTTransferViewController.swift; sourceTree = "<group>"; };
+		2031DEB326C3A2C0009B8850 /* ThirdPartyAnnounce.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = ThirdPartyAnnounce.html; path = Resource/ThirdPartyAnnounce.html; sourceTree = "<group>"; };
+		2031DEB826C3A303009B8850 /* ThirdPartyAnnounceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThirdPartyAnnounceViewController.swift; path = Platform/MainStoryBoard/ThirdPartyAnnounceViewController.swift; sourceTree = "<group>"; };
 		6109C02E1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheckLoseApplyViewController.swift; path = Platform/LoseStoryBoard/CheckLoseApplyViewController.swift; sourceTree = "<group>"; };
 		6117CF3C1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PayLoanPrincipalInterestViewController.swift; path = Platform/TransferStoryBoard/PayLoanPrincipalInterestViewController.swift; sourceTree = "<group>"; };
 		611B8EC81EE966BE003FCFDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -210,12 +307,12 @@
 		61352B471FC3DA1E00730082 /* SGAlertMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGAlertMenu.h; path = ThirdParty/SGActionView/SGAlertMenu.h; sourceTree = "<group>"; };
 		61352B481FC3DA1E00730082 /* SGGridMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGGridMenu.h; path = ThirdParty/SGActionView/SGGridMenu.h; sourceTree = "<group>"; };
 		61352B491FC3DA1E00730082 /* SGAlertMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGAlertMenu.m; path = ThirdParty/SGActionView/SGAlertMenu.m; sourceTree = "<group>"; };
-		61352B4A1FC3DA1E00730082 /* SGSheetMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGSheetMenu.h; path = ThirdParty/SGActionView/SGSheetMenu.h; sourceTree = "<group>"; };
+		61352B4A1FC3DA1E00730082 /* SGSheetQrMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGSheetQrMenu.h; path = ThirdParty/SGActionView/SGSheetQrMenu.h; sourceTree = "<group>"; };
 		61352B4B1FC3DA1E00730082 /* SGBaseMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGBaseMenu.m; path = ThirdParty/SGActionView/SGBaseMenu.m; sourceTree = "<group>"; };
-		61352B4C1FC3DA1E00730082 /* SGSheetMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGSheetMenu.m; path = ThirdParty/SGActionView/SGSheetMenu.m; sourceTree = "<group>"; };
+		61352B4C1FC3DA1E00730082 /* SGSheetQrMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGSheetQrMenu.m; path = ThirdParty/SGActionView/SGSheetQrMenu.m; sourceTree = "<group>"; };
 		61352B4D1FC3DA1E00730082 /* SGGridMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGGridMenu.m; path = ThirdParty/SGActionView/SGGridMenu.m; sourceTree = "<group>"; };
 		613DA7791F8DC1280005E6CC /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EditViewController.swift; path = Platform/MainStoryBoard/EditViewController.swift; sourceTree = "<group>"; };
-		6148D9CB1EDFD10000C02CA3 /* AgriBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgriBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6148D9CB1EDFD10000C02CA3 /* AgriBank-sit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AgriBank-sit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6148D9CE1EDFD10000C02CA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6148D9D51EDFD10000C02CA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6148D9D81EDFD10000C02CA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -267,7 +364,6 @@
 		61564A851F09E7D900CB6C4A /* TwoRowDropDownView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TwoRowDropDownView.xib; path = UI/View/TwoRowDropDownView.xib; sourceTree = "<group>"; };
 		61564A8C1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReservationTransferSearchCancelViewController.swift; path = Platform/TransferStoryBoard/ReservationTransferSearchCancelViewController.swift; sourceTree = "<group>"; };
 		615A77F41FB436A900D0D03C /* agribank_dev_credential.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = agribank_dev_credential.bin; path = Resource/KeyPasco/Develop/agribank_dev_credential.bin; sourceTree = "<group>"; };
-		615A77F51FB436A900D0D03C /* 1-proto5-pub.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = "1-proto5-pub.der"; path = "Resource/KeyPasco/Develop/1-proto5-pub.der"; sourceTree = "<group>"; };
 		615A77F61FB436A900D0D03C /* agribank_dev_app_const.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = agribank_dev_app_const.bin; path = Resource/KeyPasco/Develop/agribank_dev_app_const.bin; sourceTree = "<group>"; };
 		615A77FA1FB4370F00D0D03C /* agribank_pro_app_const.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = agribank_pro_app_const.bin; path = Resource/KeyPasco/Release/agribank_pro_app_const.bin; sourceTree = "<group>"; };
 		615A77FB1FB4371000D0D03C /* agribank_pro_credential.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = agribank_pro_credential.bin; path = Resource/KeyPasco/Release/agribank_pro_credential.bin; sourceTree = "<group>"; };
@@ -287,7 +383,6 @@
 		61B855ED2003193900B9F46D /* ContactCustomerServiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContactCustomerServiceViewController.swift; path = Platform/CustomerServiceStoryBoard/ContactCustomerServiceViewController.swift; sourceTree = "<group>"; };
 		61D793FA1F3178D100DF02CD /* AgriBank.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AgriBank.entitlements; sourceTree = "<group>"; };
 		61DAE3471F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserFirstChangeIDPwdViewController.swift; path = Platform/SettingStoryBoard/UserFirstChangeIDPwdViewController.swift; sourceTree = "<group>"; };
-		61DB5C371F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DepositCombinedToDepositSearchViewController.swift; path = Platform/TransferStoryBoard/DepositCombinedToDepositSearchViewController.swift; sourceTree = "<group>"; };
 		61DB5C391F0E0D85006622EC /* DepositCombinedDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DepositCombinedDetailViewController.swift; path = Platform/TransferStoryBoard/DepositCombinedDetailViewController.swift; sourceTree = "<group>"; };
 		61E3749F1F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoanPrincipalInterestViewController.swift; path = Platform/TransferStoryBoard/LoanPrincipalInterestViewController.swift; sourceTree = "<group>"; };
 		61E374A11F0F597E0044EE3A /* LoanPrincipalInterestCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoanPrincipalInterestCell.xib; path = UI/View/Cell/LoanPrincipalInterestCell.xib; sourceTree = "<group>"; };
@@ -310,6 +405,109 @@
 		61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdResultViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdResultViewController.swift; sourceTree = "<group>"; };
 		61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdViewController.swift; sourceTree = "<group>"; };
 		61FE9D1A1F15D24500FA32FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Setting.storyboard; sourceTree = "<group>"; };
+		910862CD2499C6F7006F0233 /* TripleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TripleViewController.swift; path = Platform/SettingStoryBoard/TripleViewController.swift; sourceTree = "<group>"; };
+		9112CF3F2978DC97004321AA /* TXMEMOCell1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TXMEMOCell1.xib; path = UI/View/Cell/TXMEMOCell1.xib; sourceTree = "<group>"; };
+		9112CF412978DCD8004321AA /* TXMEMOCell2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TXMEMOCell2.xib; path = UI/View/Cell/TXMEMOCell2.xib; sourceTree = "<group>"; };
+		911401382536C9F600D80343 /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
+		911D4218241B79910012BDC8 /* libTWPayLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTWPayLib.a; path = Resource/libTWPayLib.a; sourceTree = "<group>"; };
+		911D421D241B7ADC0012BDC8 /* Verifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Verifier.h; path = AgriBank/Utility/TWPayLib/Verifier.h; sourceTree = SOURCE_ROOT; };
+		911D421E241B7ADC0012BDC8 /* NSString+isNumeric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+isNumeric.h"; path = "AgriBank/Utility/TWPayLib/NSString+isNumeric.h"; sourceTree = SOURCE_ROOT; };
+		911D421F241B7ADC0012BDC8 /* DataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataModel.h; path = AgriBank/Utility/TWPayLib/DataModel.h; sourceTree = SOURCE_ROOT; };
+		911D4220241B7ADC0012BDC8 /* Record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Record.h; path = AgriBank/Utility/TWPayLib/Record.h; sourceTree = SOURCE_ROOT; };
+		911D4221241B7ADC0012BDC8 /* EmvcoTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EmvcoTag.h; path = AgriBank/Utility/TWPayLib/EmvcoTag.h; sourceTree = SOURCE_ROOT; };
+		911D4222241B7ADC0012BDC8 /* NSMutableArray+Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+Stack.h"; path = "AgriBank/Utility/TWPayLib/NSMutableArray+Stack.h"; sourceTree = SOURCE_ROOT; };
+		911D4223241B7ADC0012BDC8 /* EmvcoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EmvcoModel.h; path = AgriBank/Utility/TWPayLib/EmvcoModel.h; sourceTree = SOURCE_ROOT; };
+		911D4224241B7ADC0012BDC8 /* Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constant.h; path = AgriBank/Utility/TWPayLib/Constant.h; sourceTree = SOURCE_ROOT; };
+		9120F6CE237A98840087B4A0 /* FastLogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FastLogInViewController.swift; path = Platform/SettingStoryBoard/FastLogInViewController.swift; sourceTree = "<group>"; };
+		9120F6D0237A98840087B4A0 /* GestureCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GestureCollectionView.swift; path = Platform/SettingStoryBoard/GestureCollectionView.swift; sourceTree = "<group>"; };
+		9120F6D1237A98840087B4A0 /* GetFastLogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetFastLogInViewController.swift; path = Platform/SettingStoryBoard/GetFastLogInViewController.swift; sourceTree = "<group>"; };
+		9120F6D2237A98840087B4A0 /* FastLogInResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FastLogInResultViewController.swift; path = Platform/SettingStoryBoard/FastLogInResultViewController.swift; sourceTree = "<group>"; };
+		9120F6E0237AA1DE0087B4A0 /* FastLogInGraphicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FastLogInGraphicView.swift; path = Platform/SettingStoryBoard/FastLogInGraphicView.swift; sourceTree = "<group>"; };
+		912D7863253D1BF0009FDD22 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		912D7866253D1D8C009FDD22 /* CHGErrorCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHGErrorCode.h; path = AgriBank/Utility/MOTP/CHGErrorCode.h; sourceTree = SOURCE_ROOT; };
+		912D7867253D1D8C009FDD22 /* CHGMOTPProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHGMOTPProfile.h; path = AgriBank/Utility/MOTP/CHGMOTPProfile.h; sourceTree = SOURCE_ROOT; };
+		912D7868253D1D8C009FDD22 /* CHGRegInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHGRegInfo.h; path = AgriBank/Utility/MOTP/CHGRegInfo.h; sourceTree = SOURCE_ROOT; };
+		912D7869253D1D8C009FDD22 /* CHGProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHGProfile.h; path = AgriBank/Utility/MOTP/CHGProfile.h; sourceTree = SOURCE_ROOT; };
+		912D786A253D1D8C009FDD22 /* CHGUpdateInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHGUpdateInfo.h; path = AgriBank/Utility/MOTP/CHGUpdateInfo.h; sourceTree = SOURCE_ROOT; };
+		912D786B253D1D8C009FDD22 /* MOTPPushAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOTPPushAPI.h; path = AgriBank/Utility/MOTP/MOTPPushAPI.h; sourceTree = SOURCE_ROOT; };
+		912D7872253D7F8E009FDD22 /* GetMOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GetMOTPViewController.swift; path = Platform/SettingStoryBoard/GetMOTPViewController.swift; sourceTree = "<group>"; };
+		912D7874253D8A2D009FDD22 /* MOTPSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MOTPSettingViewController.swift; path = Platform/SettingStoryBoard/MOTPSettingViewController.swift; sourceTree = "<group>"; };
+		912D7876253D8A46009FDD22 /* MOTPSettingResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MOTPSettingResultViewController.swift; path = Platform/SettingStoryBoard/MOTPSettingResultViewController.swift; sourceTree = "<group>"; };
+		912D7878253FE3AC009FDD22 /* MOTPSetting2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MOTPSetting2ViewController.swift; path = Platform/SettingStoryBoard/MOTPSetting2ViewController.swift; sourceTree = "<group>"; };
+		914362FF2A9D854B009908A2 /* server2023.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = server2023.cer; path = Resource/server2023.cer; sourceTree = "<group>"; };
+		9149535C2A396243001FF706 /* SGSheetMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGSheetMenu.m; path = ThirdParty/SGActionView/SGSheetMenu.m; sourceTree = "<group>"; };
+		9149535E2A39624F001FF706 /* SGSheetMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGSheetMenu.h; path = ThirdParty/SGActionView/SGSheetMenu.h; sourceTree = "<group>"; };
+		9149535F2A399116001FF706 /* GPRiskCheckCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GPRiskCheckCell.xib; path = UI/View/Cell/GPRiskCheckCell.xib; sourceTree = "<group>"; };
+		914953622A399209001FF706 /* SKRadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKRadioButton.swift; sourceTree = "<group>"; };
+		914953642A3997D6001FF706 /* GPRiskEvaluationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GPRiskEvaluationViewController.swift; path = Platform/GoldPassbookStoryBoard/GPRiskEvaluationViewController.swift; sourceTree = "<group>"; };
+		914953662A3997E4001FF706 /* GPRiskRulesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GPRiskRulesViewController.swift; path = Platform/GoldPassbookStoryBoard/GPRiskRulesViewController.swift; sourceTree = "<group>"; };
+		9149536A2A3AE5CD001FF706 /* GPRiskMulitChekCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GPRiskMulitChekCell.xib; path = UI/View/Cell/GPRiskMulitChekCell.xib; sourceTree = "<group>"; };
+		9149536C2A3AEB6B001FF706 /* SKCheckButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCheckButton.swift; sourceTree = "<group>"; };
+		9151ECAE24285A250006EB72 /* InitTransToNoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InitTransToNoEditViewController.swift; path = Platform/TransferStoryBoard/InitTransToNoEditViewController.swift; sourceTree = "<group>"; };
+		9151ECB024285DDF0006EB72 /* InitTransToEditResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InitTransToEditResultViewController.swift; path = Platform/TransferStoryBoard/InitTransToEditResultViewController.swift; sourceTree = "<group>"; };
+		9151ECB2242881210006EB72 /* libCGCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCGCrypto.a; path = Resource/libCGCrypto.a; sourceTree = "<group>"; };
+		9151ECB5242881670006EB72 /* CGCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGCrypto.h; path = AgriBank/Utility/libCGCrypto/CGCrypto.h; sourceTree = SOURCE_ROOT; };
+		9151ECB6242881670006EB72 /* E2E.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = E2E.h; path = AgriBank/Utility/libCGCrypto/E2E.h; sourceTree = SOURCE_ROOT; };
+		9151ECB7242881670006EB72 /* E2E.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = E2E.m; path = AgriBank/Utility/libCGCrypto/E2E.m; sourceTree = SOURCE_ROOT; };
+		91539FD02420618300932770 /* Resource */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resource; path = AgriBank/Resource; sourceTree = "<group>"; };
+		91539FD42420CDAD00932770 /* InitTransToCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InitTransToCell.xib; path = UI/View/Cell/InitTransToCell.xib; sourceTree = "<group>"; };
+		91539FD62420CDD000932770 /* InitTransToNoQryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitTransToNoQryViewController.swift; path = Platform/MobilePayStoryBoard/InitTransToNoQryViewController.swift; sourceTree = "<group>"; };
+		9154732623C310C0002D9807 /* QRPayDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QRPayDetailViewController.swift; path = Platform/MobilePayStoryBoard/QRPayDetailViewController.swift; sourceTree = "<group>"; };
+		9154732823C310E6002D9807 /* ShowQRDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ShowQRDetailViewController.swift; path = Platform/MobilePayStoryBoard/ShowQRDetailViewController.swift; sourceTree = "<group>"; };
+		91569434237130E9000BD969 /* TouchIDLogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TouchIDLogInViewController.swift; path = Platform/SettingStoryBoard/TouchIDLogInViewController.swift; sourceTree = "<group>"; };
+		9158DFB623F7CD7B001D0F5C /* QRPayRefundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QRPayRefundViewController.swift; path = Platform/MobilePayStoryBoard/QRPayRefundViewController.swift; sourceTree = "<group>"; };
+		915F50B328D31E3C006BF306 /* CardlessSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CardlessSetupViewController.swift; path = Platform/CardlessStoryBoard/CardlessSetupViewController.swift; sourceTree = "<group>"; };
+		915F50B528D81931006BF306 /* CardlessQryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CardlessQryViewController.swift; path = Platform/CardlessStoryBoard/CardlessQryViewController.swift; sourceTree = "<group>"; };
+		915F50B728D84B83006BF306 /* CardlessQryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CardlessQryCell.xib; path = UI/View/Cell/CardlessQryCell.xib; sourceTree = "<group>"; };
+		915F50B928DAF0F9006BF306 /* CardlessDisableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CardlessDisableViewController.swift; path = Platform/CardlessStoryBoard/CardlessDisableViewController.swift; sourceTree = "<group>"; };
+		915F50BB28DAF178006BF306 /* CardlessDisableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CardlessDisableCell.xib; path = UI/View/Cell/CardlessDisableCell.xib; sourceTree = "<group>"; };
+		9166D5D825DF822C000C2844 /* libMOTPPushAPI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMOTPPushAPI.a; path = AgriBank/Resource/libMOTPPushAPI.a; sourceTree = "<group>"; };
+		916872C2262EC500002E97ED /* EinvoiceShowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EinvoiceShowViewController.swift; path = Platform/MobilePayStoryBoard/EinvoiceShowViewController.swift; sourceTree = "<group>"; };
+		916872C8263104A6002E97ED /* EinvoiceAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EinvoiceAddViewController.swift; path = Platform/MobilePayStoryBoard/EinvoiceAddViewController.swift; sourceTree = "<group>"; };
+		916872D226312706002E97ED /* Code39.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Code39.h; path = AgriBank/Utility/Code39/Code39.h; sourceTree = SOURCE_ROOT; };
+		916872D326312706002E97ED /* Code39.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Code39.m; path = AgriBank/Utility/Code39/Code39.m; sourceTree = SOURCE_ROOT; };
+		916DC48D23877CA100DAC7EC /* private_key.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; name = private_key.p12; path = Resource/private_key.p12; sourceTree = "<group>"; };
+		916DC49023877D5600DAC7EC /* RSAObjC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSAObjC.m; sourceTree = "<group>"; };
+		916DC49123877D5600DAC7EC /* RSAObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSAObjC.h; sourceTree = "<group>"; };
+		916E4D5E277C5BAB001E90C2 /* QRTaipowerDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QRTaipowerDetailViewController.swift; path = Platform/MobilePayStoryBoard/QRTaipowerDetailViewController.swift; sourceTree = "<group>"; };
+		916E4D60277C5BCF001E90C2 /* ShowQRTaipowerDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ShowQRTaipowerDetailController.swift; path = Platform/MobilePayStoryBoard/ShowQRTaipowerDetailController.swift; sourceTree = "<group>"; };
+		91703180277AF7B500131125 /* TXMBarcodeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TXMBarcodeCell.xib; path = UI/View/Cell/TXMBarcodeCell.xib; sourceTree = "<group>"; };
+		91746FE926F08ADA00BC2901 /* QuintupleShow2DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuintupleShow2DetailViewController.swift; path = Platform/SettingStoryBoard/QuintupleShow2DetailViewController.swift; sourceTree = "<group>"; };
+		91746FF126F08B0200BC2901 /* QuintupleShowDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuintupleShowDetailViewController.swift; path = Platform/SettingStoryBoard/QuintupleShowDetailViewController.swift; sourceTree = "<group>"; };
+		9179E32F238F936A00CB9D28 /* QRPayViewController0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QRPayViewController0.swift; path = Platform/MobilePayStoryBoard/QRPayViewController0.swift; sourceTree = "<group>"; };
+		917F2BF6278EBD07000DE8BE /* ResultCheckCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ResultCheckCell.xib; path = UI/View/Cell/ResultCheckCell.xib; sourceTree = "<group>"; };
+		918C3A3E27E3227400C18161 /* PodConfirmView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PodConfirmView.xib; path = UI/View/PodConfirmView.xib; sourceTree = "<group>"; };
+		918C3A4027E3229700C18161 /* PodConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PodConfirmView.swift; path = UI/View/PodConfirmView.swift; sourceTree = "<group>"; };
+		918C3A4227E8224D00C18161 /* GestureVerify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GestureVerify.swift; path = UI/View/GestureVerify.swift; sourceTree = "<group>"; };
+		918C3A4627E8228400C18161 /* GestureVerify.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GestureVerify.xib; path = UI/View/GestureVerify.xib; sourceTree = "<group>"; };
+		918C9B782774575F0091BA29 /* TXMobileCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TXMobileCell.xib; path = UI/View/Cell/TXMobileCell.xib; sourceTree = "<group>"; };
+		91A015AE23AB58050096121D /* DepositCombinedToDepositSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DepositCombinedToDepositSearchViewController.swift; path = Platform/TransferStoryBoard/DepositCombinedToDepositSearchViewController.swift; sourceTree = "<group>"; };
+		91A015B023AB58300096121D /* TodayBillQryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TodayBillQryViewController.swift; path = Platform/TransferStoryBoard/TodayBillQryViewController.swift; sourceTree = "<group>"; };
+		91A015B723AB64AB0096121D /* TodayBillQryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TodayBillQryCell.xib; path = UI/View/Cell/TodayBillQryCell.xib; sourceTree = "<group>"; };
+		91A0A5CA28CF22000012C32E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Cardless.storyboard; sourceTree = "<group>"; };
+		91A0A5CD28D07D1F0012C32E /* CardlessSetupAcceptRulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CardlessSetupAcceptRulesViewController.swift; path = Platform/CardlessStoryBoard/CardlessSetupAcceptRulesViewController.swift; sourceTree = "<group>"; };
+		91A236F7234873DA0061B5A3 /* USAccountShowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = USAccountShowViewController.swift; path = Platform/TransferStoryBoard/USAccountShowViewController.swift; sourceTree = "<group>"; };
+		91A236F9234873F90061B5A3 /* USAccountAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = USAccountAddViewController.swift; path = Platform/TransferStoryBoard/USAccountAddViewController.swift; sourceTree = "<group>"; };
+		91A236FB2348740E0061B5A3 /* USAccountEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = USAccountEditViewController.swift; path = Platform/TransferStoryBoard/USAccountEditViewController.swift; sourceTree = "<group>"; };
+		91A236FD2348741F0061B5A3 /* USAccountResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = USAccountResultViewController.swift; path = Platform/TransferStoryBoard/USAccountResultViewController.swift; sourceTree = "<group>"; };
+		91A23710234ADFFE0061B5A3 /* USAccountViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = USAccountViewCell.xib; path = UI/View/Cell/USAccountViewCell.xib; sourceTree = "<group>"; };
+		91A2371323557A730061B5A3 /* PayLoanPartialSettIementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PayLoanPartialSettIementViewController.swift; path = Platform/TransferStoryBoard/PayLoanPartialSettIementViewController.swift; sourceTree = "<group>"; };
+		91A2371523557C050061B5A3 /* LoanPartialSettIementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoanPartialSettIementViewController.swift; path = Platform/TransferStoryBoard/LoanPartialSettIementViewController.swift; sourceTree = "<group>"; };
+		91A85E0B28B6054C009BDFE8 /* server2022.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = server2022.cer; path = Resource/server2022.cer; sourceTree = "<group>"; };
+		91AC1F1E26F077FC00D7FB72 /* QuintupleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuintupleViewController.swift; path = Platform/SettingStoryBoard/QuintupleViewController.swift; sourceTree = "<group>"; };
+		91AC1F2326F07AFB00D7FB72 /* GetFirstQuintupleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GetFirstQuintupleViewController.swift; path = Platform/SettingStoryBoard/GetFirstQuintupleViewController.swift; sourceTree = "<group>"; };
+		91AC1F2826F07C4100D7FB72 /* QuintupleResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuintupleResultViewController.swift; path = Platform/SettingStoryBoard/QuintupleResultViewController.swift; sourceTree = "<group>"; };
+		91C69F61276C2A8A00105CE1 /* TaipowerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaipowerInfo.swift; sourceTree = "<group>"; };
+		91CEDB7C2AB2A06B00400760 /* View */ = {isa = PBXFileReference; lastKnownFileType = folder; name = View; path = UI/View; sourceTree = "<group>"; };
+		91F267C8246A516E00544FFB /* AgriBank-sitRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AgriBank-sitRelease.entitlements"; sourceTree = "<group>"; };
+		91F267C9246A57DA00544FFB /* AgriBank-sitDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AgriBank-sitDebug.entitlements"; sourceTree = "<group>"; };
+		91F45EEA237BEBAE00363CCD /* GesturePwd.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GesturePwd.xib; path = UI/View/GesturePwd.xib; sourceTree = "<group>"; };
+		91F45EED237CEA1200363CCD /* GesturePwd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GesturePwd.swift; path = UI/View/GesturePwd.swift; sourceTree = "<group>"; };
+		A183A024233497C300E43BD8 /* UserChangeIDPwdByPassViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdByPassViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdByPassViewController.swift; sourceTree = "<group>"; };
+		A183A025233497C300E43BD8 /* UserChangeIDPwdByPassResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserChangeIDPwdByPassResultViewController.swift; path = Platform/SettingStoryBoard/UserChangeIDPwdByPassResultViewController.swift; sourceTree = "<group>"; };
+		BABA7FA626B7A5A3003151BD /* MobileTransferSetupAcceptRulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MobileTransferSetupAcceptRulesViewController.swift; path = Platform/MobileTransferStoryBoard/MobileTransferSetupAcceptRulesViewController.swift; sourceTree = "<group>"; };
+		BABA7FA926B7A8EB003151BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MobileTransfer.storyboard; sourceTree = "<group>"; };
+		BABA7FAB26B7F3C4003151BD /* MobileTransferSetupResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MobileTransferSetupResultViewController.swift; path = Platform/MobileTransferStoryBoard/MobileTransferSetupResultViewController.swift; sourceTree = "<group>"; };
 		BE00495F21DC8FF9002122AE /* TPSMerchantInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TPSMerchantInfo.swift; sourceTree = "<group>"; };
 		BE00496021DC8FF9002122AE /* TPSQRCodeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TPSQRCodeManager.swift; sourceTree = "<group>"; };
 		BE49D0DE20FEEDF0004E6BD6 /* PolygonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PolygonView.swift; path = UI/View/PolygonView.swift; sourceTree = "<group>"; };
@@ -347,11 +545,9 @@
 		BE8CDFA7212AC9B2004D3632 /* GPDiffAmountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPDiffAmountDetailView.swift; path = UI/View/GPDiffAmountDetailView.swift; sourceTree = "<group>"; };
 		BE970DD022EFEC2C00F8FB51 /* GetPersonalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GetPersonalDataViewController.swift; path = Platform/MainStoryBoard/GetPersonalDataViewController.swift; sourceTree = "<group>"; };
 		BE970DD3230CFEA300F8FB51 /* PersonalInfoAgreement.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = PersonalInfoAgreement.html; path = Resource/PersonalInfoAgreement.html; sourceTree = "<group>"; };
-		BE970DD5230D28CA00F8FB51 /* server.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = server.cer; path = Resource/server.cer; sourceTree = "<group>"; };
 		BEB38A681F0A27EE006094AC /* BillPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BillPaymentViewController.swift; sourceTree = "<group>"; };
 		BEB38A691F0A27EE006094AC /* TaxPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxPaymentViewController.swift; sourceTree = "<group>"; };
 		BEB38A6D1F0A2800006094AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Payment.storyboard; sourceTree = "<group>"; };
-		BEB8616E23150E390054AB96 /* server2019.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = server2019.cer; path = Resource/server2019.cer; sourceTree = "<group>"; };
 		BED66B8F210EC0FF00D0D5D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/GoldPassbook.storyboard; sourceTree = "<group>"; };
 		BED66B94211010DB00D0D5D4 /* GPAccountInfomationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPAccountInfomationViewController.swift; path = Platform/GoldPassbookStoryBoard/GPAccountInfomationViewController.swift; sourceTree = "<group>"; };
 		BED66B962110112F00D0D5D4 /* GPSingleBuyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPSingleBuyViewController.swift; path = Platform/GoldPassbookStoryBoard/GPSingleBuyViewController.swift; sourceTree = "<group>"; };
@@ -364,6 +560,19 @@
 		BEF0D9D420E2512D00BC9833 /* AcceptRulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AcceptRulesViewController.swift; path = Platform/MobilePayStoryBoard/AcceptRulesViewController.swift; sourceTree = "<group>"; };
 		BEF0D9D620E2519000BC9833 /* QRCodeTransViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QRCodeTransViewController.swift; path = Platform/MobilePayStoryBoard/QRCodeTransViewController.swift; sourceTree = "<group>"; };
 		BEF0D9D820E251DD00BC9833 /* QRPayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QRPayViewController.swift; path = Platform/MobilePayStoryBoard/QRPayViewController.swift; sourceTree = "<group>"; };
+		ED5C95F324AC4079009A6685 /* 220000.imageset */ = {isa = PBXFileReference; lastKnownFileType = folder; name = 220000.imageset; path = Assets.xcassets/220000.imageset; sourceTree = "<group>"; };
+		ED6039AB249B621700775A92 /* GetFirstTripleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GetFirstTripleViewController.swift; path = Platform/SettingStoryBoard/GetFirstTripleViewController.swift; sourceTree = "<group>"; };
+		ED61F10C256606D7000E0107 /* OTPDeviceEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OTPDeviceEditViewController.swift; path = Platform/SettingStoryBoard/OTPDeviceEditViewController.swift; sourceTree = "<group>"; };
+		ED61F10E25664150000E0107 /* OTPDeviceInfoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OTPDeviceInfoEditViewController.swift; path = Platform/SettingStoryBoard/OTPDeviceInfoEditViewController.swift; sourceTree = "<group>"; };
+		ED61F110256646BE000E0107 /* OTPDeviceInfoToEditResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OTPDeviceInfoToEditResultViewController.swift; path = Platform/SettingStoryBoard/OTPDeviceInfoToEditResultViewController.swift; sourceTree = "<group>"; };
+		ED628BD224D1577500721060 /* DeviceBinding2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeviceBinding2ViewController.swift; path = Platform/SettingStoryBoard/DeviceBinding2ViewController.swift; sourceTree = "<group>"; };
+		ED63C5C324A2FD8A006E7DF5 /* TripleShowDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TripleShowDetailViewController.swift; path = Platform/SettingStoryBoard/TripleShowDetailViewController.swift; sourceTree = "<group>"; };
+		ED63C5C524A32147006E7DF5 /* TripleShow2DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TripleShow2DetailViewController.swift; path = Platform/SettingStoryBoard/TripleShow2DetailViewController.swift; sourceTree = "<group>"; };
+		ED66561F25625CD50061C48C /* OTPDeviceBindingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OTPDeviceBindingViewController.swift; path = Platform/SettingStoryBoard/OTPDeviceBindingViewController.swift; sourceTree = "<group>"; };
+		ED6723A424CA815800F9847C /* TXMEMOCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TXMEMOCell.xib; path = UI/View/Cell/TXMEMOCell.xib; sourceTree = "<group>"; };
+		ED73B1D7249CA242002756C7 /* TripleResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TripleResultViewController.swift; path = Platform/SettingStoryBoard/TripleResultViewController.swift; sourceTree = "<group>"; };
+		EDB9D122248766F100185D35 /* PushDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PushDetailViewController.swift; path = Platform/MobilePayStoryBoard/PushDetailViewController.swift; sourceTree = "<group>"; };
+		EDFF08B32565041700C7F3CD /* OtpDeviceToCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OtpDeviceToCell.xib; path = UI/View/Cell/OtpDeviceToCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -371,6 +580,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91AEA2C229430348009894CE /* libMOTPPushAPI.a in Frameworks */,
+				912D7864253D1BF0009FDD22 /* UserNotifications.framework in Frameworks */,
+				91539FD32420752A00932770 /* libTWPayLib.a in Frameworks */,
 				612BDA481F6152080036B443 /* libc++.tbd in Frameworks */,
 				612BDA441F6151D70036B443 /* CoreTelephony.framework in Frameworks */,
 				612BDA421F6151C00036B443 /* SystemConfiguration.framework in Frameworks */,
@@ -396,6 +608,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		09873D9026B78E2400ED1B8B /* MobileTransferStoryBoard */ = {
+			isa = PBXGroup;
+			children = (
+				09873DA326B78FB500ED1B8B /* MobileTransferSetupViewController.swift */,
+				BABA7FA626B7A5A3003151BD /* MobileTransferSetupAcceptRulesViewController.swift */,
+				BABA7FAB26B7F3C4003151BD /* MobileTransferSetupResultViewController.swift */,
+				09873DA826B78FE200ED1B8B /* MobileNTTransferViewController.swift */,
+			);
+			name = MobileTransferStoryBoard;
+			sourceTree = "<group>";
+		};
 		6129E6AF1F038DF500C23D67 /* LoseStoryBoard */ = {
 			isa = PBXGroup;
 			children = (
@@ -418,7 +641,10 @@
 		612BDA381F6150F70036B443 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				912D7863253D1BF0009FDD22 /* UserNotifications.framework */,
+				91539FD02420618300932770 /* Resource */,
 				612BDA471F6152080036B443 /* libc++.tbd */,
+				9166D5D825DF822C000C2844 /* libMOTPPushAPI.a */,
 				612BDA451F6151E50036B443 /* CoreLocation.framework */,
 				612BDA431F6151D70036B443 /* CoreTelephony.framework */,
 				612BDA411F6151C00036B443 /* SystemConfiguration.framework */,
@@ -431,6 +657,8 @@
 		61352B431FC3DA0800730082 /* SGActionView */ = {
 			isa = PBXGroup;
 			children = (
+				9149535E2A39624F001FF706 /* SGSheetMenu.h */,
+				9149535C2A396243001FF706 /* SGSheetMenu.m */,
 				61352B451FC3DA1E00730082 /* SGActionView.h */,
 				61352B461FC3DA1E00730082 /* SGActionView.m */,
 				61352B471FC3DA1E00730082 /* SGAlertMenu.h */,
@@ -439,8 +667,8 @@
 				61352B4B1FC3DA1E00730082 /* SGBaseMenu.m */,
 				61352B481FC3DA1E00730082 /* SGGridMenu.h */,
 				61352B4D1FC3DA1E00730082 /* SGGridMenu.m */,
-				61352B4A1FC3DA1E00730082 /* SGSheetMenu.h */,
-				61352B4C1FC3DA1E00730082 /* SGSheetMenu.m */,
+				61352B4A1FC3DA1E00730082 /* SGSheetQrMenu.h */,
+				61352B4C1FC3DA1E00730082 /* SGSheetQrMenu.m */,
 			);
 			name = SGActionView;
 			sourceTree = "<group>";
@@ -451,15 +679,15 @@
 				6148D9CD1EDFD10000C02CA3 /* AgriBank */,
 				6148D9E21EDFD10000C02CA3 /* AgriBankTests */,
 				6148D9ED1EDFD10000C02CA3 /* AgriBankUITests */,
-				6148D9CC1EDFD10000C02CA3 /* Products */,
 				612BDA381F6150F70036B443 /* Frameworks */,
+				6148D9CC1EDFD10000C02CA3 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
 		6148D9CC1EDFD10000C02CA3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6148D9CB1EDFD10000C02CA3 /* AgriBank.app */,
+				6148D9CB1EDFD10000C02CA3 /* AgriBank-sit.app */,
 				6148D9DF1EDFD10000C02CA3 /* AgriBankTests.xctest */,
 				6148D9EA1EDFD10000C02CA3 /* AgriBankUITests.xctest */,
 			);
@@ -469,6 +697,8 @@
 		6148D9CD1EDFD10000C02CA3 /* AgriBank */ = {
 			isa = PBXGroup;
 			children = (
+				91F267C9246A57DA00544FFB /* AgriBank-sitDebug.entitlements */,
+				91F267C8246A516E00544FFB /* AgriBank-sitRelease.entitlements */,
 				61D793FA1F3178D100DF02CD /* AgriBank.entitlements */,
 				6148DA3C1EDFE8A400C02CA3 /* Resource */,
 				6148DA3B1EDFE89100C02CA3 /* StoryBoard */,
@@ -481,6 +711,7 @@
 				6148D9CE1EDFD10000C02CA3 /* AppDelegate.swift */,
 				6148DA0F1EDFE73E00C02CA3 /* AgriBank-Bridging-Header.h */,
 				6148D9D51EDFD10000C02CA3 /* Assets.xcassets */,
+				ED5C95F324AC4079009A6685 /* 220000.imageset */,
 				6148D9DA1EDFD10000C02CA3 /* Info.plist */,
 			);
 			path = AgriBank;
@@ -507,6 +738,8 @@
 		6148D9FC1EDFE62B00C02CA3 /* Platform */ = {
 			isa = PBXGroup;
 			children = (
+				91A0A5CC28D07CCD0012C32E /* CardlessStoryBoard */,
+				09873D9026B78E2400ED1B8B /* MobileTransferStoryBoard */,
 				BED66B91210EC11400D0D5D4 /* GoldPassbookStoryBoard */,
 				BEF0D9D320E2502B00BC9833 /* MobilePayStoryBoard */,
 				61FE9D0A1F15D21E00FA32FE /* SettingStoryBoard */,
@@ -531,6 +764,7 @@
 				6148DA411EE1428B00C02CA3 /* MenuViewController.swift */,
 				613DA7791F8DC1280005E6CC /* EditViewController.swift */,
 				BE970DD022EFEC2C00F8FB51 /* GetPersonalDataViewController.swift */,
+				2031DEB826C3A303009B8850 /* ThirdPartyAnnounceViewController.swift */,
 			);
 			name = MainStoryBoard;
 			sourceTree = "<group>";
@@ -586,9 +820,9 @@
 		6148DA191EDFE78100C02CA3 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				91CEDB7C2AB2A06B00400760 /* View */,
 				6148DA3F1EE0072000C02CA3 /* UIPlatform.swift */,
 				6148DA2C1EDFE7AE00C02CA3 /* ViewController */,
-				6148DA1D1EDFE79C00C02CA3 /* View */,
 				6148DA1C1EDFE78E00C02CA3 /* Component */,
 			);
 			name = UI;
@@ -640,8 +874,15 @@
 				BE49D0DE20FEEDF0004E6BD6 /* PolygonView.swift */,
 				BE8CDFA5212AC971004D3632 /* GPDiffAmountDetailView.xib */,
 				BE8CDFA7212AC9B2004D3632 /* GPDiffAmountDetailView.swift */,
+				91F45EEA237BEBAE00363CCD /* GesturePwd.xib */,
+				91F45EED237CEA1200363CCD /* GesturePwd.swift */,
+				918C3A3E27E3227400C18161 /* PodConfirmView.xib */,
+				918C3A4027E3229700C18161 /* PodConfirmView.swift */,
+				918C3A4227E8224D00C18161 /* GestureVerify.swift */,
+				918C3A4627E8228400C18161 /* GestureVerify.xib */,
 			);
 			name = View;
+			path = ../..;
 			sourceTree = "<group>";
 		};
 		6148DA2C1EDFE7AE00C02CA3 /* ViewController */ = {
@@ -655,6 +896,14 @@
 		6148DA2F1EDFE7C200C02CA3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				914953612A39916C001FF706 /* RadioButton */,
+				91C69F60276C2A3A00105CE1 /* TaipowerInfo */,
+				916872D1263126EE002E97ED /* Code39 */,
+				912D7865253D1C28009FDD22 /* MOTP */,
+				9114013D2536CA0D00D80343 /* Keychain */,
+				9151ECB42428813E0006EB72 /* E2E */,
+				911D421C241B7AA10012BDC8 /* TWPayLib */,
+				916DC48F23877CFE00DAC7EC /* RSAObj */,
 				BE00495E21DC8FF9002122AE /* QRP_QRCode */,
 				BE4E901320F3446D00EDDEEA /* PayTaxInfo */,
 				BE4E900D20F32B1200EDDEEA /* Bank */,
@@ -693,6 +942,7 @@
 		6148DA3B1EDFE89100C02CA3 /* StoryBoard */ = {
 			isa = PBXGroup;
 			children = (
+				BABA7FAA26B7A8EB003151BD /* MobileTransfer.storyboard */,
 				BEB38A6C1F0A2800006094AC /* Payment.storyboard */,
 				611B8EC71EE966BE003FCFDF /* Main.storyboard */,
 				614FB4111EF9013100DDD270 /* Share.storyboard */,
@@ -705,6 +955,7 @@
 				61FE9D191F15D24500FA32FE /* Setting.storyboard */,
 				BEF0D9D020E24D0500BC9833 /* MobilePay.storyboard */,
 				BED66B8E210EC0FF00D0D5D4 /* GoldPassbook.storyboard */,
+				91A0A5C928CF22000012C32E /* Cardless.storyboard */,
 			);
 			name = StoryBoard;
 			sourceTree = "<group>";
@@ -712,9 +963,13 @@
 		6148DA3C1EDFE8A400C02CA3 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				BEB8616E23150E390054AB96 /* server2019.cer */,
-				BE970DD5230D28CA00F8FB51 /* server.cer */,
+				914362FF2A9D854B009908A2 /* server2023.cer */,
+				91A85E0B28B6054C009BDFE8 /* server2022.cer */,
+				9151ECB2242881210006EB72 /* libCGCrypto.a */,
+				911D4218241B79910012BDC8 /* libTWPayLib.a */,
+				916DC48D23877CA100DAC7EC /* private_key.p12 */,
 				BE970DD3230CFEA300F8FB51 /* PersonalInfoAgreement.html */,
+				2031DEB326C3A2C0009B8850 /* ThirdPartyAnnounce.html */,
 				615A77F11FB4367B00D0D03C /* Keypasco */,
 			);
 			name = Resource;
@@ -745,6 +1000,20 @@
 				BE86EEA31F136B9A003C7A36 /* ServiceBaseCell.xib */,
 				6168B4F11FA8537F00809924 /* ExchangeRateCell.xib */,
 				BE4E900720ECDBFF00EDDEEA /* ResultEditCell.xib */,
+				91A23710234ADFFE0061B5A3 /* USAccountViewCell.xib */,
+				91A015B723AB64AB0096121D /* TodayBillQryCell.xib */,
+				91539FD42420CDAD00932770 /* InitTransToCell.xib */,
+				ED6723A424CA815800F9847C /* TXMEMOCell.xib */,
+				EDFF08B32565041700C7F3CD /* OtpDeviceToCell.xib */,
+				918C9B782774575F0091BA29 /* TXMobileCell.xib */,
+				91703180277AF7B500131125 /* TXMBarcodeCell.xib */,
+				917F2BF6278EBD07000DE8BE /* ResultCheckCell.xib */,
+				915F50B728D84B83006BF306 /* CardlessQryCell.xib */,
+				915F50BB28DAF178006BF306 /* CardlessDisableCell.xib */,
+				9112CF3F2978DC97004321AA /* TXMEMOCell1.xib */,
+				9112CF412978DCD8004321AA /* TXMEMOCell2.xib */,
+				9149535F2A399116001FF706 /* GPRiskCheckCell.xib */,
+				9149536A2A3AE5CD001FF706 /* GPRiskMulitChekCell.xib */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -761,7 +1030,6 @@
 		615A77F21FB4368800D0D03C /* Develop */ = {
 			isa = PBXGroup;
 			children = (
-				615A77F51FB436A900D0D03C /* 1-proto5-pub.der */,
 				615A77F61FB436A900D0D03C /* agribank_dev_app_const.bin */,
 				615A77F41FB436A900D0D03C /* agribank_dev_credential.bin */,
 			);
@@ -786,11 +1054,21 @@
 				61564A8C1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift */,
 				615006A61F0B6E3700269891 /* ReservationTransferDetailViewController.swift */,
 				615006A81F0B9CD800269891 /* DepositCombinedToDepositViewController.swift */,
-				61DB5C371F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift */,
 				61DB5C391F0E0D85006622EC /* DepositCombinedDetailViewController.swift */,
 				61E3749F1F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift */,
 				61E374A31F0F6DF80044EE3A /* LoanPrincipalInterestDetailViewController.swift */,
 				6117CF3C1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift */,
+				91A2371523557C050061B5A3 /* LoanPartialSettIementViewController.swift */,
+				91A2371323557A730061B5A3 /* PayLoanPartialSettIementViewController.swift */,
+				91A015AE23AB58050096121D /* DepositCombinedToDepositSearchViewController.swift */,
+				91A015B023AB58300096121D /* TodayBillQryViewController.swift */,
+				91A236F7234873DA0061B5A3 /* USAccountShowViewController.swift */,
+				91A236F9234873F90061B5A3 /* USAccountAddViewController.swift */,
+				91A236FB2348740E0061B5A3 /* USAccountEditViewController.swift */,
+				91A236FD2348741F0061B5A3 /* USAccountResultViewController.swift */,
+				91539FD62420CDD000932770 /* InitTransToNoQryViewController.swift */,
+				9151ECAE24285A250006EB72 /* InitTransToNoEditViewController.swift */,
+				9151ECB024285DDF0006EB72 /* InitTransToEditResultViewController.swift */,
 			);
 			name = TransferStoryBoard;
 			sourceTree = "<group>";
@@ -808,6 +1086,15 @@
 		61FE9D0A1F15D21E00FA32FE /* SettingStoryBoard */ = {
 			isa = PBXGroup;
 			children = (
+				910862CD2499C6F7006F0233 /* TripleViewController.swift */,
+				9120F6D2237A98840087B4A0 /* FastLogInResultViewController.swift */,
+				9120F6CE237A98840087B4A0 /* FastLogInViewController.swift */,
+				9120F6E0237AA1DE0087B4A0 /* FastLogInGraphicView.swift */,
+				91569434237130E9000BD969 /* TouchIDLogInViewController.swift */,
+				9120F6D0237A98840087B4A0 /* GestureCollectionView.swift */,
+				9120F6D1237A98840087B4A0 /* GetFastLogInViewController.swift */,
+				A183A025233497C300E43BD8 /* UserChangeIDPwdByPassResultViewController.swift */,
+				A183A024233497C300E43BD8 /* UserChangeIDPwdByPassViewController.swift */,
 				61FE9D0B1F15D23400FA32FE /* BasicInfoChangeViewController.swift */,
 				61FE9D0C1F15D23400FA32FE /* BasicInfoResultViewController.swift */,
 				61FE9D0D1F15D23400FA32FE /* DeviceBindingViewController.swift */,
@@ -816,8 +1103,121 @@
 				61FE9D111F15D23400FA32FE /* UserChangeIDPwdViewController.swift */,
 				61FE9D101F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift */,
 				61DAE3471F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift */,
+				ED6039AB249B621700775A92 /* GetFirstTripleViewController.swift */,
+				ED73B1D7249CA242002756C7 /* TripleResultViewController.swift */,
+				ED63C5C324A2FD8A006E7DF5 /* TripleShowDetailViewController.swift */,
+				ED63C5C524A32147006E7DF5 /* TripleShow2DetailViewController.swift */,
+				ED628BD224D1577500721060 /* DeviceBinding2ViewController.swift */,
+				912D7872253D7F8E009FDD22 /* GetMOTPViewController.swift */,
+				912D7874253D8A2D009FDD22 /* MOTPSettingViewController.swift */,
+				912D7878253FE3AC009FDD22 /* MOTPSetting2ViewController.swift */,
+				912D7876253D8A46009FDD22 /* MOTPSettingResultViewController.swift */,
+				ED66561F25625CD50061C48C /* OTPDeviceBindingViewController.swift */,
+				ED61F10C256606D7000E0107 /* OTPDeviceEditViewController.swift */,
+				ED61F10E25664150000E0107 /* OTPDeviceInfoEditViewController.swift */,
+				ED61F110256646BE000E0107 /* OTPDeviceInfoToEditResultViewController.swift */,
+				91AC1F1E26F077FC00D7FB72 /* QuintupleViewController.swift */,
+				91AC1F2326F07AFB00D7FB72 /* GetFirstQuintupleViewController.swift */,
+				91AC1F2826F07C4100D7FB72 /* QuintupleResultViewController.swift */,
+				91746FE926F08ADA00BC2901 /* QuintupleShow2DetailViewController.swift */,
+				91746FF126F08B0200BC2901 /* QuintupleShowDetailViewController.swift */,
 			);
 			name = SettingStoryBoard;
+			sourceTree = "<group>";
+		};
+		9114013D2536CA0D00D80343 /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				911401382536C9F600D80343 /* KeyChain.swift */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
+		911D421C241B7AA10012BDC8 /* TWPayLib */ = {
+			isa = PBXGroup;
+			children = (
+				911D4224241B7ADC0012BDC8 /* Constant.h */,
+				911D421F241B7ADC0012BDC8 /* DataModel.h */,
+				911D4223241B7ADC0012BDC8 /* EmvcoModel.h */,
+				911D4221241B7ADC0012BDC8 /* EmvcoTag.h */,
+				911D4222241B7ADC0012BDC8 /* NSMutableArray+Stack.h */,
+				911D421E241B7ADC0012BDC8 /* NSString+isNumeric.h */,
+				911D4220241B7ADC0012BDC8 /* Record.h */,
+				911D421D241B7ADC0012BDC8 /* Verifier.h */,
+			);
+			path = TWPayLib;
+			sourceTree = "<group>";
+		};
+		912D7865253D1C28009FDD22 /* MOTP */ = {
+			isa = PBXGroup;
+			children = (
+				912D7866253D1D8C009FDD22 /* CHGErrorCode.h */,
+				912D7867253D1D8C009FDD22 /* CHGMOTPProfile.h */,
+				912D7869253D1D8C009FDD22 /* CHGProfile.h */,
+				912D7868253D1D8C009FDD22 /* CHGRegInfo.h */,
+				912D786A253D1D8C009FDD22 /* CHGUpdateInfo.h */,
+				912D786B253D1D8C009FDD22 /* MOTPPushAPI.h */,
+			);
+			path = MOTP;
+			sourceTree = "<group>";
+		};
+		914953612A39916C001FF706 /* RadioButton */ = {
+			isa = PBXGroup;
+			children = (
+				6148DA1D1EDFE79C00C02CA3 /* View */,
+				914953622A399209001FF706 /* SKRadioButton.swift */,
+				9149536C2A3AEB6B001FF706 /* SKCheckButton.swift */,
+			);
+			name = RadioButton;
+			path = Utility/RadioButton;
+			sourceTree = "<group>";
+		};
+		9151ECB42428813E0006EB72 /* E2E */ = {
+			isa = PBXGroup;
+			children = (
+				9151ECB5242881670006EB72 /* CGCrypto.h */,
+				9151ECB6242881670006EB72 /* E2E.h */,
+				9151ECB7242881670006EB72 /* E2E.m */,
+			);
+			path = E2E;
+			sourceTree = "<group>";
+		};
+		916872D1263126EE002E97ED /* Code39 */ = {
+			isa = PBXGroup;
+			children = (
+				916872D226312706002E97ED /* Code39.h */,
+				916872D326312706002E97ED /* Code39.m */,
+			);
+			path = Code39;
+			sourceTree = "<group>";
+		};
+		916DC48F23877CFE00DAC7EC /* RSAObj */ = {
+			isa = PBXGroup;
+			children = (
+				916DC49123877D5600DAC7EC /* RSAObjC.h */,
+				916DC49023877D5600DAC7EC /* RSAObjC.m */,
+			);
+			name = RSAObj;
+			path = Utility/RSAObj;
+			sourceTree = "<group>";
+		};
+		91A0A5CC28D07CCD0012C32E /* CardlessStoryBoard */ = {
+			isa = PBXGroup;
+			children = (
+				91A0A5CD28D07D1F0012C32E /* CardlessSetupAcceptRulesViewController.swift */,
+				915F50B328D31E3C006BF306 /* CardlessSetupViewController.swift */,
+				915F50B528D81931006BF306 /* CardlessQryViewController.swift */,
+				915F50B928DAF0F9006BF306 /* CardlessDisableViewController.swift */,
+			);
+			name = CardlessStoryBoard;
+			sourceTree = "<group>";
+		};
+		91C69F60276C2A3A00105CE1 /* TaipowerInfo */ = {
+			isa = PBXGroup;
+			children = (
+				91C69F61276C2A8A00105CE1 /* TaipowerInfo.swift */,
+			);
+			path = TaipowerInfo;
 			sourceTree = "<group>";
 		};
 		BE00495E21DC8FF9002122AE /* QRP_QRCode */ = {
@@ -896,6 +1296,8 @@
 		BED66B91210EC11400D0D5D4 /* GoldPassbookStoryBoard */ = {
 			isa = PBXGroup;
 			children = (
+				914953662A3997E4001FF706 /* GPRiskRulesViewController.swift */,
+				914953642A3997D6001FF706 /* GPRiskEvaluationViewController.swift */,
 				BE8CDFA12123FBD6004D3632 /* GPAcceptRulesViewController.swift */,
 				BED66B94211010DB00D0D5D4 /* GPAccountInfomationViewController.swift */,
 				BED66B962110112F00D0D5D4 /* GPSingleBuyViewController.swift */,
@@ -916,7 +1318,16 @@
 				BEF0D9D420E2512D00BC9833 /* AcceptRulesViewController.swift */,
 				BEF0D9D620E2519000BC9833 /* QRCodeTransViewController.swift */,
 				BEF0D9D820E251DD00BC9833 /* QRPayViewController.swift */,
+				9179E32F238F936A00CB9D28 /* QRPayViewController0.swift */,
 				BE4E901920F70D6400EDDEEA /* ScanResultViewController.swift */,
+				9154732623C310C0002D9807 /* QRPayDetailViewController.swift */,
+				9154732823C310E6002D9807 /* ShowQRDetailViewController.swift */,
+				9158DFB623F7CD7B001D0F5C /* QRPayRefundViewController.swift */,
+				EDB9D122248766F100185D35 /* PushDetailViewController.swift */,
+				916872C2262EC500002E97ED /* EinvoiceShowViewController.swift */,
+				916872C8263104A6002E97ED /* EinvoiceAddViewController.swift */,
+				916E4D5E277C5BAB001E90C2 /* QRTaipowerDetailViewController.swift */,
+				916E4D60277C5BCF001E90C2 /* ShowQRTaipowerDetailController.swift */,
 			);
 			name = MobilePayStoryBoard;
 			sourceTree = "<group>";
@@ -938,7 +1349,7 @@
 			);
 			name = AgriBank;
 			productName = AgriBank;
-			productReference = 6148D9CB1EDFD10000C02CA3 /* AgriBank.app */;
+			productReference = 6148D9CB1EDFD10000C02CA3 /* AgriBank-sit.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6148D9DE1EDFD10000C02CA3 /* AgriBankTests */ = {
@@ -984,12 +1395,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = Systex;
 				TargetAttributes = {
 					6148D9CA1EDFD10000C02CA3 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = 95E44WWFM7;
+						DevelopmentTeam = 354BPKXPSS;
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
@@ -1000,7 +1411,8 @@
 					};
 					6148D9DE1EDFD10000C02CA3 = {
 						CreatedOnToolsVersion = 8.3.2;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = 354BPKXPSS;
+						ProvisioningStyle = Manual;
 						TestTargetID = 6148D9CA1EDFD10000C02CA3;
 					};
 					6148D9E91EDFD10000C02CA3 = {
@@ -1012,10 +1424,9 @@
 			};
 			buildConfigurationList = 6148D9C61EDFD0FF00C02CA3 /* Build configuration list for PBXProject "AgriBank" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -1039,21 +1450,30 @@
 				615B8D771EFCEADE002B4B53 /* Transfer.storyboard in Resources */,
 				61564A8B1F09E7D900CB6C4A /* TwoRowDropDownView.xib in Resources */,
 				6129E6AE1F038DED00C23D67 /* Lose.storyboard in Resources */,
+				91539FD52420CDAD00932770 /* InitTransToCell.xib in Resources */,
+				916DC48E23877CA100DAC7EC /* private_key.p12 in Resources */,
+				9112CF402978DC97004321AA /* TXMEMOCell1.xib in Resources */,
 				BE970DD4230CFEA300F8FB51 /* PersonalInfoAgreement.html in Resources */,
 				614FB42B1EF9039400DDD270 /* ResultCell.xib in Resources */,
+				918C9B792774575F0091BA29 /* TXMobileCell.xib in Resources */,
+				91703181277AF7B500131125 /* TXMBarcodeCell.xib in Resources */,
+				915F50BC28DAF178006BF306 /* CardlessDisableCell.xib in Resources */,
+				9149536B2A3AE5CD001FF706 /* GPRiskMulitChekCell.xib in Resources */,
+				EDFF08B52565041700C7F3CD /* OtpDeviceToCell.xib in Resources */,
 				615A77FD1FB4371000D0D03C /* agribank_pro_app_const.bin in Resources */,
 				BE86EE8F1F135292003C7A36 /* CustomerService.storyboard in Resources */,
 				BEF0D9D220E24D0500BC9833 /* MobilePay.storyboard in Resources */,
 				6148DA281EDFE7A400C02CA3 /* BannerView.xib in Resources */,
-				BEB8616F23150E390054AB96 /* server2019.cer in Resources */,
 				BE4E900820ECDBFF00EDDEEA /* ResultEditCell.xib in Resources */,
-				BE970DD6230D28CA00F8FB51 /* server.cer in Resources */,
 				61564A891F09E7D900CB6C4A /* ThreeRowDropDownView.xib in Resources */,
 				61FE9D1B1F15D24500FA32FE /* Setting.storyboard in Resources */,
 				6148D9D91EDFD10000C02CA3 /* LaunchScreen.storyboard in Resources */,
+				91A23712234ADFFE0061B5A3 /* USAccountViewCell.xib in Resources */,
 				615A77F91FB436A900D0D03C /* agribank_dev_app_const.bin in Resources */,
 				6168B4F21FA8537F00809924 /* ExchangeRateCell.xib in Resources */,
+				BABA7FA826B7A8EB003151BD /* MobileTransfer.storyboard in Resources */,
 				614FB4281EF9039400DDD270 /* MenuCell.xib in Resources */,
+				ED6723A624CA815800F9847C /* TXMEMOCell.xib in Resources */,
 				61E374A21F0F597E0044EE3A /* LoanPrincipalInterestCell.xib in Resources */,
 				BE7675391F0CD09C00E1A461 /* NTRationCell.xib in Resources */,
 				6148DA261EDFE7A400C02CA3 /* AnnounceNews.xib in Resources */,
@@ -1062,28 +1482,41 @@
 				6148D9D61EDFD10000C02CA3 /* Assets.xcassets in Resources */,
 				61F4F41F1EF22AF8001E3872 /* Account.storyboard in Resources */,
 				BE86EEA61F149A42003C7A36 /* PromotionCell.xib in Resources */,
+				914953602A399116001FF706 /* GPRiskCheckCell.xib in Resources */,
 				611B8EC91EE966BE003FCFDF /* Main.storyboard in Resources */,
 				6148DA291EDFE7A400C02CA3 /* FeatureWallCellView.xib in Resources */,
+				91F45EEC237BEBAE00363CCD /* GesturePwd.xib in Resources */,
 				614FB42A1EF9039400DDD270 /* OverviewCell.xib in Resources */,
 				615A77FF1FB4371000D0D03C /* 1-proto5-pub_pro.der in Resources */,
+				915F50B828D84B83006BF306 /* CardlessQryCell.xib in Resources */,
 				6173181B1EEFD12100133F7A /* LoginView.xib in Resources */,
+				91CEDB7D2AB2A06B00400760 /* View in Resources */,
 				BEB38A6E1F0A2800006094AC /* Payment.storyboard in Resources */,
 				61F019091EF8006A00849E94 /* ExpandView.xib in Resources */,
+				ED5C95F424AC4079009A6685 /* 220000.imageset in Resources */,
 				BED66B90210EC0FF00D0D5D4 /* GoldPassbook.storyboard in Resources */,
+				91A85E0C28B6054C009BDFE8 /* server2022.cer in Resources */,
 				61564A871F09E7D900CB6C4A /* OneRowDropDownView.xib in Resources */,
+				914363002A9D854B009908A2 /* server2023.cer in Resources */,
 				615A77FE1FB4371000D0D03C /* agribank_pro_credential.bin in Resources */,
 				615B8D741EFCDDA8002B4B53 /* MemoView.xib in Resources */,
 				615A77F71FB436A900D0D03C /* agribank_dev_credential.bin in Resources */,
-				615A77F81FB436A900D0D03C /* 1-proto5-pub.der in Resources */,
+				918C3A4727E8228400C18161 /* GestureVerify.xib in Resources */,
 				614FB4131EF9013100DDD270 /* Share.storyboard in Resources */,
+				918C3A3F27E3227400C18161 /* PodConfirmView.xib in Resources */,
+				91A015B923AB64AB0096121D /* TodayBillQryCell.xib in Resources */,
+				91A0A5CB28CF22000012C32E /* Cardless.storyboard in Resources */,
 				BE8CDFA6212AC971004D3632 /* GPDiffAmountDetailView.xib in Resources */,
 				BE76753D1F0E3D2F00E1A461 /* ImageConfirmView.xib in Resources */,
 				61F4F42A1EF27B9F001E3872 /* TypeSection.xib in Resources */,
+				9112CF422978DCD8004321AA /* TXMEMOCell2.xib in Resources */,
 				BE7675301F0CC71400E1A461 /* FinancialInformation.storyboard in Resources */,
 				614FB4291EF9039400DDD270 /* MenuExpandCell.xib in Resources */,
 				614FB4261EF9039400DDD270 /* EditCell.xib in Resources */,
 				BE4E900C20EF205100EDDEEA /* ScanCodeView.xib in Resources */,
+				2031DEB426C3A2C0009B8850 /* ThirdPartyAnnounce.html in Resources */,
 				BE86EEA41F136B9A003C7A36 /* ServiceBaseCell.xib in Resources */,
+				917F2BF7278EBD07000DE8BE /* ResultCheckCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1110,57 +1543,92 @@
 			files = (
 				61FE9D141F15D23400FA32FE /* DeviceBindingViewController.swift in Sources */,
 				61F275481F05EEC0000CD9B7 /* ReservationTransferViewController.swift in Sources */,
+				9149536D2A3AEB6B001FF706 /* SKCheckButton.swift in Sources */,
+				9151ECAF24285A250006EB72 /* InitTransToNoEditViewController.swift in Sources */,
 				61FE9D161F15D23400FA32FE /* SetAvatarViewController.swift in Sources */,
 				6148DA2E1EDFE7B600C02CA3 /* SideMenuViewController.swift in Sources */,
+				916DC49223877D5600DAC7EC /* RSAObjC.m in Sources */,
+				09873DA426B78FB500ED1B8B /* MobileTransferSetupViewController.swift in Sources */,
+				911401392536C9F600D80343 /* KeyChain.swift in Sources */,
+				9149535D2A396243001FF706 /* SGSheetMenu.m in Sources */,
+				ED63C5C624A32147006E7DF5 /* TripleShow2DetailViewController.swift in Sources */,
+				916872C3262EC500002E97ED /* EinvoiceShowViewController.swift in Sources */,
 				615B8D801EFD0CC2002B4B53 /* NTTransferViewController.swift in Sources */,
 				BE76753B1F0E3D1A00E1A461 /* ImageConfirmView.swift in Sources */,
 				61DAE3481F1A20BC0075CAE7 /* UserFirstChangeIDPwdViewController.swift in Sources */,
 				6129E6B31F038E7900C23D67 /* PassbookLoseApplyViewController.swift in Sources */,
+				915F50B628D81931006BF306 /* CardlessQryViewController.swift in Sources */,
 				BEF0D9D920E251DD00BC9833 /* QRPayViewController.swift in Sources */,
+				916E4D5F277C5BAB001E90C2 /* QRTaipowerDetailViewController.swift in Sources */,
+				916872D426312706002E97ED /* Code39.m in Sources */,
 				BED66BA1211013F200D0D5D4 /* GPGoldPriceViewController.swift in Sources */,
+				912D7875253D8A2D009FDD22 /* MOTPSettingViewController.swift in Sources */,
 				61FE9D151F15D23400FA32FE /* MessageSwitchViewController.swift in Sources */,
 				6148DA071EDFE6E500C02CA3 /* BasePhotoViewController.swift in Sources */,
 				61FE9D171F15D23400FA32FE /* UserChangeIDPwdResultViewController.swift in Sources */,
 				BE741076219BF540007AF75B /* ColorExtension.swift in Sources */,
 				6122726F1F8F5046001FA028 /* ShowMessageHeadView.swift in Sources */,
+				9158DFB723F7CD7B001D0F5C /* QRPayRefundViewController.swift in Sources */,
+				918C3A4127E3229700C18161 /* PodConfirmView.swift in Sources */,
+				A183A027233497C300E43BD8 /* UserChangeIDPwdByPassResultViewController.swift in Sources */,
+				9120F6D5237A98840087B4A0 /* GestureCollectionView.swift in Sources */,
+				ED73B1D8249CA242002756C7 /* TripleResultViewController.swift in Sources */,
 				BE86EE9E1F136024003C7A36 /* ServiceBaseDetailViewController.swift in Sources */,
 				BE4E901220F32BB000EDDEEA /* MakeQRCodeUtility.swift in Sources */,
 				BE86EE921F135570003C7A36 /* PromotionViewController.swift in Sources */,
 				61FE9D131F15D23400FA32FE /* BasicInfoResultViewController.swift in Sources */,
 				BE970DD122EFEC2C00F8FB51 /* GetPersonalDataViewController.swift in Sources */,
 				BEF0D9D720E2519000BC9833 /* QRCodeTransViewController.swift in Sources */,
+				9120F6D3237A98840087B4A0 /* FastLogInViewController.swift in Sources */,
+				914953652A3997D6001FF706 /* GPRiskEvaluationViewController.swift in Sources */,
 				61564A861F09E7D900CB6C4A /* OneRowDropDownView.swift in Sources */,
-				61DB5C381F0DD8AA006622EC /* DepositCombinedToDepositSearchViewController.swift in Sources */,
 				6148DA171EDFE76D00C02CA3 /* NSData+AESCrypt.m in Sources */,
+				91746FF226F08B0200BC2901 /* QuintupleShowDetailViewController.swift in Sources */,
 				613DA77A1F8DC12A0005E6CC /* EditViewController.swift in Sources */,
 				BE4E901820F35E0F00EDDEEA /* PayTaxInfo.swift in Sources */,
 				61B855EE2003193900B9F46D /* ContactCustomerServiceViewController.swift in Sources */,
 				61352B4F1FC3DA1E00730082 /* SGAlertMenu.m in Sources */,
 				612A82D61F74DC7C002D280D /* extendString.swift in Sources */,
+				916872C9263104A6002E97ED /* EinvoiceAddViewController.swift in Sources */,
 				6148DA381EDFE84600C02CA3 /* SecurityUtility.swift in Sources */,
+				91569435237130E9000BD969 /* TouchIDLogInViewController.swift in Sources */,
+				91A236FE2348741F0061B5A3 /* USAccountResultViewController.swift in Sources */,
 				6117CF3D1F138689001DE1A3 /* PayLoanPrincipalInterestViewController.swift in Sources */,
 				61DB5C3A1F0E0D85006622EC /* DepositCombinedDetailViewController.swift in Sources */,
+				91A0A5CE28D07D1F0012C32E /* CardlessSetupAcceptRulesViewController.swift in Sources */,
+				9151ECB124285DDF0006EB72 /* InitTransToEditResultViewController.swift in Sources */,
 				61352B521FC3DA1E00730082 /* SGGridMenu.m in Sources */,
+				912D7873253D7F8E009FDD22 /* GetMOTPViewController.swift in Sources */,
 				BED66B9D2110135600D0D5D4 /* GPRegularChangeViewController.swift in Sources */,
 				617318191EEFCB4B00133F7A /* LoginView.swift in Sources */,
 				615B8D7D1EFD0CA5002B4B53 /* ConfirmViewController.swift in Sources */,
+				916E4D61277C5BCF001E90C2 /* ShowQRTaipowerDetailController.swift in Sources */,
+				91539FD72420CDD000932770 /* InitTransToNoQryViewController.swift in Sources */,
 				615006A91F0B9CD800269891 /* DepositCombinedToDepositViewController.swift in Sources */,
 				BE7675331F0CCB2B00E1A461 /* NTRationViewController.swift in Sources */,
+				91AC1F2426F07AFB00D7FB72 /* GetFirstQuintupleViewController.swift in Sources */,
 				6148DA001EDFE6AC00C02CA3 /* Platform.swift in Sources */,
 				612BDA371F614FC80036B443 /* VaktenManager.m in Sources */,
 				6148D9FF1EDFE6AC00C02CA3 /* AuthorizationManage.swift in Sources */,
 				BE86EE9C1F135F6F003C7A36 /* PersonalMessageDetailViewController.swift in Sources */,
+				2031DEB926C3A303009B8850 /* ThirdPartyAnnounceViewController.swift in Sources */,
+				91A236F8234873DA0061B5A3 /* USAccountShowViewController.swift in Sources */,
+				9179E330238F936A00CB9D28 /* QRPayViewController0.swift in Sources */,
 				6148DA2A1EDFE7A400C02CA3 /* FeatureWallView.swift in Sources */,
 				BED66B992110119F00D0D5D4 /* GPSingleSellViewController.swift in Sources */,
 				61564A8A1F09E7D900CB6C4A /* TwoRowDropDownView.swift in Sources */,
 				61B7CD0B1F458B5200145517 /* DatePickerView.swift in Sources */,
 				61F4F4281EF27B77001E3872 /* TypeSection.swift in Sources */,
 				BED66B95211010DB00D0D5D4 /* GPAccountInfomationViewController.swift in Sources */,
+				914953632A399209001FF706 /* SKRadioButton.swift in Sources */,
 				615B8D731EFCDDA8002B4B53 /* MemoView.swift in Sources */,
 				BE7675351F0CCBC700E1A461 /* ExchangeRateViewController.swift in Sources */,
-				61352B511FC3DA1E00730082 /* SGSheetMenu.m in Sources */,
+				61352B511FC3DA1E00730082 /* SGSheetQrMenu.m in Sources */,
 				BE8CDFA22123FBD6004D3632 /* GPAcceptRulesViewController.swift in Sources */,
 				6148D9CF1EDFD10000C02CA3 /* AppDelegate.swift in Sources */,
+				91AC1F2926F07C4100D7FB72 /* QuintupleResultViewController.swift in Sources */,
+				91AC1F1F26F077FC00D7FB72 /* QuintupleViewController.swift in Sources */,
+				9120F6D6237A98840087B4A0 /* GetFastLogInViewController.swift in Sources */,
 				6148DA421EE1428B00C02CA3 /* MenuViewController.swift in Sources */,
 				61FE9D181F15D23400FA32FE /* UserChangeIDPwdViewController.swift in Sources */,
 				61352B4E1FC3DA1E00730082 /* SGActionView.m in Sources */,
@@ -1174,42 +1642,75 @@
 				614FB4251EF9039400DDD270 /* CustomizeCell.swift in Sources */,
 				BE7675371F0CCBE400E1A461 /* RegularSavingCalculationViewController.swift in Sources */,
 				615006A71F0B6E3700269891 /* ReservationTransferDetailViewController.swift in Sources */,
+				91A015B123AB58300096121D /* TodayBillQryViewController.swift in Sources */,
+				ED61F10F25664150000E0107 /* OTPDeviceInfoEditViewController.swift in Sources */,
+				ED61F10D256606D7000E0107 /* OTPDeviceEditViewController.swift in Sources */,
+				91A236FA234873F90061B5A3 /* USAccountAddViewController.swift in Sources */,
+				09873DA926B78FE200ED1B8B /* MobileNTTransferViewController.swift in Sources */,
+				BABA7FAC26B7F3C4003151BD /* MobileTransferSetupResultViewController.swift in Sources */,
 				61F4F42C1EF2A9E3001E3872 /* ActOverviewViewController.swift in Sources */,
 				61F4F4301EF2B807001E3872 /* ActDetailViewController.swift in Sources */,
+				BABA7FA726B7A5A3003151BD /* MobileTransferSetupAcceptRulesViewController.swift in Sources */,
 				BEF0D9D520E2512D00BC9833 /* AcceptRulesViewController.swift in Sources */,
 				6148DA251EDFE7A400C02CA3 /* AnnounceNews.swift in Sources */,
+				9154732923C310E6002D9807 /* ShowQRDetailViewController.swift in Sources */,
 				BE00496121DC8FF9002122AE /* TPSMerchantInfo.swift in Sources */,
 				BE49D0DF20FEEDF0004E6BD6 /* PolygonView.swift in Sources */,
+				91F45EEE237CEA1200363CCD /* GesturePwd.swift in Sources */,
 				BE8CDFA8212AC9B2004D3632 /* GPDiffAmountDetailView.swift in Sources */,
+				91746FEA26F08ADA00BC2901 /* QuintupleShow2DetailViewController.swift in Sources */,
 				6148DA321EDFE7D800C02CA3 /* ConnectionUtility.swift in Sources */,
+				9120F6D7237A98840087B4A0 /* FastLogInResultViewController.swift in Sources */,
 				6148DA081EDFE6E500C02CA3 /* BaseViewController.swift in Sources */,
 				61564A881F09E7D900CB6C4A /* ThreeRowDropDownView.swift in Sources */,
+				918C3A4327E8224D00C18161 /* GestureVerify.swift in Sources */,
+				912D7879253FE3AC009FDD22 /* MOTPSetting2ViewController.swift in Sources */,
 				6129E6B21F038E7900C23D67 /* DebitCardLoseApplyViewController.swift in Sources */,
 				BE86EE9A1F135857003C7A36 /* WebContentViewController.swift in Sources */,
+				9120F6E1237AA1DE0087B4A0 /* FastLogInGraphicView.swift in Sources */,
 				6125ABF21EF5509C00A2A9A3 /* TextField.swift in Sources */,
+				EDB9D123248766F100185D35 /* PushDetailViewController.swift in Sources */,
 				BEB38A6A1F0A27EE006094AC /* BillPaymentViewController.swift in Sources */,
+				ED628BD324D1577500721060 /* DeviceBinding2ViewController.swift in Sources */,
+				915F50BA28DAF0F9006BF306 /* CardlessDisableViewController.swift in Sources */,
 				6148DA271EDFE7A400C02CA3 /* BannerView.swift in Sources */,
+				91A2371423557A730061B5A3 /* PayLoanPartialSettIementViewController.swift in Sources */,
 				61E374A41F0F6DF80044EE3A /* LoanPrincipalInterestDetailViewController.swift in Sources */,
+				ED61F111256646BE000E0107 /* OTPDeviceInfoToEditResultViewController.swift in Sources */,
+				91A015AF23AB58050096121D /* DepositCombinedToDepositSearchViewController.swift in Sources */,
 				BE8CDFA421256121004D3632 /* GPTransactionDetailDetailViewController.swift in Sources */,
 				BE86EE941F135598003C7A36 /* NewsViewController.swift in Sources */,
 				617318171EEFC89300133F7A /* VPImageCropperViewController.m in Sources */,
+				9151ECB8242881670006EB72 /* E2E.m in Sources */,
 				6148DA351EDFE7E900C02CA3 /* DetermineUtility.swift in Sources */,
+				914953672A3997E4001FF706 /* GPRiskRulesViewController.swift in Sources */,
 				BED66B972110112F00D0D5D4 /* GPSingleBuyViewController.swift in Sources */,
+				91A2371623557C050061B5A3 /* LoanPartialSettIementViewController.swift in Sources */,
+				A183A026233497C300E43BD8 /* UserChangeIDPwdByPassViewController.swift in Sources */,
+				ED63C5C424A2FD8A006E7DF5 /* TripleShowDetailViewController.swift in Sources */,
 				BED66B9B211012B100D0D5D4 /* GPRegularSubscriptionViewController.swift in Sources */,
 				61F019071EF8000B00849E94 /* ExpandView.swift in Sources */,
 				61564A8D1F0A39D400CB6C4A /* ReservationTransferSearchCancelViewController.swift in Sources */,
 				61E374A01F0F3A4C0044EE3A /* LoanPrincipalInterestViewController.swift in Sources */,
 				BE8CDF9421228C7B004D3632 /* GPRegularAccountInfomationViewController.swift in Sources */,
 				61F4F42E1EF2ADAD001E3872 /* ShowDetailViewController.swift in Sources */,
+				912D7877253D8A46009FDD22 /* MOTPSettingResultViewController.swift in Sources */,
+				ED66562025625CD50061C48C /* OTPDeviceBindingViewController.swift in Sources */,
 				61FE9D121F15D23400FA32FE /* BasicInfoChangeViewController.swift in Sources */,
 				BE4E900A20EF203400EDDEEA /* ScanCodeView.swift in Sources */,
 				BE00496221DC8FF9002122AE /* TPSQRCodeManager.swift in Sources */,
 				BED66B9F2110139800D0D5D4 /* GPTransactionDetailViewController.swift in Sources */,
 				BE86EE961F1355B5003C7A36 /* ServiceBaseViewController.swift in Sources */,
+				915F50B428D31E3C006BF306 /* CardlessSetupViewController.swift in Sources */,
+				91A236FC2348740E0061B5A3 /* USAccountEditViewController.swift in Sources */,
 				BE4E900420E6270300EDDEEA /* MWQRPTransactionInfo.m in Sources */,
 				BE86EE981F1355CD003C7A36 /* PersonalMessageViewController.swift in Sources */,
+				910862CE2499C6F7006F0233 /* TripleViewController.swift in Sources */,
 				6109C02F1F04DAF8009CAE24 /* CheckLoseApplyViewController.swift in Sources */,
 				BEB38A6B1F0A27EE006094AC /* TaxPaymentViewController.swift in Sources */,
+				ED6039AC249B621700775A92 /* GetFirstTripleViewController.swift in Sources */,
+				91C69F62276C2A8A00105CE1 /* TaipowerInfo.swift in Sources */,
+				9154732723C310C0002D9807 /* QRPayDetailViewController.swift in Sources */,
 				6148DA0B1EDFE6F800C02CA3 /* Define.swift in Sources */,
 				615B8D7E1EFD0CA5002B4B53 /* ResultViewController.swift in Sources */,
 			);
@@ -1303,6 +1804,22 @@
 			name = Setting.storyboard;
 			sourceTree = "<group>";
 		};
+		91A0A5C928CF22000012C32E /* Cardless.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				91A0A5CA28CF22000012C32E /* Base */,
+			);
+			name = Cardless.storyboard;
+			sourceTree = "<group>";
+		};
+		BABA7FAA26B7A8EB003151BD /* MobileTransfer.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BABA7FA926B7A8EB003151BD /* Base */,
+			);
+			name = MobileTransfer.storyboard;
+			sourceTree = "<group>";
+		};
 		BE76752E1F0CC71400E1A461 /* FinancialInformation.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1372,6 +1889,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1398,7 +1916,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1434,13 +1952,14 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: National Agriculture,Fishery and Finance Information Center (354BPKXPSS)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
@@ -1454,7 +1973,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1466,57 +1985,113 @@
 		6148D9F41EDFD10100C02CA3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: SYSTEX Corporation";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SYSTEX Corporation";
-				DEVELOPMENT_TEAM = 95E44WWFM7;
+				CODE_SIGN_ENTITLEMENTS = "AgriBank/AgriBank-sitDebug.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 20230925;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEPLOYMENT_POSTPROCESSING = NO;
+				DEVELOPMENT_TEAM = 354BPKXPSS;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 354BPKXPSS;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AgriBank/Resource",
 					"$(PROJECT_DIR)/AgriBank/ThirdParty/KeyPasco",
 				);
 				INFOPLIST_FILE = AgriBank/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.naffic.mbank;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AgriBank/Resource",
+				);
+				MARKETING_VERSION = 1.5.9;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-ObjC",
+					"$(inherited)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.naffic.mbank-sit";
+				PRODUCT_NAME = "AgriBank-sit";
 				PROVISIONING_PROFILE = "596a93c5-ad22-42e7-aba1-6e238f209739";
-				PROVISIONING_PROFILE_SPECIFIER = forComAll;
+				PROVISIONING_PROFILE_SPECIFIER = testfight;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = testfight;
 				SWIFT_OBJC_BRIDGING_HEADER = "AgriBank/AgriBank-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_WORKSPACE = YES;
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Debug;
 		};
 		6148D9F51EDFD10100C02CA3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: SYSTEX Corporation";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SYSTEX Corporation";
-				DEVELOPMENT_TEAM = 95E44WWFM7;
+				CODE_SIGN_ENTITLEMENTS = "AgriBank/AgriBank-sitRelease.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 20230925;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DEVELOPMENT_TEAM = 354BPKXPSS;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 354BPKXPSS;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AgriBank/Resource",
 					"$(PROJECT_DIR)/AgriBank/ThirdParty/KeyPasco",
 				);
 				INFOPLIST_FILE = AgriBank/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AgriBank/Resource",
+				);
+				MARKETING_VERSION = 1.5.9;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = org.naffic.mbank;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AgriBank;
 				PROVISIONING_PROFILE = "596a93c5-ad22-42e7-aba1-6e238f209739";
-				PROVISIONING_PROFILE_SPECIFIER = forComAll;
+				PROVISIONING_PROFILE_SPECIFIER = "org.naffic.mbank(Adhoc)";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "org.naffic.mbank(Adhoc)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AgriBank/AgriBank-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_WORKSPACE = YES;
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Release;
 		};
@@ -1525,11 +2100,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 354BPKXPSS;
 				INFOPLIST_FILE = AgriBankTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Systex.AgriBankTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AgriBank.app/AgriBank";
 			};
 			name = Debug;
@@ -1539,11 +2120,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = MMMTGA33JC;
 				INFOPLIST_FILE = AgriBankTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Systex.AgriBankTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AgriBank.app/AgriBank";
 			};
 			name = Release;
@@ -1556,7 +2139,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Systex.AgriBankUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = AgriBank;
 			};
 			name = Debug;
@@ -1569,7 +2152,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Systex.AgriBankUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = AgriBank;
 			};
 			name = Release;
@@ -1584,7 +2167,7 @@
 				6148D9F21EDFD10100C02CA3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		6148D9F31EDFD10100C02CA3 /* Build configuration list for PBXNativeTarget "AgriBank" */ = {
 			isa = XCConfigurationList;
@@ -1593,7 +2176,7 @@
 				6148D9F51EDFD10100C02CA3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		6148D9F61EDFD10100C02CA3 /* Build configuration list for PBXNativeTarget "AgriBankTests" */ = {
 			isa = XCConfigurationList;
@@ -1602,7 +2185,7 @@
 				6148D9F81EDFD10100C02CA3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		6148D9F91EDFD10100C02CA3 /* Build configuration list for PBXNativeTarget "AgriBankUITests" */ = {
 			isa = XCConfigurationList;
@@ -1611,7 +2194,7 @@
 				6148D9FB1EDFD10100C02CA3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

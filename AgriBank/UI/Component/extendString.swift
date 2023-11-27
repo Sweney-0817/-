@@ -10,7 +10,7 @@ import Foundation
 
 extension String {
     func separatorThousand() -> String {
-        var temp = self.replacingOccurrences(of: "+", with: "").replacingOccurrences(of: "-", with: "")
+        var temp = self.replacingOccurrences(of: "+", with: "").replacingOccurrences(of: "-", with: "-")
         let formatter = NumberFormatter()
         formatter.groupingSeparator = ","
         formatter.groupingSize = 3

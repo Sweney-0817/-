@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 let GPRegularSubscriptionTitle = "定期投資申請"
 
@@ -26,7 +27,7 @@ class GPRegularSubscriptionViewController: BaseViewController {
     @IBOutlet var m_lbTransOutAct: UILabel!
     @IBOutlet var m_lbTradeDate: UILabel!
     @IBOutlet var m_tfTradeInput: TextField!
-    @IBOutlet var m_wvMemo: UIWebView!
+    @IBOutlet var m_wvMemo: WKWebView!
     @IBOutlet var m_consMemoHeight: NSLayoutConstraint!
     
     override func viewDidLoad() {
@@ -95,6 +96,9 @@ class GPRegularSubscriptionViewController: BaseViewController {
         dataConfirm.list?.append([Response_Key: "黃金存摺帳號", Response_Value: (m_objPassData?.m_accountStruct.accountNO)!])
         dataConfirm.list?.append([Response_Key: "計價幣別", Response_Value: (m_objPassData?.m_accountStruct.currency)! == Currency_TWD ? Currency_TWD_Title:(m_objPassData?.m_accountStruct.currency)!])
         dataConfirm.list?.append([Response_Key: "扣款帳號", Response_Value: (m_objPassData?.m_strTransOutAct)!])
+        //2023/6 add by sweney
+        dataConfirm.list?.append([Response_Key: "平均牌告單價", Response_Value: (m_objPassData?.m_strTransOutAct)!])
+        
         dataConfirm.list?.append([Response_Key: "扣款日期", Response_Value: (m_objPassData?.m_settingData.m_strDAY)! + "日"])
         dataConfirm.list?.append([Response_Key: "投資金額", Response_Value: m_strBuyAmount.separatorThousand()])
         enterConfirmResultController(true, dataConfirm, true, GPRegularSubscriptionTitle)
@@ -222,8 +226,18 @@ extension GPRegularSubscriptionViewController : UITextFieldDelegate {
         }
     }
 }
-extension GPRegularSubscriptionViewController : UIWebViewDelegate {
-    func webViewDidFinishLoad(_ webView: UIWebView) {
+extension GPRegularSubscriptionViewController : WKNavigationDelegate  {
+ //  @nonobjc func  webViewDidFinishLoad(_ m_wvMemo: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+//        var frame: CGRect = self.m_wvMemo.frame
+//        frame.size.height = 1
+//        self.m_wvMemo.frame = frame
+//        let fittingSize = self.m_wvMemo.sizeThatFits(CGSize(width: 0, height: 0))
+//        frame.size = fittingSize
+//        self.m_wvMemo.frame = frame
+//        m_consMemoHeight.constant = fittingSize.height
+    //}
+ 
+    func webView(_ m_wvMemo: WKWebView, didFinish navigation: WKNavigation!) {
         var frame: CGRect = self.m_wvMemo.frame
         frame.size.height = 1
         self.m_wvMemo.frame = frame
@@ -232,4 +246,5 @@ extension GPRegularSubscriptionViewController : UIWebViewDelegate {
         self.m_wvMemo.frame = frame
         m_consMemoHeight.constant = fittingSize.height
     }
+   
 }

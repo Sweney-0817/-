@@ -28,7 +28,7 @@ static char encodingTable[64] =
 - (NSData *)AES256EncryptWithKey:(NSString *)key
 {
     // 'key' should be 32 bytes for AES256, will be null-padded otherwise
-    char keyPtr[kCCKeySizeAES128 + 1]; // room for terminator (unused)
+    char keyPtr[kCCKeySizeAES256 + 1]; // room for terminator (unused)
     bzero( keyPtr, sizeof( keyPtr ) ); // fill with zeroes (for padding)
     
     // fetch key data
@@ -40,12 +40,13 @@ static char encodingTable[64] =
     //equal to the input size plus the size of one block.
     //That's why we need to add the size of one block here
     size_t bufferSize = dataLength + kCCBlockSizeAES128;
-    void *buffer = malloc( bufferSize );
+     void *buffer = malloc( bufferSize );
+   
     
     size_t numBytesEncrypted = 0;
         
     CCCryptorStatus cryptStatus = CCCrypt( kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding|kCCOptionECBMode,
-                                          keyPtr, kCCKeySizeAES128,
+                                          keyPtr, kCCKeySizeAES256,
                                           NULL /* initialization vector (optional) */,
                                           [self bytes], dataLength, /* input */
                                           buffer, bufferSize, /* output */
@@ -63,7 +64,7 @@ static char encodingTable[64] =
 - (NSData *)AES256DecryptWithKey:(NSString *)key
 {
     // 'key' should be 32 bytes for AES256, will be null-padded otherwise
-    char keyPtr[kCCKeySizeAES128+1]; // room for terminator (unused)
+    char keyPtr[kCCKeySizeAES256+1]; // room for terminator (unused)
     bzero( keyPtr, sizeof( keyPtr ) ); // fill with zeroes (for padding)
     
     // fetch key data
@@ -76,10 +77,11 @@ static char encodingTable[64] =
     //That's why we need to add the size of one block here
     size_t bufferSize = dataLength + kCCBlockSizeAES128;
     void *buffer = malloc( bufferSize );
+   
     
     size_t numBytesDecrypted = 0;
     CCCryptorStatus cryptStatus = CCCrypt( kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding|kCCOptionECBMode,
-                                          keyPtr, kCCKeySizeAES128,
+                                          keyPtr, kCCKeySizeAES256,
                                           NULL /* initialization vector (optional) */,
                                           [self bytes], dataLength, /* input */
                                           buffer, bufferSize, /* output */
@@ -98,13 +100,13 @@ static char encodingTable[64] =
 - (NSData *)AES256EncryptWithKey:(NSString *)key IVData:(NSData *)ivData
 {
     // fetch iv data
-    char ivPtr[kCCKeySizeAES128];
+    char ivPtr[kCCKeySizeAES256];
     bzero(ivPtr, sizeof(ivPtr));
     
     memcpy(ivPtr, [ivData bytes], sizeof(ivPtr));
     
     // 'key' should be 32 bytes for AES256, will be null-padded otherwise
-    char keyPtr[kCCKeySizeAES128 + 1]; // room for terminator (unused)
+    char keyPtr[kCCKeySizeAES256 + 1]; // room for terminator (unused)
     bzero(keyPtr, sizeof(keyPtr)); // fill with zeroes (for padding)
     
     // fetch key data
@@ -116,11 +118,12 @@ static char encodingTable[64] =
     //equal to the input size plus the size of one block.
     //That's why we need to add the size of one block here
     size_t bufferSize           = dataLength + kCCBlockSizeAES128;
-    void* buffer                = malloc(bufferSize);
+   void* buffer                = malloc(bufferSize);
+ 
     
     size_t numBytesEncrypted    = 0;
     CCCryptorStatus cryptStatus = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding,
-                                          keyPtr, kCCKeySizeAES128,
+                                          keyPtr, kCCKeySizeAES256,
                                           ivPtr/* initialization vector (optional) */,
                                           [self bytes], dataLength, /* input */
                                           buffer, bufferSize, /* output */
@@ -139,13 +142,13 @@ static char encodingTable[64] =
 - (NSData *)AES256DecryptWithKey:(NSString *)key IVData:(NSData *)ivData
 {
     // fetch iv data
-    char ivPtr[kCCKeySizeAES128];
+    char ivPtr[kCCKeySizeAES256];
     bzero(ivPtr, sizeof(ivPtr));
     
     memcpy(ivPtr, [ivData bytes], sizeof(ivPtr));
     
     // 'key' should be 32 bytes for AES256, will be null-padded otherwise
-    char keyPtr[kCCKeySizeAES128 + 1]; // room for terminator (unused)
+    char keyPtr[kCCKeySizeAES256 + 1]; // room for terminator (unused)
     bzero( keyPtr, sizeof( keyPtr ) ); // fill with zeroes (for padding)
     
     // fetch key data
@@ -158,10 +161,11 @@ static char encodingTable[64] =
     //That's why we need to add the size of one block here
     size_t bufferSize           = dataLength + kCCBlockSizeAES128;
     void *buffer                = malloc( bufferSize );
+   
     
     size_t numBytesDecrypted    = 0;
     CCCryptorStatus cryptStatus = CCCrypt( kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding,
-                                          keyPtr, kCCKeySizeAES128,
+                                          keyPtr, kCCKeySizeAES256,
                                           ivPtr /* initialization vector (optional) */,
                                           [self bytes], dataLength, /* input */
                                           buffer, bufferSize, /* output */
@@ -189,7 +193,7 @@ static char encodingTable[64] =
 #endif
     
     // 'key' should be 32 bytes for AES256, will be null-padded otherwise
-    char keyPtr[kCCKeySizeAES128 + 1]; // room for terminator (unused)
+    char keyPtr[kCCKeySizeAES256 + 1]; // room for terminator (unused)
     bzero( keyPtr, sizeof( keyPtr ) ); // fill with zeroes (for padding)
     
     // fetch key data
@@ -205,12 +209,13 @@ static char encodingTable[64] =
     if (dataLength > 0 && kCCBlockSizeAES128 > 0 && SIZE_MAX/dataLength >= kCCBlockSizeAES128)
     {
         size_t bufferSize = dataLength + kCCBlockSizeAES128;
-        void *buffer = malloc( bufferSize );
+   void *buffer = malloc( bufferSize );
+       
         
         size_t numBytesEncrypted = 0;
         
         CCCryptorStatus cryptStatus = CCCrypt( kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding|kCCOptionECBMode,
-                                              keyPtr, kCCKeySizeAES128,
+                                              keyPtr, kCCKeySizeAES256,
                                               #ifndef FORTIFY
                                               NULL /* initialization vector (optional) */,
                                               #else
@@ -242,7 +247,7 @@ static char encodingTable[64] =
 #endif
     
     // 'key' should be 32 bytes for AES256, will be null-padded otherwise
-    char keyPtr[kCCKeySizeAES128+1]; // room for terminator (unused)
+    char keyPtr[kCCKeySizeAES256+1]; // room for terminator (unused)
     bzero( keyPtr, sizeof( keyPtr ) ); // fill with zeroes (for padding)
     
     // fetch key data
@@ -258,11 +263,12 @@ static char encodingTable[64] =
     if (dataLength > 0 && kCCBlockSizeAES128 > 0 && SIZE_MAX/dataLength >= kCCBlockSizeAES128)
     {
         size_t bufferSize = dataLength + kCCBlockSizeAES128;
-        void *buffer = malloc( bufferSize );
+         void *buffer = malloc( bufferSize );
+ 
         
         size_t numBytesDecrypted = 0;
         CCCryptorStatus cryptStatus = CCCrypt( kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding|kCCOptionECBMode,
-                                              keyPtr, kCCKeySizeAES128,
+                                              keyPtr, kCCKeySizeAES256,
                                               #ifndef FORTIFY
                                               NULL /* initialization vector (optional) */,
                                               #else
@@ -341,8 +347,9 @@ static char encodingTable[64] =
             }
             
             inbuf [ixinbuf++] = ch;
-            
-            if( ixinbuf == 4 ) 
+           // 2019-12-10 edit by sweney  低風險修正
+           // if( ixinbuf == 4 )
+             if( ixinbuf > 3 )
             {
                ixinbuf = 0;
                outbuf [0] = ( inbuf[0] << 2 ) | ( ( inbuf[1] & 0x30) >> 4 );
@@ -385,8 +392,9 @@ static char encodingTable[64] =
    {
       ctremaining = lentext - ixtext;
       if( ctremaining <= 0 ) break;
-      
-      for( i = 0; i < 3; i++ )
+       // 2019-12-10 edit by sweney  低風險修正
+       //for( i = 0; i < 3; i++ )
+       for( i = 0; i <= 2; i++ )
       {
          ix = ixtext + i;
          if( ix < lentext ) inbuf[i] = bytes[ix];

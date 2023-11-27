@@ -108,6 +108,7 @@ class GPRegularAccountInfomationViewController: BaseViewController {
     @IBOutlet var m_svContent: UIScrollView!
     @IBOutlet var m_lbCurrency: UILabel!
     @IBOutlet var m_lbTransOutAct: UILabel!
+    @IBOutlet weak var m_lbAVGCost: UILabel!
     
     @IBOutlet var m_lbAmountTitle1: UILabel!
     @IBOutlet var m_lbStopTitle1: UILabel!
@@ -490,6 +491,8 @@ class GPRegularAccountInfomationViewController: BaseViewController {
         case "Gold0204":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any] {
                 self.m_lbTransOutAct.text = data["INVACT"] as? String
+                //add by sweney     平均牌告單價
+                self.m_lbAVGCost.text = data["AVGCOST"] as? String
                 if let result = data["Result"] as? [[String:String]] {
                     m_aryData.removeAll()
                     for date in result {

@@ -33,7 +33,10 @@ typedef NS_ENUM(NSInteger, QRPTransactionQueryTag) {
     QRPTransactionQueryTag_OrgTxnData,          // 原始交易資訊
     QRPTransactionQueryTag_FeeInfo,             // 費用資訊
     QRPTransactionQueryTag_Charge,              // 使用者支付手續費
-    QRPTransactionQueryTag_FeeName              // 費用名稱
+    QRPTransactionQueryTag_FeeName,             // 費用名稱
+    QRPTransactionQueryTag_timestamp = 97,      // 時戳
+    QRPTransactionQueryTag_WalletBaseCode = 98,  //錢包服務提供者
+    QRPTransactionQueryTag_msgTAC = 99          // 訊息押碼
 };
 
 static NSString * const kQRPTransactionScheme = @"TWQRP";
@@ -90,7 +93,6 @@ static const NSUInteger kQRPAcqInfoTransfereeAccountLength = 16;
 static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
 
 @interface MWQRPTransactionInfo ()
-
 // path
 @property (retain, nonatomic) NSString *m_strMerchantName;
 @property (retain, nonatomic) NSString *m_strCountryCode;
@@ -98,6 +100,27 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
 @property (retain, nonatomic) NSString *m_strQrVersion;
 // query
 @property (retain, nonatomic) NSString *m_strTxnAmt;
+//北市水及驗證繳費  chiu start
+@property (retain, nonatomic) NSString *m_strsPayType;
+@property (retain, nonatomic) NSString *m_strsPay;
+@property (retain, nonatomic) NSString *m_strsBillSID;
+@property (retain, nonatomic) NSString *m_strTimestamp;
+@property (retain, nonatomic) NSString *m_strwalletBaseCode;
+@property (retain, nonatomic) NSString *m_strMsgTAC;
+
+//台電 sweney
+@property(retain, nonatomic) NSString *m_power64no;
+@property(retain, nonatomic) NSString *m_powerNo;
+@property(retain, nonatomic) NSString *m_MBarcode;
+@property(retain, nonatomic) NSNumber *m_TotalAmount;
+@property(retain, nonatomic) NSString *m_TotalCount;
+@property(retain, nonatomic) NSArray *m_TaipowerInfo;
+@property(retain, nonatomic) NSString *m_ItemList;
+@property(retain, nonatomic) NSArray *m_ItemarrayList;
+@property(retain, nonatomic) NSString *m_MobileNo;
+
+
+//北市水及驗證繳費  chiu end
 @property (retain, nonatomic) NSString *m_strOrderNbr;
 @property (retain, nonatomic) NSString *m_strSecureCode;
 @property (retain, nonatomic) NSString *m_strDeadlinefinal;
@@ -324,6 +347,53 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
     self.m_strTxnAmt = txnAmt;
 }
 
+
+
+
+//北市水及驗證繳費  chiu start
+- (NSString *)sPayType {
+return self.m_strsPayType;
+}
+
+- (void)setsPayType:(NSString *)sPayType{
+    self.m_strsPayType = sPayType;
+}
+- (NSString *)sBillSID {
+return self.m_strsBillSID;
+}
+
+
+- (void)setsBillSID:(NSString *)sBillSID {
+    self.m_strsBillSID = sBillSID;
+}
+
+- (NSString *)timestamp {
+return self.m_strTimestamp;
+}
+
+- (NSString *)WalletBaseCode {
+return self.m_strwalletBaseCode;
+}
+
+- (void)settimestamp:(NSString *)timestamp {
+    self.m_strTimestamp = timestamp;
+}
+
+- (NSString *)msgTAC {
+return self.m_strMsgTAC;
+}
+
+- (void)setsmsgTAC:(NSString *)msgTAC {
+    self.m_strMsgTAC = msgTAC;
+}
+
+- (void)setWalletBaseCode:(NSString *)WalletBaseCode {
+    self.m_strwalletBaseCode = WalletBaseCode;
+}
+
+//北市水及驗證繳費  chiu end
+
+//
 - (NSString *)transfereeBank
 {
     return self.m_strTransfereeBank;
@@ -404,6 +474,69 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
     return self.m_dicE;
 }
 
+
+//台電 sweney
+
+-(void) setspowerNo:(NSString*)powerNo{
+    self.m_powerNo = powerNo; }
+
+-(void) setsMBarcode:(NSString*)MBarcode{
+    NSString *decodeMBarcode = [MBarcode stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    self.m_MBarcode = decodeMBarcode; }
+
+-(void) setspower64No:(NSString*)power64no{
+    self.m_power64no = power64no; }
+
+-(void) setsTaipowerInfo:(NSArray*)TaipowerInfo {
+    self.m_TaipowerInfo = TaipowerInfo; }
+
+-(void) setsItemList:(NSString* )ItemList{
+    self.m_ItemList = ItemList; }
+
+-(void) setsItemarrayList:(NSArray* )ItemarrayList{
+    self.m_ItemarrayList = ItemarrayList; }
+
+
+- (void)setsTotalCount:(NSString* )TotalCount{
+    self.m_TotalCount = TotalCount; }
+
+- (void)setsTotalAmount:(NSNumber* )TotalAmount{
+    self.m_TotalAmount = TotalAmount; }
+
+- (void)setsMobileNo:(NSString* )MobileNo{
+    self.m_MobileNo = MobileNo;
+}
+
+-(NSString* )sTotalCount{
+    return self.m_TotalCount;
+}
+-(NSNumber* )sTotalAmount{
+    return self.m_TotalAmount;
+}
+-(NSString *)spowerNo{
+    return  self.m_powerNo;
+}
+-(NSString *)sMBarcode{
+    return  self.m_MBarcode;
+}
+-(NSString* )sItemList
+{
+    return self.m_ItemList;
+}
+-(NSArray* )sItemarrayList
+{
+    return self.m_ItemarrayList;
+}
+- (NSString *)sPower64No{
+    return self.m_power64no;
+}
+- (NSArray *)sTaipowerInfo{
+    return  self.m_TaipowerInfo;
+}
+- (NSString *)sMobileNo{
+    return  self.m_MobileNo;
+}
+
 - (QRPTransactionType)transactionType {
     
     if (_transactionType == QRPTransactionType_Unknown)
@@ -451,7 +584,7 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
     if (![self isValidQrVersion]) {
         return NO;
     }
-
+   
     BOOL bValid = NO;
     // 上述明文區(D類) 、修改區(M類) 、密文區(E類) 及其他擴充區(O類)的欄位名稱不可重複出現
     bValid = (self.m_arSameQueryTags.count == 0);
@@ -771,6 +904,15 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
         case QRPTransactionQueryTag_FeeName:
             self.m_strFeeName = value;
             break;
+        case QRPTransactionQueryTag_timestamp:   //北市水及驗證繳費 chiu
+            self.m_strTimestamp = value;
+            break;
+        case QRPTransactionQueryTag_msgTAC:      //北市水及驗證繳費 chiu
+            self.m_strMsgTAC = value;
+            break;
+        case QRPTransactionQueryTag_WalletBaseCode:
+            self.m_strwalletBaseCode =value;
+            break;
     }
 }
 
@@ -1009,6 +1151,31 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
     return bValid;
 }
 
+/*
+ * D97 D98 D99 檢核
+ */
+-(BOOL)isValidP2PCheckInfo:(BOOL)isNecessary {
+   BOOL bValid = NO;
+    int validcounter = 3;
+   if(nil == _m_strTimestamp) {
+       validcounter -= 1;
+   }
+    if(nil == _m_strwalletBaseCode){
+        validcounter -= 1;
+    }
+    if(nil == _m_strMsgTAC){
+        validcounter -= 1;
+    }
+    if ((validcounter > 0) && (validcounter < 3 )){
+        bValid = NO;
+    }else{
+        bValid =YES;
+    }
+    
+    return bValid;
+}
+
+
 /**
  * 檢核收單行資訊
  */
@@ -1241,6 +1408,7 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
     if (![self isValidQrExpirydateIsNecessary:NO]) {
         return NO;
     }
+    
     return YES;
 }
 
@@ -1265,6 +1433,9 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
         return NO;
     }
     if (![self isValidTxnCurrencyCodeIsNecessary:NO]) {
+        return NO;
+    }
+    if (![self isValidP2PCheckInfo:NO]){
         return NO;
     }
     return YES;
@@ -1311,6 +1482,7 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
     if (![self isValidFeeNameIsNecessary:NO]) {
         return NO;
     }
+     
     return YES;
 }
 
@@ -1406,6 +1578,9 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
                         case QRPTransactionQueryTag_FeeInfo:
                         case QRPTransactionQueryTag_Charge:
                         case QRPTransactionQueryTag_FeeName:
+                        case QRPTransactionQueryTag_timestamp:    //北市水及驗證繳費 chiu
+                        case QRPTransactionQueryTag_WalletBaseCode:
+                        case QRPTransactionQueryTag_msgTAC:       //北市水及驗證繳費 chiu
                         {
                             if (![self.m_arQueryTags containsObject:@(iTag)]) {
                                 [self.m_arQueryTags addObject:@(iTag)];
@@ -1496,6 +1671,21 @@ static const NSUInteger kQRPAcqInfoBillTypeLength = 8;
     [_m_dicM release];
     [_m_dicE release];
     [_m_arSameQueryTags release];
+    //北市水及驗證繳費 chiu start
+    [_m_strsPayType release];
+    [_m_strMsgTAC release];
+    [_m_strsBillSID release];
+    [_m_strTimestamp release];
+    [_m_strwalletBaseCode release];
+    //北市水及驗證繳費 chiu end
+    //台電
+    [_m_powerNo release];
+    [_m_TotalAmount release];
+    [_m_TotalCount release];
+    [_m_TaipowerInfo release];
+    [_m_power64no release];
+    [_m_ItemList release];
+    [_m_ItemarrayList release];
     [super dealloc];
 }
 

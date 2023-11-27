@@ -177,7 +177,7 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
             switch actionSheet.tag {
             case ViewTag.View_AccountActionSheet.rawValue:
                 if let info = accountList?[buttonIndex-1] {
-                    topDropView?.setThreeRow(PayLoanPrincipalInterest_OutAccount_Title, info.accountNO, PayLoanPrincipalInterest_Currency_Title, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), PayLoanPrincipalInterest_Balance_Title, String(info.balance).separatorThousand())
+                    topDropView?.setThreeRow(PayLoanPrincipalInterest_OutAccount_Title, info.accountNO, PayLoanPrincipalInterest_Currency_Title, (info.currency == Currency_TWD ? Currency_TWD_Title:info.currency), PayLoanPrincipalInterest_Balance_Title, String(info.balance).separatorThousandDecimal())
                 }
         
             default: break
@@ -188,7 +188,8 @@ class PayLoanPrincipalInterestViewController: BaseViewController, ThreeRowDropDo
     // MARK: - Private
     private func fillDetailData()  {
         if let array = list?["Result"] as? [[String:String]], let dic = array.first {
-            calculatePeroidLabel.text = "\(dic["SDATE"] ?? "") - \(dic["EDATE"] ?? "")"
+            //calculatePeroidLabel.text = "\(dic["SDATE"] ?? "") - \(dic["EDATE"] ?? "")"
+             calculatePeroidLabel.text = "\(list?["MSDATE"] ?? "") - \(list?["MEDATE"] ?? "")"
         }
 //        if let FITIRT = list?["FITIRT"] as? String {
 //            rateLabel.text = FITIRT

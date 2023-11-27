@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import LocalAuthentication
+
 class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, AnnounceNewsDelegate {
     @IBOutlet weak var newsView: UIView!
     @IBOutlet weak var featureWall: FeatureWallView!
@@ -27,7 +29,9 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     }
     @IBOutlet var m_lbGoldBuyPrice: UILabel!
     @IBOutlet var m_lbGoldSellPrice: UILabel!
+    @IBOutlet weak var GoldIn: UILabel!
     @IBAction func m_btnHex2Click(_ sender: Any) {
+        
     }
     @IBAction func m_btnHex3Click(_ sender: Any) {
         enterFeatureByID(.FeatureID_QRCodeTrans, false)
@@ -52,13 +56,24 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+       
 
         initNews()
         featureWall.setInitial(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!, setVertical: 3, setHorizontal: 2, SetDelegate: self)
         getVersionInfo()
-        getAnnounceNewsInfo()
+        //getAnnounceNewsInfo()
         setTitleBackground()
         checkGetPersonalData()
+          if (SecurityUtility.utility.isSimulator()) {
+            //#if DEBUG  //chiu 20210915
+            //#else
+            showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_IsSimulator, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: { exit(0) }, cancelHandelr: {()})
+            //#endif
+        }
+        else if (SecurityUtility.utility.isJailBroken()) {
+            showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_JailBroken, confirmTitle: Determine_Title, cancleTitle: nil, completionHandler: {()}, cancelHandelr: {()})
+        }
+
     }
     func setTitleBackground() {
         let gradient = CAGradientLayer()
@@ -81,9 +96,29 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             if let info = AuthorizationManage.manage.getResponseLoginInfo() {
                 m_vBeforeLogin.isHidden = true
                 m_vAfterLogin.isHidden = false
-                m_lbBalance.text = (String(info.Balance ?? "0").separatorThousand())
-                m_lbTBalance.text = (String(info.TBalance ?? "0").separatorThousand())
+//                if homeTouch != ""{
+                                   m_lbBalance.text = "***,***.**"
+                                   m_lbTBalance.text = "***,***.**"
+                                   homeTouch = "1"
+//                               }else{
+//                                   m_lbBalance.text = (String(info.Balance ?? "0").separatorThousandDecimal())
+//                                   m_lbTBalance.text = (String(info.TBalance ?? "0").separatorThousandDecimal())
+//                                   homeTouch = ""
+//                               }
+//                m_lbBalance.text = (String(info.Balance ?? "0").separatorThousandDecimal())
+//                m_lbTBalance.text = (String(info.TBalance ?? "0").separatorThousandDecimal())
             }
+            //chiu 公告推播顯示訊息 20201231
+            if pushReceiveFlag == "MSG"{
+                pushReceiveFlag = ""
+    //            let alert = UIAlertView(title: UIAlert_Default_Title, message: "有訊息公告請看最新消息！", delegate: nil, cancelButtonTitle:Determine_Title)
+    //            alert.show()
+                
+                if let aps = pushResultList![AnyHashable("aps")] as? NSDictionary{
+                   if let apsalert = aps["alert"] as? NSString{
+                   let alert = UIAlertView(title: UIAlert_Default_Title, message: apsalert as String, delegate: self, cancelButtonTitle: Determine_Title)
+                   alert.show()
+                        }}}
             if centerNewsList == nil {
                 getAnnounceNewsInfo()
             }
@@ -93,7 +128,9 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             else {
                 getBankLogoInfo()
             }
+            if list != nil {
             list = bankNewsList
+            }
             /* 登入成功不需要發送 */
             if getAmount {
                 getTransactionID("03001", "Home\(TransactionID_Description)")
@@ -145,7 +182,8 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
 
     override func didResponse(_ description: String, _ response: NSDictionary) {
         switch description {
-        case "COMM0101", "COMM0102":
+            //2019-11-1 add by sweney for 快速登入 0105
+        case "COMM0111", "COMM0102","COMM0105":
             super.didResponse(description, response)
             featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
 //            updateLoginStatus(false)
@@ -155,6 +193,7 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let surl = data["SUrl"] as? String, let name = data["Name"] as? String {
                 postRequest("", LogoImage_Description, nil, nil, surl, false, true)
                 m_lbLocationTitle.text = name
+                BankChineseName = name // 農會名稱save by chris 1090729
                 getAnnounceNewsInfo()
             }
             else {
@@ -183,16 +222,30 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                     showErrorMessage(ErrorMsg_AntivirusSoftware_Title, ErrorMsg_AntivirusSoftware_Content)
                     SecurityUtility.utility.writeFileByKey("N", SetKey: File_FirstOpen_Key)
                 }
+                //2023 checklist update
+              if let IsScreenLock = data["IsScreenLock"] as? String, IsScreenLock == "Y" {
+                    authenticationWithTouchID()
+              }
+              send_getKey()
             }
             else {
                 super.didResponse(description, response)
             }
-        
-        case "INFO0201":
-            if let data = response.object(forKey: ReturnData_Key) as? [String : Any], let list = data["CB_List"] as? [[String:Any]] {
+        //E2E
+        case "INFO0201","INFO0203":
+           if let data = response.object(forKey: ReturnData_Key) as? [String : Any], var list = data["CB_List"] as? [[String:Any]]{
+                //E2E get public key
+                if  let E2EPK = data["E2EPK"]  as? String {
+                    E2EKeyData = E2EPK
+                }
                 if AuthorizationManage.manage.IsLoginSuccess() {
+                    if list.count == 0 {
+                        list = centerNewsList!
+                    }
+                    else {
                     bankNewsList?.removeAll()
                     bankNewsList = list
+                    }
                 }
                 else {
                     centerNewsList?.removeAll()
@@ -202,12 +255,12 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                 for dic in list {
                     newsList.append("\(dic["CB_Title"] ?? "")")
                 }
+               
                 (newsView.subviews.first as! AnnounceNews).setContentList(newsList, self)
             }
             else {
                 super.didResponse(description, response)
             }
-            
         case LogoImage_Description:
             if let responseImage = response[RESPONSE_IMAGE_KEY] as? UIImage {
 //                logoImageView.image = responseImage
@@ -226,8 +279,11 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         case "ACCT0103":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let TotalBalance = data["TotalBalance"] as? String, let TotalTBalance = data["TotalTBalance"] as? String {
 //                accountBalanceLabel.text = "活存總餘額 \(TotalBalance.separatorThousand())"
-                m_lbBalance.text = TotalBalance.separatorThousand()
-                m_lbTBalance.text = TotalTBalance.separatorThousand()
+                //chiu  20200610
+//               m_lbBalance.text = TotalBalance.separatorThousandDecimal()
+//               m_lbTBalance.text = TotalTBalance.separatorThousandDecimal()
+               iTotalBal = TotalBalance.separatorThousandDecimal()
+               iTotalTBal = TotalTBalance.separatorThousandDecimal()
                 self.send_getList()
             }
             else {
@@ -268,6 +324,22 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                     }
                 }
             }
+       case "GetKey":
+            if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let CIDListKey = data["CIDListKey"] as? [[String:Any]], let DATAKey = data["DATAKey"] as? String {
+                AuthorizationManage_CIDListKey.removeAll()
+                let strPrivateKeyPath = Bundle.main.path(forResource: "private_key", ofType: "p12")
+                SEA1 = RSAObjC.decrypt(DATAKey, keyFilePath: strPrivateKeyPath, filecheck: "systex")
+                for item in CIDListKey {
+                    let Key: String = item["Key"] as! String
+                    let Value: String = RSAObjC.decrypt((item["Value"] as! String), keyFilePath: strPrivateKeyPath, filecheck: "systex")
+                    AuthorizationManage_CIDListKey[Key] = Value
+                }
+                getAnnounceNewsInfo()
+                updateLoginStatus()
+            }
+            else {
+                showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_NoCertificate, confirmTitle: "確認", cancleTitle: nil, completionHandler: {exit(0)}, cancelHandelr: {()})
+            }
         default: super.didResponse(description, response)
         }
     }
@@ -287,6 +359,28 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             (controller as! BillPaymentViewController).transactionId = tempTransactionId
             tempTransactionId = ""
             
+        case .FeatureID_News:
+            (controller as! NewsViewController).m_NewsData1 = centerNewsList
+            (controller as! NewsViewController).m_NewsData2 = bankNewsList
+            
+        case .FeatureID_MobileTransferSetup:
+            (controller as! MobileTransferSetupViewController).transactionId = tempTransactionId
+            tempTransactionId = ""
+            
+        case .FeatureID_MobileNTTransfer:
+            (controller as! MobileNTTransferViewController).transactionId = tempTransactionId
+            tempTransactionId = ""
+        case .FeatureID_CardlessSetup:
+            (controller as! CardlessSetupViewController).transactionId = tempTransactionId
+            tempTransactionId = ""
+        case .FeatureID_CardlessQry:
+            (controller as! CardlessQryViewController).transactionId = tempTransactionId
+            tempTransactionId = ""
+        case .FeatureID_CardlessDisable:
+            (controller as! CardlessDisableViewController).transactionId = tempTransactionId
+            tempTransactionId = ""
+         
+      
         default: break
         }
         navigationController?.pushViewController(controller, animated: animated)
@@ -316,7 +410,9 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             body["CB_Type"] = Int(2)
             body["CB_CUM_BankCode"] = ""
         }
-        postRequest("Info/INFO0201", "INFO0201", AuthorizationManage.manage.converInputToHttpBody(body, false), AuthorizationManage.manage.getHttpHead(false))
+        //change for E2E
+        //postRequest("Info/INFO0201", "INFO0201", AuthorizationManage.manage.converInputToHttpBody(body, false), AuthorizationManage.manage.getHttpHead(false))
+        postRequest("Info/INFO0203", "INFO0203", AuthorizationManage.manage.converInputToHttpBody(body, false), AuthorizationManage.manage.getHttpHead(false))
     }
     
     private func getVersionInfo() {  // 版號控管電文
@@ -339,22 +435,40 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
 
     private func send_queryData() {
         self.setLoading(true)
-        postRequest("Gold/Gold0502", "Gold0502", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10013","Operate":"queryData"], true), AuthorizationManage.manage.getHttpHead(true))
+        postRequest("Gold/Gold0502", "Gold0502", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"10013","Operate":"queryData"], false), AuthorizationManage.manage.getHttpHead(false))
     }
     
     private func send_getList() {//取左上角個人訊息
         setLoading(true)
         postRequest("COMM/COMM0303", "COMM0303", AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"07061","Operate":"getList","TransactionId":transactionId], true), AuthorizationManage.manage.getHttpHead(true))
     }
+    private func send_getKey() {//取加密用的key
+        setLoading(true)
+        postRequest("Security/GetKey", "GetKey", nil, AuthorizationManage.manage.getHttpHead(false))
+    }
     // MARK: - StoryBoard Touch Event
     @IBAction func clickLoginBtn(_ sender: Any) {
         if !AuthorizationManage.manage.IsLoginSuccess() {
-            showLoginView()
+            showLoginView()       
         }
         else {
-            let alert = UIAlertView(title: UIAlert_Default_Title, message: Logout_Title, delegate: self, cancelButtonTitle: Cancel_Title, otherButtonTitles: Determine_Title)
-            alert.tag = ViewTag.View_LogOut.rawValue
-            alert.show()
+//            let alert = UIAlertView(title: UIAlert_Default_Title, message: Logout_Title, delegate: self, cancelButtonTitle: Cancel_Title, otherButtonTitles: Determine_Title)
+//            alert.tag = ViewTag.View_LogOut.rawValue
+//            alert.show()
+            if AuthorizationManage.manage.getResponseLoginInfo() != nil {
+//                m_vBeforeLogin.isHidden = true
+//                m_vAfterLogin.isHidden = false
+                if homeTouch == ""{
+                    m_lbBalance.text = "***,***.**"
+                    m_lbTBalance.text = "***,***.**"
+                    homeTouch = "1"
+                }else{
+                    m_lbBalance.text = iTotalBal
+                    m_lbTBalance.text = iTotalTBal
+                    homeTouch = ""
+                }
+                
+            }
         }
     }
     
@@ -363,8 +477,8 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
     }
     
     func checkGetPersonalData() {
-        let confirmed = SecurityUtility.utility.readFileByKey(SetKey: "confirmGetPersonalData") as! Bool?
-        if (confirmed == nil || confirmed! != true) {
+         let confirmed = SecurityUtility.utility.readFileByKey(SetKey: "confirmGetPersonalData") as! Bool?
+         if (confirmed == nil || confirmed! != true) {
             showGetPersonalDataView()
         }
     }
@@ -390,7 +504,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
         case ViewTag.View_LogOut.rawValue:
             if buttonIndex != alertView.cancelButtonIndex {
                 postLogout()
-                //for test 測試點擊登出後直接清除首頁
                 featureWall.setContentList(AuthorizationManage.manage.GetPlatformList(.FeatureWall_Type)!)
                 updateLoginStatus(false)
                 m_btnAlert.setImage(UIImage(named: "alert1"), for: UIControlState.normal)
@@ -400,7 +513,6 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
             if let title = alertView.buttonTitle(at: buttonIndex), title == Update_Title {
                 if let url = URL(string: AgriBank_AppURL), UIApplication.shared.canOpenURL(url) {
                     if #available(iOS 10, *) {
-                        //for test
                         UIApplication.shared.open(url, options:[:], completionHandler:  { (success) in exit(0) })
                     }
                     else {
@@ -409,8 +521,25 @@ class HomeViewController: BasePhotoViewController, FeatureWallViewDelegate, Anno
                     }
                 }
             }
-            
+            else if buttonIndex != alertView.cancelButtonIndex {
+                send_getKey()
+            }     
         default: super.alertView(alertView, clickedButtonAt: buttonIndex)
+        }
+    }
+    
+    //資安檢測修改檢查是否啟用密碼鎖
+    func authenticationWithTouchID() {
+        let localAuthenticationContext = LAContext()
+        var authError: NSError?
+        if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) {
+        } else {
+            guard let error = authError else {
+                return
+            }
+            if error._code == LAError.passcodeNotSet.rawValue {
+                showAlert(title: UIAlert_Default_Title, msg: ErrorMsg_passcodeNotSet, confirmTitle: "確認", cancleTitle: nil, completionHandler: {exit(0)}, cancelHandelr: {()})
+            }
         }
     }
 }

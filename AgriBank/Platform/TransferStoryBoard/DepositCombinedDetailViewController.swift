@@ -16,13 +16,13 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
     @IBOutlet weak var terminationBtn: UIButton!
     private var list:[[String:String]]? = nil
     private var account:String? = nil       // 定存帳號
-    private var sAccount:String? = nil      // 活存帳號
+    private var sAot:String? = nil      // 活存帳號
     
     // MARK: - Public
-    func setList(_ list:[[String:String]], _ account:String?, _ sAccount:String?) {
+    func setList(_ list:[[String:String]], _ account:String?, _ sAot:String?) {
         self.list = list
         self.account = account
-        self.sAccount = sAccount
+        self.sAot = sAot
     }
     
     // MARK: - Override
@@ -47,7 +47,7 @@ class DepositCombinedDetailViewController: BaseViewController, UITableViewDataSo
         switch description {
         case "COMM0701":
             if let data = response.object(forKey: ReturnData_Key) as? [String:Any], let array = data["Result"] as? [[String:Any]], let status = array.first?["CanTrans"] as? String, status == Can_Transaction_Status {
-                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0502", strSessionDescription: "TRAN0502", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03005","Operate":"commitTxn","TransactionId":transactionId,"Deposit":account ?? "","ACTNO":sAccount ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
+                let confirmRequest = RequestStruct(strMethod: "TRAN/TRAN0502", strSessionDescription: "TRAN0502", httpBody: AuthorizationManage.manage.converInputToHttpBody(["WorkCode":"03005","Operate":"commitTxn","TransactionId":transactionId,"Deposit":account ?? "","ACTNO":sAot ?? ""], true), loginHttpHead: AuthorizationManage.manage.getHttpHead(true), strURL: nil, needCertificate: false, isImage: false, timeOut: REQUEST_TIME_OUT)
                 let dataConfirm = ConfirmResultStruct(image: ImageName.CowCheck.rawValue, title: Check_Transaction_Title, list: list, memo: "", confirmBtnName: "確認送出", resultBtnName: "繼續交易", checkRequest: confirmRequest)
                 enterConfirmResultController(true, dataConfirm, true)
             }

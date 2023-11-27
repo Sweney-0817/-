@@ -21,6 +21,7 @@ class ThreeRowDropDownView: UIView {
     @IBOutlet weak var m_lbThirdRowContent: UILabel!
 
     var delegate:ThreeRowDropDownViewDelegate? = nil
+    @IBOutlet weak var m_btn: UIButton!
     @IBAction func m_btnClick(_ sender: Any) {
         delegate?.clickThreeRowDropDownView(self)
     }
@@ -35,6 +36,12 @@ class ThreeRowDropDownView: UIView {
         m_lbSecondRowContent.text = secondContent
         m_lbThirdRowTitle.text = thirdTitle
         m_lbThirdRowContent.text = thirdContent
+        //無障礙＋
+        let acclb:String  = firstTitle +  firstContent  + secondTitle + secondContent + thirdTitle + thirdContent
+        m_btn.accessibilityLabel = acclb
+        
+        
+        
         self.setNeedsLayout()
     }
     

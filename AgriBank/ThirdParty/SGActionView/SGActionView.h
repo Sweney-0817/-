@@ -72,6 +72,19 @@ typedef void(^SGMenuActionHandler)(NSInteger index);
              selectedIndex:(NSInteger)selectedIndex
             selectedHandle:(SGMenuActionHandler)handler;
 
+/**
+ *    选择列表弹出层+輸入匡
+ *
+ *    @param     title           标题
+ *    @param     itemTitles      行标题
+ *    @param     selectedIndex   选中行index
+ *    @param     handler         回调，index从 0 开始
+ */
++ (void)showSheetQrWithTitle:(NSString *)title
+                itemTitles:(NSArray *)itemTitles
+             selectedIndex:(NSInteger)selectedIndex
+            selectedHandle:(SGMenuActionHandler)handler;
+
 
 /**
  *	选择列表弹出层（指定选中行）
