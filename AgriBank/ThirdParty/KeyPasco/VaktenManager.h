@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Vakten/Vakten.h>
-#import <Vakten/VaktenPKI.h>
+#import "Vakten/Vakten.h"
+#import "Vakten/VaktenPKI.h"
 
 @interface VaktenManager : NSObject
 

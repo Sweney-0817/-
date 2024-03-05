@@ -1,0 +1,11 @@
+#import <Vakten/VAssociateOperation.h>
+#import <Vakten/VAuthenticateOperation.h>
+#import <Vakten/VContext.h>
+#import <Vakten/VGeoOTP.h>
+#import <Vakten/VGetTasksOperation.h>
+#import <Vakten/VOperation.h>
+#import <Vakten/VCancelTaskOperation.h>
+#import <Vakten/VSignTaskOperation.h>
+#import <Vakten/VPinManager.h>
+#import <Vakten/VTask.h>
+#import <Vakten/VURI.h>
